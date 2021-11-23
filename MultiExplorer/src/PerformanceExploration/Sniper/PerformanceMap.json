@@ -1,0 +1,257 @@
+{
+    "system":{
+        "total_cycles":"performance_model.cycle_count+...+performance_model.cycle_count",
+        "idle_cycles":"0",
+        "busy_cycles":"performance_model.cycle_count+...+performance_model.cycle_count",
+
+        "number_of_cores":"general/total_cores",
+        "number_of_L1Directories":"0",
+        "number_of_L2Directories":"0",
+        "number_of_L2s":"", 
+        "Private_L2":"perf_model/l2_cache/shared_cores", 
+        "Private_L3":"perf_model/l3_cache/shared_cores",
+        "number_of_L3s":"", 
+        "number_of_NoCs":"1",
+        "homogeneous_cores":"0", 
+        "homogeneous_L2s":"0", 
+        "homogeneous_L1Directories":"0",  
+        "homogeneous_L2Directories":"0",  
+        "homogeneous_L3s":"0",  
+        "homogeneous_ccs":"1",  
+        "homogeneous_NoCs":"1",  
+        "core_tech_node":"power/technology_node",
+        "target_core_clockrate":"perf_model/core/frequency", 
+        "temperature":"330", 
+        "number_cache_levels":"perf_model/cache/levels",
+        "interconnect_projection_type":"0", 
+        "device_type":"0", 
+        "longer_channel_device":"0", 
+        "power_gating":"0", 
+        "machine_bits":"0", 
+        "virtual_address_width":"0", 
+        "physical_address_width":"0", 
+        "virtual_memory_page_size":"0"
+        },
+        
+        "system.core$":{
+
+            "total_instructions":"thread.instructions_by_core[$]",
+            "int_instructions": "interval_timer.uop_generic[$]",
+            "fp_instructions": "interval_timer.uop_generic[$]",
+            "branch_instructions": "interval_timer.uop_branch[$]",
+            "branch_mispredictions": "branch_predictor.num-incorrect[$]",
+            "load_instructions":"interval_timer.uop_load[$]",
+            "store_instructions":"interval_timer.uop_store[$]",
+            "committed_instructions":"performance_model.instruction_count[$]",
+            "committed_int_instructions":"interval_timer.uop_generic[$]",
+            "committed_fp_instructions":"interval_timer.uop_generic[$]",
+            "total_cycles":"performance_model.cycle_count[$]",
+            "idle_cycles":"performance_model.cycle_count[$] - thread.nonidle_cycle_count[$]",
+            "busy_cycles":"thread.nonidle_cycle_count[$]",
+            "ROB_reads":"interval_timer.uops_total[$]",
+            "ROB_writes":"interval_timer.uops_total[$]",
+            "rename_reads":"number_cores*thread.instruction_count[$]",
+            "rename_writes":"thread.instruction_count[$]",
+            "fp_rename_reads":"0",
+            "fp_rename_writes":"0",
+            "inst_window_reads":"thread.instruction_count[$]",
+            "inst_window_writes":"thread.instruction_count[$]",
+            "inst_window_wakeup_accesses":"number_cores*thread.instruction_count[$]",
+            "fp_inst_window_reads":"thread.instruction_count[$] (divided) number_cores",
+            "fp_inst_window_writes":"thread.instruction_count[$] (divided) number_cores",
+            "fp_inst_window_wakeup_accesses":"thread.instruction_count[$]",
+            
+            "int_regfile_reads":"interval_timer.uop_generic[$]",
+            "float_regfile_reads":"interval_timer.uop_generic[$]",
+            "int_regfile_writes":"interval_timer.uop_generic[$]",
+            "float_regfile_writes":"interval_timer.uop_generic[$]",
+            "function_calls":"0",
+            "context_switches":"0",
+            "ialu_accesses":"interval_timer.uop_generic[$]",
+            "fpu_accesses":"interval_timer.uop_generic[$]",
+            "mul_accesses":"interval_timer.uop_generic[$]",
+            "cdb_alu_accesses":"interval_timer.uop_generic[$]",
+            "cdb_mul_accesses":"interval_timer.uop_generic[$]",
+            "cdb_fpu_accesses":"interval_timer.uop_generic[$]",
+            "IFU_duty_cycle":"ipc[$]",
+            "LSU_duty_cycle":"0",
+            "MemManU_I_duty_cycle":"ipc[$]",
+            "MemManU_D_duty_cycle":"0",
+            "ALU_duty_cycle":"0",
+            "MUL_duty_cycle":"0",
+            "FPU_duty_cycle":"0",
+            "ALU_cdb_duty_cycle":"0",
+            "MUL_cdb_duty_cycle":"0",
+            "FPU_cdb_duty_cycle":"0",
+
+            "instruction_length":"0",
+            "clock_rate":"perf_model/core/frequency", 
+            "vdd": "power/vdd",
+            "opt_local": "1",  
+            "opcode_width": "16", 
+            "machine_type": "0",  
+            "number_hardware_threads": "perf_model/core/logical_cpus",
+            "fetch_width": "perf_model/core/interval_timer/fetch_width",
+            "number_instruction_fetch_ports": "1", 
+            "decode_width": "perf_model/core/interval_timer/decode_width",
+            "x86": "1", 
+            "micro_opcode_width": "8", 
+            "issue_width": "perf_model/core/interval_timer/dispatch_width",
+            "peak_issue_width": "6", 
+            "commit_width": "perf_model/core/interval_timer/commit_width",
+            "fp_issue_width": "2", 
+            "prediction_width": "1", 
+            "pipelines_per_core": "1,1",
+            "pipeline_depth": "14,14",
+            "ALU_per_core": "6", 
+            "MUL_per_core": "1", 
+            "FPU_per_core": "2", 
+            "instruction_buffer_size": "16", 
+            "decoded_stream_buffer_size": "16", 
+            "instruction_window_scheme": "1", 
+            "instruction_window_size": "64", 
+            "fp_instruction_window_size": "0", 
+            "ROB_size": "perf_model/core/interval_timer/window_size",
+            "archi_Regs_IRF_size": "16", 
+            "archi_Regs_FRF_size": "32", 
+            "phy_Regs_IRF_size": "256", 
+            "phy_Regs_FRF_size": "256", 
+            "rename_scheme": "0", 
+            "register_windows_size": "0", 
+            "LSU_order": "inorder", 
+            "store_buffer_size": "96", 
+            "load_buffer_size": "48", 
+            "memory_ports": "1", 
+            "RAS_size": "64", 
+            "number_of_BPT": "2", 
+
+            "system.core$.itlb":
+            {
+                "total_accesses":"itlb.access[$]",
+                "total_misses":"itlb.miss[$]",
+                "conflicts":"0",
+
+                "number_entries": "perf_model/itlb/sets"
+            },
+            "system.core$.icache":
+            {
+                "read_accesses":"L1-I.loads[$]",
+                "read_misses":"L1-I.load-misses-I[$]",
+                "conflicts":"0",
+
+                "icache_config":["perf_model/l1_icache/cache_size","perf_model/l1_icache/cache_block_size","perf_model/l1_icache/associativity","1","3","perf_model/l1_icache/data_access_time","16", "1"],
+                "buffer_sizes": "16, 16, 16, 16" 
+            },
+            "system.core$.dtlb":
+            {
+                "total_accesses":"dtlb.access[$]",
+                "total_misses":"dtlb.miss[$]",
+                "conflicts":"0",
+
+                "number_entries": "perf_model/dtlb/sets"
+            },
+            "system.core$.dcache":
+            {
+                "read_accesses":"L1-D.loads[$]",
+                "write_accesses":"L1-D.stores[$]",
+                "read_misses":"L1-D.load-misses[$]",
+                "write_misses":"L1-D.store-misses[$]",
+                "conflicts":"0",
+
+                "dcache_config":["perf_model/l1_dcache/cache_size","perf_model/l1_dcache/cache_block_size","perf_model/l1_dcache/associativity","1","3","perf_model/l1_dcache/data_access_time","16", "1"],
+                "buffer_sizes": "16, 16, 16, 16"  
+
+            },
+            "system.core$.BTB":
+            {
+                "read_accesses":"interval_timer.uop_branch[$]",
+                "write_accesses":"0",
+
+                "BTB_config": "0" 
+            }
+
+        },
+        "system.L2$":
+        {
+            "read_accesses":"L2.loads-I[$]",
+            "write_accesses":"L2.stores[$]",
+            "read_misses":"L2.load-misses[$]",
+            "write_misses":"L2.store-misses[$]",
+            "conflicts":"0",
+            "duty_cycle":"0",
+                                                                                                                        
+            "L2_config":["perf_model/l2_cache/cache_size","perf_model/l2_cache/cache_block_size","perf_model/l2_cache/associativity","8","8","perf_model/l2_cache/data_access_time","32","0"],
+            "buffer_sizes":"16, 16, 16, 16",
+            "clockrate":"perf_model/core/frequency",
+            "vdd":"power/vdd",
+            "ports":"1,1,1",
+            "device_type":"0"
+        },
+        "system.L3$":
+        {
+            "read_accesses":"L3.loads[$]", 
+            "write_accesses":"L3.stores[$]",
+            "read_misses":"L3.load-misses[$]",
+            "write_misses":"L3.store-misses[$]",
+            "conflicts":"0",
+            "duty_cycle":"0",
+
+            "L3_config":["perf_model/l3_cache/cache_size","perf_model/l3_cache/cache_block_size","perf_model/l3_cache/associativity","8","8","perf_model/l3_cache/data_access_time","32", "0"],
+            "buffer_sizes":"16, 16, 16, 16",
+            "clockrate":"perf_model/core/frequency",
+            "vdd":"power/vdd",
+            "ports":"1,1,1",
+            "device_type":"0"
+        },
+
+        "system.NoC0":
+        {
+            "total_accesses":"0",
+            "duty_cycle": "0",
+
+            "clockrate":"perf_model/core/frequency",
+            "vdd":"power/vdd",
+            "type":"network/memory_model_1", 
+            "horizontal_nodes":"1",
+            "vertical_nodes":"1",
+            "has_global_link":"0",
+            "link_throughput":"1",
+            "link_latency":"1",
+            "input_ports":"1",
+            "output_ports":"1",
+            "flit_bits":"256",
+            "chip_coverage":"1",
+            "link_routing_over_percentage":"0.5"
+        },
+        "system.mc":
+        {
+            "memory_accesses":"dram-queue.num-requests[0]",
+            "memory_reads":"dram-queue.num-requests[0] - dram.writes[0]",
+            "memory_writes":"dram.writes[0]",
+
+            "mc_clock": "200",
+            "vdd": "0",
+            "peak_transfer_rate": "3200",
+            "block_size": "64",
+            "number_mcs": "0",
+            "memory_channels_per_mc": "1",
+            "number_ranks": "2",
+            "withPHY": "0",
+            "req_window_size_per_channel": "32",
+            "IO_buffer_size_per_channel": "32",
+            "databus_width": "128",
+            "addressbus_width": "51"
+        },
+        "system.niu":
+        {
+            "number_units":"0"
+        },
+        "system.pcie":
+        {
+            "number_units":"0"
+        },
+        "system.flashc":
+        {
+            "number_flashcs":"0"
+        }
+}

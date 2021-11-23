@@ -1,0 +1,97 @@
+{
+    "system": {
+        "total_cycles": " Global /Cycles",
+        "idle_cycles": "0",
+        "busy_cycles": " Global /Cycles",
+        "number_of_cores": " Config.General /Cores",
+        "number_of_L1Directories": "0",
+        "number_of_L2Directories": "0",
+        "number_of_L2s": "0",
+        "Private_L2": "0",
+        "number_of_L3s": "0",
+        "number_of_NoCs": "1",
+        "homogeneous_cores": "0",
+        "homogeneous_L2s": "0",
+        "homogeneous_L1Directories": "0",
+        "homogeneous_L2Directories": "0",
+        "homogeneous_L3s": "0",
+        "homogeneous_ccs": "1",
+        "homogeneous_NoCs": "1",
+        "core_tech_node": "power/technology_node",
+        "target_core_clockrate": " Config.General /Frequency",
+        "temperature": "power/temperature",
+        "number_cache_levels": "memory/cache/levels",
+        "interconnect_projection_type": "0",
+        "device_type": "0",
+        "longer_channel_device": "1",
+        "power_gating": "1",
+        "machine_bits": "64",
+        "virtual_address_width": "64",
+        "physical_address_width": "52",
+        "virtual_memory_page_size": "4096",
+    	
+
+        "system.NoC0": {
+            "total_accesses": "0",
+            "duty_cycle": "0.00000",
+            "clockrate": " Config.General /Frequency",
+            "vdd": "power/vdd",
+            "type": "0",
+            "horizontal_nodes": "1",
+            "vertical_nodes": "1",
+            "has_global_link": "0",
+            "link_throughput": "1",
+            "link_latency": "1",
+            "input_ports": "1",
+            "output_ports": "1",
+            "flit_bits": "256",
+            "chip_coverage": "1",
+            "link_routing_over_percentage": "0.5"
+        },
+        "system.mc": {
+            "memory_accesses": " mm-$ /Accesses",
+            "memory_reads": " mm-$ /Reads",
+            "memory_writes": " mm-$ /Writes",
+            "mc_clock": "200",
+            "vdd": "power/vdd",
+            "peak_transfer_rate": " Config.General /Frequency",
+            "block_size": " mm-$ /BlockSize",
+            "number_mcs": "memory/dram/controllers_interleaving",
+            "memory_channels_per_mc": "0",
+            "number_ranks": "2",
+            "withPHY": "0",
+            "req_window_size_per_channel": "32",
+            "IO_buffer_size_per_channel": "32",
+            "databus_width": "128",
+            "addressbus_width": "51"
+        },
+        "system.niu": {
+            "type": "0",
+            "clockrate": "0",
+            "vdd": "1.2",
+            "number_units": "0",
+            "duty_cycle": "0",
+            "total_load_perc": "0"
+        },
+        "system.pcie": {
+            "type": "0",
+            "withPHY": "0",
+            "clockrate": "0",
+            "vdd": "1.2",
+            "number_units": "0",
+            "num_channels": "0",
+            "duty_cycle": "0",
+            "total_load_perc": "0"
+        },
+        "system.flashc": {
+            "number_flashcs": "0",
+            "type": "0",
+            "withPHY": "0",
+            "peak_transfer_rate": "0",
+            "vdd": "1.2",
+            "duty_cycle": "0",
+            "total_load_perc": "0"
+        }
+
+    }
+}

@@ -1,0 +1,242 @@
+{
+	"Preferences":
+	{
+		"sim_tool":"multi2sim",
+		"project_name":"x86_FirstTest",
+		"application":"/home/melgarejojr/Documents/testing/test-threads",
+		"DSE":false
+	},
+	"General_Modeling":
+	{
+		"total_cores": 13,
+		"core": 
+		{
+			"global_frequency": 2530,
+			"frequency":[2530, 2530], 
+			"threads":2, 
+			"logical_cpus":1,
+			"pipeline":
+			{
+				"present": true,
+				"fetch_kind" : "Shared",
+				"decode_width" : 4,
+				"dispatch_kind" : "TimeSlice",
+				"dispatch_width"  : 4,
+				"issue_kind" : "Shared",
+				"issue_width" : 6,
+				"commit_kind" : "Shared",
+				"commit_width" : 8,
+				"occupancy_stats" : true
+			}
+		},
+		"memory":
+		{
+			"cache":
+			{
+				"levels": 1
+			},
+			"tlb":
+			{
+				"sets": 256,
+				"block_size": 64,
+				"associativity" :32,
+				"latency": 40, 
+				"policy":"LRU"
+			},
+			"itlb":
+			{
+				"sets": 128,
+				"block_size": 64,
+				"associativity" : 32,
+				"latency": 20,
+				"policy":"LRU"
+			},
+			"dtlb":
+			{
+				"sets": 64,
+				"block_size": 64,
+				"associativity" : 32,
+				"latency": 40,
+				"policy":"LRU"
+			},
+			"stlb":
+			{
+				"sets": 128,
+				"block_size": 64,
+				"associativity" : 32,
+				"latency": 40,
+				"policy":"LRU"
+			},
+			"l1_icache-0":
+			{
+				"perfect":true,
+				"passthrough":false,
+				"cache_block_size": 32,
+				"cache_size":256,
+				"associativity":4,
+				"ports":2,
+				"address_hash":"mask",
+				"replacement_policy":"LRU",
+				"data_access_time":4,
+				"tags_access_time":1,
+				"perf_model_type":"parallel",
+				"writethrough":0,
+				"writeback_time":0,
+				"dvfs_domain":"core",
+				"shared_cores":[0,1],
+				"prefetcher":"none",
+				"next_level_read_bandwidth":0
+			},
+			"l1_icache-1":
+			{
+				"perfect":true,
+				"passthrough":false,
+				"cache_block_size": 32,
+				"cache_size":256,
+				"associativity":4,
+				"ports":2,
+				"address_hash":"mask",
+				"replacement_policy":"LRU",
+				"data_access_time":4,
+				"tags_access_time":1,
+				"perf_model_type":"parallel",
+				"writethrough":0,
+				"writeback_time":0,
+				"dvfs_domain":"core",
+				"shared_cores":[2,3],
+				"prefetcher":"none",
+				"next_level_read_bandwidth":0
+			},
+			"l1_dcache-0":
+			{
+				"perfect":true,
+				"passthrough":false,
+				"cache_block_size": 32,
+				"cache_size":512,
+				"associativity":2,
+				"ports":2,
+				"address_hash":"mask",
+				"replacement_policy":"LRU",
+				"data_access_time":4,
+				"tags_access_time":1,
+				"perf_model_type":"parallel",
+				"writethrough":0,
+				"writeback_time":0,
+				"dvfs_domain":"core",
+				"shared_cores":[0],
+				"prefetcher":"none",
+				"next_level_read_bandwidth":0
+			},
+			"l1_dcache-1":
+			{
+				"perfect":true,
+				"passthrough":false,
+				"cache_block_size": 32,
+				"cache_size":512,
+				"associativity":2,
+				"ports":2,
+				"address_hash":"mask",
+				"replacement_policy":"LRU",
+				"data_access_time":4,
+				"tags_access_time":1,
+				"perf_model_type":"parallel",
+				"writethrough":0,
+				"writeback_time":0,
+				"dvfs_domain":"core",
+				"shared_cores":[1],
+				"prefetcher":"none",
+				"next_level_read_bandwidth":0
+			},
+			"l1_dcache-2":
+			{
+				"perfect":true,
+				"passthrough":false,
+				"cache_block_size": 32,
+				"cache_size":512,
+				"associativity":2,
+				"ports":2,
+				"address_hash":"mask",
+				"replacement_policy":"LRU",
+				"data_access_time":4,
+				"tags_access_time":1,
+				"perf_model_type":"parallel",
+				"writethrough":0,
+				"writeback_time":0,
+				"dvfs_domain":"core",
+				"shared_cores":[2],
+				"prefetcher":"none",
+				"next_level_read_bandwidth":0
+			},
+			"l1_dcache-3":
+			{
+				"perfect":true,
+				"passthrough":false,
+				"cache_block_size": 32,
+				"cache_size":512,
+				"associativity":2,
+				"ports":2,
+				"address_hash":"mask",
+				"replacement_policy":"LRU",
+				"data_access_time":4,
+				"tags_access_time":1,
+				"perf_model_type":"parallel",
+				"writethrough":0,
+				"writeback_time":0,
+				"dvfs_domain":"core",
+				"shared_cores":[3],
+				"prefetcher":"none",
+				"next_level_read_bandwidth":0
+			},
+			"dram":
+			{
+				"dram_directory":
+				{
+					"total_entries":1048576,
+					"associativity":16,
+					"directory_type":"full_map"
+				},
+				"num_controllers":-1,
+				"controllers_interleaving":4,
+				"latency":100,
+				"block_size":1024,
+				"per_controller_bandwidth":7.6,
+				"chips_per_dimm":8,
+				"dimms_per_controller":4
+			}
+		},
+		"network":
+		{
+				"memory_model_1":"simple",
+				"memory_model_2":"simple",
+				"memory_model_3":"simple",
+				"simple":
+				{
+					"bandwidth":512,
+					"input_buffer": 2048,
+					"output_buffer":2048
+				}
+		},
+		"power":
+		{
+			"vdd":"1.2",
+			"technology_node":"45",
+			"temperature": "330"
+		}
+	},
+
+	"DSE":
+	{
+		"ExplorationSpace":{
+			"ip_cores_for_design":[1, 25],
+        	"original_cores_for_design":[1, 15]
+		},
+		"Constraints":
+		{
+			"maximum_powerDensity":0.57,
+			"maximum_area":149.195,
+			"technology":"32nm",
+			"benchmark":"splash2",
+			"application":"all"
+		}
+	}
+}
