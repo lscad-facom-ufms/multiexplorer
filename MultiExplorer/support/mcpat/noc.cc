@@ -105,8 +105,8 @@ void NoC::init_router()
 	area.set_area(area.get_area()+ router->area.get_area()*nocdynp.total_nodes);
 
 	double long_channel_device_reduction = longer_channel_device_reduction(Uncore_device);
-	double pg_reduction_retain = power_gating_leakage_reduction(true);//array structure all retain state;
-	double pg_reduction_nonretain = power_gating_leakage_reduction(true);//array structure all retain state;
+	double pg_reduction_retain = power_gating_leakage_reduction(false);//state retaining array structure;
+	double pg_reduction_nonretain = power_gating_leakage_reduction(false);//non-state-retaining array structure;
 
 	router->power.readOp.longer_channel_leakage          = router->power.readOp.leakage * long_channel_device_reduction;
 	router->buffer.power.readOp.longer_channel_leakage   = router->buffer.power.readOp.leakage * long_channel_device_reduction;
@@ -120,6 +120,12 @@ void NoC::init_router()
 														+ router->crossbar.power.readOp.power_gated_leakage
 														+ router->arbiter.power.readOp.power_gated_leakage;
 
+	router->buffer.power.readOp.power_gated_with_long_channel_leakage   = router->buffer.power.readOp.power_gated_leakage * long_channel_device_reduction;//TODO: this is a simplified version; should use the power_gated_leakage generated in buff
+	router->crossbar.power.readOp.power_gated_with_long_channel_leakage = router->crossbar.power.readOp.power_gated_leakage * long_channel_device_reduction;
+	router->arbiter.power.readOp.power_gated_with_long_channel_leakage  = router->arbiter.power.readOp.power_gated_leakage * long_channel_device_reduction;
+	router->power.readOp.power_gated_with_long_channel_leakage          = router->buffer.power.readOp.power_gated_with_long_channel_leakage
+														+ router->crossbar.power.readOp.power_gated_with_long_channel_leakage
+														+ router->arbiter.power.readOp.power_gated_with_long_channel_leakage;
 
 	router_exist = true;
 }
@@ -249,7 +255,7 @@ void NoC::displayEnergy(uint32_t indent,int plevel,bool is_tdp)
 			cout << indent_str_next << "Subthreshold Leakage = "
 			<< (long_channel? router->power.readOp.longer_channel_leakage:router->power.readOp.leakage)  <<" W" << endl;
 			if (power_gating) cout << indent_str_next << "Subthreshold Leakage with power gating = "
-							<< (router->power.readOp.power_gated_leakage * (long_channel? router->power.readOp.longer_channel_leakage/router->power.readOp.leakage:1) )  << " W" << endl;
+					<< (long_channel? router->power.readOp.power_gated_with_long_channel_leakage : router->power.readOp.power_gated_leakage)  << " W" << endl;
 			cout << indent_str_next << "Gate Leakage = " << router->power.readOp.gate_leakage << " W" << endl;
 			cout << indent_str_next<< "Runtime Dynamic = " << router->rt_power.readOp.dynamic/nocdynp.executionTime << " W" << endl;
 			cout<<endl;
@@ -261,7 +267,7 @@ void NoC::displayEnergy(uint32_t indent,int plevel,bool is_tdp)
 				cout << indent_str<< indent_str_next << "Subthreshold Leakage = "
 				<< (long_channel? router->buffer.power.readOp.longer_channel_leakage*nocdynp.input_ports:router->buffer.power.readOp.leakage*nocdynp.input_ports)  <<" W" << endl;
 				if (power_gating) cout << indent_str<< indent_str_next << "Subthreshold Leakage with power gating = "
-								<< (router->buffer.power.readOp.power_gated_leakage * (long_channel? router->buffer.power.readOp.longer_channel_leakage/router->buffer.power.readOp.leakage:1) )  << " W" << endl;
+						<< (long_channel? router->buffer.power.readOp.power_gated_with_long_channel_leakage : router->buffer.power.readOp.power_gated_leakage)  << " W" << endl;
 				cout << indent_str<< indent_str_next << "Gate Leakage = " << router->buffer.power.readOp.gate_leakage*nocdynp.input_ports << " W" << endl;
 				cout << indent_str<< indent_str_next << "Runtime Dynamic = " << router->buffer.rt_power.readOp.dynamic/nocdynp.executionTime << " W" << endl;
 				cout <<endl;
@@ -271,7 +277,7 @@ void NoC::displayEnergy(uint32_t indent,int plevel,bool is_tdp)
 				cout << indent_str<< indent_str_next << "Subthreshold Leakage = "
 				<< (long_channel? router->crossbar.power.readOp.longer_channel_leakage:router->crossbar.power.readOp.leakage)  << " W" << endl;
 				if (power_gating) cout << indent_str<< indent_str_next << "Subthreshold Leakage with power gating = "
-								<< (router->crossbar.power.readOp.power_gated_leakage * (long_channel? router->crossbar.power.readOp.longer_channel_leakage/router->crossbar.power.readOp.leakage:1) )  << " W" << endl;
+						<< (long_channel? router->crossbar.power.readOp.power_gated_with_long_channel_leakage : router->crossbar.power.readOp.power_gated_leakage)  << " W" << endl;
 				cout << indent_str<< indent_str_next << "Gate Leakage = " << router->crossbar.power.readOp.gate_leakage  << " W" << endl;
 				cout << indent_str<< indent_str_next << "Runtime Dynamic = " << router->crossbar.rt_power.readOp.dynamic/nocdynp.executionTime << " W" << endl;
 				cout <<endl;
@@ -280,7 +286,7 @@ void NoC::displayEnergy(uint32_t indent,int plevel,bool is_tdp)
 				cout << indent_str<< indent_str_next << "Subthreshold Leakage = "
 				<< (long_channel? router->arbiter.power.readOp.longer_channel_leakage:router->arbiter.power.readOp.leakage)  << " W" << endl;
 				if (power_gating) cout << indent_str<< indent_str_next << "Subthreshold Leakage with power gating = "
-								<< (router->crossbar.power.readOp.power_gated_leakage * (long_channel? router->crossbar.power.readOp.longer_channel_leakage/router->crossbar.power.readOp.leakage:1) )  << " W" << endl;
+						<< (long_channel? router->arbiter.power.readOp.power_gated_with_long_channel_leakage : router->arbiter.power.readOp.power_gated_leakage)  << " W" << endl;
 				cout << indent_str<< indent_str_next << "Gate Leakage = " << router->arbiter.power.readOp.gate_leakage  << " W" << endl;
 				cout << indent_str<< indent_str_next << "Runtime Dynamic = " << router->arbiter.rt_power.readOp.dynamic/nocdynp.executionTime << " W" << endl;
 				cout <<endl;
@@ -296,7 +302,7 @@ void NoC::displayEnergy(uint32_t indent,int plevel,bool is_tdp)
 			<< (long_channel? link_bus_tot_per_Router.power.readOp.longer_channel_leakage:link_bus_tot_per_Router.power.readOp.leakage)
 			     <<" W" << endl;
 			if (power_gating) cout << indent_str_next << "Subthreshold Leakage with power gating = "
-							<< (link_bus_tot_per_Router.power.readOp.power_gated_leakage * (long_channel? link_bus_tot_per_Router.power.readOp.longer_channel_leakage/link_bus_tot_per_Router.power.readOp.leakage:1) )  << " W" << endl;
+					<< (long_channel? link_bus_tot_per_Router.power.readOp.power_gated_with_long_channel_leakage : link_bus_tot_per_Router.power.readOp.power_gated_leakage)  << " W" << endl;
 			cout << indent_str_next << "Gate Leakage = " << link_bus_tot_per_Router.power.readOp.gate_leakage
 				<< " W" << endl;
 			cout << indent_str_next<< "Runtime Dynamic = " << link_bus->rt_power.readOp.dynamic/nocdynp.executionTime << " W" << endl;
@@ -379,6 +385,13 @@ void NoC::set_noc_param()
 		interface_ip.hp_Vdd   = XML->sys.NoC[ithNoC].vdd;
 		interface_ip.lop_Vdd  = XML->sys.NoC[ithNoC].vdd;
 		interface_ip.lstp_Vdd = XML->sys.NoC[ithNoC].vdd;
+	}
+
+	if ( XML->sys.NoC[ithNoC].power_gating_vcc > -1)
+	{
+		interface_ip.specific_vcc_min = true;
+		interface_ip.user_defined_vcc_min   = XML->sys.NoC[ithNoC].power_gating_vcc;
+
 	}
 
 }

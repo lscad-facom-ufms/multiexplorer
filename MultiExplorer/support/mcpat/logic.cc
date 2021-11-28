@@ -28,8 +28,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.”
  *
  ***************************************************************************/
-//TONY:MULTIEXPLORER
-#include <fstream>
+
 #include "logic.h"
 
 
@@ -65,6 +64,7 @@ selection_logic::selection_logic(
 
     	double pg_reduction = power_gating_leakage_reduction(false);
     	power.readOp.power_gated_leakage	= power.readOp.leakage*pg_reduction;
+  	    power.readOp.power_gated_with_long_channel_leakage = power.readOp.power_gated_leakage * long_channel_device_reduction;
 
 	 }
 
@@ -174,6 +174,8 @@ void dep_resource_conflict_check::conflict_check_power()
 
 	double pg_reduction = power_gating_leakage_reduction(false);
 	power.readOp.power_gated_leakage	= power.readOp.leakage*pg_reduction;
+	power.readOp.power_gated_with_long_channel_leakage = power.readOp.power_gated_leakage * long_channel_device_reduction;
+
 
 
 }
@@ -212,6 +214,8 @@ void dep_resource_conflict_check::leakage_feedback(double temperature)
 
   double pg_reduction = power_gating_leakage_reduction(false);
   power.readOp.power_gated_leakage	= power.readOp.leakage*pg_reduction;
+  power.readOp.power_gated_with_long_channel_leakage = power.readOp.power_gated_leakage * long_channel_device_reduction;
+
 
 }
 
@@ -326,6 +330,8 @@ void Pipeline::compute()
 
 	double pg_reduction = power_gating_leakage_reduction(false);
 	power.readOp.power_gated_leakage	= power.readOp.leakage*pg_reduction;
+	power.readOp.power_gated_with_long_channel_leakage = power.readOp.power_gated_leakage * long_channel_device_reduction;
+
 
 
 
@@ -601,6 +607,8 @@ void FunctionalUnit::computeEnergy(bool is_tdp)
 
     	double pg_reduction = power_gating_leakage_reduction(false);
     	power.readOp.power_gated_leakage	= power.readOp.leakage*pg_reduction;
+  	    power.readOp.power_gated_with_long_channel_leakage = power.readOp.power_gated_leakage * long_channel_device_reduction;
+
 
 
 	}
@@ -641,13 +649,6 @@ void FunctionalUnit::displayEnergy(uint32_t indent,int plevel,bool is_tdp)
 	bool long_channel = XML->sys.longer_channel_device;
 	bool power_gating = XML->sys.power_gating;
 
-//TONY:MULTIEXPLORER
-	ifstream powerex;
-	string line;
-	float line_convert;
-	float line_convert2;
-	char** pEnd;
-
 //	cout << indent_str_next << "Results Broadcast Bus Area = " << bypass->area.get_area() *1e-6 << " mm^2" << endl;
 	if (is_tdp)
 	{
@@ -660,27 +661,13 @@ void FunctionalUnit::displayEnergy(uint32_t indent,int plevel,bool is_tdp)
 			cout << indent_str_next<< "Subthreshold Leakage = "
 						<< (long_channel? power.readOp.longer_channel_leakage:power.readOp.leakage) <<" W" << endl;
 			if (power_gating) cout << indent_str_next << "Subthreshold Leakage with power gating = "
-							<< (power.readOp.power_gated_leakage * (long_channel? power.readOp.longer_channel_leakage/power.readOp.leakage:1) )  << " W" << endl;
+					<< (long_channel? power.readOp.power_gated_with_long_channel_leakage : power.readOp.power_gated_leakage)  << " W" << endl;
 			cout << indent_str_next << "Gate Leakage = " << power.readOp.gate_leakage  << " W" << endl;
 			cout << indent_str_next << "Runtime Dynamic = " << rt_power.readOp.dynamic/executionTime << " W" << endl;
 			cout <<endl;
 		}
 		else if (fu_type == ALU)
 		{
-
-		// TONY:MULTIEXPLORER
-		// 
-			powerex.open("powerex.out");
-			if(powerex.is_open())
-			{
-
-				 getline(powerex,line);
-				 line_convert = strtof(line.c_str(),pEnd);
-				 getline(powerex,line);
-				 line_convert2 = strtof(line.c_str(),pEnd);
-
-				 
-			}
 			cout << indent_str << "Integer ALUs (Count: "<< coredynp.num_alus <<" ):" << endl;
 			cout << indent_str_next << "Area = " << area.get_area()*1e-6  << " mm^2" << endl;
 			cout << indent_str_next << "Peak Dynamic = " << power.readOp.dynamic*clockRate  << " W" << endl;
@@ -688,12 +675,9 @@ void FunctionalUnit::displayEnergy(uint32_t indent,int plevel,bool is_tdp)
 			cout << indent_str_next<< "Subthreshold Leakage = "
 						<< (long_channel? power.readOp.longer_channel_leakage:power.readOp.leakage) <<" W" << endl;
 			if (power_gating) cout << indent_str_next << "Subthreshold Leakage with power gating = "
-							<< (power.readOp.power_gated_leakage * (long_channel? power.readOp.longer_channel_leakage/power.readOp.leakage:1) )  << " W" << endl;
+					<< (long_channel? power.readOp.power_gated_with_long_channel_leakage : power.readOp.power_gated_leakage)  << " W" << endl;
 			cout << indent_str_next << "Gate Leakage = " << power.readOp.gate_leakage  << " W" << endl;
 			cout << indent_str_next << "Runtime Dynamic = " << rt_power.readOp.dynamic/executionTime << " W" << endl;
-			cout << indent_str_next << "*Number of ALU (DS) = " << line_convert/(power.readOp.dynamic*clockRate) <<  endl;
-			cout << indent_str_next << "*Area DS = " << (line_convert/(power.readOp.dynamic*clockRate))*area.get_area()*1e-6 <<  endl;
-			cout << indent_str_next << "*%DS = " << ((line_convert/(power.readOp.dynamic*clockRate))*area.get_area()*1e-6/line_convert2)*100 <<  endl;
 			cout <<endl;
 		}
 		else if (fu_type == MUL)
@@ -705,7 +689,7 @@ void FunctionalUnit::displayEnergy(uint32_t indent,int plevel,bool is_tdp)
 			cout << indent_str_next<< "Subthreshold Leakage = "
 						<< (long_channel? power.readOp.longer_channel_leakage:power.readOp.leakage) <<" W" << endl;
 			if (power_gating) cout << indent_str_next << "Subthreshold Leakage with power gating = "
-							<< (power.readOp.power_gated_leakage * (long_channel? power.readOp.longer_channel_leakage/power.readOp.leakage:1) )  << " W" << endl;
+					<< (long_channel? power.readOp.power_gated_with_long_channel_leakage : power.readOp.power_gated_leakage)  << " W" << endl;
 			cout << indent_str_next << "Gate Leakage = " << power.readOp.gate_leakage  << " W" << endl;
 			cout << indent_str_next << "Runtime Dynamic = " << rt_power.readOp.dynamic/executionTime << " W" << endl;
 			cout <<endl;
@@ -831,6 +815,8 @@ UndiffCore::UndiffCore(ParseXML* XML_interface, int ithCore_, InputParameter* in
 
 	double pg_reduction = power_gating_leakage_reduction(false);
 	power.readOp.power_gated_leakage	= power.readOp.leakage*pg_reduction;
+	power.readOp.power_gated_with_long_channel_leakage = power.readOp.power_gated_leakage * long_channel_device_reduction;
+
 
 
 	area.set_area(undifferentiated_core);
@@ -889,7 +875,7 @@ void UndiffCore::displayEnergy(uint32_t indent,int plevel,bool is_tdp)
 		cout << indent_str_next<< "Subthreshold Leakage = "
 					<< (long_channel? power.readOp.longer_channel_leakage:power.readOp.leakage) <<" W" << endl;
 		if (power_gating) cout << indent_str_next << "Subthreshold Leakage with power gating = "
-						<< (power.readOp.power_gated_leakage * (long_channel? power.readOp.longer_channel_leakage/power.readOp.leakage:1) )  << " W" << endl;
+				<< (long_channel? power.readOp.power_gated_with_long_channel_leakage : power.readOp.power_gated_leakage)  << " W" << endl;
 		cout << indent_str_next << "Gate Leakage = " << power.readOp.gate_leakage << " W" << endl;
 		//cout << indent_str_next << "Runtime Dynamic = " << rt_power.readOp.dynamic/executionTime << " W" << endl;
 		cout <<endl;
@@ -1021,6 +1007,8 @@ inst_decoder::inst_decoder(
 
 	    	double pg_reduction = power_gating_leakage_reduction(false);
 	    	power.readOp.power_gated_leakage	= power.readOp.leakage*pg_reduction;
+	  	    power.readOp.power_gated_with_long_channel_leakage = power.readOp.power_gated_leakage * long_channel_device_reduction;
+
 
 
 }
@@ -1069,6 +1057,8 @@ void inst_decoder::leakage_feedback(double temperature)
 
   double pg_reduction = power_gating_leakage_reduction(false);
   power.readOp.power_gated_leakage	= power.readOp.leakage*pg_reduction;
+  power.readOp.power_gated_with_long_channel_leakage = power.readOp.power_gated_leakage * long_channel_device_reduction;
+
 
 }
 

@@ -169,6 +169,9 @@ interconnect::interconnect(
   power.readOp.power_gated_leakage =
 	  power.readOp.leakage*pg_reduction;
 
+  power.readOp.power_gated_with_long_channel_leakage =
+	  power.readOp.power_gated_leakage*long_channel_device_reduction;
+
   if (pipelinable)//Only global wires has the option to choose whether routing over or not
 	  area.set_area(area.get_area()*route_over_perc + no_device_under_wire_area.get_area()*(1-route_over_perc));
 
@@ -197,7 +200,7 @@ interconnect::compute()
 
 }
 
-void interconnect::leakage_feedback(double temperature)
+void interconnect::leakage_feedback(double temperature)//TODO: add code for processing power gating
 {
   l_ip.temp = (unsigned int)round(temperature/10.0)*10;
   uca_org_t init_result = init_interface(&l_ip); // init_result is dummy

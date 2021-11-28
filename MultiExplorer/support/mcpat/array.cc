@@ -67,6 +67,8 @@ void ArrayST::compute_base_power()
     {
 	//l_ip.out_w               =l_ip.line_sz*8;
     local_result=cacti_interface(&l_ip);
+	assert(local_result.cycle_time>0);
+	assert(local_result.access_time>0);
 //    if (name == "Int FrontRAT")
 //    {
 //    	cout<<name<<endl;
@@ -76,7 +78,6 @@ void ArrayST::compute_base_power()
 //    	output_UCA(&local_result);
 //    	cout<<endl;
 //    }
-
     }
 
 void ArrayST::optimize_array()
@@ -222,7 +223,7 @@ void ArrayST::optimize_array()
 	}
 
 	double long_channel_device_reduction = longer_channel_device_reduction(device_ty,core_ty);
-	double pg_reduction = power_gating_leakage_reduction(true);//array structure all retain state;
+	double pg_reduction = power_gating_leakage_reduction(false);//array structure all retain state;
 
 	double macro_layout_overhead   = g_tp.macro_layout_overhead;
 	double chip_PR_overhead        = g_tp.chip_layout_overhead;
@@ -250,6 +251,8 @@ void ArrayST::optimize_array()
 		local_result.power.readOp.power_gated_leakage *= l_ip.nbanks;//normal array types
 	}
 
+	local_result.power.readOp.power_gated_with_long_channel_leakage = local_result.power.readOp.power_gated_leakage * long_channel_device_reduction;//power-gating atop long channel
+
 	local_result.power = local_result.power* pppm_t;
 
 
@@ -268,6 +271,8 @@ void ArrayST::optimize_array()
 	{
 		local_result.data_array2->power.readOp.power_gated_leakage *= l_ip.nbanks;//normal array types
 	}
+	local_result.data_array2->power.readOp.power_gated_with_long_channel_leakage = local_result.data_array2->power.readOp.power_gated_leakage * long_channel_device_reduction;
+
 	local_result.data_array2->power = local_result.data_array2->power* pppm_t;
 
 
@@ -277,9 +282,12 @@ void ArrayST::optimize_array()
 		local_result.tag_array2->power.writeOp.dynamic *= sckRation;
 		local_result.tag_array2->power.searchOp.dynamic *= sckRation;
 		local_result.tag_array2->power.readOp.leakage *= l_ip.nbanks;
-		local_result.data_array2->power.readOp.power_gated_leakage *= l_ip.nbanks;
+		local_result.tag_array2->power.readOp.power_gated_leakage *= l_ip.nbanks;
 		local_result.tag_array2->power.readOp.longer_channel_leakage =
 			local_result.tag_array2->power.readOp.leakage*long_channel_device_reduction;
+
+		local_result.tag_array2->power.readOp.power_gated_with_long_channel_leakage =
+			local_result.tag_array2->power.readOp.power_gated_leakage*long_channel_device_reduction;
 		local_result.tag_array2->power = local_result.tag_array2->power* pppm_t;
 	}
 

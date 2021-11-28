@@ -110,7 +110,7 @@ void MCBackend::compute()
 		  area.set_area(0.15*mcp.dataBusWidth/72.0*(l_ip.F_sz_um/0.065)* (l_ip.F_sz_um/0.065)*mcp.num_channels*1e6);//um^2
 		  backend_dyn = 0.9e-9/800e6*mcp.clockRate/12800*mcp.peakDataTransferRate*mcp.dataBusWidth/72.0*g_tp.peri_global.Vdd/1.1*g_tp.peri_global.Vdd/1.1*(l_ip.F_sz_nm/65.0);//Average on DDR2/3 protocol controller and DDRC 1600/800A in Cadence ChipEstimate
 		  //Scaling to technology and DIMM feature. The base IP support DDR3-1600(PC3 12800)
-		  backend_gates = 50000*mcp.dataBusWidth/64.0;//5000 is from Cadence ChipEstimator
+		  backend_gates = 50000*mcp.dataBusWidth/64.0;//50000 is from Cadence ChipEstimator
 
 		  power_t.readOp.dynamic = backend_dyn;
 		  power_t.readOp.leakage = (backend_gates)*cmos_Isub_leakage(NMOS_sizing, PMOS_sizing, 2, nand)*g_tp.peri_global.Vdd;//unit W
@@ -136,6 +136,8 @@ void MCBackend::compute()
 
   double pg_reduction = power_gating_leakage_reduction(false);
   power_t.readOp.power_gated_leakage	= power_t.readOp.leakage*pg_reduction;
+  power_t.readOp.power_gated_with_long_channel_leakage = power_t.readOp.power_gated_leakage * long_channel_device_reduction;
+
 
 }
 
@@ -240,6 +242,7 @@ void MCPHY::compute()
 
   double pg_reduction = power_gating_leakage_reduction(false);
   power_t.readOp.power_gated_leakage	= power_t.readOp.leakage*pg_reduction;
+  power_t.readOp.power_gated_with_long_channel_leakage = power_t.readOp.power_gated_leakage * long_channel_device_reduction;
 
 }
 
@@ -473,7 +476,7 @@ void MCFrontEnd::displayEnergy(uint32_t indent,int plevel,bool is_tdp)
 		cout << indent_str_next << "Peak Dynamic = " << frontendBuffer->power.readOp.dynamic*mcp.clockRate << " W" << endl;
 		cout << indent_str_next << "Subthreshold Leakage = " << frontendBuffer->power.readOp.leakage <<" W" << endl;
 		if (power_gating) cout << indent_str_next << "Subthreshold Leakage with power gating = "
-						<< (frontendBuffer->power.readOp.power_gated_leakage * (long_channel? frontendBuffer->power.readOp.longer_channel_leakage/frontendBuffer->power.readOp.leakage:1) )  << " W" << endl;
+				<< (long_channel? frontendBuffer->power.readOp.power_gated_with_long_channel_leakage : frontendBuffer->power.readOp.power_gated_leakage)  << " W" << endl;
 		cout << indent_str_next << "Gate Leakage = " << frontendBuffer->power.readOp.gate_leakage << " W" << endl;
 		cout << indent_str_next << "Runtime Dynamic = " << frontendBuffer->rt_power.readOp.dynamic/mcp.executionTime << " W" << endl;
 
@@ -483,7 +486,7 @@ void MCFrontEnd::displayEnergy(uint32_t indent,int plevel,bool is_tdp)
 		cout << indent_str_next << "Peak Dynamic = " << readBuffer->power.readOp.dynamic*mcp.clockRate  << " W" << endl;
 		cout << indent_str_next << "Subthreshold Leakage = " << readBuffer->power.readOp.leakage  << " W" << endl;
 		if (power_gating) cout << indent_str_next << "Subthreshold Leakage with power gating = "
-						<< (readBuffer->power.readOp.power_gated_leakage * (long_channel? readBuffer->power.readOp.longer_channel_leakage/readBuffer->power.readOp.leakage:1) )  << " W" << endl;
+				<< (long_channel? readBuffer->power.readOp.power_gated_with_long_channel_leakage : readBuffer->power.readOp.power_gated_leakage)  << " W" << endl;
 		cout << indent_str_next << "Gate Leakage = " << readBuffer->power.readOp.gate_leakage  << " W" << endl;
 		cout << indent_str_next << "Runtime Dynamic = " << readBuffer->rt_power.readOp.dynamic/mcp.executionTime << " W" << endl;
 		cout <<endl;
@@ -492,7 +495,7 @@ void MCFrontEnd::displayEnergy(uint32_t indent,int plevel,bool is_tdp)
 		cout << indent_str_next << "Peak Dynamic = " << writeBuffer->power.readOp.dynamic*mcp.clockRate  << " W" << endl;
 		cout << indent_str_next << "Subthreshold Leakage = " << writeBuffer->power.readOp.leakage  << " W" << endl;
 		if (power_gating) cout << indent_str_next << "Subthreshold Leakage with power gating = "
-						<< (writeBuffer->power.readOp.power_gated_leakage * (long_channel? writeBuffer->power.readOp.longer_channel_leakage/writeBuffer->power.readOp.leakage:1) )  << " W" << endl;
+				<< (long_channel? writeBuffer->power.readOp.power_gated_with_long_channel_leakage : writeBuffer->power.readOp.power_gated_leakage)  << " W" << endl;
 		cout << indent_str_next << "Gate Leakage = " << writeBuffer->power.readOp.gate_leakage  << " W" << endl;
 		cout << indent_str_next << "Runtime Dynamic = " << writeBuffer->rt_power.readOp.dynamic/mcp.executionTime << " W" << endl;
 		cout <<endl;
@@ -630,7 +633,7 @@ void MemoryController::displayEnergy(uint32_t indent,int plevel,bool is_tdp)
 		cout << indent_str<< "Subthreshold Leakage = "
 			<< (long_channel? power.readOp.longer_channel_leakage:power.readOp.leakage) <<" W" << endl;
 		if (power_gating) cout << indent_str << "Subthreshold Leakage with power gating = "
-						<< (power.readOp.power_gated_leakage * (long_channel? power.readOp.longer_channel_leakage/power.readOp.leakage:1) )  << " W" << endl;
+				<< (long_channel? power.readOp.power_gated_with_long_channel_leakage : power.readOp.power_gated_leakage)  << " W" << endl;
 		cout << indent_str<< "Gate Leakage = " << power.readOp.gate_leakage << " W" << endl;
 		cout << indent_str << "Runtime Dynamic = " << rt_power.readOp.dynamic/mcp.executionTime << " W" << endl;
 		cout<<endl;
@@ -640,7 +643,7 @@ void MemoryController::displayEnergy(uint32_t indent,int plevel,bool is_tdp)
 		cout << indent_str_next << "Subthreshold Leakage = "
 			<< (long_channel? frontend->power.readOp.longer_channel_leakage:frontend->power.readOp.leakage) <<" W" << endl;
 		if (power_gating) cout << indent_str_next << "Subthreshold Leakage with power gating = "
-						<< (frontend->power.readOp.power_gated_leakage * (long_channel? frontend->power.readOp.longer_channel_leakage/frontend->power.readOp.leakage:1) )  << " W" << endl;
+				<< (long_channel? frontend->power.readOp.power_gated_with_long_channel_leakage : frontend->power.readOp.power_gated_leakage)  << " W" << endl;
 		cout << indent_str_next << "Gate Leakage = " << frontend->power.readOp.gate_leakage << " W" << endl;
 		cout << indent_str_next << "Runtime Dynamic = " << frontend->rt_power.readOp.dynamic/mcp.executionTime << " W" << endl;
 		cout <<endl;
@@ -653,7 +656,7 @@ void MemoryController::displayEnergy(uint32_t indent,int plevel,bool is_tdp)
 		cout << indent_str_next << "Subthreshold Leakage = "
 			<< (long_channel? transecEngine->power.readOp.longer_channel_leakage:transecEngine->power.readOp.leakage) <<" W" << endl;
 		if (power_gating) cout << indent_str_next << "Subthreshold Leakage with power gating = "
-						<< (transecEngine->power.readOp.power_gated_leakage * (long_channel? transecEngine->power.readOp.longer_channel_leakage/transecEngine->power.readOp.leakage:1) )  << " W" << endl;
+				<< (long_channel? transecEngine->power.readOp.power_gated_with_long_channel_leakage : transecEngine->power.readOp.power_gated_leakage)  << " W" << endl;
 		cout << indent_str_next << "Gate Leakage = " << transecEngine->power.readOp.gate_leakage << " W" << endl;
 		cout << indent_str_next << "Runtime Dynamic = " << transecEngine->rt_power.readOp.dynamic/mcp.executionTime << " W" << endl;
 		cout <<endl;
@@ -665,7 +668,7 @@ void MemoryController::displayEnergy(uint32_t indent,int plevel,bool is_tdp)
 			cout << indent_str_next << "Subthreshold Leakage = "
 			<< (long_channel? PHY->power.readOp.longer_channel_leakage:PHY->power.readOp.leakage) <<" W" << endl;
 			if (power_gating) cout << indent_str_next << "Subthreshold Leakage with power gating = "
-							<< (PHY->power.readOp.power_gated_leakage * (long_channel? PHY->power.readOp.longer_channel_leakage/PHY->power.readOp.leakage:1) )  << " W" << endl;
+					<< (long_channel? PHY->power.readOp.power_gated_with_long_channel_leakage : PHY->power.readOp.power_gated_leakage)  << " W" << endl;
 			cout << indent_str_next << "Gate Leakage = " << PHY->power.readOp.gate_leakage << " W" << endl;
 			cout << indent_str_next << "Runtime Dynamic = " << PHY->rt_power.readOp.dynamic/mcp.executionTime << " W" << endl;
 			cout <<endl;
@@ -719,6 +722,12 @@ void MemoryController::set_mc_param()
 			interface_ip.hp_Vdd   = XML->sys.mc.vdd;
 			interface_ip.lop_Vdd  = XML->sys.mc.vdd;
 			interface_ip.lstp_Vdd = XML->sys.mc.vdd;
+		}
+		if ( XML->sys.mc.power_gating_vcc > -1)
+		{
+			interface_ip.specific_vcc_min = true;
+			interface_ip.user_defined_vcc_min   = XML->sys.mc.power_gating_vcc;
+
 		}
 	}
 //	else if (mc_type==FLASHC)

@@ -102,6 +102,8 @@ class InOut(object):
             for line in inFile:
                 linesMCPATFile.append(line)
 
+
+        pprint(linesMCPATFile)
         for line in linesMCPATFile:
             if '*Power Density' in line:
                 power_density_orig = line.split()[3]

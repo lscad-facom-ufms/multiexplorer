@@ -104,9 +104,12 @@
 			<param name="rename_scheme" value="0"/>
 			<!-- can be RAM based(0) or CAM based(1) rename scheme 
 			RAM-based scheme will have free list, status table;
-			CAM-based scheme have the valid bit in the data field of the CAM 
-			both RAM and CAM need RAM-based checkpoint table, checkpoint_depth=# of in_flight instructions;
-			Detailed RAT Implementation see TR -->
+			CAM-based scheme have the valid bit in the data field of the CAM -->
+			<param name="checkpoint_depth" value="1"/>
+			<!-- RAM and CAM RAT contains checkpoints, checkpoint_depth=# of in_flight speculations;
+			RAM-based RAT should not have more than 4 GCs (e.g., MIPS R10000). 
+			McPAT assumes the exsistance of RRAT when the RAM-RAT having no GCs (e.g., Netburst)
+			CAM-based RAT should have at least 1 GC and can have more than 8 GCs. -->
 			<param name="register_windows_size" value="0"/>
 			<!-- how many windows in the windowed register file, sun processors;
 			no register windowing is used when this number is 0 -->
@@ -376,7 +379,7 @@
 			<param name="mc_clock" value="400"/><!--MHz-->
 			<param name="peak_transfer_rate" value="6400"/><!--MB/S-->
 			<param name="block_size" value="64"/><!--(B) the block size of last level cache, which is the unit for one memory burst transfer -->
-			<param name="number_mcs" value="1"/>
+			<param name="number_mcs" value="0"/>
 			<!-- current McPAT only supports homogeneous memory controllers -->
 			<param name="memory_channels_per_mc" value="1"/>
 			<param name="number_ranks" value="0"/>
@@ -401,7 +404,7 @@
 				 the low bound of clock rate of a 10Gb MAC is 150Mhz -->
 			<param name="type" value="1"/> <!-- 1: low power; 0 high performance -->
 			<param name="clockrate" value="350"/>
-			<param name="number_units" value="1"/> <!-- unlike PCIe and memory controllers, each Ethernet controller only have one port -->
+			<param name="number_units" value="0"/> <!-- unlike PCIe and memory controllers, each Ethernet controller only have one port -->
 			<stat name="duty_cycle" value="1.0"/> <!-- achievable max load <= 1.0 -->
 			<stat name="total_load_perc" value="0.7"/> <!-- ratio of total achieved load to total achieve-able bandwidth  -->
 			<!-- McPAT does not track individual nic, instead, it takes the total accesses and calculate 
@@ -415,7 +418,7 @@
 			<param name="type" value="1"/> <!-- 1: low power; 0 high performance -->
 			<param name="withPHY" value="1"/>
 			<param name="clockrate" value="350"/>
-			<param name="number_units" value="1"/>
+			<param name="number_units" value="0"/>
 			<param name="num_channels" value="8"/> <!-- 2 ,4 ,8 ,16 ,32 -->
 			<stat name="duty_cycle" value="1.0"/> <!-- achievable max load <= 1.0 -->
 			<stat name="total_load_perc" value="0.7"/> <!-- Percentage of total achieved load to total achieve-able bandwidth  -->
@@ -424,7 +427,7 @@
 		</component>
 <!--**********************************************************************-->
 		<component id="system.flashc" name="flashc">
-		    <param name="number_flashcs" value="1"/>
+		    <param name="number_flashcs" value="0"/>
 			<param name="type" value="1"/> <!-- 1: low power; 0 high performance -->
             <param name="withPHY" value="1"/>
 			<param name="peak_transfer_rate" value="200"/><!--Per controller sustain-able peak rate MB/S -->

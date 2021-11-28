@@ -206,7 +206,7 @@ void Decoder::compute_power_gating()
 {
 	//For all driver chains there is only one sleep transistors to save area
     //Total transistor width for sleep tx calculation
-    for (int i = 1;  i <=num_gates; i++)
+    for (int i = 0;  i <num_gates; i++)
       {
     	total_driver_nwidth += w_dec_n[i];
     	total_driver_pwidth += w_dec_p[i];
@@ -1631,9 +1631,9 @@ void Driver::compute_area()
 
 void Driver::compute_power_gating()
 {
-	//For all driver change there is only one sleep transistors to save area
+	//For all driver chains there is only one sleep transistors to save area
     //Total transistor width for sleep tx calculation
-    for (int i = 0;  i <=number_gates; i++)
+    for (int i = 0;  i <number_gates; i++)
       {
     	total_driver_nwidth += width_n[i];
     	total_driver_pwidth += width_p[i];

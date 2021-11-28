@@ -816,11 +816,11 @@ void SharedCache::computeEnergy(bool is_tdp)
 		unicache.rt_power = unicache.power_t + (unicache.caches->local_result.power)*pppm_lkg;
 		if (!((cachep.dir_ty==ST&& cacheL==L1Directory)||(cachep.dir_ty==ST&& cacheL==L2Directory)))
 		{
-			(unicache.rt_power = unicache.rt_power +
-					unicache.missb->local_result.power +
-					unicache.ifb->local_result.power +
-					unicache.prefetchb->local_result.power +
-					unicache.wbb->local_result.power)*pppm_lkg;
+			unicache.rt_power = unicache.rt_power +
+							(unicache.missb->local_result.power +
+							unicache.ifb->local_result.power +
+							unicache.prefetchb->local_result.power +
+							unicache.wbb->local_result.power)*pppm_lkg;
 		}
 		rt_power     = rt_power + unicache.rt_power;
 	}
@@ -841,7 +841,7 @@ void SharedCache::displayEnergy(uint32_t indent,bool is_tdp)
 		cout << indent_str << "Subthreshold Leakage = "
 			<< (long_channel? power.readOp.longer_channel_leakage:power.readOp.leakage) <<" W" << endl;
 		if (power_gating) cout << indent_str << "Subthreshold Leakage with power gating = "
-						<< (power.readOp.power_gated_leakage * (long_channel? power.readOp.longer_channel_leakage/power.readOp.leakage:1) )  << " W" << endl;
+				<< (long_channel? power.readOp.power_gated_with_long_channel_leakage : power.readOp.power_gated_leakage)  << " W" << endl;
 		cout << indent_str << "Gate Leakage = " << power.readOp.gate_leakage << " W" << endl;
 		cout << indent_str << "Runtime Dynamic = " << rt_power.readOp.dynamic/cachep.executionTime << " W" << endl;
 		cout <<endl;
@@ -1092,6 +1092,12 @@ void SharedCache::set_cache_param()
 		  interface_ip.lop_Vdd  = XML->sys.core[ithCache].vdd;
 		  interface_ip.lstp_Vdd = XML->sys.core[ithCache].vdd;
 		}
+
+		if (XML->sys.Private_L2 && XML->sys.core[ithCache].power_gating_vcc >-1)
+		{
+		  interface_ip.specific_vcc_min = true;
+		  interface_ip.user_defined_vcc_min   = XML->sys.core[ithCache].power_gating_vcc;
+		}
 		if (!XML->sys.Private_L2 && XML->sys.L2[ithCache].vdd>0)
 		{
 			interface_ip.specific_hp_vdd = true;
@@ -1100,6 +1106,11 @@ void SharedCache::set_cache_param()
 			interface_ip.hp_Vdd   = XML->sys.L2[ithCache].vdd;
 			interface_ip.lop_Vdd  = XML->sys.L2[ithCache].vdd;
 			interface_ip.lstp_Vdd = XML->sys.L2[ithCache].vdd;
+		}
+		if (!XML->sys.Private_L2 && XML->sys.L2[ithCache].power_gating_vcc >-1)
+		{
+		  interface_ip.specific_vcc_min = true;
+		  interface_ip.user_defined_vcc_min   = XML->sys.L2[ithCache].power_gating_vcc;
 		}
 	}
 	else if (cacheL==L3)
@@ -1141,6 +1152,12 @@ void SharedCache::set_cache_param()
 			interface_ip.lop_Vdd  = XML->sys.L3[ithCache].vdd;
 			interface_ip.lstp_Vdd = XML->sys.L3[ithCache].vdd;
 		}
+
+		if (XML->sys.L3[ithCache].power_gating_vcc >-1)
+		{
+		  interface_ip.specific_vcc_min = true;
+		  interface_ip.user_defined_vcc_min   = XML->sys.L3[ithCache].power_gating_vcc;
+		}
 	}
 	else if (cacheL==L1Directory)
 		{
@@ -1174,6 +1191,12 @@ void SharedCache::set_cache_param()
 				interface_ip.lop_Vdd  = XML->sys.L1Directory[ithCache].vdd;
 				interface_ip.lstp_Vdd = XML->sys.L1Directory[ithCache].vdd;
 			}
+
+			if (XML->sys.L1Directory[ithCache].power_gating_vcc >-1)
+			{
+			  interface_ip.specific_vcc_min = true;
+			  interface_ip.user_defined_vcc_min   = XML->sys.L1Directory[ithCache].power_gating_vcc;
+			}
 		}
 	else if (cacheL==L2Directory)
 		{
@@ -1206,6 +1229,12 @@ void SharedCache::set_cache_param()
 				interface_ip.hp_Vdd   = XML->sys.L2Directory[ithCache].vdd;
 				interface_ip.lop_Vdd  = XML->sys.L2Directory[ithCache].vdd;
 				interface_ip.lstp_Vdd = XML->sys.L2Directory[ithCache].vdd;
+			}
+
+			if (XML->sys.L2Directory[ithCache].power_gating_vcc >-1)
+			{
+			  interface_ip.specific_vcc_min = true;
+			  interface_ip.user_defined_vcc_min   = XML->sys.L2Directory[ithCache].power_gating_vcc;
 			}
 		}
 	//cachep.cache_duty_cycle=cachep.dir_duty_cycle = 0.35;

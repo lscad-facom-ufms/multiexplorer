@@ -158,7 +158,7 @@ public:
 	enum Renaming_type rm_ty;
     enum Scheduler_type scheu_ty;
     double clockRate,executionTime;
-    int  arch_ireg_width, arch_freg_width, phy_ireg_width, phy_freg_width;
+    int  arch_ireg_width, arch_freg_width, phy_ireg_width, phy_freg_width, hthread_width;
     int  num_IRF_entry, num_FRF_entry, num_ifreelist_entries, num_ffreelist_entries;
     int  fetchW, decodeW,issueW,peak_issueW, commitW,peak_commitW, predictionW, fp_issueW, fp_decodeW;
     int  perThreadState, globalCheckpoint, instruction_length, pc_width, opcode_length, micro_opcode_length;
@@ -174,6 +174,7 @@ public:
 	       FPU_duty_cycle, ALU_cdb_duty_cycle,MUL_cdb_duty_cycle,
 	       FPU_cdb_duty_cycle;
 	double vdd;
+	double power_gating_vcc;
     ~CoreDynParam(){};
 };
 
@@ -190,6 +191,7 @@ public:
     //double duty_cycle;
     int missb_size, fu_size, prefetchb_size, wbb_size;
 	double vdd;
+	double power_gating_vcc;
     ~CacheDynParam(){};
 };
 
@@ -211,6 +213,7 @@ public:
     double executionTime, reads, writes;
     bool   LVDS, withPHY;
 	double vdd;
+	double power_gating_vcc;
     ~MCParam(){};
 };
 
@@ -228,6 +231,7 @@ public:
 		   duty_cycle, chip_coverage, route_over_perc;
     bool   has_global_link, type;
 	double vdd;
+	double power_gating_vcc;
     ~NoCParam(){};
 };
 
@@ -239,6 +243,7 @@ public:
     int  numCore, numL2, numL3, numNOC, numL1Dir, numL2Dir,numMC, numMCChannel;
     bool homoCore, homoL2, homoL3, homoNOC, homoL1Dir, homoL2Dir;
 	double vdd;
+	double power_gating_vcc;
     ~ProcParam(){};
 };
 
@@ -252,6 +257,7 @@ public:
     int    type;
     double duty_cycle, perc_load;
 	double vdd;
+	double power_gating_vcc;
     ~NIUParam(){};
 };
 
@@ -266,6 +272,7 @@ public:
     int    type;
     double duty_cycle, perc_load;
 	double vdd;
+	double power_gating_vcc;
     ~PCIeParam(){};
 };
 #endif /* BASIC_COMPONENTS_H_ */

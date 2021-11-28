@@ -77,7 +77,7 @@ NIUController::NIUController(ParseXML *XML_interface,InputParameter* interface_i
 
 	  double frontend_area, phy_area, mac_area, SerDer_area;
       double frontend_dyn, mac_dyn, SerDer_dyn;
-      double frontend_gates, mac_gates, SerDer_gates;
+      double frontend_gates, mac_gates, SerDer_gates = 0.;
 	  double pmos_to_nmos_sizing_r = pmos_to_nmos_sz_ratio();
 	  double NMOS_sizing, PMOS_sizing;
 
@@ -151,6 +151,8 @@ NIUController::NIUController(ParseXML *XML_interface,InputParameter* interface_i
 	  double pg_reduction = power_gating_leakage_reduction(false);
 	  power_t.readOp.longer_channel_leakage = power_t.readOp.leakage * long_channel_device_reduction;
 	  power_t.readOp.power_gated_leakage = power_t.readOp.leakage * pg_reduction;
+	  power_t.readOp.power_gated_with_long_channel_leakage = power_t.readOp.power_gated_leakage * long_channel_device_reduction;
+
 	  power_t.readOp.gate_leakage = (mac_gates + frontend_gates + frontend_gates)*cmos_Ig_leakage(NMOS_sizing, PMOS_sizing, 2, nand)*g_tp.peri_global.Vdd;//unit W
  }
 
@@ -186,7 +188,7 @@ void NIUController::displayEnergy(uint32_t indent,int plevel,bool is_tdp)
 		cout << indent_str<< "Subthreshold Leakage = "
 			<< (long_channel? power.readOp.longer_channel_leakage:power.readOp.leakage) <<" W" << endl;
 		if (power_gating) cout << indent_str << "Subthreshold Leakage with power gating = "
-						<< (power.readOp.power_gated_leakage * (long_channel? power.readOp.longer_channel_leakage/power.readOp.leakage:1) )  << " W" << endl;
+				<< (long_channel? power.readOp.power_gated_with_long_channel_leakage : power.readOp.power_gated_leakage)  << " W" << endl;
 		cout << indent_str<< "Gate Leakage = " << power.readOp.gate_leakage << " W" << endl;
 		cout << indent_str << "Runtime Dynamic = " << rt_power.readOp.dynamic*niup.clockRate << " W" << endl;
 		cout<<endl;
@@ -215,6 +217,13 @@ void NIUController::set_niu_param()
 		interface_ip.lop_Vdd  = XML->sys.niu.vdd;
 		interface_ip.lstp_Vdd = XML->sys.niu.vdd;
 	}
+
+	if ( XML->sys.niu.power_gating_vcc > -1)
+	{
+		interface_ip.specific_vcc_min = true;
+		interface_ip.user_defined_vcc_min   = XML->sys.niu.power_gating_vcc;
+
+	}
 //	  niup.executionTime   = XML->sys.total_cycles/(XML->sys.target_core_clockrate*1e6);
 }
 
@@ -225,7 +234,7 @@ PCIeController::PCIeController(ParseXML *XML_interface,InputParameter* interface
 
 	  double frontend_area, phy_area, ctrl_area, SerDer_area;
       double ctrl_dyn, frontend_dyn, SerDer_dyn;
-      double ctrl_gates,frontend_gates, SerDer_gates;
+      double ctrl_gates,frontend_gates, SerDer_gates=0.;
 	  double pmos_to_nmos_sizing_r = pmos_to_nmos_sz_ratio();
 	  double NMOS_sizing, PMOS_sizing;
 
@@ -294,6 +303,7 @@ PCIeController::PCIeController(ParseXML *XML_interface,InputParameter* interface
 	  double pg_reduction = power_gating_leakage_reduction(false);
 	  power_t.readOp.longer_channel_leakage = power_t.readOp.leakage * long_channel_device_reduction;
   	  power_t.readOp.power_gated_leakage = power_t.readOp.leakage * pg_reduction;
+	  power_t.readOp.power_gated_with_long_channel_leakage = power_t.readOp.power_gated_leakage * long_channel_device_reduction;
 	  power_t.readOp.gate_leakage = (ctrl_gates + (pciep.withPHY? SerDer_gates:0))*cmos_Ig_leakage(NMOS_sizing, PMOS_sizing, 2, nand)*g_tp.peri_global.Vdd;//unit W
  }
 
@@ -329,7 +339,7 @@ void PCIeController::displayEnergy(uint32_t indent,int plevel,bool is_tdp)
 		cout << indent_str<< "Subthreshold Leakage = "
 			<< (long_channel? power.readOp.longer_channel_leakage:power.readOp.leakage) <<" W" << endl;
 		if (power_gating) cout << indent_str << "Subthreshold Leakage with power gating = "
-						<< (power.readOp.power_gated_leakage * (long_channel? power.readOp.longer_channel_leakage/power.readOp.leakage:1) )  << " W" << endl;
+				<< (long_channel? power.readOp.power_gated_with_long_channel_leakage : power.readOp.power_gated_leakage)  << " W" << endl;
 		cout << indent_str<< "Gate Leakage = " << power.readOp.gate_leakage << " W" << endl;
 		cout << indent_str << "Runtime Dynamic = " << rt_power.readOp.dynamic*pciep.clockRate << " W" << endl;
 		cout<<endl;
@@ -361,6 +371,13 @@ void PCIeController::set_pcie_param()
 			interface_ip.lop_Vdd  = XML->sys.pcie.vdd;
 			interface_ip.lstp_Vdd = XML->sys.pcie.vdd;
 		}
+
+		if ( XML->sys.pcie.power_gating_vcc > -1)
+		{
+			interface_ip.specific_vcc_min = true;
+			interface_ip.user_defined_vcc_min   = XML->sys.pcie.power_gating_vcc;
+
+		}
 //	  pciep.executionTime   = XML->sys.total_cycles/(XML->sys.target_core_clockrate*1e6);
 
 }
@@ -372,7 +389,7 @@ FlashController::FlashController(ParseXML *XML_interface,InputParameter* interfa
 
 	  double frontend_area, phy_area, ctrl_area, SerDer_area;
       double ctrl_dyn, frontend_dyn, SerDer_dyn;
-      double ctrl_gates,frontend_gates, SerDer_gates;
+      double ctrl_gates,frontend_gates, SerDer_gates=0.;
 	  double pmos_to_nmos_sizing_r = pmos_to_nmos_sz_ratio();
 	  double NMOS_sizing, PMOS_sizing;
 
@@ -417,6 +434,7 @@ FlashController::FlashController(ParseXML *XML_interface,InputParameter* interfa
 	  power_t.readOp.longer_channel_leakage = power_t.readOp.leakage * long_channel_device_reduction;
 	  double pg_reduction = power_gating_leakage_reduction(false);//array structure all retain state;
 	  power_t.readOp.power_gated_leakage = power_t.readOp.leakage * pg_reduction;
+	  power_t.readOp.power_gated_with_long_channel_leakage = power_t.readOp.power_gated_leakage * long_channel_device_reduction;
 	  power_t.readOp.gate_leakage = ((ctrl_gates + (fcp.withPHY? SerDer_gates:0))*number_channel)*cmos_Ig_leakage(NMOS_sizing, PMOS_sizing, 2, nand)*g_tp.peri_global.Vdd;//unit W
  }
 
@@ -452,7 +470,7 @@ void FlashController::displayEnergy(uint32_t indent,int plevel,bool is_tdp)
 		cout << indent_str<< "Subthreshold Leakage = "
 			<< (long_channel? power.readOp.longer_channel_leakage:power.readOp.leakage) <<" W" << endl;
 		if (power_gating) cout << indent_str << "Subthreshold Leakage with power gating = "
-						<< (power.readOp.power_gated_leakage * (long_channel? power.readOp.longer_channel_leakage/power.readOp.leakage:1) )  << " W" << endl;
+				<< (long_channel? power.readOp.power_gated_with_long_channel_leakage : power.readOp.power_gated_leakage)  << " W" << endl;
 		cout << indent_str<< "Gate Leakage = " << power.readOp.gate_leakage << " W" << endl;
 		cout << indent_str << "Runtime Dynamic = " << rt_power.readOp.dynamic << " W" << endl;
 		cout<<endl;
@@ -485,5 +503,11 @@ void FlashController::set_fc_param()
 		  interface_ip.lop_Vdd  = XML->sys.flashc.vdd;
 		  interface_ip.lstp_Vdd = XML->sys.flashc.vdd;
 	  }
+		if ( XML->sys.flashc.power_gating_vcc > -1)
+		{
+			interface_ip.specific_vcc_min = true;
+			interface_ip.user_defined_vcc_min   = XML->sys.flashc.power_gating_vcc;
+
+		}
 
 }
