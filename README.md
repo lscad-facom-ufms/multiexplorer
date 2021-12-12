@@ -9,19 +9,29 @@ Dark-Silicon Aware Design Space Exploration. JOURNAL OF PARALLEL AND DISTRIBUTED
 
 Dependencies
 ============
-- [VirtualBox](https://www.virtualbox.org/wiki/Downloads)
-
-If you want to install Multiexplorer source codes in your host machine without a VM. Be sure to have all these softwares:
-- [Sniper](http://snipersim.org)
-- [McPAT](http://www.hpl.hp.com/research/mcpat/)
+To properly execute Multiexplorer, be sure to have all these softwares:
+- [gcc multilib](https://howtoinstall.co/pt/gcc-multilib) (required to compile Sniper)
+- [g++ multilib](https://howtoinstall.co/pt/g++-multilib) (required to compile Sniper)
+- [Sniper 7.4](http://snipersim.org)
+  - [Sniper's Benchmarks](https://snipersim.org/w/Download_Benchmarks) 
 - [Python 2.7](https://www.python.org/download/releases/2.7/)
-- [lxml](http://lxml.de/)
+  - [lxml](https://lxml.de/installation.html)
+  - [python-configparser](https://docs.python.org/2/library/configparser.html)
+  - [scikit-learn 0.19.1](https://scikit-learn.org/stable/install.html)
 
-
+It's advisable you use the same versions for python libs as listed in our requirements.txt
 
 How to Install ?
 ================
-This is a Multiexplorer-VM package based on Ubuntu 14 ready to use Multiexplorer. All dependencies, benchmarks suites, and input examples are available from the ds-repo folder. 
+The first step is to acquire a stable version of Multiexplorer from the [repository](https://github.com/lscad-facom-ufms/multiexplorer.git)
+
+If you don't want to install every dependency yourself, you may run "make install" as root. It will simply run a couple of "apt-get install" and "pip2 install" for you.
+
+Sniper installation you will have to handle by yourself, since it's not readily available, and it's simple not possible to simply wget it and run it's installation through scripting.
+
+You will also have to set the SNIPER_PATH in your "Multiexplorer/src/config.py" file. If you are not sure how to create this file, run "make config". It will create the file and all you have to do is open it and fill with your real PATH values.
+
+Multiexplorer also requires [McPAT](https://github.com/HewlettPackard/mcpat), but it's already bundled into Multiexplorer, since it's license allows it, and you don't have to worry about installing it.
 
 
 Run your first simulation
