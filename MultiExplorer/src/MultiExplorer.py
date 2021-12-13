@@ -30,17 +30,20 @@ sys.path.insert(0, importPath)
 importPath = os.path.dirname(os.path.realpath(
     __file__)) + '/DS_DSE/brute_force/'
 sys.path.insert(0, importPath)
+importPath = os.path.dirname(os.path.realpath(
+    __file__)) + '/PerformanceExploration/GPGPU'
+sys.path.insert(0, importPath)
 
 from Multi2Sim import Multi2Sim
 from Sniper import Sniper
 from McPAT import McPAT
 from MPSoCBench import MPSoCBench
-
 import InOut
 from Nsga2Main import Nsga2Main
 
 from DsDseBruteForce import DsDseBruteForce
 
+from GPGPU import GPGPU
 
 class MultiExplorer(object):
     """ Main Class for MultiExplorer Software"""
@@ -63,14 +66,14 @@ class MultiExplorer(object):
         if self.folderOldSimul == None:
             self.callPerformanceSim()
             self.stepByStep()
-            self.physicalSim()
+            #self.physicalSim()
 
-        self.putIntoDir()
-        self.dseBruteForce()
-        self.dse()
-        self.performanceReport()        
-        if self.inJson['Preferences']['DSE']:
-            self.suggestedArchitecture()
+        #self.putIntoDir()
+        #self.dseBruteForce()
+        #self.dse()
+        #self.performanceReport()        
+        #if self.inJson['Preferences']['DSE']:
+        #    self.suggestedArchitecture()
         
 
     def findOldSimul(self):
@@ -87,7 +90,7 @@ class MultiExplorer(object):
                     auxFileJsonInput = self.inJson
                     if ("Preferences" in fileJson) and (fileJson["Preferences"] == auxFileJsonInput["Preferences"]) and (fileJson["General_Modeling"] == auxFileJsonInput["General_Modeling"]):
                         self.folderOldSimul = root+pasta
-                        print self.folderOldSimul
+                        print(self.folderOldSimul) 
                         findFolderOldSimul = True
                         break
             if findFolderOldSimul:
@@ -104,7 +107,11 @@ class MultiExplorer(object):
             #print self.inJson['Preferences']['application']
             self.simTool = Sniper(self.inFile, self.inJson['Preferences']['application'])
             pass
+        def gpgpusim():
 
+            self.simTool = GPGPU(self.inFile, self.inJson['Preferences']['application'])
+            #print(self.inJson['Preferences']['application'])
+            pass
         def mpsocbench():
             self.simTool = MPSoCBench(
                 self.inFile, "paramMap.json", "PerformanceMap_new.json")
@@ -114,14 +121,14 @@ class MultiExplorer(object):
             sim = self.inJson['Preferences']['sim_tool']
             eval(sim + '()')
         else:
-            print "Calling Platform Selector!"
+            print("Calling Platform Selector!")
 
 
     def stepByStep(self):
         self.simTool.parse()
         self.simTool.execute()
         self.simTool.convertResults()
-        #pprint(self.simTool.getOutputJson())
+        #print(self.simTool.getOutputJson())
         pass
 
     def physicalSim(self):
@@ -157,13 +164,13 @@ class MultiExplorer(object):
     def dse(self):
         if self.inJson['Preferences']['DSE']:
             Nsga2Main(projectFolder)
-            print "DSE NSGA2: OK"
+            print("DSE NSGA2: OK") 
             self.suggestedArchitecture()
 
     def dseBruteForce(self):
         if self.inJson['Preferences']['DSE']:
             DsDseBruteForce(projectFolder)
-            print "DSE Brute Force: OK"
+            print("DSE Brute Force: OK") 
 
     def suggestedArchitecture(self):
         with open(projectFolder+"/"+'populationResults.csv','r') as csvFile:

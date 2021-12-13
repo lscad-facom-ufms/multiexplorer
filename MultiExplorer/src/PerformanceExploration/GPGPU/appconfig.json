@@ -1,0 +1,13 @@
+{
+    "kmeans":"-o -i ~/Benchmarks/data/kmeans/kdd_cup",
+    "bfs":" ~/Benchmarks/data/bfs/graph1MW_6.txt",
+    "hotspot":"512 2 2 ~/Benchmarks/data/hotspot/temp_512 ~/Benchmarks/data/hotspot/power_512 output.out",
+    "nn": "../Benchmarks/filelist_4.txt -r 5 -lat 30 -lng 90",
+    "needle":"2048 10",
+    "dwt2d": "data/dwt2d/run.sh",
+    "backprop": "65536"
+
+
+
+
+}

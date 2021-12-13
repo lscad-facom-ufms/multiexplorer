@@ -1,0 +1,42 @@
+{
+	"Preferences":
+	{
+		"sim_tool":"gpgpusim",
+		"project_name":"gpgpusim_backprop",
+		"application":"clock",
+		"DSE":false
+	},
+	"General_Modeling":
+	{
+		"model_name":"GTX480",
+		"clock_rate": 700,
+		"n_SM": 1,
+		"shmem_size":8192,
+		"registers":4096,
+		"blocks/SM":2,
+		"threads/SM":512,		
+		
+		"power":
+		{
+			"vdd":"1.2",
+			"technology_node":"32",
+			"temperature": "330"
+		}
+	},
+
+	"DSE":
+	{
+		"ExplorationSpace":{
+		"ip_cores_for_design":[1, 25],
+	        "original_cores_for_design":[1, 15]
+		},
+		"Constraints":
+		{
+			"maximum_powerDensity":0.340433,
+			"maximum_area":225.2,
+			"technology":"22nm",
+			"benchmark":"Experimentos",
+			"application":"all"
+		}
+	}
+}
