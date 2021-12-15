@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-
+import xml.etree.ElementTree as ET
 import os
 import sys
 import json
@@ -55,6 +55,8 @@ class GPGPU(SimulationTool):
         print(os.getcwd())
         os.system("./run.sh") """
     def lineCheck(self,line):
+        if line.startswith("-gpuwattch_xml_file"):
+            return ""
         #print("entrou aqui")
         aux = line.split()
         #print(aux)
@@ -66,6 +68,10 @@ class GPGPU(SimulationTool):
                 line = aux[0]+ " "+str(inputValue)+".0:"+str(inputValue)+".0:"+str(inputValue)+".0:"+DRAMclock+"\n"
             elif param == "gpgpu_shader_core_pipeline" and line.startswith("-"+param):
                 line = aux[0]+ " "+ str(inputValue)+":32\n"
+            elif param =="power_simulation_enabled" and line.startswith("-"+param):
+                line = aux[0]+ " "+ str(inputValue)+"\n"
+                if self.geral[paramDict["power_simulation_enabled"]]:
+                    line = line+ "-gpuwattch_xml_file gpuwattch_"+str(self.geral["model_name"]).lower()+".xml\n"
             elif line.startswith("-"+param):
                 line = aux[0]+ " "+ str(inputValue)+"\n"
         return line 
@@ -94,7 +100,7 @@ class GPGPU(SimulationTool):
         SrcFiles=os.listdir(SrcDir)
         #print(SrcFiles)
         for fname in SrcFiles:
-            if fname.endswith(".config"):
+            if fname.endswith(".config") or fname.endswith(".xml"):
                 continue
             else :
                 shutil.copy2(os.path.join(SrcDir,fname), DestDir)
@@ -119,9 +125,7 @@ class GPGPU(SimulationTool):
             #print(InputParams["app"])
         #print(Arg)
         return Arg
-
-    def parse(self):
-        
+    def configParser(self):
         dstFolder =os.path.join(SIM_OUT+"/"+ self.outFile+"/gpgpusim.config")
         print(dstFolder)           
         WF=open(dstFolder, 'w')
@@ -130,10 +134,50 @@ class GPGPU(SimulationTool):
         with open(RF, 'r') as f:
             for line in f:
                 #print(line)
-                modifyLine=self.lineCheck(line)
-                WF.write(modifyLine)
+                try:
+                    modifyLine=self.lineCheck(line)
+                    WF.write(modifyLine)
+                except:
+                    WF.write(line)
         
-        self.copyFiles(self.gpuInputFolder, self.outFile) 
+        self.copyFiles(self.gpuInputFolder, self.outFile)
+
+    def xmlParser(self):
+        if self.geral["gpuwattch"]:
+            dstFile =os.path.join(SIM_OUT+"/"+ self.outFile+"/gpuwattch_"+str(self.geral["model_name"]).lower()+".xml")
+            #print(dstFile)
+            origFile=os.path.join(dir_path+"/gpuwattch.xml")
+
+            mytree = ET.parse(origFile)
+            myroot = mytree.getroot()
+            for param in myroot[0].iter("param"):
+                paramAttrib= param.attrib 
+                if paramAttrib["name"] == "number_of_cores":
+                    paramAttrib["value"]= str(self.geral["n_SM"])
+                elif paramAttrib["name"] == "target_core_clockrate" or paramAttrib["name"] == "clock_rate" :
+                    paramAttrib["value"]= str(self.geral["clock_rate"])
+                elif paramAttrib["name"] == "core_tech_node" or paramAttrib["name"] == "mem_tech_node" : 
+                    paramAttrib["value"]= str(self.geral["power"]["technology_node"])
+            mytree.write(dstFile)
+                
+
+
+
+
+            
+
+
+
+
+        #RF=os.path.join(CONFIGPATH+self.gpuInputFolder+"/*.xml")
+        #print("entrou no xml parser")
+        #print(RF)
+
+
+
+    def parse(self):
+        self.configParser()
+        self.xmlParser()
     #def parse():
         
     def execute(self):

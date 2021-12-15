@@ -4,7 +4,8 @@
 	"gpgpu_shader_cta":"blocks/SM",
 	"gpgpu_shader_registers":"registers",
 	"gpgpu_shmem_size":"shmem_size",
-	"gpgpu_shader_core_pipeline":"threads/SM"
+	"gpgpu_shader_core_pipeline":"threads/SM",
+	"power_simulation_enabled":"gpuwattch"
 	
 
 

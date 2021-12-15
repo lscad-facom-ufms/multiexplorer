@@ -8,13 +8,14 @@
 	},
 	"General_Modeling":
 	{
-		"model_name":"GTX480",
+		"model_name":"RTX2060",
 		"clock_rate": 700,
 		"n_SM": 1,
 		"shmem_size":8192,
 		"registers":4096,
 		"blocks/SM":2,
-		"threads/SM":512,		
+		"threads/SM":512,
+		"gpuwattch": 0, 		
 		
 		"power":
 		{
