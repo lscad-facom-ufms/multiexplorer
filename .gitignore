@@ -26,4 +26,10 @@ out.json
 /MultiExplorer/src/PerformanceExploration/Multi2Sim/.vscode/launch.json
 MultiExplorer/support/sniper/benchmarks/parsec/parsec-2.1/log/
 
+/sniper-7.4-pin2/
+/sniper-7.4/
+sniper-benchmarks.tbz
+sniper-latest.tgz
+
 \.idea/
+

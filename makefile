@@ -8,10 +8,11 @@ ifneq ($(shell id -u), 0)
 	exit 1
 endif
 	apt update
-	apt install gcc-multilib
-	apt install g++-multilib
-	apt install python2
-	apt install python-pip
+	apt install -y python2
+	ln -s /usr/bin/python2 /usr/bin/python
+	apt install -y wget
+	wget https://bootstrap.pypa.io/pip/2.7/get-pip.py
+	python2 get-pip.py
 	pip2 install -r requirements.txt
 
 config:
@@ -71,3 +72,19 @@ ifeq ($(missing_deps), 1)
 else
 	@echo "All dependencies seems fine."
 endif
+
+#sniper:
+#	make
+#	wget wget http://snipersim.org/packages/sniper-benchmarks.tbz
+#	tar xvf sniper-benchmarks.tbz
+#	/multiexplorer/sniper-7.4/benchmarks
+#	apt install -y gfortran
+#	apt install -y m4
+#	apt install -y xsltproc
+#	apt install -y pkg-config
+#	apt install -y gettext
+#	apt install -y libx11-dev
+#	apt install -y libxext-dev
+#	apt install -y libxt-dev
+#	apt install -y libxmu-dev
+#	apt install -y libxi-dev
