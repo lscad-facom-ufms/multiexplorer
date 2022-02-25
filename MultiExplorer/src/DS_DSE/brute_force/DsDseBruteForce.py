@@ -4,7 +4,8 @@ import csv
 sys.path.append(os.path.dirname(os.path.realpath(__file__))+'/../')
 from InOut import InOut
 from DbSelector import DbSelector
-from PerformancePredictor import PerformancePredictor
+#from PerformancePredictor import PerformancePredictor
+from PerformanceGPUPredictor import PerformanceGPUPredictor
 
 class DsDseBruteForce(object):
 
@@ -13,11 +14,13 @@ class DsDseBruteForce(object):
     def __init__(self, projectFolder, pathCSV=sys.argv[1], path_db=DbSelector(inputName=sys.argv[1]).select_db()):
         
         self.inputDict= InOut(projectFolder).makeInputDict()
+        #print(self.inputDict)
         self.db = json.loads(open(path_db).read())
         self.pathCSV=projectFolder+"/outputBruteForce.csv"
         self.first_solution = [] #plataformas que obedecem a restricao de area 
         self.final_solution = [] #plataformas que obedecem a restrição de area e tem performance maxima
-        
+        self.projectFolder = projectFolder
+        self.multiexplorerInputDict= InOut(projectFolder).getInputFile()
         
         self.combinations()        
         self.printCSV()
@@ -37,8 +40,9 @@ class DsDseBruteForce(object):
             for amount_ip_core in range(self.inputDict["parameters"]["amount_ip_cores"][0], self.inputDict["parameters"]["amount_ip_cores"][1]+1):
                 for ip_core in self.db["ipcores"]:
                     parameters= self.calculateParameters(amount_orig_core, amount_ip_core, ip_core)
-                    
+                    #print(parameters)
                     processor = ip_core["id"]
+                    ipCoreName= processor.split("_")[0]
                     #processor = ""
                     #if ip_core["id"] == "ARM_A53_22nm":
                     #    processor = "arm53"
@@ -51,8 +55,13 @@ class DsDseBruteForce(object):
                     #if ip_core["id"] == "Smithfield_90nm":
                     #    processor = "smithfield"
 
-                    performancePred = PerformancePredictor(processor, amount_ip_core, amount_orig_core).getResults()
-                    _dict={"amount_orig_core":amount_orig_core, "amount_ip_core":amount_ip_core, "ip_core":ip_core,"powerDensity":parameters[0],"area":parameters[1], "performance":parameters[2], "performancePred":performancePred}
+                    performancePred = PerformanceGPUPredictor(
+                        ipCoreName,
+                        amount_ip_core,
+                        amount_orig_core,                        
+                        self.multiexplorerInputDict
+                    ).getResults()
+                    _dict={"amount_orig_core":amount_orig_core, "amount_ip_core":amount_ip_core, "ip_core":ip_core,"powerDensity":str(round(float(parameters[0]), 3)),"area":parameters[1], "performance":parameters[2], "performancePred":performancePred} 
                     self.first_solution.append(_dict)    
                     if is_viable(parameters):
                         self.final_solution.append(_dict)
@@ -72,10 +81,11 @@ class DsDseBruteForce(object):
         csvFile= open(self.pathCSV, "w")
         csvWriter= csv.writer(csvFile)
 
-        header = 'total_area', 'total_performance', 'performance_pred','total_power_density','id_ip_core', 'amount_ip_cores','performance ip', 'power ip', 'area_ip','amount_original_cores','performance_orig', 'power_orig', 'area orig'
+       # header = 'total_area', 'total_performance', 'performance_pred','total_power_density','id_ip_core', 'amount_ip_cores','performance ip', 'power ip', 'area_ip','amount_original_cores','performance_orig', 'power_orig', 'area orig'
+        header = 'total_area', 'total_performance',"performancePred",'total_power_density','id_ip_core', 'amount_ip_cores','performance ip', 'power ip', 'area_ip','amount_original_cores','performance_orig', 'power_orig', 'area orig'
         csvWriter.writerow(header)
 
-        for element in self.first_solution:
+        for element in self.final_solution:
            #_dict={"amount_orig_core":amount_orig_core, "amount_ip_core":amount_ip_core, "ip_core":ip_core,"powerDensity":parameters[0],"area":parameters[1], "performance":parameters[2]}
 
             _list=[]

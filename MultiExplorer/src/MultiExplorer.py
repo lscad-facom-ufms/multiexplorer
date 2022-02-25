@@ -54,6 +54,7 @@ class MultiExplorer(object):
         # Opens the jSON file
         with open(inFile) as data_file:
             self.inJson = json.load(data_file)
+        #print(inFile)
 
         self.dirListB4 = os.listdir(os.getcwd())
         
@@ -64,13 +65,15 @@ class MultiExplorer(object):
     def controller(self):
         self.findOldSimul()
         if self.folderOldSimul == None:
+            #print("EntrouAqui***************")
             self.callPerformanceSim()
             self.stepByStep()
-            #self.physicalSim()
+            if not self.inJson['Preferences']['sim_tool'] =="gpgpusim":
+                self.physicalSim()
 
-        #self.putIntoDir()
-        #self.dseBruteForce()
-        #self.dse()
+        self.putIntoDir()
+        self.dseBruteForce()
+        self.dse()
         #self.performanceReport()        
         #if self.inJson['Preferences']['DSE']:
         #    self.suggestedArchitecture()
@@ -81,7 +84,7 @@ class MultiExplorer(object):
         findFolderOldSimul = False
         
         for pasta in os.listdir(root):
-            if pasta == ".gitignore": break 
+            if pasta == ".gitignore": continue 
             #print "Folder: "+pasta 
             for file in os.listdir(root+ "/" +pasta):
                 if file.lower().endswith(".json"):
@@ -146,26 +149,37 @@ class MultiExplorer(object):
         
        
         #print "Directory name:", projectFolder
-        os.system('mkdir ' + projectFolder)
+        #os.system('mkdir ' + projectFolder)
 
         if self.folderOldSimul == None:
-            currDirList = glob(os.getcwd() + '/*')
-            for c in currDirList:
-                if not c.split('/')[-1] in self.dirListB4 and c.split('/')[-1] != projectFolder:
-                    os.rename(c, os.getcwd() + '/' + projectFolder + '/' + c.split('/')[-1])
+            if self.inJson['Preferences']['sim_tool'] =="gpgpusim":
+                for f in os.listdir("rundir/"):
+                    if f.startswith(self.inJson['Preferences']['project_name']):
+                        projectFolder=os.path.join("rundir/", f)
+                        break
+            else:
+                os.system('mkdir ' + projectFolder)
+                currDirList = glob(os.getcwd() + '/*')
+                for c in currDirList:
+                    if not c.split('/')[-1] in self.dirListB4 and c.split('/')[-1] != projectFolder:
+                        os.rename(c, os.getcwd() + '/' + projectFolder + '/' + c.split('/')[-1])
+                shutil.copy(self.inFile, os.getcwd() + '/' + projectFolder)
         else:
-            listFilesAllowed = ['MCPATPhysicalResults.txt', 'simplePerformanceValue', 'sim.out','performanceReport.txt', 'SniperSmithfieldBarnes5_mcpatInput.xml']
+            os.system('mkdir ' + projectFolder)
+            listFilesAllowed = ['MCPATPhysicalResults.txt', 'simplePerformanceValue', 'sim.out','performanceReport.txt', 'SniperSmithfieldBarnes5_mcpatInput.xml','output']
             for file in os.listdir(self.folderOldSimul):
-                if file in listFilesAllowed:
+                if file == "output" in listFilesAllowed:
+                    shutil.copytree(self.folderOldSimul+"/"+file,os.getcwd() + '/' + projectFolder+'/'+file)
+                elif file in listFilesAllowed or file.endswith(".icnt") or file.endswith(".config") or file.endswith(".xml") :
                     shutil.copy(self.folderOldSimul+"/"+file, os.getcwd() + '/' + projectFolder)
-
-        shutil.copy(self.inFile, os.getcwd() + '/' + projectFolder)
+            shutil.copy(self.inFile, os.getcwd() + '/' + projectFolder)
+        
 
     def dse(self):
         if self.inJson['Preferences']['DSE']:
             Nsga2Main(projectFolder)
             print("DSE NSGA2: OK") 
-            self.suggestedArchitecture()
+            #self.suggestedArchitecture()
 
     def dseBruteForce(self):
         if self.inJson['Preferences']['DSE']:

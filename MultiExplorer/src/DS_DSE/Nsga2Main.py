@@ -18,7 +18,7 @@ class Nsga2Main(object):
         #print "projectFolderNSGA2MAIN:" + projectFolder
         selector= DbSelector(inputName=sys.argv[1])
         self.bd=json.loads(open(selector.select_db()).read())
-        dse_definitions = Definitions()
+        dse_definitions = Definitions(projectFolder)
         plotter = Plotter(dse_definitions)
 
         #problem = DS_DSE(dse_definitions)

@@ -13,6 +13,8 @@ from JsonToCSV import JsonToCSV
 from DbSelector import DbSelector
 
 from PerformancePredictor import PerformancePredictor
+from PerformanceGPUPredictor import PerformanceGPUPredictor
+ 
 
 class InOut(object):
     """ This class makes the interface between user entry and input of nsga, and also, makes de output of algorithm nsga.
@@ -30,8 +32,21 @@ class InOut(object):
         self.inputDict = {}
 
         self.selector= DbSelector(self.inputName)
-        
+        try:
+            for f in os.listdir(str(projectFolder)):
+                if f.endswith(".json") and not f.startswith("out"):
+                    fpath= os.path.join(str(projectFolder), f)
 
+                    with open(fpath) as file:
+                        self.inputFile=json.load(file)
+                    
+                    #print(self.inputFile)
+        except: 
+            print("Json file not found")
+
+        
+    def getInputFile(self):
+        return self.inputFile
     #método que imprime em um json e em uma planilha todos os indivíduos gerados no nsga
     def printResults(self, population):
         num = 0
@@ -59,7 +74,8 @@ class InOut(object):
         self.objDict[num]["Results"]["total_area"]= individual.features[0]*individual.features[1]+individual.features[4]*individual.features[5]["area"]
         self.objDict[num]["Results"]["total_performance"]= (individual.features[3]*individual.features[0]+individual.features[5]["perf"]*individual.features[4])
         
-	processor = individual.features[5]["id"]
+        processor = individual.features[5]["id"]
+        ipCoreName = processor.split("_")[0]
         #processor = ""
         #if individual.features[5]["id"] == "ARM_A53_22nm":
         #    processor = "arm53"
@@ -75,7 +91,7 @@ class InOut(object):
 
         # processor, amountIpCore, amountOriginalCore
         #PerformancePredictor(individual.features[5]["id"], individual.features[4], individual.features[0])
-        self.objDict[num]["Results"]["performance_pred"] = PerformancePredictor(processor, individual.features[4], individual.features[0]).getResults()
+        self.objDict[num]["Results"]["performance_pred"] = PerformanceGPUPredictor(ipCoreName,individual.features[4],individual.features[0],self.inputFile ).getResults()
         
 
 
@@ -91,6 +107,7 @@ class InOut(object):
     #peak dynamic
     #core amount
     def readInputFromMcpat(self):
+
         mcpatDict = {}
         contArea = 0
         contPeakDynamic = 0
@@ -166,6 +183,20 @@ class InOut(object):
 
         #return mcpatDict
 
+    def readPhysicalParamsFromDB(self):
+        physicalDict = {}
+        try:                   
+            physicalDict["amount_original_cores"] = self.inputFile["General_Modeling"]["n_SM"]
+        except:
+            physicalDict["amount_original_cores"] = self.inputFile["General_Modeling"]["total_cores"]
+            #print(self.inputFile)
+
+        physicalDict["area_orig"]= self.selector.get_power_area_in_db()[1] 
+        physicalDict["power_orig"]=self.selector.get_power_area_in_db()[0]
+        
+        return physicalDict
+
+
     def readInputFromPerformanceSim(self):
         
         sniperDict = {}
@@ -213,7 +244,7 @@ class InOut(object):
             parameters["power_orig"] = [mcpat["power_orig"], mcpat["power_orig"]]
             parameters["performance_orig"] = [performanceSim["performance_orig"], performanceSim["performance_orig"]]
             parameters["amount_ip_cores"] = [int(mcpat["amount_original_cores"])/2, int(mcpat["amount_original_cores"])*2]
-
+            
             restriction["total_area"] = float(mcpat["area_orig"])*float(mcpat["amount_original_cores"])
             restriction["power_density"] = float(mcpat["power_orig"])/float(mcpat["area_orig"])  #para o força bruta
 
@@ -226,7 +257,7 @@ class InOut(object):
             parameters = {}
             restriction = {}
 
-            mcpat = self.readInputFromMcpat()
+            mcpat = self.readPhysicalParamsFromDB()
             performanceSim = self.readInputFromPerformanceSim()
 
             min_orig_core=descriptionInput["DSE"]["ExplorationSpace"]["original_cores_for_design"][0]
@@ -235,7 +266,9 @@ class InOut(object):
 
             parameters["area_orig"] = [mcpat["area_orig"], mcpat["area_orig"]]
             parameters["power_orig"] = [mcpat["power_orig"], mcpat["power_orig"]]
-
+            #print("Power orig")
+            #print(parameters["power_orig"])
+            
             parameters["performance_orig"] = [performanceSim["performance_orig"], performanceSim["performance_orig"]]
             min_ip_core=descriptionInput["DSE"]["ExplorationSpace"]["ip_cores_for_design"][0]
             max_ip_core=descriptionInput["DSE"]["ExplorationSpace"]["ip_cores_for_design"][1]

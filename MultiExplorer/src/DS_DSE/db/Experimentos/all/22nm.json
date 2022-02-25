@@ -2,6 +2,10 @@
 "ipcores":[
 	{"id":"ARM_A53_22nm", "pow": 1.39117, "area": 10.5853, "perf": 3125.68},
     	{"id":"ARM_A57_22nm", "pow": 1.59445, "area": 10.5023, "perf":4006.64},
-	{"id":"Atom_Silvermont_22nm", "pow": 0.830237, "area":8.19052, "perf":648.47}
+	{"id":"Atom_Silvermont_22nm", "pow": 0.830237, "area":8.19052, "perf":648.47},
+	{"id":"GTX480_22nm", "pow": 10.7, "area": 36.03, "perf": 32058.01104},
+    	{"id":"QV100_22nm", "pow": 7.766, "area": 17.4757, "perf":84453.84278},
+	{"id":"TITANV_22nm", "pow": 13.861, "area":19.121, "perf":209144.4504},
+	{"id":"Smithfield_22nm", "pow": 8.9, "area":111.12, "perf":4411}
 ] 
 }

@@ -3,7 +3,7 @@
 	{
 		"sim_tool":"sniper",
 		"project_name":"SniperSmithfieldBarnes13-vipsPARSEC",
-		"application":"parsec-vips",
+		"application":"splash2-cholesky",
 		"DSE":true
 	},
 	"General_Modeling":
@@ -178,7 +178,7 @@
 		"power":
 		{
 			"vdd":"1.2",
-			"technology_node":"90",
+			"technology_node":"22",
 			"temperature": "330"
 		}
 	},
@@ -191,9 +191,9 @@
 		},
 		"Constraints":
 		{
-			"maximum_powerDensity":0.340433,
-			"maximum_area":225.2,
-			"technology":"32nm",
+			"maximum_powerDensity":0.57,
+			"maximum_area":157.32,
+			"technology":"22nm",
 			"benchmark":"Experimentos",
 			"application":"all"
 		}

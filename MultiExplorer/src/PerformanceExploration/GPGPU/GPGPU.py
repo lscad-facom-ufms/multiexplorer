@@ -39,6 +39,7 @@ class GPGPU(SimulationTool):
         self.app = self.config['Preferences']['application']
         self.geral = self.config['General_Modeling']
         self.outFile= self.createInputFolder(self.geral)
+       
         try: 
             gpuConfigFolders= [f for f in os.listdir(CONFIGPATH)]
             self.gpuInputFolder = [x for x in gpuConfigFolders if x.endswith(self.geral["model_name"])][0]
@@ -48,12 +49,6 @@ class GPGPU(SimulationTool):
         # read json file as object, and extracts the number of cores
         
         #config = eval(config)
-    
-    """ def enviromentConfig(self):
-        print("entrou aqui")
-        os.chdir(GPU_PATH)
-        print(os.getcwd())
-        os.system("./run.sh") """
     def lineCheck(self,line):
         if line.startswith("-gpuwattch_xml_file"):
             return ""
@@ -183,7 +178,8 @@ class GPGPU(SimulationTool):
     def execute(self):
         appArg= self.appArgs(self.app,self.appConfig )
         #print("./gpgpusim-new.sh Rundir " + self.outFile+" BFSOutput.txt BFSstderr.txt "+BENCHPATH+appArg)
-        os.system("./gpgpusim-new.sh "+self.config['Preferences']['project_name']+" " + self.outFile+" BFSOutput.txt BFSstderr.txt "+BENCHPATH+appArg)
+        os.system("./gpgpusim-new.sh "+self.config['Preferences']['project_name']+" " + self.outFile+" BFSOutput.txt BFSstderr.txt "+self.jsonFile+" "+BENCHPATH+appArg)
+
 
     def convertResults(self):
         print("Converte results")

@@ -31,7 +31,27 @@ class DbSelector(object):
             return perf
         except KeyError:
             print "The DSE constraints must have key\n'technology'= xnm\n'benchmark'=benchmark_name\n'application'=application_name"
+    def get_power_area_in_db(self):
+        databasePath=''
+        tech = self.input["General_Modeling"]["power"]["technology_node"] + "nm"
+        restrictions=self.input["DSE"]["Constraints"]
+        model_name = self.input["General_Modeling"]["model_name"].replace(" ", "_")
+        id_input = model_name + "_" + tech
+        
+        try:
+            bench = restrictions["benchmark"]
+            app= restrictions["application"]
+            #power=""
+            #area=""
 
+            list_itens_bd = json.loads(open(os.path.dirname(os.path.realpath(__file__))+'/db/'+bench+'/'+app+'/'+tech+'.json').read())
+            for item_bd in list_itens_bd["ipcores"]:
+                if item_bd["id"] == id_input:
+                    power = item_bd["pow"]
+                    area =item_bd["area"]
+            return power,area
+        except KeyError:
+            print "The DSE constraints must have key\n'technology'= xnm\n'benchmark'=benchmark_name\n'application'=application_name"
         
     #This method return a string with the full path of database choosen
     def select_db(self):

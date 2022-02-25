@@ -3,13 +3,18 @@ import math
 from nsga2 import seq
 from nsga2.problems.ProblemDefinitions import ProblemDefinitions
 from PerformancePredictor import PerformancePredictor
+from PerformanceGPUPredictor import PerformanceGPUPredictor
+from InOut import InOut
+
 
 class Definitions(ProblemDefinitions):
 
-    def __init__(self):
+    def __init__(self,projectFolder):
         self.n = 10
-	self.performancePreditor = PerformancePredictor("ARM_A53_22nm", "1", "1")
+        self.multiexplorerInputDict= InOut(projectFolder).getInputFile()
+	self.performancePreditor = 0
 	self.contador = 0
+    
 
     #para
     #features[0] é "amount_original_cores"
@@ -29,15 +34,31 @@ class Definitions(ProblemDefinitions):
             print "Exception: Individual with zero parameters" + str(individual.features)
             return total_power/2
 
+    def performanceCPU(self, individual):#performance com preditor
+        performancePred = 0
+        self.contador = self.contador + 1
+        if(self.contador%10000 == 0):
+            print("SVR Counter Performance: { " + str(self.contador) + " }\n")
+        
+
+        
+        self.performancePreditor.setProcessor(individual.features[5]["id"])
+        performancePred = float(self.performancePreditor.getResultsL(individual.features[4], individual.features[0]))
+        performancePred = int(performancePred)
+        return performancePred
+
     def performance(self, individual):#performance com preditor
-	performancePred = 0
-	self.contador = self.contador + 1
-	if(self.contador%10000 == 0):
-		print("SVR Counter Performance: { " + str(self.contador) + " }\n")
-	self.performancePreditor.setProcessor(individual.features[5]["id"])
-	performancePred = float(self.performancePreditor.getResultsL(individual.features[4], individual.features[0]))
-	performancePred = int(performancePred)
-	return performancePred
+        performancePred = 0
+        self.contador = self.contador + 1
+        if(self.contador%10000 == 0):
+            print("Decision Tree Counter Performance: { " + str(self.contador) + " }\n")
+        ipCoreName = individual.features[5]["id"].split("_")[0]
+        #print(individual.features[5]["id"])
+        
+        
+        performancePred = float(PerformanceGPUPredictor(ipCoreName,individual.features[4],individual.features[0],self.multiexplorerInputDict ).getResults())
+        performancePred = int(performancePred)
+        return performancePred
 
     def performanceOld(self, individual):#performance ingenua
 	self.contador = self.contador + 1

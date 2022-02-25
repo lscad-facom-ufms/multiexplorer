@@ -4,7 +4,7 @@
 		"sim_tool":"gpgpusim",
 		"project_name":"GTX480_clock",
 		"application":"clock",
-		"DSE":true
+		"DSE":false
 	},
 	"General_Modeling":
 	{
@@ -15,12 +15,12 @@
 		"registers":32768,
 		"blocks/SM":8,
 		"threads/SM":1536,
-		"gpuwattch": 1, 		
+		"gpuwattch": 0, 		
 		
 		"power":
 		{
 			"vdd":"1.2",
-			"technology_node":"45",
+			"technology_node":"32",
 			"temperature": "330"
 		}
 	},
@@ -33,11 +33,11 @@
 		},
 		"Constraints":
 		{
-			"maximum_powerDensity":0.57,
-			"maximum_area":157.32,
+			"maximum_powerDensity":0.340433,
+			"maximum_area":225.2,
 			"technology":"22nm",
 			"benchmark":"Experimentos",
-			"application":"clock"
+			"application":"all"
 		}
 	}
 }

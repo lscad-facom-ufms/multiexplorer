@@ -6,11 +6,11 @@ CURRENTDATE=$(date +"%Y-%m-%d-%S-%X")
 #RANDOM=$(date +"%s")
 
 if [ "$1" = "-h" ]; then
-    echo "$0 <rundir> <configs_folder> <output_name> <error_log_name> <application> <inputs*>"
+    echo "$0 <rundir> <configs_folder> <output_name> <error_log_name><multiexplorer-input> <application> <inputs*>"
     exit
 fi
 
-if [ -z $1 ] || [ -z $2 ] || [ -z $3 ] || [ -z $4 ];
+if [ -z $1 ] || [ -z $2 ] || [ -z $3 ] || [ -z $4 ]||[ -z $5 ];
 then
     RUNDIR=$HOME/rundir
     CONFIGS_FOLDER=$HOME/gpgpu-sim_distribution/configs/tested-cfgs/SM2_GTX480
@@ -19,14 +19,17 @@ then
 else
     RUNDIR="rundir/$1-$CURRENTDATE-$((RANDOM % 100000))"
     CONFIGS_FOLDER=$2
-    BFSOUTUPUT=$4
-    BFSERROR=$5
+    BFSOUTUPUT=$3
+    BFSERROR=$4
+    JSONFILE=$5
     
 fi
 
 if [ ! -d $RUNDIR ]; then
     mkdir $RUNDIR
 fi
+
+cp $JSONFILE $RUNDIR
 
 cp -a $CONFIGS_FOLDER/* $RUNDIR
 #mv $JSONCONFIG  $RUNDIR
@@ -44,7 +47,7 @@ APPLICATION=""
 
 for arg in "$@"
 do
-    if [ $cnt -gt 4 ]; then
+    if [ $cnt -gt 5 ]; then
 	   if [ -z "$APPLICATION" ]; then
         APPLICATION="$PWD/../../$arg"
 	   else
@@ -68,6 +71,7 @@ echo "Input =$CONFIGS_FOLDER "
 echo "Used rundir=$RUNDIR"
 echo "Output is in $RUNDIR/$BFSOUTUPUT"
 echo "Error log is in $RUNDIR/$BFSERROR"
+echo "MultiExplorer input in $RUNDIR/$JSONFILE"
 echo ""
 
 #pwd

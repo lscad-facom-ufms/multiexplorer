@@ -1,0 +1,40 @@
+{
+	"dwt2d":{
+		"inst": 1608142,
+		"%TimeKernel": 0.0777
+	},
+	"asyncAPI":{
+		"inst": 6815744, 
+		"%TimeKernel": 0.0169
+	}, 
+	"backprop":{
+		"inst": 7962652, 
+		"%TimeKernel": 0.0648
+	}, 
+	"bfs":{
+		"inst": 3744447, 
+		"%TimeKernel": 0.28
+	},
+	"clock":{
+		"inst": 77888, 
+		"%TimeKernel": 0.6774
+	},
+	"hotspot":{
+		"inst": 3353828, 
+		"%TimeKernel": 0.1202
+	},
+	"needle":{
+		"inst": 94641, 
+		"%TimeKernel": 0.1263
+	},
+	"nn":{
+		"inst": 49553, 
+		"%TimeKernel": 0.0391
+	},
+	"vectorAdd":{
+		"inst": 774656, 
+		"%TimeKernel": 0.0309
+	}
+
+}
+

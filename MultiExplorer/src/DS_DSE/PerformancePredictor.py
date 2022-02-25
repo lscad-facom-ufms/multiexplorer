@@ -6,18 +6,12 @@ import os
 class PerformancePredictor(object):
     """Main Class"""
 
-    def __init__(self, processor, amountIpCore, amountOriginalCore):
+    def __init__(self, processor, amountCore, amountOriginalCore):
         dir_path = os.path.dirname(os.path.realpath(__file__))
         input_file = open (dir_path+"/predictors/"+'bdPredictor.json') #le o BD pelo primeira vez
         self.bd = json.load(input_file)
-        self.originalProcessor = "Smithfield_90nm"
         self.processor = processor
-        self.frequencyOriginal = 2.8
-        self.frequencyIP =  float(self.bd[str(processor)][0]["freq"])
-        self.cpi = 0.6
-        self.percent = 0.5
-        self.amountIpCore = amountIpCore
-        self.amountOriginalCore = amountOriginalCore
+        self.amountCore= amountCore
         #instaciou todas as variaveis com valores validos
         self.preditor = joblib.load(dir_path+"/predictors/"+'preditor.pkl')#carregou o preditor
         self.scalator = joblib.load(dir_path+"/predictors/"+'scaler.pkl')#carregou o escalador do conjunto de entrada

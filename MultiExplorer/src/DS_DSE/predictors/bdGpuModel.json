@@ -1,0 +1,54 @@
+{
+	"GTX480":
+	{
+		"sharedMem": 49152, 
+		"blocks": 8,
+		"regs": 32768, 
+		"threads": 1536,
+		"clockRate":700
+	},
+	"KEPLER":
+	{
+		"sharedMem": 49152, 
+		"blocks": 16,
+		"regs": 65536, 
+		"threads": 2048,
+		"clockRate":837
+	}, 
+	"TITANX":
+	{
+		"sharedMem": 98304, 
+		"blocks": 32,
+		"regs": 65536, 
+		"threads": 2048,
+		"clockRate":1417
+	}, 
+	"QV100":
+	{
+		"sharedMem": 98304, 
+		"blocks": 32,
+		"regs": 65536, 
+		"threads": 2048,
+		"clockRate":1132
+	}, 
+	"TITANV":
+	{
+		"sharedMem": 98304, 
+		"blocks": 32,
+		"regs": 65536, 
+		"threads": 2048,
+		"clockRate":1200
+	}, 
+	"RTX2060":
+	{
+		"sharedMem": 65536, 
+		"blocks": 32,
+		"regs": 65536, 
+		"threads": 1024,
+		"clockRate":1365
+	}
+
+
+
+}
+
