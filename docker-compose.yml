@@ -2,6 +2,8 @@
 services:
   multiexplorer:
     image: multiexplorer
+    stdin_open: true
+    tty: true
     build: .
     volumes:
       - .:/multiexplorer
