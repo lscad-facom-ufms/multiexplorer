@@ -1,5 +1,3 @@
-missing_deps := 0
-
 all: check config test
 
 install:
@@ -14,6 +12,7 @@ endif
 	wget https://bootstrap.pypa.io/pip/2.7/get-pip.py
 	python2 get-pip.py
 	pip2 install -r requirements.txt
+	apt install -y python-tk
 
 config:
 ifeq (,$(shell ls MultiExplorer/src/ | grep config.py))
@@ -61,3 +60,6 @@ else
 endif
 
 check:python2-check pip2-check lxml-check configparser-check scikit-check
+
+test:
+	python2 MultiExplorer/src/MultiExplorer.py input-examples/quark.json

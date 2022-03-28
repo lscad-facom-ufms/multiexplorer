@@ -9,8 +9,6 @@ ifeq (,$(shell ls -d */ | grep sniper))
 endif
 
 reqsniper:
-	apt install -y make
-	apt install -y git
 	apt install -y gcc-multilib
 	apt install -y g++-multilib
 	apt install -y zlib1g-dev
