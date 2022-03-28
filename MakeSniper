@@ -1,4 +1,4 @@
-all: getsniper getbenchmarks reqsniper reqbenchmarks
+all: getsniper reqsniper makesniper reqbenchmarks getbenchmarks
 
 getsniper:
 ifeq (,$(shell ls | grep sniper-latest.tgz))
@@ -20,11 +20,8 @@ makesniper:
 	make -C sniper-7.4/Makefile
 
 getbenchmarks:
-ifeq (,$(shell ls | grep sniper-benchmarks.tbz))
-	wget http://snipersim.org/packages/sniper-benchmarks.tbz
-endif
 ifeq (,$(shell ls `ls -dt */ | grep sniper | head -1` | grep benchmarks))
-	tar xvf sniper-benchmarks.tbz
+	tar -xvzf built_sniper_benchmarks.tar.gz
 	mv benchmarks `ls -dt */ | grep sniper | head -1`
 endif
 
@@ -39,19 +36,3 @@ reqbenchmarks:
 	apt install -y libxt-dev
 	apt install -y libxmu-dev
 	apt install -y libxi-dev
-
-#in case of trouble compiling the benchmarks: https://groups.google.com/g/snipersim/c/2yL2x6nNfVs/m/EmqQlVf6EwAJ
-fixbenchmarks:
-	sed -i 's/make -C cpu2006/#make -C cpu2006/' `ls -dt */ | grep sniper | head -1`/benchmarks/Makefile
-	sed -i 's/make -C npb/#make -C npb/' `ls -dt */ | grep sniper | head -1`/benchmarks/Makefile
-	sed -i 's/make -C local/#make -C local/' `ls -dt */ | grep sniper | head -1`/benchmarks/Makefile
-	sed -i 's/make -C cpu2006 clean/#make -C cpu2006 clean/' `ls -dt */ | grep sniper | head -1`/benchmarks/Makefile
-	sed -i 's/make -C npb clean/#make -C npb clean/' `ls -dt */ | grep sniper | head -1`/benchmarks/Makefile
-	sed -i 's/make -C local clean/#make -C local clean/' `ls -dt */ | grep sniper | head -1`/benchmarks/Makefile
-	sed -i 's/CXXFLAGS="${CXXFLAGS} ${HOOKS_CXXFLAGS}"/CXXFLAGS="-std=gnu++98 ${CXXFLAGS} ${HOOKS_CXXFLAGS}"/' `ls -dt */ | grep sniper | head -1`/benchmarks/parsec/parsec-2.1/config/gcc-sniper.bldconf
-	sed -i 's/HUGE/HUGE_VAL/g' `ls -dt */ | grep sniper | head -1`/benchmarks/parsec/parsec-2.1/pkgs/apps/ferret/src/src/lsh/LSH_query.c
-	sed -i 's/HUGE/HUGE_VAL/g' `ls -dt */ | grep sniper | head -1`/benchmarks/parsec/parsec-2.1/pkgs/apps/ferret/src/src/lsh/LSH_query_batch.c
-	sed -i 's/HUGE/HUGE_VAL/g' `ls -dt */ | grep sniper | head -1`/benchmarks/parsec/parsec-2.1/pkgs/apps/ferret/src/benchmark/ferret-parallel.c
-	sed -i 's/HUGE/HUGE_VAL/g' `ls -dt */ | grep sniper | head -1`/benchmarks/parsec/parsec-2.1/pkgs/apps/ferret/src/benchmark/ferret-serial.c
-makebenchmarks:
-	make -C sniper-7.4/benchmarks/makefile
