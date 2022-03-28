@@ -19,12 +19,6 @@ reqsniper:
 makesniper:
 	make -C sniper-7.4/Makefile
 
-getbenchmarks:
-ifeq (,$(shell ls `ls -dt */ | grep sniper | head -1` | grep benchmarks))
-	tar -xvzf built_sniper_benchmarks.tar.gz
-	mv benchmarks `ls -dt */ | grep sniper | head -1`
-endif
-
 reqbenchmarks:
 	apt install -y gfortran
 	apt install -y m4
@@ -36,3 +30,9 @@ reqbenchmarks:
 	apt install -y libxt-dev
 	apt install -y libxmu-dev
 	apt install -y libxi-dev
+
+getbenchmarks:
+ifeq (,$(shell ls `ls -dt */ | grep sniper | head -1` | grep benchmarks))
+    gdown https://drive.google.com/u/1/uc?id=1GiQGrqf2AhLcd1fX9bfhGLvXP78YsnD3
+	tar -xvzf built_sniper_benchmarks.tar.gz
+endif
