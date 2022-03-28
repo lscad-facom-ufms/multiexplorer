@@ -213,7 +213,7 @@ class McPAT(object):
         pass
 
     def execute(self, configs=None):
-        commandLine = os.path.dirname(os.path.realpath(__file__)) + '/../../../../support/mcpat/mcpat -infile ' + self.outputName
+        commandLine = os.path.dirname(os.path.realpath(__file__)) + '/../../../support/mcpat/mcpat -infile ' + self.outputName
         commandLine += ' -print_level 5 > MCPATPhysicalResults'
         commandLine += '.txt'
         print "*** McPAT ***"
