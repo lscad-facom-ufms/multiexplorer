@@ -1,0 +1,38 @@
+all: getsniper reqsniper makesniper reqbenchmarks getbenchmarks
+
+getsniper:
+ifeq (,$(shell ls | grep sniper-latest.tgz))
+	wget http://snipersim.org/download/3a763c96bd6ca36a/packages/sniper-latest.tgz
+endif
+ifeq (,$(shell ls -d */ | grep sniper))
+	tar zxvf sniper-latest.tgz
+endif
+
+reqsniper:
+	apt install -y gcc-multilib
+	apt install -y g++-multilib
+	apt install -y zlib1g-dev
+	apt install -y libbz2-dev
+	apt install -y libboost-dev
+	apt install -y libsqlite3-dev
+
+makesniper:
+	make -C sniper-7.4/Makefile
+
+reqbenchmarks:
+	apt install -y gfortran
+	apt install -y m4
+	apt install -y xsltproc
+	apt install -y pkg-config
+	apt install -y gettext
+	apt install -y libx11-dev
+	apt install -y libxext-dev
+	apt install -y libxt-dev
+	apt install -y libxmu-dev
+	apt install -y libxi-dev
+
+getbenchmarks:
+ifeq (,$(shell ls `ls -dt */ | grep sniper | head -1` | grep benchmarks))
+    gdown https://drive.google.com/u/1/uc?id=1GiQGrqf2AhLcd1fX9bfhGLvXP78YsnD3
+	tar -xvzf built_sniper_benchmarks.tar.gz
+endif

@@ -1,1 +1,1 @@
-PATH_SNIPER = '/path/to/sniper-7.4'
+PATH_SNIPER = '/multiexplorer/sniper-7.4'
