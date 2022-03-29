@@ -10,3 +10,4 @@ RUN apt install -y wget
 RUN apt install -y python-minimal
 RUN wget https://bootstrap.pypa.io/pip/2.7/get-pip.py
 RUN python2 get-pip.py
+RUN apt install -y python-tk

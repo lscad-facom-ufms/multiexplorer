@@ -5,7 +5,7 @@ ifeq (,$(shell ls | grep sniper-latest.tgz))
 	wget http://snipersim.org/download/3a763c96bd6ca36a/packages/sniper-latest.tgz
 endif
 ifeq (,$(shell ls -d */ | grep sniper))
-	tar zxvf sniper-latest.tgz
+	tar -zxvf sniper-latest.tgz
 endif
 
 reqsniper:
