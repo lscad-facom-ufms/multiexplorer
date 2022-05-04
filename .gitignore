@@ -33,5 +33,7 @@ sniper-benchmarks.tbz
 sniper-latest.tgz
 built_sniper_benchmarks.tar.gz
 
+get-pip.py
+
 \.idea/
 

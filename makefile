@@ -6,11 +6,15 @@ ifneq ($(shell id -u), 0)
 	exit 1
 endif
 	apt update
-	apt install -y python2
-	ln -s /usr/bin/python2 /usr/bin/python
+	apt install -y python2.7
+ifeq (,$(shell ls /usr/bin/ | grep python$))
+	ln -s /usr/bin/python2.7 /usr/bin/python
+endif
 	apt install -y wget
+ifeq (,$(shell ls | grep get-pip))
 	wget https://bootstrap.pypa.io/pip/2.7/get-pip.py
-	python2 get-pip.py
+endif
+	python get-pip.py
 	pip2 install -r requirements.txt
 	apt install -y python-tk
 
@@ -19,6 +23,11 @@ ifeq (,$(shell ls MultiExplorer/src/ | grep config.py))
 	cp MultiExplorer/src/config.example.py MultiExplorer/src/config.py
 else
 	@echo "MultiExplorer/src/config.py already found, make sure it's properly set."
+endif
+ifeq (,$(shell ls | grep .env))
+	touch .env
+else
+	@echo ".env already found, make sure it's properly set."
 endif
 
 test:
@@ -60,6 +69,3 @@ else
 endif
 
 check:python2-check pip2-check lxml-check configparser-check scikit-check
-
-test:
-	python2 MultiExplorer/src/MultiExplorer.py input-examples/quark.json

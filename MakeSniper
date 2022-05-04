@@ -17,7 +17,7 @@ reqsniper:
 	apt install -y libsqlite3-dev
 
 makesniper:
-	make -C sniper-7.4/Makefile
+	make -C sniper-7.4
 
 reqbenchmarks:
 	apt install -y gfortran
@@ -33,6 +33,6 @@ reqbenchmarks:
 
 getbenchmarks:
 ifeq (,$(shell ls `ls -dt */ | grep sniper | head -1` | grep benchmarks))
-    gdown https://drive.google.com/u/1/uc?id=1GiQGrqf2AhLcd1fX9bfhGLvXP78YsnD3
+	gdown https://drive.google.com/u/1/uc?id=1GiQGrqf2AhLcd1fX9bfhGLvXP78YsnD3
 	tar -xvzf built_sniper_benchmarks.tar.gz
 endif
