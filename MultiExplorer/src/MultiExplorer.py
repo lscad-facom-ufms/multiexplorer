@@ -1,45 +1,46 @@
-import sys
-import json
 import os
+from pprint import pprint
+import sys
+
+
+# # Import from any relative path
+# importPath = os.path.dirname(os.path.realpath(
+#     __file__)) + '/PerformanceExploration/Multi2Sim'
+# sys.path.insert(0, importPath)
+# importPath = os.path.dirname(os.path.realpath(
+#     __file__)) + '/PerformanceExploration/Sniper'
+# sys.path.insert(0, importPath)
+# importPath = os.path.dirname(os.path.realpath(
+#     __file__)) + '/PhysicalExploration/McPAT'
+# sys.path.insert(0, importPath)
+# importPath = os.path.dirname(os.path.realpath(
+#     __file__)) + '/PerformanceExploration/MPSoCBench'
+# sys.path.insert(0, importPath)
+# importPath = os.path.dirname(os.path.realpath(
+#     __file__)) + '/DS_DSE/nsga2/'
+# sys.path.insert(0, importPath)
+# importPath = os.path.dirname(os.path.realpath(
+#     __file__)) + '/DS_DSE/'
+# sys.path.insert(0, importPath)
+# importPath = os.path.dirname(os.path.realpath(
+#     __file__)) + '/DS_DSE/brute_force/'
+# sys.path.insert(0, importPath)
+
+
+import json
 import csv
 import re
-from glob import glob
-from datetime import datetime
-from pprint import pprint
 import shutil
 
-# Import from any relative path
-importPath = os.path.dirname(os.path.realpath(
-    __file__)) + '/PerformanceExploration/Multi2Sim'
-sys.path.insert(0, importPath)
-importPath = os.path.dirname(os.path.realpath(
-    __file__)) + '/PerformanceExploration/Sniper'
-sys.path.insert(0, importPath)
-importPath = os.path.dirname(os.path.realpath(
-    __file__)) + '/PhysicalExploration/McPAT'
-sys.path.insert(0, importPath)
-importPath = os.path.dirname(os.path.realpath(
-    __file__)) + '/PerformanceExploration/MPSoCBench'
-sys.path.insert(0, importPath)
-importPath = os.path.dirname(os.path.realpath(
-    __file__)) + '/DS_DSE/nsga2/'
-sys.path.insert(0, importPath)
-importPath = os.path.dirname(os.path.realpath(
-    __file__)) + '/DS_DSE/'
-sys.path.insert(0, importPath)
-importPath = os.path.dirname(os.path.realpath(
-    __file__)) + '/DS_DSE/brute_force/'
-sys.path.insert(0, importPath)
 
-from Multi2Sim import Multi2Sim
-from Sniper import Sniper
-from McPAT import McPAT
-from MPSoCBench import MPSoCBench
-
-import InOut
-from Nsga2Main import Nsga2Main
-
-from DsDseBruteForce import DsDseBruteForce
+from glob import glob
+from datetime import datetime
+from PerformanceExploration.Multi2Sim import Multi2Sim
+from PerformanceExploration.Sniper import Sniper
+from PhysicalExploration.McPAT import McPAT
+from PerformanceExploration.MPSoCBench import MPSoCBench
+from DS_DSE.Nsga2Main import Nsga2Main
+from DS_DSE.brute_force.DsDseBruteForce import DsDseBruteForce
 
 
 class MultiExplorer(object):
@@ -376,8 +377,9 @@ class MultiExplorer(object):
             newInputDict['Preferences']['DSE'] = 'false'
 
             newInputDict['General_Modeling'] = {}
-            newInputDict['General_Modeling']['total_cores'] = int(row[9]) + int(row[5]) # ORIG + IP
-            for i in range(0,int(row[9])):
+            
+            newInputDict['General_Modeling']['total_cores'] = int(row[8]) + int(row[4]) # ORIG + IP
+            for i in range(0,int(row[8])):
                 newInputDict['General_Modeling']['core'+str(i)] = {}
                 newInputDict['General_Modeling']['core'+str(i)]['global_frequency'] = 'DaOndeVem'
                 newInputDict['General_Modeling']['core'+str(i)]['frequency'] = 'DaOndeVem'
@@ -385,7 +387,7 @@ class MultiExplorer(object):
                 newInputDict['General_Modeling']['core'+str(i)]['logical_cpus'] = InJson['General_Modeling']['core']['logical_cpus']
                 newInputDict['General_Modeling']['core'+str(i)]['pipeline'] = {}
                 newInputDict['General_Modeling']['core'+str(i)]['pipeline'] = InJson['General_Modeling']['core']['pipeline']
-            for i in range(0,int(row[5])):
+            for i in range(0,int(row[4])):
                 newInputDict['General_Modeling']['core'+str(i)] = {}
                 newInputDict['General_Modeling']['core'+str(i)]['global_frequency'] = 'DaOndeVem'
                 newInputDict['General_Modeling']['core'+str(i)]['frequency'] = 'DaOndeVem'

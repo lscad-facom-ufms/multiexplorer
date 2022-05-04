@@ -3,8 +3,8 @@
 """Module with main parts of NSGA-II algorithm.
 Contains main loop"""
 
-from nsga2.NSGA2Utils import NSGA2Utils
-from nsga2.Population import Population
+from NSGA2Utils import NSGA2Utils
+from Population import Population
 
 class Evolution(object):
     

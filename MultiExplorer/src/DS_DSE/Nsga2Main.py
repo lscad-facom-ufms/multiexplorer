@@ -1,11 +1,14 @@
 # -*- coding: UTF-8 -*-
 
+import json
+import os
+import sys
+
+from DbSelector import DbSelector
+from Plotter import Plotter
 from nsga2.Evolution import Evolution
 from nsga2.problems.model_dse import DS_DSE
 from nsga2.problems.model_dse.Definitions import Definitions
-from Plotter import Plotter
-from DbSelector import DbSelector
-import sys, json, os
 
 sys.path.append(os.path.dirname(os.path.realpath(__file__))+'/../')
 
