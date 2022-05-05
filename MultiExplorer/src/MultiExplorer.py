@@ -1,5 +1,4 @@
 import os
-from pprint import pprint
 import sys
 
 
@@ -35,10 +34,10 @@ import shutil
 
 from glob import glob
 from datetime import datetime
-from PerformanceExploration.Multi2Sim import Multi2Sim
-from PerformanceExploration.Sniper import Sniper
-from PhysicalExploration.McPAT import McPAT
-from PerformanceExploration.MPSoCBench import MPSoCBench
+from PerformanceExploration.Multi2Sim.Multi2Sim import Multi2Sim
+from PerformanceExploration.Sniper.Sniper import Sniper
+from PhysicalExploration.McPAT.McPAT import McPAT
+from PerformanceExploration.MPSoCBench.MPSoCBench import MPSoCBench
 from DS_DSE.Nsga2Main import Nsga2Main
 from DS_DSE.brute_force.DsDseBruteForce import DsDseBruteForce
 
@@ -46,11 +45,11 @@ from DS_DSE.brute_force.DsDseBruteForce import DsDseBruteForce
 class MultiExplorer(object):
     """ Main Class for MultiExplorer Software"""
 
-    def __init__(self, inFile):
-        self.inFile = inFile
+    def __init__(self, in_file):
+        self.inFile = in_file
         self.simTool = None
         # Opens the jSON file
-        with open(inFile) as data_file:
+        with open(in_file) as data_file:
             self.inJson = json.load(data_file)
 
         self.dirListB4 = os.listdir(os.getcwd())
@@ -61,7 +60,7 @@ class MultiExplorer(object):
 
     def controller(self):
         self.findOldSimul()
-        if self.folderOldSimul == None:
+        if self.folderOldSimul is None:
             self.callPerformanceSim()
             self.stepByStep()
             self.physicalSim()
@@ -71,8 +70,7 @@ class MultiExplorer(object):
         self.dse()
         self.performanceReport()        
         if self.inJson['Preferences']['DSE']:
-            self.suggestedArchitecture()
-        
+            self.suggestedArchitecture()        
 
     def findOldSimul(self):
         root = os.getcwd() + "/rundir/" 
@@ -95,7 +93,6 @@ class MultiExplorer(object):
 
     def callPerformanceSim(self):
         def multi2sim():
-            path = importPath + '/PerformanceExploration/Multi2Sim/'
             self.simTool = Multi2Sim(
                 self.inFile, "paramMap.json", "PerformanceMap_new.json")
             pass
@@ -179,7 +176,7 @@ class MultiExplorer(object):
                     self.suggestedArchitectureForInput(sys.argv[1],row)
                     cont += 1
                 else:
-                    csvFile.close
+                    csvFile.close()
                     break
 
 
@@ -377,7 +374,7 @@ class MultiExplorer(object):
             newInputDict['Preferences']['DSE'] = 'false'
 
             newInputDict['General_Modeling'] = {}
-            
+
             newInputDict['General_Modeling']['total_cores'] = int(row[8]) + int(row[4]) # ORIG + IP
             for i in range(0,int(row[8])):
                 newInputDict['General_Modeling']['core'+str(i)] = {}
