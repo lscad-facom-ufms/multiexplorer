@@ -17,9 +17,6 @@ class ExecutionFlow(metaclass=ABCMeta):
                 hasattr(subclass, 'get_steps') and
                 callable(subclass.get_steps))
 
-    @abstractproperty
-    def instance(self): raise NotImplementedError
-
     @abstractmethod
     def get_title(self): raise NotImplementedError
 
