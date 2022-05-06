@@ -1,7 +1,8 @@
 from abc import ABCMeta, abstractmethod
 
 
-class ExecutionFlow(metaclass=ABCMeta):
+class ExecutionFlow:
+    __metaclass__ = ABCMeta
     """
     This is the interface used to extend MultiExplorer with a new execution flow.
 
