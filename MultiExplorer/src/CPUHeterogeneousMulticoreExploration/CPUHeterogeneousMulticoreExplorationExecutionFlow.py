@@ -1,3 +1,6 @@
+from CPUSimulationStep import CPUSimulationStep
+
+
 class CPUHeterogeneousMulticoreExplorationExecutionFlow(object):
     """
     This class controls an execution flow that performs a DSE process based on an initial
@@ -34,7 +37,15 @@ class CPUHeterogeneousMulticoreExplorationExecutionFlow(object):
     def __init__(self):
         self.steps = []
 
+        self.steps.append(CPUSimulationStep())
+
     @staticmethod
     def get_title(): return 'Heterogeneous Multicore'
 
     def get_steps(self): return self.steps
+
+    def get_inputs(self):
+        flow_inputs = []
+
+        for step in self.steps:
+            flow_inputs.append(step.get_inputs())
