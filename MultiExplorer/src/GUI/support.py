@@ -6,8 +6,6 @@
 #    Mar 30, 2022 09:06:02 AM -04  platform: Linux
 #    Mar 30, 2022 09:07:46 AM -04  platform: Linux
 
-import sys
-
 try:
     import Tkinter as tk
 except ImportError:

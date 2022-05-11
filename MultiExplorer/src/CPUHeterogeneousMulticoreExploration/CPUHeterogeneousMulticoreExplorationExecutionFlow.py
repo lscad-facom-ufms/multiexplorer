@@ -1,4 +1,5 @@
 from CPUSimulationStep import CPUSimulationStep
+from MultiExplorer.src.Infrastructure.ExecutionFlow import ExecutionFlow
 
 
 class CPUHeterogeneousMulticoreExplorationExecutionFlow(object):

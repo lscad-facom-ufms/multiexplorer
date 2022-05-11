@@ -1,4 +1,4 @@
-from MultiExplorer.src.Infrastructure.Input import Input, InputType
+from MultiExplorer.src.Infrastructure.Input import Input, InputType, InputGroup
 from SniperSimulatorAdapter import SniperSimulatorAdapter
 
 class CPUSimulationStep(object):
@@ -7,6 +7,10 @@ class CPUSimulationStep(object):
 
         The main role it plays is to communicate with a SimulatorAdapter, and manage its execution and results.
     """
+    inputs = {}
+
+    results = {}
+
     def __new__(cls):
         if not hasattr(cls, 'instance'):
             cls.instance = super(
@@ -21,19 +25,25 @@ class CPUSimulationStep(object):
 
         self.inputs = {}
 
-        self.add_input(Input({
+        self.add_input(InputGroup({
             'label': 'Preferences',
-            'type': InputType.group,
+            'inputs': [
+
+            ],
         }))
 
         self.add_input(Input({
             'label': 'General Modeling',
-            'type': InputType.group
+            'inputs': [
+
+            ],
         }))
 
         self.add_input(Input({
             'label': 'Design Space Exploration',
-            'type': InputType.group,
+            'inputs': [
+
+            ],
         }))
 
     @staticmethod

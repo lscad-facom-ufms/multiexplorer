@@ -1,13 +1,25 @@
+import collections
+
 from enum import Enum
+
+from MultiExplorer.src.Infrastructure.Validators import Validator
 
 
 class InputType(Enum):
     Input = 0
     Text = 1
+    Integer = 2
+    Float = 3
+
+    @staticmethod
+    def belongs(value):
+        return value in range(0,3)
 
 
 class Input:
     label = 'Label'
+
+    key = 'key'
 
     type = InputType.Input
 
@@ -16,14 +28,26 @@ class Input:
     validator = None
 
     def __init__(self, options):
+        if 'key' in options:
+            self.key = str(options['key'])
+
+            self.label = str(options['key']).capitalize()
+
         if 'label' in options:
-            self.label = options['label']
+            self.label = str(options['label'])
 
         if 'type' in options:
-            self.type = options['type']
+            if not InputType.belongs(int(options['type'])):
+                raise ValueError("Parameter 'type' must belong to the InputType enumeration.")
+
+            self.type = int(options['type'])
 
         if 'validator' in options:
-            self.type = options['type']
+            if not isinstance(options['validator'], Validator):
+                raise TypeError("Parameter 'validator' must implement the Validator interface.")
+
+            self.type = options['validator']
+
 
     def get_label(self):
         return self.label
@@ -43,6 +67,9 @@ class InputGroup:
     def __init__(self, options):
         if 'label' in options:
             self.label = options['label']
+
+        if 'inputs' in options:
+            self.inputs = options['inputs']
 
     def get_label(self):
         return self.label
