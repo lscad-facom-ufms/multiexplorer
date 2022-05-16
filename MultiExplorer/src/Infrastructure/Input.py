@@ -10,6 +10,7 @@ class InputType(Enum):
     Float = 3
     Bool = 4
     IntegerArray = 5
+    Bit = 6
 
     @staticmethod
     def belongs(value):

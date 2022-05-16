@@ -3,7 +3,7 @@ import os
 import sys
 
 from MultiExplorer.src.Infrastructure.FixedValues import Simulators, PredictedCores, SniperCorePipelineKinds, \
-    CachePolicies
+    CachePolicies, HashTypes, PerformanceModelTypes, Domains, Prefetchers, DramDirectoryTypes
 from MultiExplorer.src.Infrastructure.Input import Input, InputGroup, InputType
 from MultiExplorer.src.config import PATH_SNIPER, PATH_RUNDIR
 
@@ -226,11 +226,11 @@ class SniperSimulatorAdapter(object):
                                         "label": "Associativity",
                                         "key": "associativity",
                                         "allowed_values": {
+                                            1: 1,
+                                            2: 2,
+                                            4: 4,
                                             8: 8,
                                             16: 16,
-                                            32: 32,
-                                            64: 64,
-                                            128: 128,
                                         },
                                     }),
                                     Input({
@@ -400,6 +400,577 @@ class SniperSimulatorAdapter(object):
                                     }),
                                 ],
                             }),
+                            InputGroup({
+                                "label": "L1 iCache",
+                                "key": "li_icache-0",
+                                "inputs": [
+                                    Input({
+                                        "label": "Perfect?",
+                                        "key": "perfect",
+                                        "type": InputType.Bool,
+                                    }),
+                                    Input({
+                                        "label": "passthrough",
+                                        "key": "passthrough",
+                                        "type": InputType.Bool,
+                                    }),
+                                    Input({
+                                        "label": "cache_block_size",
+                                        "key": "cache_block_size",
+                                        "allowed_values": {
+                                            8: 8,
+                                            16: 16,
+                                            32: 32,
+                                            64: 64,
+                                            128: 128,
+                                        },
+                                    }),
+                                    Input({
+                                        "label": "cache_size",
+                                        "key": "cache_size",
+                                        "allowed_values": {
+                                            8: 8,
+                                            16: 16,
+                                            32: 32,
+                                            64: 64,
+                                            128: 128,
+                                        },
+                                    }),
+                                    Input({
+                                        "label": "associativity",
+                                        "key": "associativity",
+                                        "allowed_values": {
+                                            1: 1,
+                                            2: 2,
+                                            4: 4,
+                                            8: 8,
+                                            16: 16,
+                                        },
+                                    }),
+                                    Input({
+                                        "label": "ports",
+                                        "key": "ports",
+                                        "allowed_values": {
+                                            1: 1,
+                                            2: 2,
+                                            4: 4,
+                                            8: 8,
+                                            16: 16,
+                                        },
+                                    }),
+                                    Input({
+                                        "label": "address_hash",
+                                        "key": "address_hash",
+                                        "allowed_values": {
+                                            HashTypes.Mask: HashTypes.get_label(HashTypes.Mask),
+                                        },
+                                    }),
+                                    Input({
+                                        "label": "replacement_policy",
+                                        "key": "replacement_policy",
+                                        "allowed_values": {
+                                            CachePolicies.LRU: CachePolicies.get_label(CachePolicies.LRU),
+                                        },
+                                    }),
+                                    Input({
+                                        "label": "data_access_time",
+                                        "key": "data_access_time",
+                                        "type": "4",
+                                    }),
+                                    Input({
+                                        "label": "tags_access_time",
+                                        "key": "tags_access_time",
+                                        "type": "1",
+                                    }),
+                                    Input({
+                                        "label": "perf_model_type",
+                                        "key": "perf_model_type",
+                                        "allowed_values": PerformanceModelTypes.get_dict(),
+                                    }),
+                                    Input({
+                                        "label": "writethrough",
+                                        "key": "writethrough",
+                                        "type": InputType.Bit,
+                                    }),
+                                    Input({
+                                        "label": "writeback_time",
+                                        "key": "writeback_time",
+                                        "type": InputType.Integer,
+                                    }),
+                                    Input({
+                                        "label": "dvfs_domain",
+                                        "key": "dvfs_domain",
+                                        "allowed_values": Domains.get_dict(),
+                                    }),
+                                    Input({
+                                        "label": "shared_cores",
+                                        "key": "shared_cores",
+                                        "type": InputType.IntegerArray,
+                                    }),
+                                    Input({
+                                        "label": "prefetcher",
+                                        "key": "prefetcher",
+                                        "allowed_values": Prefetchers.get_dict(),
+                                    }),
+                                    Input({
+                                        "label": "next_level_read_bandwidth",
+                                        "key": "next_level_read_bandwidth",
+                                        "type": InputType.Integer,
+                                    }),
+                                ],
+                            }),
+                            InputGroup({
+                                "label": "L1 dCache",
+                                "key": "li_dcache-0",
+                                "inputs": [
+                                    Input({
+                                        "label": "Perfect?",
+                                        "key": "perfect",
+                                        "type": InputType.Bool,
+                                    }),
+                                    Input({
+                                        "label": "passthrough",
+                                        "key": "passthrough",
+                                        "type": InputType.Bool,
+                                    }),
+                                    Input({
+                                        "label": "cache_block_size",
+                                        "key": "cache_block_size",
+                                        "allowed_values": {
+                                            8: 8,
+                                            16: 16,
+                                            32: 32,
+                                            64: 64,
+                                            128: 128,
+                                        },
+                                    }),
+                                    Input({
+                                        "label": "cache_size",
+                                        "key": "cache_size",
+                                        "allowed_values": {
+                                            8: 8,
+                                            16: 16,
+                                            32: 32,
+                                            64: 64,
+                                            128: 128,
+                                        },
+                                    }),
+                                    Input({
+                                        "label": "associativity",
+                                        "key": "associativity",
+                                        "allowed_values": {
+                                            1: 1,
+                                            2: 2,
+                                            4: 4,
+                                            8: 8,
+                                            16: 16,
+                                        },
+                                    }),
+                                    Input({
+                                        "label": "ports",
+                                        "key": "ports",
+                                        "allowed_values": {
+                                            1: 1,
+                                            2: 2,
+                                            4: 4,
+                                            8: 8,
+                                            16: 16,
+                                        },
+                                    }),
+                                    Input({
+                                        "label": "address_hash",
+                                        "key": "address_hash",
+                                        "allowed_values": {
+                                            HashTypes.Mask: HashTypes.get_label(HashTypes.Mask),
+                                        },
+                                    }),
+                                    Input({
+                                        "label": "replacement_policy",
+                                        "key": "replacement_policy",
+                                        "allowed_values": {
+                                            CachePolicies.LRU: CachePolicies.get_label(CachePolicies.LRU),
+                                        },
+                                    }),
+                                    Input({
+                                        "label": "data_access_time",
+                                        "key": "data_access_time",
+                                        "type": "4",
+                                    }),
+                                    Input({
+                                        "label": "tags_access_time",
+                                        "key": "tags_access_time",
+                                        "type": "1",
+                                    }),
+                                    Input({
+                                        "label": "perf_model_type",
+                                        "key": "perf_model_type",
+                                        "allowed_values": PerformanceModelTypes.get_dict(),
+                                    }),
+                                    Input({
+                                        "label": "writethrough",
+                                        "key": "writethrough",
+                                        "type": InputType.Bit,
+                                    }),
+                                    Input({
+                                        "label": "writeback_time",
+                                        "key": "writeback_time",
+                                        "type": InputType.Integer,
+                                    }),
+                                    Input({
+                                        "label": "dvfs_domain",
+                                        "key": "dvfs_domain",
+                                        "allowed_values": Domains.get_dict(),
+                                    }),
+                                    Input({
+                                        "label": "shared_cores",
+                                        "key": "shared_cores",
+                                        "type": InputType.IntegerArray,
+                                    }),
+                                    Input({
+                                        "label": "prefetcher",
+                                        "key": "prefetcher",
+                                        "allowed_values": Prefetchers.get_dict(),
+                                    }),
+                                    Input({
+                                        "label": "next_level_read_bandwidth",
+                                        "key": "next_level_read_bandwidth",
+                                        "type": InputType.Integer,
+                                    }),
+                                ],
+                            }),
+                            InputGroup({
+                                "label": "L2 Cache",
+                                "key": "l2_cache-0",
+                                "inputs": [
+                                    Input({
+                                        "label": "Perfect?",
+                                        "key": "perfect",
+                                        "type": InputType.Bool,
+                                    }),
+                                    Input({
+                                        "label": "passthrough",
+                                        "key": "passthrough",
+                                        "type": InputType.Bool,
+                                    }),
+                                    Input({
+                                        "label": "cache_block_size",
+                                        "key": "cache_block_size",
+                                        "allowed_values": {
+                                            8: 8,
+                                            16: 16,
+                                            32: 32,
+                                            64: 64,
+                                            128: 128,
+                                        },
+                                    }),
+                                    Input({
+                                        "label": "cache_size",
+                                        "key": "cache_size",
+                                        "allowed_values": {
+                                            8: 8,
+                                            16: 16,
+                                            32: 32,
+                                            64: 64,
+                                            128: 128,
+                                        },
+                                    }),
+                                    Input({
+                                        "label": "associativity",
+                                        "key": "associativity",
+                                        "allowed_values": {
+                                            1: 1,
+                                            2: 2,
+                                            4: 4,
+                                            8: 8,
+                                            16: 16,
+                                        },
+                                    }),
+                                    Input({
+                                        "label": "ports",
+                                        "key": "ports",
+                                        "allowed_values": {
+                                            1: 1,
+                                            2: 2,
+                                            4: 4,
+                                            8: 8,
+                                            16: 16,
+                                        },
+                                    }),
+                                    Input({
+                                        "label": "address_hash",
+                                        "key": "address_hash",
+                                        "allowed_values": {
+                                            HashTypes.Mask: HashTypes.get_label(HashTypes.Mask),
+                                        },
+                                    }),
+                                    Input({
+                                        "label": "replacement_policy",
+                                        "key": "replacement_policy",
+                                        "allowed_values": {
+                                            CachePolicies.LRU: CachePolicies.get_label(CachePolicies.LRU),
+                                        },
+                                    }),
+                                    Input({
+                                        "label": "data_access_time",
+                                        "key": "data_access_time",
+                                        "type": "4",
+                                    }),
+                                    Input({
+                                        "label": "tags_access_time",
+                                        "key": "tags_access_time",
+                                        "type": "1",
+                                    }),
+                                    Input({
+                                        "label": "perf_model_type",
+                                        "key": "perf_model_type",
+                                        "allowed_values": PerformanceModelTypes.get_dict(),
+                                    }),
+                                    Input({
+                                        "label": "writethrough",
+                                        "key": "writethrough",
+                                        "type": InputType.Bit,
+                                    }),
+                                    Input({
+                                        "label": "writeback_time",
+                                        "key": "writeback_time",
+                                        "type": InputType.Integer,
+                                    }),
+                                    Input({
+                                        "label": "dvfs_domain",
+                                        "key": "dvfs_domain",
+                                        "allowed_values": Domains.get_dict(),
+                                    }),
+                                    Input({
+                                        "label": "shared_cores",
+                                        "key": "shared_cores",
+                                        "type": InputType.IntegerArray,
+                                    }),
+                                    Input({
+                                        "label": "prefetcher",
+                                        "key": "prefetcher",
+                                        "allowed_values": Prefetchers.get_dict(),
+                                    }),
+                                    Input({
+                                        "label": "next_level_read_bandwidth",
+                                        "key": "next_level_read_bandwidth",
+                                        "type": InputType.Integer,
+                                    }),
+                                ],
+                            }),
+                            InputGroup({
+                                "label": "L3 Cache",
+                                "key": "l3_cache-0",
+                                "inputs": [
+                                    Input({
+                                        "label": "Perfect?",
+                                        "key": "perfect",
+                                        "type": InputType.Bool,
+                                    }),
+                                    Input({
+                                        "label": "passthrough",
+                                        "key": "passthrough",
+                                        "type": InputType.Bool,
+                                    }),
+                                    Input({
+                                        "label": "cache_block_size",
+                                        "key": "cache_block_size",
+                                        "allowed_values": {
+                                            8: 8,
+                                            16: 16,
+                                            32: 32,
+                                            64: 64,
+                                            128: 128,
+                                        },
+                                    }),
+                                    Input({
+                                        "label": "cache_size",
+                                        "key": "cache_size",
+                                        "allowed_values": {
+                                            8: 8,
+                                            16: 16,
+                                            32: 32,
+                                            64: 64,
+                                            128: 128,
+                                        },
+                                    }),
+                                    Input({
+                                        "label": "associativity",
+                                        "key": "associativity",
+                                        "allowed_values": {
+                                            1: 1,
+                                            2: 2,
+                                            4: 4,
+                                            8: 8,
+                                            16: 16,
+                                        },
+                                    }),
+                                    Input({
+                                        "label": "ports",
+                                        "key": "ports",
+                                        "allowed_values": {
+                                            1: 1,
+                                            2: 2,
+                                            4: 4,
+                                            8: 8,
+                                            16: 16,
+                                        },
+                                    }),
+                                    Input({
+                                        "label": "address_hash",
+                                        "key": "address_hash",
+                                        "allowed_values": {
+                                            HashTypes.Mask: HashTypes.get_label(HashTypes.Mask),
+                                        },
+                                    }),
+                                    Input({
+                                        "label": "replacement_policy",
+                                        "key": "replacement_policy",
+                                        "allowed_values": {
+                                            CachePolicies.LRU: CachePolicies.get_label(CachePolicies.LRU),
+                                        },
+                                    }),
+                                    Input({
+                                        "label": "data_access_time",
+                                        "key": "data_access_time",
+                                        "type": "4",
+                                    }),
+                                    Input({
+                                        "label": "tags_access_time",
+                                        "key": "tags_access_time",
+                                        "type": "1",
+                                    }),
+                                    Input({
+                                        "label": "perf_model_type",
+                                        "key": "perf_model_type",
+                                        "allowed_values": PerformanceModelTypes.get_dict(),
+                                    }),
+                                    Input({
+                                        "label": "writethrough",
+                                        "key": "writethrough",
+                                        "type": InputType.Bit,
+                                    }),
+                                    Input({
+                                        "label": "writeback_time",
+                                        "key": "writeback_time",
+                                        "type": InputType.Integer,
+                                    }),
+                                    Input({
+                                        "label": "dvfs_domain",
+                                        "key": "dvfs_domain",
+                                        "allowed_values": Domains.get_dict(),
+                                    }),
+                                    Input({
+                                        "label": "shared_cores",
+                                        "key": "shared_cores",
+                                        "type": InputType.IntegerArray,
+                                    }),
+                                    Input({
+                                        "label": "prefetcher",
+                                        "key": "prefetcher",
+                                        "allowed_values": Prefetchers.get_dict(),
+                                    }),
+                                    Input({
+                                        "label": "next_level_read_bandwidth",
+                                        "key": "next_level_read_bandwidth",
+                                        "type": InputType.Integer,
+                                    }),
+                                ],
+                            }),
+                            InputGroup({
+                                "label": "DRAM",
+                                "key": "dram",
+                                "inputs": [
+                                    InputGroup({
+                                        "label": "DRAM Directory",
+                                        "key": "dram_directory",
+                                        "inputs": [
+                                            Input({
+                                                "label": "Total Number of Entries",
+                                                "key": "total_entries",
+                                                "type": InputType.Integer,
+                                            }),
+                                            Input({
+                                                "label": "Associativity",
+                                                "key": "associativity",
+                                                "allowed_values": {
+                                                    1: 1,
+                                                    2: 2,
+                                                    4: 4,
+                                                    8: 8,
+                                                    16: 16,
+                                                },
+                                            }),
+                                            Input({
+                                                "label": "Total Number of Entries",
+                                                "key": "total_entries",
+                                                "allowed_values": DramDirectoryTypes.get_dict(),
+                                            }),
+                                        ]
+                                    }),
+                                    Input({
+                                        "label": "Number of Controllers",
+                                        "key": "num_controllers",
+                                        "type": InputType.Integer,
+                                    }),
+                                    Input({
+                                        "label": "controllers_interleaving",
+                                        "key": "controllers_interleaving",
+                                        "type": InputType.Integer,
+                                    }),
+                                    Input({
+                                        "label": "latency",
+                                        "key": "latency",
+                                        "type": InputType.Integer,
+                                    }),
+                                    Input({
+                                        "label": "block_size",
+                                        "key": "block_size",
+                                        "allowed_values": {
+                                            256: 256,
+                                            512: 512,
+                                            1024: 1024,
+                                            2048: 2048,
+                                        },
+                                    }),
+                                    Input({
+                                        "label": "per_controller_bandwidth",
+                                        "key": "per_controller_bandwidth",
+                                        "type": InputType.Float,
+                                    }),
+                                    Input({
+                                        "label": "chips_per_dimm",
+                                        "key": "chips_per_dimm",
+                                        "allowed_values": {
+                                            4: 4,
+                                            8: 8,
+                                            16: 16,
+                                        },
+                                    }),
+                                    Input({
+                                        "label": "dimms_per_controller",
+                                        "key": "dimms_per_controller",
+                                        "allowed_values": {
+                                            4: 4,
+                                            8: 8,
+                                            16: 16,
+                                        },
+                                    }),
+                                ],
+                            }),
+                        ],
+                    }),
+                    InputGroup({
+                        "label": "Network",
+                        "key": "network",
+                        "inputs": [
+
+                        ],
+                    }),
+                    InputGroup({
+                        "label": "Power",
+                        "key": "power",
+                        "inputs": [
+
                         ],
                     }),
                 ],
