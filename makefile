@@ -17,6 +17,7 @@ endif
 	python get-pip.py
 	pip2 install -r requirements.txt
 	apt install -y python-tk
+	make -f MakeSniper
 
 config:
 ifeq (,$(shell ls MultiExplorer/src/ | grep config.py))

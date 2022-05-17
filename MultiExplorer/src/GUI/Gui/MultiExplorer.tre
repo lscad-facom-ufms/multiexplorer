@@ -1,0 +1,6 @@
+PAGE
+    Toplevel: MultiExplorer
+        Labelframe: Labelframe1  locked
+            Button: Button1  locked
+            TCombobox: TCombobox1  locked
+
