@@ -1,5 +1,28 @@
 from abc import ABCMeta, abstractmethod
 
+from MultiExplorer.src.CPUHeterogeneousMulticoreExploration.CPUHeterogeneousMulticoreExplorationExecutionFlow import \
+    CPUHeterogeneousMulticoreExplorationExecutionFlow
+
+
+class ExecutionFlowRegistry(object):
+    def __new__(cls):
+        if not hasattr(cls, 'instance'):
+            cls.instance = super(
+                ExecutionFlowRegistry,
+                cls
+            ).__new__(cls)
+
+        return cls.instance
+
+    def get_flow_list(self):
+        return [
+            'CPU'
+        ]
+
+    def get_flow(self, list_value):
+        if list_value == 'CPU':
+            return CPUHeterogeneousMulticoreExplorationExecutionFlow()
+
 
 class ExecutionFlow:
     __metaclass__ = ABCMeta
@@ -8,6 +31,7 @@ class ExecutionFlow:
 
     ExecutionFlow classes should be implemented as SINGLETONS.
     """
+
     def __init__(self):
         pass
 
