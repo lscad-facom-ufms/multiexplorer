@@ -4,7 +4,7 @@ import sys
 
 from MultiExplorer.src.Infrastructure.FixedValues import Simulators, PredictedCores, SniperCorePipelineKinds, \
     CachePolicies, HashTypes, PerformanceModelTypes, Domains, Prefetchers, DramDirectoryTypes
-from MultiExplorer.src.Infrastructure.Input import Input, InputGroup, InputType
+from MultiExplorer.src.Infrastructure.Inputs import Input, InputGroup, InputType
 from MultiExplorer.src.config import PATH_SNIPER, PATH_RUNDIR
 
 

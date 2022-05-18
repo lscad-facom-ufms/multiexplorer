@@ -1,4 +1,4 @@
-from MultiExplorer.src.Infrastructure.Input import Input, InputType, InputGroup
+from MultiExplorer.src.Infrastructure.Inputs import Input, InputType, InputGroup
 from SniperSimulatorAdapter import SniperSimulatorAdapter
 
 class CPUSimulationStep(object):

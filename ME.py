@@ -1,9 +1,6 @@
-import Tkinter as Tk
-from MultiExplorer.src.GUI.PageGUI.MultiExplorer import TelaInicial
+from MultiExplorer.src.GUI.Frames import MainWindow
 
 if __name__ == '__main__':
-    root = Tk.Tk()
+    app = MainWindow()
 
-    top = TelaInicial(root)
-
-    root.mainloop()
+    app.mainloop()
