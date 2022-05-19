@@ -5,8 +5,7 @@ class Simulators(Enum):
     Sniper = 1
 
     @staticmethod
-    def belongs(value):
-        return value in range(1, 1)
+    def belongs(value): return value in set(item.value for item in Simulators)
 
     @staticmethod
     def get_label(value):
@@ -23,8 +22,7 @@ class PredictedCores(Enum):
     Atom = 4
 
     @staticmethod
-    def belongs(value):
-        return value in range(1, 4)
+    def belongs(value): return value in set(item.value for item in PredictedCores)
 
     @staticmethod
     def get_label(value):
@@ -45,8 +43,7 @@ class SniperCorePipelineKinds(Enum):
     TimeSlice = "TimeSlice"
 
     @staticmethod
-    def belongs(value):
-        return value in [SniperCorePipelineKinds.Shared, SniperCorePipelineKinds.TimeSlice]
+    def belongs(value): return value in set(item.value for item in SniperCorePipelineKinds)
 
     @staticmethod
     def get_label(value):
@@ -62,8 +59,7 @@ class CachePolicies(Enum):
     LRU = "LRU"
 
     @staticmethod
-    def belongs(value):
-        return value in [CachePolicies.LRU]
+    def belongs(value): return value in set(item.value for item in CachePolicies)
 
     @staticmethod
     def get_label(value):
@@ -77,8 +73,7 @@ class PerformanceModelTypes(Enum):
     Parallel = "parallel"
 
     @staticmethod
-    def belongs(value):
-        return value in [PerformanceModelTypes.Parallel]
+    def belongs(value): return value in set(item.value for item in PerformanceModelTypes)
 
     @staticmethod
     def get_label(value):
@@ -98,8 +93,7 @@ class HashTypes(Enum):
     Mask = "mask"
 
     @staticmethod
-    def belongs(value):
-        return value in [HashTypes.Mask]
+    def belongs(value): return value in set(item.value for item in HashTypes)
 
     @staticmethod
     def get_label(value):
@@ -119,8 +113,7 @@ class Domains(Enum):
     Core = "core"
 
     @staticmethod
-    def belongs(value):
-        return value in [Domains.Core]
+    def belongs(value): return value in set(item.value for item in Domains)
 
     @staticmethod
     def get_label(value):
@@ -140,8 +133,7 @@ class Prefetchers(Enum):
     NA = "none"
 
     @staticmethod
-    def belongs(value):
-        return value in [Prefetchers.NA]
+    def belongs(value): return value in set(item.value for item in Prefetchers)
 
     @staticmethod
     def get_label(value):
@@ -161,8 +153,7 @@ class DramDirectoryTypes(Enum):
     FULL_MAP = "full_map"
 
     @staticmethod
-    def belongs(value):
-        return value in [DramDirectoryTypes.FULL_MAP]
+    def belongs(value): return value in set(item.value for item in DramDirectoryTypes)
 
     @staticmethod
     def get_label(value):

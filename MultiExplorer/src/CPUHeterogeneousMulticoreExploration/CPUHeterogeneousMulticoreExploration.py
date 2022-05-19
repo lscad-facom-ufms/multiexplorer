@@ -1,5 +1,4 @@
-from CPUSimulationStep import CPUSimulationStep
-from MultiExplorer.src.Infrastructure.ExecutionFlow import ExecutionFlow
+from Steps import CPUSimulationStep
 
 
 class CPUHeterogeneousMulticoreExplorationExecutionFlow(object):
@@ -36,12 +35,12 @@ class CPUHeterogeneousMulticoreExplorationExecutionFlow(object):
         return cls.instance
 
     def __init__(self):
-        self.steps = []
-
-        self.steps.append(CPUSimulationStep())
+        self.steps = {
+            'Simulation': CPUSimulationStep(),
+        }
 
     @staticmethod
-    def get_title(): return 'Heterogeneous Multicore'
+    def get_label(): return 'Multicore CPU Heterogeneous DSE'
 
     def get_steps(self): return self.steps
 
@@ -49,4 +48,4 @@ class CPUHeterogeneousMulticoreExplorationExecutionFlow(object):
         flow_inputs = []
 
         for step in self.steps:
-            flow_inputs.append(step.get_inputs())
+            flow_inputs.append(self.steps[step].get_inputs())

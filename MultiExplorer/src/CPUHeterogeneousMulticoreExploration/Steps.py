@@ -1,5 +1,6 @@
 from MultiExplorer.src.Infrastructure.Inputs import Input, InputType, InputGroup
-from SniperSimulatorAdapter import SniperSimulatorAdapter
+from Adapters import SniperSimulatorAdapter
+
 
 class CPUSimulationStep(object):
     """
@@ -23,32 +24,8 @@ class CPUSimulationStep(object):
     def __init__(self):
         self.simulator_adapter = SniperSimulatorAdapter()
 
-        self.inputs = {}
-
-        self.add_input(InputGroup({
-            'label': 'Preferences',
-            'inputs': [
-
-            ],
-        }))
-
-        self.add_input(Input({
-            'label': 'General Modeling',
-            'inputs': [
-
-            ],
-        }))
-
-        self.add_input(Input({
-            'label': 'Design Space Exploration',
-            'inputs': [
-
-            ],
-        }))
+    @staticmethod
+    def get_label(): return 'Simulation'
 
     @staticmethod
-    def get_title(): return 'Simulation'
-
-    def add_input(self, new_input): self.inputs[new_input.get_label()] = input
-
-    def get_inputs(self): return self.inputs
+    def has_user_input(): return True

@@ -4,7 +4,6 @@ from MultiExplorer.src.Infrastructure.Validators import Validator
 
 
 class InputType(Enum):
-    Input = 0
     Text = 1
     Integer = 2
     Float = 3
@@ -14,7 +13,7 @@ class InputType(Enum):
 
     @staticmethod
     def belongs(value):
-        return value in range(0, 3)
+        return value in set(item.value for item in InputType)
 
 
 class Input:
@@ -23,7 +22,7 @@ class Input:
 
         self.key = 'input_key'
 
-        self.type = InputType.Input
+        self.type = InputType.Text
 
         self.value = None
 
@@ -40,10 +39,10 @@ class Input:
             self.label = str(options['label'])
 
         if 'type' in options:
-            if not InputType.belongs(int(options['type'])):
+            if not isinstance(options['type'], InputType):
                 raise ValueError("The value of the parameter 'type' must belong to the InputType enumeration.")
 
-            self.type = int(options['type'])
+            self.type = options['type']
 
         if 'allowed_values' in options:
             self.allowed_values = options['allowed_values']

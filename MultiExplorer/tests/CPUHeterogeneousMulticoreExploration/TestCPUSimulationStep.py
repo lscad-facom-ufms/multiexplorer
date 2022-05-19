@@ -1,5 +1,5 @@
 import unittest
-from MultiExplorer.src.CPUHeterogeneousMulticoreExploration.CPUSimulationStep import CPUSimulationStep
+from MultiExplorer.src.CPUHeterogeneousMulticoreExploration.Steps import CPUSimulationStep
 
 
 class TestCPUSimulationStep(unittest.TestCase):

@@ -475,12 +475,12 @@ class SniperSimulatorAdapter(object):
                                     Input({
                                         "label": "data_access_time",
                                         "key": "data_access_time",
-                                        "type": "4",
+                                        "type": InputType.Integer,
                                     }),
                                     Input({
                                         "label": "tags_access_time",
                                         "key": "tags_access_time",
-                                        "type": "1",
+                                        "type": InputType.Integer,
                                     }),
                                     Input({
                                         "label": "perf_model_type",
@@ -594,12 +594,12 @@ class SniperSimulatorAdapter(object):
                                     Input({
                                         "label": "data_access_time",
                                         "key": "data_access_time",
-                                        "type": "4",
+                                        "type": InputType.Integer,
                                     }),
                                     Input({
                                         "label": "tags_access_time",
                                         "key": "tags_access_time",
-                                        "type": "1",
+                                        "type": InputType.Integer,
                                     }),
                                     Input({
                                         "label": "perf_model_type",
@@ -713,12 +713,12 @@ class SniperSimulatorAdapter(object):
                                     Input({
                                         "label": "data_access_time",
                                         "key": "data_access_time",
-                                        "type": "4",
+                                        "type": InputType.Integer,
                                     }),
                                     Input({
                                         "label": "tags_access_time",
                                         "key": "tags_access_time",
-                                        "type": "1",
+                                        "type": InputType.Integer,
                                     }),
                                     Input({
                                         "label": "perf_model_type",
@@ -832,12 +832,12 @@ class SniperSimulatorAdapter(object):
                                     Input({
                                         "label": "data_access_time",
                                         "key": "data_access_time",
-                                        "type": "4",
+                                        "type": InputType.Integer,
                                     }),
                                     Input({
                                         "label": "tags_access_time",
                                         "key": "tags_access_time",
-                                        "type": "1",
+                                        "type": InputType.Integer,
                                     }),
                                     Input({
                                         "label": "perf_model_type",

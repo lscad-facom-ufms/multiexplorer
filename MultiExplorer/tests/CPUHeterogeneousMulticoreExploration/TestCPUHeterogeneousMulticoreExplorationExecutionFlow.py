@@ -1,5 +1,5 @@
 import unittest
-from ...src.CPUHeterogeneousMulticoreExploration.CPUHeterogeneousMulticoreExplorationExecutionFlow \
+from ...src.CPUHeterogeneousMulticoreExploration.CPUHeterogeneousMulticoreExploration \
     import CPUHeterogeneousMulticoreExplorationExecutionFlow
 
 

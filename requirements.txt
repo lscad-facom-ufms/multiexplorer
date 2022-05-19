@@ -5,4 +5,4 @@ numpy==1.16.6
 scipy==1.2.3
 matplotlib==2.2.5
 gdown==4.4.0
-enum==0.4.7
+enum34==1.1.10
