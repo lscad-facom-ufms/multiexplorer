@@ -55,6 +55,7 @@ class SniperSimulatorAdapter(object):
                     Input({
                         "label": "Core Model",
                         "key": "model_name",
+                        "is_user_input": True,
                         "allowed_values": {
                             PredictedCores.Quark: PredictedCores.get_label(PredictedCores.Quark),
                             PredictedCores.Arm53: PredictedCores.get_label(PredictedCores.Arm53),
@@ -65,6 +66,7 @@ class SniperSimulatorAdapter(object):
                     Input({
                         "label": "Number of Cores",
                         "key": "total_cores",
+                        "is_user_input": True,
                         "type": InputType.Integer,
                     }),
                     InputGroup({
@@ -74,6 +76,7 @@ class SniperSimulatorAdapter(object):
                             Input({
                                 "label": "Global Frequency",
                                 "key": "global_frequency",
+                                "is_user_input": True,
                                 "type": InputType.Integer,
                             }),
                             Input({
@@ -988,14 +991,26 @@ class SniperSimulatorAdapter(object):
         self.output_path = None
 
     def set_inputs(self, inputs):
-        self.inputs = {}
-
         for i in inputs:
             if isinstance(i, Input) or isinstance(i, InputGroup):
                 self.inputs[i.key] = i
             else:
                 raise TypeError("Argument 'inputs' must be an array composed solely of objects that belongs either to "
                                 "the Input or the InputGroup classes.")
+
+    def get_user_inputs(self):
+        user_inputs = {}
+
+        for key in self.inputs:
+            cur_input = self.inputs[key]
+
+            if isinstance(cur_input, Input) and cur_input.is_user_input:
+                user_inputs[key] = cur_input
+
+            if isinstance(cur_input, InputGroup) and cur_input.has_user_input():
+                user_inputs[key] = cur_input
+
+        return user_inputs
 
     def execute_simulation(self):
         os.system(

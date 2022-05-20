@@ -26,6 +26,8 @@ class Input:
 
         self.value = None
 
+        self.is_user_input = False
+
         self.validator = None
 
         self.allowed_values = None
@@ -52,6 +54,9 @@ class Input:
                 raise TypeError("Parameter 'validator' must implement the Validator interface.")
 
             self.type = options['validator']
+
+        if 'is_user_input' in options:
+            self.is_user_input = bool(options['is_user_input'])
 
         if 'value' in options:
             self.value = options['value']
@@ -83,6 +88,9 @@ class Input:
 
         return False
 
+    def __str__(self):
+        return self.label + ' ' + str(self.is_user_input)
+
 
 class InputGroup:
     label = 'Group Label'
@@ -95,6 +103,9 @@ class InputGroup:
         if 'label' in options:
             self.label = options['label']
 
+        if 'key' in options:
+            self.key = options['key']
+
         if 'inputs' in options:
             self.set_inputs(options['inputs'])
 
@@ -102,13 +113,25 @@ class InputGroup:
         self.inputs = {}
 
         for i in inputs:
-            if (not isinstance(i, Input)) and (not isinstance(i, InputGroup)):
+            if isinstance(i, Input) or isinstance(i, InputGroup):
+                self.inputs[i.key] = i
+            else:
                 raise TypeError("Input groups can only contain either other input groups, or inputs")
-
-            self.inputs[i.key] = i
 
     def get_label(self):
         return self.label
+
+    def has_user_input(self):
+        for key in self.inputs:
+            cur_input = self.inputs[key]
+
+            if isinstance(cur_input, Input) and cur_input.is_user_input:
+                return True
+
+            if isinstance(cur_input, InputGroup) and cur_input.has_user_input():
+                return True
+
+        return False
 
     def is_valid(self):
         for key in self.inputs:
@@ -116,3 +139,6 @@ class InputGroup:
                 return False
 
         return True
+
+    def __str__(self):
+        return self.label

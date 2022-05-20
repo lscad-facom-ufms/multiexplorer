@@ -29,3 +29,6 @@ class CPUSimulationStep(object):
 
     @staticmethod
     def has_user_input(): return True
+
+    def get_user_inputs(self):
+        return self.simulator_adapter.get_user_inputs()

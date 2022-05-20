@@ -2,6 +2,8 @@ import Tkinter
 import ttk
 
 from Tkconstants import CENTER as ANCHOR_CENTER, DISABLED as STATE_DISABLED, NORMAL as STATE_NORMAL
+
+from MultiExplorer.src.GUI.Inputs import InputGUI
 from MultiExplorer.src.GUI.Menus import DefaultMenu
 from MultiExplorer.src.GUI.Styles import DefaultStyle, DefaultStyleSettings
 from MultiExplorer.src.Infrastructure.Registries import ExecutionFlowRegistry
@@ -169,7 +171,7 @@ class InputScreen(ScreenFrame):
         steps = self.flow.get_steps()
 
         for step_label in steps:
-            self.tabs_controller.add_step_tab(step_label, steps[step_label])
+            self.tabs_controller.add_step_tab(steps[step_label])
 
     def prepare(self):
         self.reset_tabs()
@@ -185,18 +187,25 @@ class InputTabsController(ttk.Notebook, object):
 
         self.tabs = {}
 
-    def add_step_tab(self, step_label, step):
+    def add_step_tab(self, step):
         if not step.has_user_input():
             return
 
-        self.add(InputTab(step_label, step, self), text=step_label)
+        self.add(InputTab(step, self), text=step.get_label())
 
 
 class InputTab(Tkinter.Frame, object):
-    def __init__(self, step_label, step, master=None, cnf={}, **kw):
+    def __init__(self, step, master=None, cnf={}, **kw):
         """This class configures and populates the toplevel window.
            top is the toplevel containing window."""
 
         super(InputTab, self).__init__(master, cnf, **kw)
+
+        self.inputs = {}
+
+        step_user_inputs = step.get_user_inputs()
+
+        for input_key in step_user_inputs:
+            self.inputs[input_key] = InputGUI.create_input(step_user_inputs[input_key], self)
 
         self.pack(fill="both", expand=True)

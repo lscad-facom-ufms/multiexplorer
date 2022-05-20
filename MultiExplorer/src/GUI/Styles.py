@@ -16,6 +16,14 @@ class DefaultStyleSettings:
 
     font = "TkDefaultFont"
 
+    input_bg_color = "white"
+
+    input_font = "TkFixedFont"
+
+    input_selected_bg_color = "blue"
+
+    input_selected_fg_color = "white"
+
 
 class DefaultStyle(ttk.Style):
     def __init__(self):
