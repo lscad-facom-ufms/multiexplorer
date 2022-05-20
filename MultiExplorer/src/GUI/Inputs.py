@@ -100,7 +100,7 @@ class Integer(InputFrame):
         )
 
         self.entry.pack()
-        
+
         self.pack()
 
 
