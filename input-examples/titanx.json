@@ -1,0 +1,43 @@
+{
+	"Preferences":
+	{
+		"sim_tool":"gpgpusim",
+		"project_name":"TitanX_asyncAPI_mlp",
+		"application":"asyncAPI",
+		"DSE":true
+	},
+	"General_Modeling":
+	{
+		"model_name":"TITANX",
+		"clock_rate": 1417,
+		"n_SM": 28,
+		"shmem_size":98304,
+		"registers":65536,
+		"blocks/SM":32,
+		"threads/SM":2048,
+		"gpuwattch": 1, 		
+		
+		"power":
+		{
+			"vdd":"1.2",
+			"technology_node":"32",
+			"temperature": "330"
+		}
+	},
+
+	"DSE":
+	{
+		"ExplorationSpace":{
+		"ip_cores_for_design":[1, 25],
+	        "original_cores_for_design":[1, 15]
+		},
+		"Constraints":
+		{
+			"maximum_powerDensity":0.77,
+			"maximum_area":672,
+			"technology":"all",
+			"benchmark":"Experimentos",
+			"application":"asyncAPI"
+		}
+	}
+}

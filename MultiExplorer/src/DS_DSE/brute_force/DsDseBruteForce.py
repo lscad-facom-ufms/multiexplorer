@@ -14,6 +14,7 @@ class DsDseBruteForce(object):
     def __init__(self, projectFolder, pathCSV=sys.argv[1], path_db=DbSelector(inputName=sys.argv[1]).select_db()):
         
         self.inputDict= InOut(projectFolder).makeInputDict()
+        self.preditor= InOut(projectFolder).performancePreditor()
         #print(self.inputDict)
         self.db = json.loads(open(path_db).read())
         self.pathCSV=projectFolder+"/outputBruteForce.csv"
@@ -55,12 +56,17 @@ class DsDseBruteForce(object):
                     #if ip_core["id"] == "Smithfield_90nm":
                     #    processor = "smithfield"
 
-                    performancePred = PerformanceGPUPredictor(
+                    """ performancePred = PerformanceGPUPredictor(
                         ipCoreName,
                         amount_ip_core,
                         amount_orig_core,                        
                         self.multiexplorerInputDict
-                    ).getResults()
+                    ).getResults() """
+                    performancePred = self.preditor.getResultsNSGA(
+                        ipCoreName,
+                        amount_ip_core,
+                        amount_orig_core
+                        )
                     _dict={"amount_orig_core":amount_orig_core, "amount_ip_core":amount_ip_core, "ip_core":ip_core,"powerDensity":str(round(float(parameters[0]), 3)),"area":parameters[1], "performance":parameters[2], "performancePred":performancePred} 
                     self.first_solution.append(_dict)    
                     if is_viable(parameters):

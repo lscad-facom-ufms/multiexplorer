@@ -1,6 +1,6 @@
 {
 "ipcores":[
 	{"id":"TITANX_32nm", "pow": 18.360, "area":23.883, "perf":4495.430},
-	{"id":"KEPLER_32nm", "pow": 15.164, "area":36.509, "perf":3672.183}
+	{"id":"KEPLER_32nm", "pow": 15.164, "area":36.509, "perf":5264.778}
 ] 
 }

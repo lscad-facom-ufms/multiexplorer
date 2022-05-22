@@ -6,7 +6,10 @@ import re
 from glob import glob
 from datetime import datetime
 from pprint import pprint
+from sklearn import metrics
 import shutil
+import time
+from metric import *
 
 # Import from any relative path
 importPath = os.path.dirname(os.path.realpath(
@@ -177,14 +180,21 @@ class MultiExplorer(object):
 
     def dse(self):
         if self.inJson['Preferences']['DSE']:
+            start = time.time()
             Nsga2Main(projectFolder)
             print("DSE NSGA2: OK") 
+            end = time.time()
+            print("The time of execution of NSGA program is :", end-start)
             #self.suggestedArchitecture()
 
     def dseBruteForce(self):
+        neg_mean_absolute_percentage_scorer = metrics.make_scorer(mean_absolute_percentage_error, greater_is_better=False)
         if self.inJson['Preferences']['DSE']:
+            start = time.time()
             DsDseBruteForce(projectFolder)
-            print("DSE Brute Force: OK") 
+            end = time.time()
+            print("DSE Brute Force: OK")
+            print("The time of execution of BF program is :", end-start)
 
     def suggestedArchitecture(self):
         with open(projectFolder+"/"+'populationResults.csv','r') as csvFile:
@@ -427,9 +437,9 @@ class MultiExplorer(object):
         jsonFile.write(json.dumps(newInputDict, indent= 4, sort_keys=True))
         jsonFile.close()
             
+
 if __name__ == "__main__":
     multiexplorer = MultiExplorer(sys.argv[1])
-    
     multiexplorer.controller()
     #multiexplorer.callPerformanceSim()
     #multiexplorer.stepByStep()

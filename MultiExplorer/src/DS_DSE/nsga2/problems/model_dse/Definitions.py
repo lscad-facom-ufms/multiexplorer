@@ -11,9 +11,8 @@ class Definitions(ProblemDefinitions):
 
     def __init__(self,projectFolder):
         self.n = 10
-        self.multiexplorerInputDict= InOut(projectFolder).getInputFile()
-	self.performancePreditor = 0
-	self.contador = 0
+        self.performancePreditor = InOut(projectFolder).performancePreditor()
+        self.contador = 0
     
 
     #para
@@ -51,21 +50,21 @@ class Definitions(ProblemDefinitions):
         performancePred = 0
         self.contador = self.contador + 1
         if(self.contador%10000 == 0):
-            print("Decision Tree Counter Performance: { " + str(self.contador) + " }\n")
+            print("MLP Counter Performance: { " + str(self.contador) + " }\n")
         ipCoreName = individual.features[5]["id"].split("_")[0]
         #print(individual.features[5]["id"])
         
         
-        performancePred = float(PerformanceGPUPredictor(ipCoreName,individual.features[4],individual.features[0],self.multiexplorerInputDict ).getResults())
+        performancePred = float(self.performancePreditor.getResultsNSGA(ipCoreName,individual.features[4],individual.features[0]))
         performancePred = int(performancePred)
         return performancePred
 
     def performanceOld(self, individual):#performance ingenua
-	self.contador = self.contador + 1
-	if(self.contador%1000000 == 0):
-		print("Counter Performance: { " + str(self.contador) + " }\n")
-	#print "Gerou indivíduo com parâmetros" + str(individual.features)
-        return (individual.features[3]*individual.features[0]+individual.features[5]["perf"]*individual.features[4])
+        self.contador = self.contador + 1
+        if(self.contador%1000000 == 0):
+            print("Counter Performance: { " + str(self.contador) + " }\n")
+        #print "Gerou indivíduo com parâmetros" + str(individual.features)
+            return (individual.features[3]*individual.features[0]+individual.features[5]["perf"]*individual.features[4])
 
     #restriction
     def totalArea(self, individual):

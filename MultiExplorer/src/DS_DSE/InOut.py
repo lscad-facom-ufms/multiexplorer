@@ -30,6 +30,7 @@ class InOut(object):
         self.jsonFile = None
         self.objDict = {}
         self.inputDict = {}
+        
 
         self.selector= DbSelector(self.inputName)
         try:
@@ -43,21 +44,23 @@ class InOut(object):
                     #print(self.inputFile)
         except: 
             print("Json file not found")
-
+    def performancePreditor(self):
+        perf = PerformanceGPUPredictor("GTX480",1,1,self.inputFile )
+        return perf
         
     def getInputFile(self):
         return self.inputFile
     #método que imprime em um json e em uma planilha todos os indivíduos gerados no nsga
-    def printResults(self, population):
+    def printResults(self, population,preditor):
         num = 0
         for individual in population:
-            self.inserctInDict(individual, num)
+            self.inserctInDict(individual, num,preditor)
             num = num+1
         self.writeResults()
         JsonToCSV(self.projectFolder).convertJSONToCSV()
     
     #método responsável por criar um dicionário de saída, com as características dos indivíduos gerados pelo nsga 
-    def inserctInDict(self, individual, num):
+    def inserctInDict(self, individual, num,preditor):
         self.objDict[num]={}
         #inserction of features
         self.objDict[num]["amount_original_cores"]= individual.features[0]
@@ -91,8 +94,20 @@ class InOut(object):
 
         # processor, amountIpCore, amountOriginalCore
         #PerformancePredictor(individual.features[5]["id"], individual.features[4], individual.features[0])
-        self.objDict[num]["Results"]["performance_pred"] = PerformanceGPUPredictor(ipCoreName,individual.features[4],individual.features[0],self.inputFile ).getResults()
-        
+        """ self.objDict[num]["Results"]["performance_pred"] = PerformanceGPUPredictor(
+            ipCoreName,
+            individual.features[4],
+            individual.features[0],
+            self.inputFile 
+        ).getResults() """
+
+        self.objDict[num]["Results"]["performance_pred"] = preditor.getResultsNSGA(
+            ipCoreName,
+            individual.features[4],
+            individual.features[0]
+
+
+        )
 
 
     def writeResults(self):

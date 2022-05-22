@@ -79,7 +79,7 @@ mv $BFSOUTUPUT output/
 mv $BFSERROR output/
 #cp $MULTIEXPLORER_INPUT output/
 cp *.log output/
-
+rm -rf $HOME/multiexplorer/$CONFIGS_FOLDER
 # Atribui o diretorio de ambiente (RUNDIR=$HOME/...)
 # Copia todas as configurações para o RUNDIR
 # Acessa o RUNDIR

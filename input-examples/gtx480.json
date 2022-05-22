@@ -2,9 +2,9 @@
 	"Preferences":
 	{
 		"sim_tool":"gpgpusim",
-		"project_name":"GTX480_clock",
+		"project_name":"GTX480_clock_mlp",
 		"application":"clock",
-		"DSE":false
+		"DSE":true
 	},
 	"General_Modeling":
 	{
@@ -20,7 +20,7 @@
 		"power":
 		{
 			"vdd":"1.2",
-			"technology_node":"32",
+			"technology_node":"45",
 			"temperature": "330"
 		}
 	},
@@ -33,11 +33,11 @@
 		},
 		"Constraints":
 		{
-			"maximum_powerDensity":0.340433,
-			"maximum_area":225.2,
-			"technology":"22nm",
+			"maximum_powerDensity":0.31,
+			"maximum_area":545.85,
+			"technology":"all",
 			"benchmark":"Experimentos",
-			"application":"all"
+			"application":"clock"
 		}
 	}
 }

@@ -20,7 +20,6 @@ class Nsga2Main(object):
         self.bd=json.loads(open(selector.select_db()).read())
         dse_definitions = Definitions(projectFolder)
         plotter = Plotter(dse_definitions)
-
         #problem = DS_DSE(dse_definitions)
         #print "dse_definitions:" + str(dse_definitions)
         problem = DS_DSE(dse_definitions, projectFolder)
@@ -33,7 +32,8 @@ class Nsga2Main(object):
         pareto_front = evolution.evolve()
         #output= InOut()
         output = InOut(projectFolder)
-        output.printResults(pareto_front)
+        preditor = output.performancePreditor()
+        output.printResults(pareto_front,preditor )
         #plotter.plot_x_y(collected_metrics.keys(), map(lambda (hv, hvr): hvr, collected_metrics.values()), 'generation', 'HVR', 'HVR metric for ZDT3 problem', 'hvr-zdt3')
         
 	
