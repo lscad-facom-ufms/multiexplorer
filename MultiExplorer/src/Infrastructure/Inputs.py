@@ -1,6 +1,6 @@
 from enum import Enum
 
-from MultiExplorer.src.Infrastructure.Validators import Validator
+from MultiExplorer.src.Infrastructure.Validators import Validator, IntegerValidator, FloatValidator
 
 
 class InputType(Enum):
@@ -14,6 +14,16 @@ class InputType(Enum):
     @staticmethod
     def belongs(value):
         return value in set(item.value for item in InputType)
+
+    @staticmethod
+    def get_default_validator(input_type):
+        if input_type == InputType.Integer:
+            return IntegerValidator()
+
+        if input_type == InputType.Float:
+            return FloatValidator()
+
+        return None
 
 
 class Input:
@@ -32,6 +42,8 @@ class Input:
 
         self.allowed_values = None
 
+        self.required = False
+
         if 'key' in options:
             self.key = str(options['key'])
 
@@ -45,6 +57,9 @@ class Input:
                 raise ValueError("The value of the parameter 'type' must belong to the InputType enumeration.")
 
             self.type = options['type']
+
+            if 'validator' not in options:
+                self.validator = InputType.get_default_validator(self.type)
 
         if 'allowed_values' in options:
             self.allowed_values = options['allowed_values']
@@ -67,16 +82,22 @@ class Input:
     def get_label(self):
         return self.label
 
-    def is_valid(self):
+    def is_valid(self, value=None):
+        if value is None:
+            if self.value is None:
+                return not self.required
+
+            value = self.value
+
         if self.allowed_values is not None:
-            return self.value in self.allowed_values
+            return value in list(self.allowed_values.values())
 
         if self.validator is None:
             return True
 
-        return self.validator.is_valid(self.value)
+        return self.validator.is_valid(value)
 
-    def value_are_loose(self):
+    def values_are_loose(self):
         if self.allowed_values is None:
             return True
 

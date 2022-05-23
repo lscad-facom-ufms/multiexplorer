@@ -5,7 +5,7 @@ from abc import ABCMeta, abstractmethod
 class Validator:
     __metaclass__ = ABCMeta
 
-    def __init__(self):
+    def __init__(self, rules={}):
         pass
 
     @classmethod
@@ -24,7 +24,7 @@ class TextValidator:
 
     pattern = None
 
-    def __init__(self, rules):
+    def __init__(self, rules={}):
         if 'min_len' in rules:
             self.min_length = rules['min_length']
 
@@ -55,7 +55,7 @@ class IntegerValidator:
 
     max_val = None
 
-    def __init__(self, rules):
+    def __init__(self, rules={}):
         if 'min_val' in rules:
             self.min_val = int(rules['min_val'])
 
@@ -84,7 +84,7 @@ class FloatValidator:
 
     max_val = None
 
-    def __init__(self, rules):
+    def __init__(self, rules={}):
         if 'min_val' in rules:
             self.min_val = float(rules['min_val'])
 
