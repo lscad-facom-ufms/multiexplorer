@@ -1,11 +1,15 @@
 import Tkinter
 import ttk
 
-from Tkconstants import CENTER as ANCHOR_CENTER, DISABLED as STATE_DISABLED, NORMAL as STATE_NORMAL
+from Tkconstants import CENTER as ANCHOR_CENTER, DISABLED as STATE_DISABLED, NORMAL as STATE_NORMAL, W as STICKY_WEST,\
+    E as STICKY_EAST
 
+from Tkconstants import SW as ANCHOR_SW, BOTTOM as SIDE_BOTTOM, SE as ANCHOR_SE
+from MultiExplorer.src.GUI.Buttons import NavigateButton
 from MultiExplorer.src.GUI.Inputs import InputGUI
 from MultiExplorer.src.GUI.Menus import DefaultMenu
 from MultiExplorer.src.GUI.Styles import DefaultStyle, DefaultStyleSettings
+from MultiExplorer.src.GUI.Widgets import ScreenTitle
 from MultiExplorer.src.Infrastructure.Registries import ExecutionFlowRegistry
 
 
@@ -30,6 +34,7 @@ class MainWindow(Tkinter.Tk, object):
             LoadScreen.__name__: LoadScreen(self),
             LaunchScreen.__name__: LaunchScreen(self, focus=True),
             InputScreen.__name__: InputScreen(self),
+            ExecutionScreen.__name__: ExecutionScreen(self),
         }
 
     def get_screen(self, class_name):
@@ -64,6 +69,9 @@ class ScreenFrame(Tkinter.Frame, object):
     def navigate(self, to_screen):
         self.master.navigate(self, to_screen)
 
+    def navigate_by_class_name(self, to_screen_class_name):
+        self.navigate(self.master.get_screen(to_screen_class_name))
+
     def reset(self):
         pass
 
@@ -89,44 +97,59 @@ class LaunchScreen(ScreenFrame):
 
         super(LaunchScreen, self).__init__(master, cnf, focus, **kw)
 
+        self.selected_flow_label = None
         self.me_logo_image = Tkinter.Label(self)
         self.me_logo_image.place(relx=0.5, anchor="n", height=150, width=250)
         self.me_logo_image.configure(activebackground=DefaultStyleSettings.bg_color)
         self.me_logo_image.configure(text='''MultiExplorer.png''')
 
         self.execution_flow_label_frame = Tkinter.LabelFrame(self)
-        self.execution_flow_label_frame.place(relx=0.5, rely=0.5, anchor=ANCHOR_CENTER, height=120, width=600)
-        self.execution_flow_label_frame.configure(relief='groove')
-        self.execution_flow_label_frame.configure(labelanchor='n')
-        self.execution_flow_label_frame.configure(text='''Execution Flow''')
+
+        self.execution_flow_label_frame.place(
+            relx=0.5,
+            rely=0.5,
+            anchor=ANCHOR_CENTER
+        )
+
+        self.execution_flow_label_frame.configure(
+            relief='groove',
+            labelanchor='n',
+            text='''Execution Flow''',
+        )
+
+        self.execution_flow_label_frame.rowconfigure(0, weight=1)
+        self.execution_flow_label_frame.columnconfigure(0, weight=1)
+
+        self.select_execution_flow_combobox = ttk.Combobox(self.execution_flow_label_frame)
+
+        self.select_execution_flow_combobox.grid(
+            column=0,
+            row=0,
+        )
+
+        self.select_execution_flow_combobox.bind('<<ComboboxSelected>>', self.enable_execution)
+
+        self.select_execution_flow_combobox.configure(
+            values=ExecutionFlowRegistry().get_flows_list(),
+            takefocus="",
+        )
 
         self.execute_button = Tkinter.Button(
             self.execution_flow_label_frame,
             command=lambda: self.execute_flow(),
             state=STATE_DISABLED,
         )
-        self.execute_button.place(
-            relx=0.6,
-            rely=0.4,
-            height=30,
-            width=60,
-            bordermode='ignore'
-        )
-        self.execute_button.configure(activebackground="#f9f9f9")
-        self.execute_button.configure(borderwidth="2")
-        self.execute_button.configure(text='''Run''')
 
-        self.select_execution_flow_combobox = ttk.Combobox(self.execution_flow_label_frame)
-        self.select_execution_flow_combobox.place(
-            relx=0.177,
-            rely=0.405,
-            relheight=0.405,
-            relwidth=0.392,
-            bordermode='ignore'
+        self.execute_button.grid(
+            column=1,
+            row=0,
         )
-        self.select_execution_flow_combobox.bind('<<ComboboxSelected>>', self.enable_execution)
-        self.select_execution_flow_combobox.configure(values=ExecutionFlowRegistry().get_flows_list())
-        self.select_execution_flow_combobox.configure(takefocus="")
+
+        self.execute_button.configure(
+            activebackground=DefaultStyleSettings.button_active_bg_color,
+            borderwidth=DefaultStyleSettings.button_border_width,
+            text='''Start'''
+        )
 
     def enable_execution(self, event):
         self.execute_button.config(state=STATE_NORMAL)
@@ -145,22 +168,69 @@ class LaunchScreen(ScreenFrame):
 
 class InputScreen(ScreenFrame):
     def __init__(self, master=None, cnf={}, focus=False, **kw):
-        """This class configures and populates the toplevel window.
-           top is the toplevel containing window."""
-
         super(InputScreen, self).__init__(master, cnf, focus, **kw)
 
-        self.title = Tkinter.Label(self)
-        self.title.place(relx=0.5, anchor="n", height=50, relwidth=1)
-        self.title.configure(activebackground=DefaultStyleSettings.bg_color)
-        self.title.configure(text='''Execution Flow Settings''')
+        self.flow_label = None
+        self.flow = None
+
+        self.title = ScreenTitle("Execution Flow Settings", self)
 
         self.tabs_controller = InputTabsController(self)
 
+        self.button_area = Tkinter.Frame(self)
+
+        self.button_area.pack(
+            side=SIDE_BOTTOM,
+            fill='x',
+            expand=True,
+        )
+
+        self.button_area.columnconfigure(0, weight=1)
+        self.button_area.columnconfigure(1, weight=1)
+        self.button_area.rowconfigure(0, weight=1)
+
+        self.back_button = NavigateButton(LaunchScreen.__name__, self, self.button_area, {
+            'text': 'Back',
+        })
+
+        self.back_button.grid(
+            column=0,
+            row=0,
+            sticky=STICKY_WEST,
+            padx=50,
+        )
+
+        self.execute_button = Tkinter.Button(
+            self.button_area,
+            command=lambda: self.execute_flow(),
+        )
+
+        self.execute_button.grid(
+            column=1,
+            row=0,
+            sticky=STICKY_EAST,
+            padx=50,
+        )
+
+        self.execute_button.configure(
+            activebackground=DefaultStyleSettings.button_active_bg_color,
+            borderwidth=DefaultStyleSettings.button_border_width,
+            text='''Execute'''
+        )
+
     def set_flow(self, flow_label):
+        self.flow_label = flow_label
+
         self.flow = ExecutionFlowRegistry().get_flow(flow_label)
 
-        self.title.configure(text=self.flow.get_label()+''' Settings''')
+        self.title.configure(text=self.flow.get_label() + ''' Settings''')
+
+    def execute_flow(self):
+        execution_screen = self.master.get_screen(ExecutionScreen.__name__)
+
+        execution_screen.set_flow(self.flow_label)
+
+        self.navigate(execution_screen)
 
     def reset_tabs(self):
         self.tabs_controller.destroy()
@@ -209,3 +279,50 @@ class InputTab(Tkinter.Frame, object):
             self.inputs[input_key] = InputGUI.create_input(step_user_inputs[input_key], self)
 
         self.pack(fill="both", expand=True)
+
+
+class ExecutionScreen(ScreenFrame):
+    def __init__(self, master=None, cnf={}, focus=False, **kw):
+        super(ExecutionScreen, self).__init__(master, cnf, focus, **kw)
+
+        self.flow_label = None
+        self.flow = None
+
+        self.title = Tkinter.Label(self)
+        self.title.place(relx=0.5, anchor="n", height=50, relwidth=1)
+        self.title.configure(activebackground=DefaultStyleSettings.bg_color)
+        self.title.configure(text='''Flow Execution''')
+
+        self.button_area = Tkinter.Frame(self)
+
+        self.button_area.pack(
+            side=SIDE_BOTTOM,
+            fill='x',
+            expand=True,
+        )
+
+        self.button_area.columnconfigure(0, weight=1)
+        self.button_area.columnconfigure(1, weight=1)
+        self.button_area.rowconfigure(0, weight=1)
+
+        self.back_button = NavigateButton(InputScreen.__name__, self, self.button_area, {
+            'text': 'Back',
+        })
+
+        self.back_button.grid(
+            column=0,
+            row=0,
+            sticky=STICKY_WEST,
+            padx=50,
+        )
+
+    def set_flow(self, flow_label):
+        self.flow_label = flow_label
+
+        self.flow = ExecutionFlowRegistry().get_flow(flow_label)
+
+        self.title.configure(text=self.flow.get_label() + ''' Execution''')
+
+    # @todo
+    def execute_flow(self):
+        pass
