@@ -1,7 +1,7 @@
 import Tkinter
 import ttk
 
-from Tkconstants import CENTER as ANCHOR_CENTER, DISABLED as STATE_DISABLED, NORMAL as STATE_NORMAL, W as STICKY_WEST,\
+from Tkconstants import CENTER as ANCHOR_CENTER, DISABLED as STATE_DISABLED, NORMAL as STATE_NORMAL, W as STICKY_WEST, \
     E as STICKY_EAST
 
 from Tkconstants import SW as ANCHOR_SW, BOTTOM as SIDE_BOTTOM, SE as ANCHOR_SE
@@ -166,6 +166,38 @@ class LaunchScreen(ScreenFrame):
         self.navigate(input_screen)
 
 
+class InputTab(Tkinter.Frame, object):
+    def __init__(self, step, master=None, cnf={}, **kw):
+        """This class configures and populates the toplevel window.
+           top is the toplevel containing window."""
+
+        super(InputTab, self).__init__(master, cnf, **kw)
+
+        self.inputs = {}
+
+        step_user_inputs = step.get_user_inputs()
+
+        for input_key in step_user_inputs:
+            self.inputs[input_key] = InputGUI.create_input(step_user_inputs[input_key], self)
+
+        self.pack(fill="both", expand=True)
+
+
+class InputTabsController(ttk.Notebook, object):
+    def __init__(self, master=None, **kw):
+        super(InputTabsController, self).__init__(master, **kw)
+
+        self.pack(fill="both", expand=True, pady=100, padx=50)
+
+        self.tabs = {}
+
+    def add_step_tab(self, step):
+        if not step.has_user_input():
+            return
+
+        self.add(InputTab(step, self), text=step.get_label())
+
+
 class InputScreen(ScreenFrame):
     def __init__(self, master=None, cnf={}, focus=False, **kw):
         super(InputScreen, self).__init__(master, cnf, focus, **kw)
@@ -249,36 +281,31 @@ class InputScreen(ScreenFrame):
         self.set_tabs()
 
 
-class InputTabsController(ttk.Notebook, object):
-    def __init__(self, master=None, **kw):
-        super(InputTabsController, self).__init__(master, **kw)
-
-        self.pack(fill="both", expand=True, pady=100, padx=50)
-
-        self.tabs = {}
-
-    def add_step_tab(self, step):
-        if not step.has_user_input():
-            return
-
-        self.add(InputTab(step, self), text=step.get_label())
+class InputInfo(Tkinter.Frame, object):
+    pass
 
 
-class InputTab(Tkinter.Frame, object):
-    def __init__(self, step, master=None, cnf={}, **kw):
-        """This class configures and populates the toplevel window.
-           top is the toplevel containing window."""
+class ExecutionDisplay(Tkinter.Canvas, object):
+    def __init__(self, master=None, cnf={}, **kw):
+        super(ExecutionDisplay, self).__init__(master, cnf, **kw)
 
-        super(InputTab, self).__init__(master, cnf, **kw)
+        self.execution_flow = None
 
-        self.inputs = {}
+    def set_execution_flow(self, flow):
+        self.execution_flow = flow
 
-        step_user_inputs = step.get_user_inputs()
+        self.draw()
 
-        for input_key in step_user_inputs:
-            self.inputs[input_key] = InputGUI.create_input(step_user_inputs[input_key], self)
+    def draw(self):
+        self.delete("all")
 
-        self.pack(fill="both", expand=True)
+        steps = self.execution_flow.get_steps()
+
+        for key in steps:
+            self.add_step(steps[key])
+
+    def add_step(self, step):
+        pass
 
 
 class ExecutionScreen(ScreenFrame):
@@ -292,6 +319,10 @@ class ExecutionScreen(ScreenFrame):
         self.title.place(relx=0.5, anchor="n", height=50, relwidth=1)
         self.title.configure(activebackground=DefaultStyleSettings.bg_color)
         self.title.configure(text='''Flow Execution''')
+
+        self.input_info = InputInfo(self)
+
+        self.execution_display = ExecutionDisplay(self)
 
         self.button_area = Tkinter.Frame(self)
 
@@ -320,6 +351,8 @@ class ExecutionScreen(ScreenFrame):
         self.flow_label = flow_label
 
         self.flow = ExecutionFlowRegistry().get_flow(flow_label)
+
+        self.execution_display.set_execution_flow(self.flow)
 
         self.title.configure(text=self.flow.get_label() + ''' Execution''')
 
