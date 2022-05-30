@@ -1,10 +1,15 @@
 import Tkinter
 import ttk
 
-from Tkconstants import CENTER as ANCHOR_CENTER, DISABLED as STATE_DISABLED, NORMAL as STATE_NORMAL, W as STICKY_WEST, \
-    E as STICKY_EAST
+from Tkconstants import DISABLED as STATE_DISABLED, NORMAL as STATE_NORMAL
+from Tkconstants import HORIZONTAL as HORIZONTAL_ORIENTATION
+from Tkconstants import BOTH as FILL_BOTH
+from Tkconstants import W as STICKY_WEST, E as STICKY_EAST
+from Tkconstants import CENTER as ANCHOR_CENTER
+from Tkconstants import S as ANCHOR_S, N as ANCHOR_N, SW as ANCHOR_SW, SE as ANCHOR_SE
+from Tkconstants import BOTTOM as SIDE_BOTTOM, TOP as SIDE_TOP, LEFT as SIDE_LEFT
 
-from Tkconstants import SW as ANCHOR_SW, BOTTOM as SIDE_BOTTOM, SE as ANCHOR_SE
+from MultiExplorer.src.CPUHeterogeneousMulticoreExploration.Steps import CPUSimulationStep
 from MultiExplorer.src.GUI.Buttons import NavigateButton
 from MultiExplorer.src.GUI.Inputs import InputGUI
 from MultiExplorer.src.GUI.Menus import DefaultMenu
@@ -45,7 +50,7 @@ class MainWindow(Tkinter.Tk, object):
 
         load_screen = self.get_screen(LoadScreen.__name__)
 
-        load_screen.pack(fill="both", expand=True)
+        load_screen.pack(fill=FILL_BOTH, expand=True)
 
         from_screen.close_gracefully()
 
@@ -53,7 +58,9 @@ class MainWindow(Tkinter.Tk, object):
 
         load_screen.pack_forget()
 
-        to_screen.pack(fill="both", expand=True)
+        to_screen.pack(fill=FILL_BOTH, expand=True)
+
+        to_screen.ready()
 
 
 class ScreenFrame(Tkinter.Frame, object):
@@ -64,7 +71,7 @@ class ScreenFrame(Tkinter.Frame, object):
         super(ScreenFrame, self).__init__(master, cnf, **kw)
 
         if focus is True:
-            self.pack(fill="both", expand=True)
+            self.pack(fill=FILL_BOTH, expand=True)
 
     def navigate(self, to_screen):
         self.master.navigate(self, to_screen)
@@ -76,6 +83,9 @@ class ScreenFrame(Tkinter.Frame, object):
         pass
 
     def prepare(self):
+        pass
+
+    def ready(self):
         pass
 
     def close_gracefully(self):
@@ -180,14 +190,14 @@ class InputTab(Tkinter.Frame, object):
         for input_key in step_user_inputs:
             self.inputs[input_key] = InputGUI.create_input(step_user_inputs[input_key], self)
 
-        self.pack(fill="both", expand=True)
+        self.pack(fill=FILL_BOTH, expand=True)
 
 
 class InputTabsController(ttk.Notebook, object):
     def __init__(self, master=None, **kw):
         super(InputTabsController, self).__init__(master, **kw)
 
-        self.pack(fill="both", expand=True, pady=100, padx=50)
+        self.pack(fill=FILL_BOTH, expand=True, pady=100, padx=50)
 
         self.tabs = {}
 
@@ -285,27 +295,119 @@ class InputInfo(Tkinter.Frame, object):
     pass
 
 
+class StepDisplay(object):
+    def __init__(self, step, canvas, x, y):
+        self.step = step
+
+        self.is_executing = False
+
+        self.animation_job = None
+
+        self.canvas = canvas
+
+        self.shape_id = self.create_step_shape(x, y)
+
+    def start_execution_animation(self):
+        self.is_executing = True
+
+        self.animation_job = self.canvas.after(500, self.blink, True)
+
+    def stop_execution_animation(self):
+        self.is_executing = False
+
+        if self.animation_job is not None:
+            self.canvas.after_cancel(self.animation_job)
+
+    def create_step_shape(self, x, y):
+        step_shape_id = self.canvas.create_polygon(
+            [
+                x + 0, y + 0,
+                x + 25, y + 50,
+                x, y + 100,
+                x + 200, y + 100,
+                x + 225, y + 50,
+                x + 200, y,
+                x, y
+            ],
+            fill=DefaultStyleSettings.bg_color,
+            outline=DefaultStyleSettings.fg_color,
+        )
+
+        return step_shape_id
+
+    def blink(self, blink_ctrl):
+        if blink_ctrl is True:
+            self.canvas.itemconfig(self.shape_id, fill=DefaultStyleSettings.active_color)
+
+            blink_ctrl = False
+        else:
+            self.canvas.itemconfig(self.shape_id, fill=DefaultStyleSettings.bg_color)
+
+            blink_ctrl = True
+
+        if self.is_executing:
+            self.animation_job = self.canvas.after(500, self.blink, blink_ctrl)
+
+
 class ExecutionDisplay(Tkinter.Canvas, object):
     def __init__(self, master=None, cnf={}, **kw):
         super(ExecutionDisplay, self).__init__(master, cnf, **kw)
 
         self.execution_flow = None
+        self.step_displays = {}
+
+        self.scrollbar = Tkinter.Scrollbar(master, orient=HORIZONTAL_ORIENTATION)
+
+        self.scrollbar.pack(
+            fill='x',
+            expand=True,
+            side=SIDE_BOTTOM,
+        )
+
+        self.scrollbar.config(
+            command=self.xview
+        )
+
+        self.pack(
+            fill=FILL_BOTH,
+            expand=True,
+            side=SIDE_LEFT,
+        )
+
+        self.config(
+            bg=DefaultStyleSettings.bg_color,
+            xscrollcommand=self.scrollbar.set,
+            scrollregion=(0, 0, 700, 200),
+        )
+
+        self.y = 75
 
     def set_execution_flow(self, flow):
         self.execution_flow = flow
 
+        self.delete('all')
+
         self.draw()
 
     def draw(self):
+        self.step_display = []
+
         self.delete("all")
+
+        self.x = 75
 
         steps = self.execution_flow.get_steps()
 
         for key in steps:
-            self.add_step(steps[key])
+            self.add_step_display(steps[key])
 
-    def add_step(self, step):
-        pass
+            self.x += 75
+
+    def add_step_display(self, step):
+        self.step_displays[step.get_label()] = StepDisplay(step, self, self.x, self.y)
+
+    def execute(self):
+        self.step_displays[CPUSimulationStep.get_label()].start_execution_animation()
 
 
 class ExecutionScreen(ScreenFrame):
@@ -321,8 +423,6 @@ class ExecutionScreen(ScreenFrame):
         self.title.configure(text='''Flow Execution''')
 
         self.input_info = InputInfo(self)
-
-        self.execution_display = ExecutionDisplay(self)
 
         self.button_area = Tkinter.Frame(self)
 
@@ -347,6 +447,23 @@ class ExecutionScreen(ScreenFrame):
             padx=50,
         )
 
+        self.display_area = Tkinter.Frame(self)
+
+        self.display_area.config(
+            height=200,
+            borderwidth=2,
+            relief="sunken",
+        )
+
+        self.display_area.pack(
+            fill='x',
+            expand=True,
+            side=SIDE_BOTTOM,
+            padx=DefaultStyleSettings.padx,
+        )
+
+        self.execution_display = ExecutionDisplay(self.display_area)
+
     def set_flow(self, flow_label):
         self.flow_label = flow_label
 
@@ -356,6 +473,8 @@ class ExecutionScreen(ScreenFrame):
 
         self.title.configure(text=self.flow.get_label() + ''' Execution''')
 
-    # @todo
+    def ready(self):
+        self.execute_flow()
+
     def execute_flow(self):
-        pass
+        self.execution_display.execute()

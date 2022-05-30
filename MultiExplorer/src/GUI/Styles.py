@@ -4,6 +4,8 @@ from enum import Enum
 
 
 class DefaultStyleSettings:
+    padx = 50
+
     bg_color = '#d9d9d9'  # X11 color: 'gray85'
     fg_color = '#000000'  # X11 color: 'black'
     selected_color = '#d9d9d9'  # X11 color: 'gray85'
