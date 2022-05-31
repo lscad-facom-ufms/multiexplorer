@@ -35,17 +35,14 @@ class CPUHeterogeneousMulticoreExplorationExecutionFlow(object):
         return cls.instance
 
     def __init__(self):
-        self.steps = {
-            'Simulation': CPUSimulationStep(),
-        }
+        self.steps = [
+            CPUSimulationStep(),
+        ]
 
     @staticmethod
     def get_label(): return 'Multicore CPU Heterogeneous DSE'
 
     def get_steps(self): return self.steps
 
-    def get_inputs(self):
-        flow_inputs = []
-
-        for step in self.steps:
-            flow_inputs.append(self.steps[step].get_inputs())
+    def execute(self):
+        self.steps[0].start_execution()

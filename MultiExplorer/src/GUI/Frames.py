@@ -9,12 +9,12 @@ from Tkconstants import CENTER as ANCHOR_CENTER
 from Tkconstants import S as ANCHOR_S, N as ANCHOR_N, SW as ANCHOR_SW, SE as ANCHOR_SE
 from Tkconstants import BOTTOM as SIDE_BOTTOM, TOP as SIDE_TOP, LEFT as SIDE_LEFT
 
-from MultiExplorer.src.CPUHeterogeneousMulticoreExploration.Steps import CPUSimulationStep
 from MultiExplorer.src.GUI.Buttons import NavigateButton
 from MultiExplorer.src.GUI.Inputs import InputGUI
 from MultiExplorer.src.GUI.Menus import DefaultMenu
 from MultiExplorer.src.GUI.Styles import DefaultStyle, DefaultStyleSettings
 from MultiExplorer.src.GUI.Widgets import ScreenTitle
+from MultiExplorer.src.Infrastructure.Events import Event
 from MultiExplorer.src.Infrastructure.Registries import ExecutionFlowRegistry
 
 
@@ -282,8 +282,8 @@ class InputScreen(ScreenFrame):
     def set_tabs(self):
         steps = self.flow.get_steps()
 
-        for step_label in steps:
-            self.tabs_controller.add_step_tab(steps[step_label])
+        for step in steps:
+            self.tabs_controller.add_step_tab(step)
 
     def prepare(self):
         self.reset_tabs()
@@ -299,6 +299,10 @@ class StepDisplay(object):
     def __init__(self, step, canvas, x, y):
         self.step = step
 
+        self.step.add_handler(Event.EXECUTION_STARTED, self.start_execution_animation)
+
+        self.step.add_handler(Event.EXECUTION_ENDED, self.stop_execution_animation)
+
         self.is_executing = False
 
         self.animation_job = None
@@ -312,11 +316,20 @@ class StepDisplay(object):
 
         self.animation_job = self.canvas.after(500, self.blink, True)
 
+        self.execution_job = self.canvas.after(500, self.check_step_execution)
+
+    def check_step_execution(self):
+       if not self.step.is_finished():
+           self.execution_job = self.canvas.after(500, self.check_step_execution)
+
     def stop_execution_animation(self):
         self.is_executing = False
 
         if self.animation_job is not None:
             self.canvas.after_cancel(self.animation_job)
+
+        if self.execution_job is not None:
+            self.canvas.after_cancel(self.execution_job)
 
     def create_step_shape(self, x, y):
         step_shape_id = self.canvas.create_polygon(
@@ -398,16 +411,13 @@ class ExecutionDisplay(Tkinter.Canvas, object):
 
         steps = self.execution_flow.get_steps()
 
-        for key in steps:
-            self.add_step_display(steps[key])
+        for step in steps:
+            self.add_step_display(step)
 
             self.x += 75
 
     def add_step_display(self, step):
         self.step_displays[step.get_label()] = StepDisplay(step, self, self.x, self.y)
-
-    def execute(self):
-        self.step_displays[CPUSimulationStep.get_label()].start_execution_animation()
 
 
 class ExecutionScreen(ScreenFrame):
@@ -474,7 +484,4 @@ class ExecutionScreen(ScreenFrame):
         self.title.configure(text=self.flow.get_label() + ''' Execution''')
 
     def ready(self):
-        self.execute_flow()
-
-    def execute_flow(self):
-        self.execution_display.execute()
+        self.flow.execute()

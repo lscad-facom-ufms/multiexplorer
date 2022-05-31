@@ -1,6 +1,7 @@
 import json
 import os
 import sys
+import time
 
 from MultiExplorer.src.Infrastructure.FixedValues import Simulators, PredictedCores, SniperCorePipelineKinds, \
     CachePolicies, HashTypes, PerformanceModelTypes, Domains, Prefetchers, DramDirectoryTypes
@@ -1011,6 +1012,9 @@ class SniperSimulatorAdapter(object):
                 user_inputs[key] = cur_input
 
         return user_inputs
+
+    def execute(self):
+        time.sleep(12)
 
     def execute_simulation(self):
         os.system(
