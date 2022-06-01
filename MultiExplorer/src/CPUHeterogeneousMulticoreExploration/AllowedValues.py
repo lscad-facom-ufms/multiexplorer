@@ -22,7 +22,8 @@ class PredictedCores(Enum):
     Atom = 4
 
     @staticmethod
-    def belongs(value): return value in set(item.value for item in PredictedCores)
+    def belongs(value):
+        return value in set(item.value for item in PredictedCores)
 
     @staticmethod
     def get_label(value):
@@ -43,7 +44,8 @@ class SniperCorePipelineKinds(Enum):
     TimeSlice = "TimeSlice"
 
     @staticmethod
-    def belongs(value): return value in set(item.value for item in SniperCorePipelineKinds)
+    def belongs(value):
+        return value in set(item.value for item in SniperCorePipelineKinds)
 
     @staticmethod
     def get_label(value):
@@ -166,4 +168,24 @@ class DramDirectoryTypes(Enum):
     def get_dict():
         return {
             DramDirectoryTypes.FULL_MAP: DramDirectoryTypes.get_label(DramDirectoryTypes.FULL_MAP)
+        }
+
+
+class MemoryModels(Enum):
+    BUS = "bus",
+
+    @staticmethod
+    def belongs(value): return value in set(item.value for item in DramDirectoryTypes)
+
+    @staticmethod
+    def get_label(value):
+        if value == MemoryModels.BUS:
+            return "Memory Bus"
+
+        raise ValueError("Value does not corresponds to a known hash type.")
+
+    @staticmethod
+    def get_dict():
+        return {
+            MemoryModels.BUS: MemoryModels.get_label(MemoryModels.BUS)
         }

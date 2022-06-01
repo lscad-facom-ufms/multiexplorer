@@ -3,8 +3,9 @@ import os
 import sys
 import time
 
-from MultiExplorer.src.Infrastructure.FixedValues import Simulators, PredictedCores, SniperCorePipelineKinds, \
-    CachePolicies, HashTypes, PerformanceModelTypes, Domains, Prefetchers, DramDirectoryTypes
+from MultiExplorer.src.CPUHeterogeneousMulticoreExploration.AllowedValues import Simulators, PredictedCores, \
+    SniperCorePipelineKinds, \
+    CachePolicies, HashTypes, PerformanceModelTypes, Domains, Prefetchers, DramDirectoryTypes, MemoryModels
 from MultiExplorer.src.Infrastructure.Inputs import Input, InputGroup, InputType
 from MultiExplorer.src.config import PATH_SNIPER, PATH_RUNDIR
 
@@ -967,14 +968,100 @@ class SniperSimulatorAdapter(object):
                         "label": "Network",
                         "key": "network",
                         "inputs": [
-
+                            Input({
+                                "label": "Memory Model #1",
+                                "key": "memory_model_1",
+                                "allowed_values": MemoryModels.get_dict(),
+                            }),
+                            Input({
+                                "label": "Memory Model #2",
+                                "key": "memory_model_2",
+                                "allowed_values": MemoryModels.get_dict(),
+                            }),
+                            InputGroup({
+                                "label": "Bus Configuration",
+                                "key": "bus",
+                                "inputs": [
+                                    Input({
+                                        "label": "Bandwidth",
+                                        "key": "bandwidth",
+                                        "type": InputType.Float,
+                                    }),
+                                    Input({
+                                        "label": "ignore_local_traffic",
+                                        "key": "ignore_local_traffic",
+                                        "type": InputType.Bool,
+                                    })
+                                ],
+                            }),
+                            InputGroup({
+                                "label": "EMESH Hop by Hop Configuration",
+                                "key": "emesh_hop_by_hop",
+                                "inputs": [
+                                    Input({
+                                        "label": "Link Bandwidth",
+                                        "key": "link_bandwidth",
+                                        "type": InputType.Integer,
+                                    }),
+                                    Input({
+                                        "label": "Hop Latency",
+                                        "key": "hop_latency",
+                                        "type": InputType.Integer,
+                                    }),
+                                    Input({
+                                        "label": "Concentration",
+                                        "key": "concentration",
+                                        "type": InputType.Integer,
+                                    }),
+                                    Input({
+                                        "label": "Dimensions",
+                                        "key": "dimensions",
+                                        "type": InputType.Integer,
+                                    }),
+                                    Input({
+                                        "label": "Wrap_around",
+                                        "key": "wrap_around",
+                                        "type": InputType.Bool,
+                                    }),
+                                ],
+                            }),
+                            InputGroup({
+                                "label": "Bus Configuration",
+                                "key": "emesh_hop_counter",
+                                "inputs": [
+                                    Input({
+                                        "label": "link_bandwidth",
+                                        "key": "link_bandwidth",
+                                        "type": InputType.Integer,
+                                    }),
+                                    Input({
+                                        "label": "hop_latency",
+                                        "key": "hop_latency",
+                                        "type": InputType.Integer,
+                                    })
+                                ],
+                            }),
                         ],
                     }),
                     InputGroup({
                         "label": "Power",
                         "key": "power",
                         "inputs": [
-
+                            Input({
+                                "label": "VDD",
+                                "key": "vdd",
+                                "type": InputType.Float,
+                            }),
+                            Input({
+                                "label": "Technology Node",
+                                "key": "technology_node",
+                                "type": InputType.Integer,
+                            }),
+                            Input({
+                                "label": "Temperature",
+                                "key": "temperature",
+                                "type": InputType.Integer,
+                            }),
                         ],
                     }),
                 ],
@@ -998,6 +1085,11 @@ class SniperSimulatorAdapter(object):
             else:
                 raise TypeError("Argument 'inputs' must be an array composed solely of objects that belongs either to "
                                 "the Input or the InputGroup classes.")
+
+    def set_values_from_file(self, absolute_file_path):
+        input_json = json.loads(open(absolute_file_path).read())
+
+        print json.dumps(input_json, indent=4, sort_keys=True)
 
     def get_user_inputs(self):
         user_inputs = {}
