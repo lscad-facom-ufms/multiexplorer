@@ -37,6 +37,14 @@ class CPUHeterogeneousMulticoreExplorationExecutionFlow(object):
     def __init__(self):
         self.steps = [
             CPUSimulationStep(),
+            CPUSimulationStep(),
+            CPUSimulationStep(),
+            CPUSimulationStep(),
+            CPUSimulationStep(),
+            CPUSimulationStep(),
+            CPUSimulationStep(),
+            CPUSimulationStep(),
+            CPUSimulationStep(),
         ]
 
     @staticmethod

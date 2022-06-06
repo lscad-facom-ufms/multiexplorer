@@ -3,10 +3,10 @@ import ttk
 
 from Tkconstants import DISABLED as STATE_DISABLED, NORMAL as STATE_NORMAL
 from Tkconstants import HORIZONTAL as HORIZONTAL_ORIENTATION
-from Tkconstants import BOTH as FILL_BOTH
+from Tkconstants import X as FILL_X, Y as FILL_Y, BOTH as FILL_BOTH
 from Tkconstants import W as STICKY_WEST, E as STICKY_EAST
 from Tkconstants import CENTER as ANCHOR_CENTER
-from Tkconstants import S as ANCHOR_S, N as ANCHOR_N, SW as ANCHOR_SW, SE as ANCHOR_SE
+from Tkconstants import S as ANCHOR_S, N as ANCHOR_N, NW as ANCHOR_NW, SW as ANCHOR_SW, SE as ANCHOR_SE
 from Tkconstants import BOTTOM as SIDE_BOTTOM, TOP as SIDE_TOP, LEFT as SIDE_LEFT
 
 from MultiExplorer.src.GUI.Buttons import NavigateButton
@@ -294,6 +294,50 @@ class InputScreen(ScreenFrame):
 class InputInfo(Tkinter.Frame, object):
     pass
 
+class StepLabel(Tkinter.Label, object):
+    def __init__(self, step, master=None, cnf={}, **kw):
+        super(StepLabel, self).__init__(master, cnf, **kw)
+
+
+class StepButtons(Tkinter.Frame, object):
+    def __init__(self, step, master=None, cnf={}, **kw):
+        super(StepButtons, self).__init__(master, cnf, **kw)
+
+
+class StepFrame(Tkinter.Frame, object):
+    HEIGHT = 400
+
+    WIDTH = 300
+
+    def __init__(self, step, master=None, cnf={}, **kw):
+        super(StepFrame, self).__init__(master, cnf, **kw)
+
+        self.config(
+            height=StepFrame.HEIGHT,
+            width=StepFrame.WIDTH,
+        )
+
+        self.pack(
+            side=SIDE_LEFT,
+        )
+
+        self.label = StepLabel(step, self)
+
+        self.canvas = Tkinter.Canvas(self)
+
+        self.canvas.config(
+            height=StepFrame.HEIGHT/3.0,
+            width=StepFrame.WIDTH,
+        )
+
+        self.canvas.pack(
+            anchor=ANCHOR_CENTER,
+        )
+
+        self.step_display = StepDisplay(step, self.canvas, (StepFrame.WIDTH/2)-112.5, ((StepFrame.HEIGHT/3.0)/2)-50)
+
+        self.step_buttons = StepButtons(step, self)
+
 
 class StepDisplay(object):
     def __init__(self, step, canvas, x, y):
@@ -363,16 +407,22 @@ class StepDisplay(object):
 
 
 class ExecutionDisplay(Tkinter.Canvas, object):
+    HEIGHT = 400
+
     def __init__(self, master=None, cnf={}, **kw):
         super(ExecutionDisplay, self).__init__(master, cnf, **kw)
 
+        self.master = master
+        self.frame_id = None
+        self.frame = None
+
         self.execution_flow = None
-        self.step_displays = {}
+        self.step_frames = {}
 
         self.scrollbar = Tkinter.Scrollbar(master, orient=HORIZONTAL_ORIENTATION)
 
         self.scrollbar.pack(
-            fill='x',
+            fill=FILL_X,
             expand=True,
             side=SIDE_BOTTOM,
         )
@@ -390,10 +440,7 @@ class ExecutionDisplay(Tkinter.Canvas, object):
         self.config(
             bg=DefaultStyleSettings.bg_color,
             xscrollcommand=self.scrollbar.set,
-            scrollregion=(0, 0, 700, 200),
         )
-
-        self.y = 75
 
     def set_execution_flow(self, flow):
         self.execution_flow = flow
@@ -403,24 +450,51 @@ class ExecutionDisplay(Tkinter.Canvas, object):
         self.draw()
 
     def draw(self):
-        self.step_display = []
+        self.delete(self.frame_id)
 
-        self.delete("all")
+        frame = Tkinter.Frame(self.master)
 
-        self.x = 75
+        frame.config(
+            height=ExecutionDisplay.HEIGHT,
+        )
+
+        self.frame = frame
 
         steps = self.execution_flow.get_steps()
 
+        step_nbr = 0
         for step in steps:
-            self.add_step_display(step)
+            self.add_step_frame(step)
 
-            self.x += 75
+            step_nbr += 1
 
-    def add_step_display(self, step):
-        self.step_displays[step.get_label()] = StepDisplay(step, self, self.x, self.y)
+
+        new_width = step_nbr * StepFrame.WIDTH
+
+        self.frame.config(
+            width=new_width,
+        )
+
+        self.frame_id = self.create_window(
+            0,
+            0,
+            window=frame,
+            anchor=ANCHOR_NW,
+        )
+
+        self.config(
+            scrollregion=(0, 0, new_width, ExecutionDisplay.HEIGHT),
+        )
+
+        self.xview('moveto', '0.0')
+
+    def add_step_frame(self, step):
+        self.step_frames[step.get_label()] = StepFrame(step, self.frame)
 
 
 class ExecutionScreen(ScreenFrame):
+    DISPLAY_AREA_HEIGHT = 400
+
     def __init__(self, master=None, cnf={}, focus=False, **kw):
         super(ExecutionScreen, self).__init__(master, cnf, focus, **kw)
 
@@ -460,9 +534,7 @@ class ExecutionScreen(ScreenFrame):
         self.display_area = Tkinter.Frame(self)
 
         self.display_area.config(
-            height=200,
-            borderwidth=2,
-            relief="sunken",
+            height=ExecutionScreen.DISPLAY_AREA_HEIGHT,
         )
 
         self.display_area.pack(
