@@ -26,7 +26,7 @@ This is a Multiexplorer-VM package based on Ubuntu 14 ready to use Multiexplorer
 
 Run your first simulation
 =========================
-After installing the multiexplorer and  gpgpu-sim, open the terminal window and type:
+After installing the multiexplorer and  gpgpu-sim, and extract Benchmarks.zip file open the terminal window and type:
 
 $ cd multiexplorer
 
