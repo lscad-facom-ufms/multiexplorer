@@ -58,6 +58,7 @@ class SniperSimulatorAdapter(object):
                         "label": "Core Model",
                         "key": "model_name",
                         "is_user_input": True,
+                        "required": True,
                         "allowed_values": {
                             PredictedCores.Quark: PredictedCores.get_label(PredictedCores.Quark),
                             PredictedCores.Arm53: PredictedCores.get_label(PredictedCores.Arm53),
@@ -69,6 +70,7 @@ class SniperSimulatorAdapter(object):
                         "label": "Number of Cores",
                         "key": "total_cores",
                         "is_user_input": True,
+                        "required": True,
                         "type": InputType.Integer,
                     }),
                     InputGroup({
@@ -79,6 +81,7 @@ class SniperSimulatorAdapter(object):
                                 "label": "Global Frequency",
                                 "key": "global_frequency",
                                 "is_user_input": True,
+                                "required": True,
                                 "type": InputType.Integer,
                             }),
                             Input({
@@ -1086,7 +1089,11 @@ class SniperSimulatorAdapter(object):
                 raise TypeError("Argument 'inputs' must be an array composed solely of objects that belongs either to "
                                 "the Input or the InputGroup classes.")
 
+    # todo
     def set_values_from_file(self, absolute_file_path):
+        """
+        This method reads a json file and sets the values of the inputs.
+        """
         input_json = json.loads(open(absolute_file_path).read())
 
         print json.dumps(input_json, indent=4, sort_keys=True)

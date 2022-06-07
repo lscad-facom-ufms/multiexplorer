@@ -1,7 +1,7 @@
 class Event:
-    EXECUTION_STARTED = "execution_started"
+    STEP_EXECUTION_STARTED = "step_execution_started"
 
-    EXECUTION_ENDED = "execution_ended"
+    STEP_EXECUTION_ENDED = "step_execution_ended"
 
 
 class EventFirer:
@@ -26,7 +26,11 @@ class EventFirer:
         """
         Add an event handler
         """
-        self.events[event_name].append(callback_fn)
+        if event_name not in self.events:
+            self.events[event_name] = []
+
+        if callback_fn not in self.events[event_name]:
+            self.events[event_name].append(callback_fn)
 
     def remove_handler(self, event_name, callback_fn):
         """

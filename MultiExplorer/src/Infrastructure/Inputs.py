@@ -109,6 +109,12 @@ class Input:
 
         return False
 
+    def set_value_from_GUI(self, value):
+        if self.values_are_fixed():
+            self.value = self.allowed_values.keys()[self.allowed_values.values().index(value)]
+        else:
+            self.value = value
+
     def __str__(self):
         return self.label + ' ' + str(self.is_user_input)
 

@@ -22,8 +22,8 @@ class CPUSimulationStep(EventFirer):
 
     def __init__(self):
         self.events = {
-            Event.EXECUTION_STARTED: [],
-            Event.EXECUTION_ENDED: [],
+            Event.STEP_EXECUTION_STARTED: [],
+            Event.STEP_EXECUTION_ENDED: [],
         }
 
         self.simulator_adapter = SniperSimulatorAdapter()
@@ -44,7 +44,7 @@ class CPUSimulationStep(EventFirer):
 
         self.execution_thread.start()
 
-        self.fire(Event.EXECUTION_STARTED)
+        self.fire(Event.STEP_EXECUTION_STARTED)
 
     def is_finished(self):
         if self.execution_thread is None:
@@ -58,4 +58,4 @@ class CPUSimulationStep(EventFirer):
         return False
 
     def finish(self):
-        self.fire(Event.EXECUTION_ENDED)
+        self.fire(Event.STEP_EXECUTION_ENDED)

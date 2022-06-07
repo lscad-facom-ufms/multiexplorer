@@ -1,3 +1,4 @@
+from MultiExplorer.src.Infrastructure.Events import Event
 from Steps import CPUSimulationStep
 
 
@@ -35,6 +36,8 @@ class CPUHeterogeneousMulticoreExplorationExecutionFlow(object):
         return cls.instance
 
     def __init__(self):
+        self.cur_step = -1
+
         self.steps = [
             CPUSimulationStep(),
             CPUSimulationStep(),
@@ -53,4 +56,15 @@ class CPUHeterogeneousMulticoreExplorationExecutionFlow(object):
     def get_steps(self): return self.steps
 
     def execute(self):
-        self.steps[0].start_execution()
+        self.cur_step = -1
+
+        self.execute_next_step()
+
+    def execute_next_step(self):
+        self.cur_step += 1
+
+        step = self.steps[self.cur_step]
+
+        step.add_handler(Event.STEP_EXECUTION_ENDED, self.execute_next_step)
+
+        step.start_execution()

@@ -36,19 +36,21 @@ class InputGUI:
 
 
 class InputGroupFrame(Tkinter.LabelFrame, object):
-    def __init__(self, input_group, master=None, cnf={}, **kw):
+    def __init__(self, infra_group, master=None, cnf={}, **kw):
         super(InputGroupFrame, self).__init__(master, cnf, **kw)
 
         self.configure(
             relief='groove',
             labelanchor='n',
-            text=input_group.label,
+            text=infra_group.label,
         )
+
+        self.infra_group = infra_group
 
         self.inputs = {}
 
-        for key in input_group.inputs:
-            cur_input = input_group.inputs[key]
+        for key in infra_group.inputs:
+            cur_input = infra_group.inputs[key]
 
             if isinstance(cur_input, Input) and cur_input.is_user_input:
                 self.inputs[key] = InputGUI.create_input(cur_input, self)
@@ -57,6 +59,13 @@ class InputGroupFrame(Tkinter.LabelFrame, object):
                 self.inputs[key] = InputGUI.create_input_group(cur_input, self)
 
         self.pack()
+
+    # todo
+    def is_valid(self):
+        """
+        Returns True if all values from inputs and inputs subgroups that belong to this group are valid. False otherwise.
+        """
+        pass
 
 
 class InputFrame(Tkinter.Frame, object):
@@ -108,6 +117,8 @@ class SelectEntry(ttk.Combobox, object):
 
         self.infra_input = infra_input
 
+        self.bind("<<ComboboxSelected>>", self.set_input_value)
+
         # %d = Type of action (1=insert, 0=delete, -1 for others)
         # %i = index of char string to be inserted/deleted, or -1
         # %P = value of the entry if the edit is allowed
@@ -135,6 +146,9 @@ class SelectEntry(ttk.Combobox, object):
 
         return False
 
+    def set_input_value(self, event):
+        self.infra_input.set_value_from_GUI(self.get())
+
 
 class Select(InputFrame):
     def __init__(self, infra_input, master=None, cnf={}, **kw):
@@ -155,6 +169,8 @@ class TypeInEntry(Tkinter.Entry, object):
         )
 
         self.infra_input = infra_input
+
+        self.bind("<FocusOut>", self.set_input_value)
 
         # %d = Type of action (1=insert, 0=delete, -1 for others)
         # %i = index of char string to be inserted/deleted, or -1
@@ -188,6 +204,9 @@ class TypeInEntry(Tkinter.Entry, object):
 
         return False
 
+    def set_input_value(self, event):
+        self.infra_input.set_value_from_GUI(self.get())
+
 
 class Integer(InputFrame):
     def is_valid(self):
@@ -203,7 +222,7 @@ class Integer(InputFrame):
 
 class Float(InputFrame):
     def is_valid(self):
-        pass
+        self.entry.grab_status()
 
     def __init__(self, infra_input, master=None, cnf={}, **kw):
         super(Float, self).__init__(infra_input, master, cnf, **kw)

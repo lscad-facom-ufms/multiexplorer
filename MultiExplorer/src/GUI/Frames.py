@@ -183,6 +183,8 @@ class InputTab(Tkinter.Frame, object):
 
         super(InputTab, self).__init__(master, cnf, **kw)
 
+        self.step = step
+
         self.inputs = {}
 
         step_user_inputs = step.get_user_inputs()
@@ -192,20 +194,45 @@ class InputTab(Tkinter.Frame, object):
 
         self.pack(fill=FILL_BOTH, expand=True)
 
+    # todo
+    def is_valid(self):
+        """
+        Verify each input and input group for validity.
+        Returns True if all inputs are valid, and False otherwise.
+        """
+        return True
+
 
 class InputTabsController(ttk.Notebook, object):
     def __init__(self, master=None, **kw):
         super(InputTabsController, self).__init__(master, **kw)
 
-        self.pack(fill=FILL_BOTH, expand=True, pady=100, padx=50)
+        self.input_tabs = []
 
-        self.tabs = {}
+        self.pack(fill=FILL_BOTH, expand=True, pady=100, padx=50)
 
     def add_step_tab(self, step):
         if not step.has_user_input():
             return
 
-        self.add(InputTab(step, self), text=step.get_label())
+        input_tab = InputTab(step, self)
+
+        self.input_tabs.append(input_tab)
+
+        self.add(input_tab, text=step.get_label())
+
+    def is_valid(self):
+        """
+        Must verify all values from all inputs, from each tab.
+        Returns true if all input values are valid; returns false otherwise.
+        """
+        all_tabs_are_valid = True
+
+        for input_tab in self.input_tabs:
+            if not input_tab.is_valid():
+                all_tabs_are_valid = False
+
+        return all_tabs_are_valid
 
 
 class InputScreen(ScreenFrame):
@@ -268,11 +295,12 @@ class InputScreen(ScreenFrame):
         self.title.configure(text=self.flow.get_label() + ''' Settings''')
 
     def execute_flow(self):
-        execution_screen = self.master.get_screen(ExecutionScreen.__name__)
+        if self.tabs_controller.is_valid():
+            execution_screen = self.master.get_screen(ExecutionScreen.__name__)
 
-        execution_screen.set_flow(self.flow_label)
+            execution_screen.set_flow(self.flow_label)
 
-        self.navigate(execution_screen)
+            self.navigate(execution_screen)
 
     def reset_tabs(self):
         self.tabs_controller.destroy()
@@ -292,7 +320,9 @@ class InputScreen(ScreenFrame):
 
 
 class InputInfo(Tkinter.Frame, object):
-    pass
+    def __init__(self, step, master=None, cnf={}, **kw):
+        super(InputInfo, self).__init__(master, cnf, **kw)
+
 
 class StepLabel(Tkinter.Label, object):
     def __init__(self, step, master=None, cnf={}, **kw):
@@ -326,7 +356,7 @@ class StepFrame(Tkinter.Frame, object):
         self.canvas = Tkinter.Canvas(self)
 
         self.canvas.config(
-            height=StepFrame.HEIGHT/3.0,
+            height=StepFrame.HEIGHT / 3.0,
             width=StepFrame.WIDTH,
         )
 
@@ -334,7 +364,12 @@ class StepFrame(Tkinter.Frame, object):
             anchor=ANCHOR_CENTER,
         )
 
-        self.step_display = StepDisplay(step, self.canvas, (StepFrame.WIDTH/2)-112.5, ((StepFrame.HEIGHT/3.0)/2)-50)
+        self.step_display = StepDisplay(
+            step,
+            self.canvas,
+            (StepFrame.WIDTH / 2) - 112.5,
+            ((StepFrame.HEIGHT / 3.0) / 2) - 50
+        )
 
         self.step_buttons = StepButtons(step, self)
 
@@ -343,13 +378,15 @@ class StepDisplay(object):
     def __init__(self, step, canvas, x, y):
         self.step = step
 
-        self.step.add_handler(Event.EXECUTION_STARTED, self.start_execution_animation)
+        self.step.add_handler(Event.STEP_EXECUTION_STARTED, self.start_execution_animation)
 
-        self.step.add_handler(Event.EXECUTION_ENDED, self.stop_execution_animation)
+        self.step.add_handler(Event.STEP_EXECUTION_ENDED, self.stop_execution_animation)
 
         self.is_executing = False
 
         self.animation_job = None
+
+        self.execution_job = None
 
         self.canvas = canvas
 
@@ -363,17 +400,19 @@ class StepDisplay(object):
         self.execution_job = self.canvas.after(500, self.check_step_execution)
 
     def check_step_execution(self):
-       if not self.step.is_finished():
-           self.execution_job = self.canvas.after(500, self.check_step_execution)
+        if not self.step.is_finished():
+            self.execution_job = self.canvas.after(500, self.check_step_execution)
 
     def stop_execution_animation(self):
-        self.is_executing = False
-
         if self.animation_job is not None:
             self.canvas.after_cancel(self.animation_job)
 
         if self.execution_job is not None:
             self.canvas.after_cancel(self.execution_job)
+
+        self.is_executing = False
+
+        self.canvas.itemconfig(self.shape_id, fill=DefaultStyleSettings.bg_color)
 
     def create_step_shape(self, x, y):
         step_shape_id = self.canvas.create_polygon(
@@ -450,17 +489,12 @@ class ExecutionDisplay(Tkinter.Canvas, object):
         self.draw()
 
     def draw(self):
-        self.delete(self.frame_id)
-
-        frame = Tkinter.Frame(self.master)
-
-        frame.config(
-            height=ExecutionDisplay.HEIGHT,
-        )
-
-        self.frame = frame
+        if self.frame_id is not None:
+            self.delete(self.frame_id)
 
         steps = self.execution_flow.get_steps()
+
+        self.frame = Tkinter.Frame(self.master)
 
         step_nbr = 0
         for step in steps:
@@ -468,17 +502,17 @@ class ExecutionDisplay(Tkinter.Canvas, object):
 
             step_nbr += 1
 
-
         new_width = step_nbr * StepFrame.WIDTH
 
         self.frame.config(
+            height=ExecutionDisplay.HEIGHT,
             width=new_width,
         )
 
         self.frame_id = self.create_window(
             0,
             0,
-            window=frame,
+            window=self.frame,
             anchor=ANCHOR_NW,
         )
 
