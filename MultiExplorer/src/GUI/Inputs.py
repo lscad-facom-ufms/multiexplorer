@@ -84,7 +84,7 @@ class InputFrame(Tkinter.Frame, object):
         self.pack()
 
     def is_valid(self):
-        raise NotImplementedError("This 'InputFrame' has not implemented it's validation check.")
+        self.infra_input.is_valid()
 
 
 class InputLabel(Tkinter.Label, object):
@@ -209,9 +209,6 @@ class TypeInEntry(Tkinter.Entry, object):
 
 
 class Integer(InputFrame):
-    def is_valid(self):
-        self.entry.grab_status()
-
     def __init__(self, infra_input, master=None, cnf={}, **kw):
         super(Integer, self).__init__(infra_input, master, cnf, **kw)
 
@@ -221,9 +218,6 @@ class Integer(InputFrame):
 
 
 class Float(InputFrame):
-    def is_valid(self):
-        self.entry.grab_status()
-
     def __init__(self, infra_input, master=None, cnf={}, **kw):
         super(Float, self).__init__(infra_input, master, cnf, **kw)
 
