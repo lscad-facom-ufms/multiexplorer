@@ -202,6 +202,14 @@ class InputTab(Tkinter.Frame, object):
         """
         return True
 
+    # todo
+    def display_as_valid(self):
+        pass
+
+    # todo
+    def display_as_invalid(self):
+        pass
+
 
 class InputTabsController(ttk.Notebook, object):
     def __init__(self, master=None, **kw):
