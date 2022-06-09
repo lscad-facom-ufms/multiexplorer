@@ -10,6 +10,7 @@ class InputType(Enum):
     Bool = 4
     IntegerArray = 5
     Bit = 6
+    IntegerRange = 7
 
     @staticmethod
     def belongs(value):
@@ -68,7 +69,7 @@ class Input:
             if not isinstance(options['validator'], Validator):
                 raise TypeError("Parameter 'validator' must implement the Validator interface.")
 
-            self.type = options['validator']
+            self.validator = options['validator']
 
         if 'is_user_input' in options:
             self.is_user_input = bool(options['is_user_input'])

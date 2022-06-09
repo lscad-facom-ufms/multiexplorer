@@ -1,10 +1,12 @@
 from abc import ABCMeta, abstractmethod
 
+from MultiExplorer.src.Infrastructure.Inputs import Input, InputGroup
+
 
 class Step:
     __metaclass__ = ABCMeta
     """
-    This is the interface used to extend MultiExplorer execution flows with new steps.
+    This is the class used to extend MultiExplorer execution flows with new steps.
     
     Step classes should be implemented as SINGLETONS.
     """
@@ -24,6 +26,38 @@ class Step:
 
     @abstractmethod
     def has_user_input(self): raise NotImplementedError
+
+
+class Adapter:
+    """
+        This is the class used to extend MultiExplorer execution flows with new external tools.
+
+        Adapter classes are mainly responsible to dealing with the inputs and outputs of the external tools they handle.
+        """
+    def __init__(self):
+        self.inputs = {}
+
+    def set_inputs(self, inputs):
+        for i in inputs:
+            if isinstance(i, Input) or isinstance(i, InputGroup):
+                self.inputs[i.key] = i
+            else:
+                raise TypeError("Argument 'inputs' must be an array composed solely of objects that belongs either to "
+                                "the Input or the InputGroup classes.")
+
+    def get_user_inputs(self):
+        user_inputs = {}
+
+        for key in self.inputs:
+            cur_input = self.inputs[key]
+
+            if isinstance(cur_input, Input) and cur_input.is_user_input:
+                user_inputs[key] = cur_input
+
+            if isinstance(cur_input, InputGroup) and cur_input.has_user_input():
+                user_inputs[key] = cur_input
+
+        return user_inputs
 
 
 class ExecutionFlow:

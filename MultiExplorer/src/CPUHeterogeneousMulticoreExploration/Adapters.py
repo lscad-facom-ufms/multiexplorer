@@ -5,50 +5,31 @@ import time
 
 from MultiExplorer.src.CPUHeterogeneousMulticoreExploration.AllowedValues import Simulators, PredictedCores, \
     SniperCorePipelineKinds, \
-    CachePolicies, HashTypes, PerformanceModelTypes, Domains, Prefetchers, DramDirectoryTypes, MemoryModels
+    CachePolicies, HashTypes, PerformanceModelTypes, Domains, Prefetchers, DramDirectoryTypes, MemoryModels, \
+    Technologies, Applications
+from MultiExplorer.src.Infrastructure.ExecutionFlow import Adapter
 from MultiExplorer.src.Infrastructure.Inputs import Input, InputGroup, InputType
 from MultiExplorer.src.config import PATH_SNIPER, PATH_RUNDIR
 
 
-class SniperSimulatorAdapter(object):
+class SniperSimulatorAdapter(Adapter):
     """
     This adapter utilises Sniper Multi-Core Simulator to execute a performance evaluation of a CPU architecture
     through simulation.
     """
 
     def __init__(self):
+        Adapter.__init__(self)
+
         self.inputs = {}
 
         self.set_inputs([
-            InputGroup({
-                "label": "Preferences",
-                "key": "preferences",
-                "inputs": [
-                    Input({
-                        "label": "Simulation Tool",
-                        "key": "sim_tool",
-                        "allowed_values": {
-                            Simulators.Sniper: "Sniper Multi-Core Simulator"
-                        },
-                    }),
-                    Input({
-                        "label": "Project Name",
-                        "key": "project_name",
-                        "type": InputType.Text,
-                    }),
-                    Input({
-                        "label": "Simulation Tool",
-                        "key": "sim_tool",
-                        "allowed_values": {
-                            Simulators.Sniper: Simulators.get_label(Simulators.Sniper)
-                        },
-                    }),
-                    Input({
-                        "label": "Execute DSE?",
-                        "key": "sim_tool",
-                        "type": InputType.Bool,
-                    }),
-                ]
+            Input({
+                'label': 'application',
+                'key': 'application',
+                'allowed_values': Applications.get_dict(),
+                "required": True,
+                "is_user_input": True,
             }),
             InputGroup({
                 "label": "General Modeling",
@@ -1081,14 +1062,6 @@ class SniperSimulatorAdapter(object):
 
         self.output_path = None
 
-    def set_inputs(self, inputs):
-        for i in inputs:
-            if isinstance(i, Input) or isinstance(i, InputGroup):
-                self.inputs[i.key] = i
-            else:
-                raise TypeError("Argument 'inputs' must be an array composed solely of objects that belongs either to "
-                                "the Input or the InputGroup classes.")
-
     # todo
     def set_values_from_file(self, absolute_file_path):
         """
@@ -1098,22 +1071,9 @@ class SniperSimulatorAdapter(object):
 
         print json.dumps(input_json, indent=4, sort_keys=True)
 
-    def get_user_inputs(self):
-        user_inputs = {}
-
-        for key in self.inputs:
-            cur_input = self.inputs[key]
-
-            if isinstance(cur_input, Input) and cur_input.is_user_input:
-                user_inputs[key] = cur_input
-
-            if isinstance(cur_input, InputGroup) and cur_input.has_user_input():
-                user_inputs[key] = cur_input
-
-        return user_inputs
-
+    # todo
     def execute(self):
-        time.sleep(12)
+        time.sleep(6)
 
     def execute_simulation(self):
         os.system(
@@ -1158,6 +1118,92 @@ class SniperSimulatorAdapter(object):
 
     def get_results(self):
         pass
+
+
+class McPATAdapter(Adapter):
+    """
+        This adapter utilises McPAT (an integrated power, area, and timing modeling framework for multithreading,
+        multicore, and many-core architectures) to obtain the physical parameters  for a CPU architecture.
+    """
+
+    # todo
+    def __init__(self):
+        Adapter.__init__(self)
+
+    # todo
+    def get_user_inputs(self):
+        pass
+
+    # todo
+    def execute(self):
+        time.sleep(6)
+
+
+class NsgaIIPredDSEAdapter(Adapter):
+    """
+        This adapter uses a NSGA-II implementation as it's exploration engine, and a heterogeneous multicore CPU
+        architecture performance predictor as it's evaluation engine, in order to perform a design space exploration.
+    """
+
+    # todo
+    def __init__(self):
+        Adapter.__init__(self)
+
+        self.inputs = {}
+
+        self.set_inputs([
+            InputGroup({
+                'label': "Exploration Space",
+                'key': 'exploration_space',
+                'inputs': [
+                    Input({
+                        'label': 'Number of Original Cores for Design',
+                        'key': 'original_cores_for_design',
+                        # "is_user_input": True,
+                        # "required": True,
+                        'type': InputType.IntegerRange,
+                    }),
+                    Input({
+                        'label': 'Number of IP Cores for Design',
+                        'key': 'ip_cores_for_design',
+                        # "is_user_input": True,
+                        # "required": True,
+                        'type': InputType.IntegerRange,
+                    }),
+                ],
+            }),
+            InputGroup({
+                'label': "Constraints",
+                'key': 'constraints',
+                'inputs': [
+                    Input({
+                        'label': 'Maximum Power Density',
+                        'key': 'maximum_power_density',
+                        'type': InputType.Float,
+                        "is_user_input": True,
+                        "required": True,
+                    }),
+                    Input({
+                        'label': 'Maximum Area',
+                        'key': 'maximum_area',
+                        'type': InputType.Float,
+                        "is_user_input": True,
+                        "required": True,
+                    }),
+                    Input({
+                        'label': 'Technology',
+                        'key': 'technology',
+                        'allowed_values': Technologies.get_dict(),
+                        "is_user_input": True,
+                        "required": True,
+                    }),
+                ],
+            }),
+        ])
+
+    # todo
+    def execute(self):
+        time.sleep(6)
 
 
 def main():

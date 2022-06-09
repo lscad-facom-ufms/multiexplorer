@@ -2,7 +2,7 @@ import threading
 import time
 
 from MultiExplorer.src.Infrastructure.Events import Event, EventFirer
-from Adapters import SniperSimulatorAdapter
+from Adapters import SniperSimulatorAdapter, McPATAdapter, NsgaIIPredDSEAdapter
 
 
 class CPUSimulationStep(EventFirer):
@@ -11,6 +11,7 @@ class CPUSimulationStep(EventFirer):
 
         The main role it plays is to communicate with a SimulatorAdapter, and manage its execution and results.
     """
+
     def __new__(cls):
         if not hasattr(cls, 'instance'):
             cls.instance = super(
@@ -21,6 +22,8 @@ class CPUSimulationStep(EventFirer):
         return cls.instance
 
     def __init__(self):
+        EventFirer.__init__(self)
+
         self.events = {
             Event.STEP_EXECUTION_STARTED: [],
             Event.STEP_EXECUTION_ENDED: [],
@@ -31,16 +34,142 @@ class CPUSimulationStep(EventFirer):
         self.execution_thread = None
 
     @staticmethod
-    def get_label(): return 'Simulation'
+    def get_label():
+        return 'Simulation'
 
     @staticmethod
-    def has_user_input(): return True
+    def has_user_input():
+        return True
 
     def get_user_inputs(self):
         return self.simulator_adapter.get_user_inputs()
 
     def start_execution(self):
         self.execution_thread = threading.Thread(target=self.simulator_adapter.execute)
+
+        self.execution_thread.start()
+
+        self.fire(Event.STEP_EXECUTION_STARTED)
+
+    def is_finished(self):
+        if self.execution_thread is None:
+            raise RuntimeError("Cannot check execution thread: thread not set.")
+
+        if not self.execution_thread.is_alive():
+            self.finish()
+
+            return True
+
+        return False
+
+    def finish(self):
+        self.fire(Event.STEP_EXECUTION_ENDED)
+
+
+class PhysicalExplorationStep(EventFirer):
+    """
+        This class encapsulates and control the physical exploration step of a heterogeneous multicore exploration
+        execution flow.
+
+        The main role it plays is to communicate with a PhysicalExplorationAdapter, and manage its execution and results.
+    """
+
+    def __new__(cls):
+        if not hasattr(cls, 'instance'):
+            cls.instance = super(
+                PhysicalExplorationStep,
+                cls
+            ).__new__(cls)
+
+        return cls.instance
+
+    def __init__(self):
+        EventFirer.__init__(self)
+
+        self.events = {
+            Event.STEP_EXECUTION_STARTED: [],
+            Event.STEP_EXECUTION_ENDED: [],
+        }
+
+        self.adapter = McPATAdapter()
+
+        self.execution_thread = None
+
+    @staticmethod
+    def get_label():
+        return 'Physical Exploration'
+
+    @staticmethod
+    def has_user_input():
+        return False
+
+    def get_user_inputs(self):
+        return self.adapter.get_user_inputs()
+
+    def start_execution(self):
+        self.execution_thread = threading.Thread(target=self.adapter.execute)
+
+        self.execution_thread.start()
+
+        self.fire(Event.STEP_EXECUTION_STARTED)
+
+    def is_finished(self):
+        if self.execution_thread is None:
+            raise RuntimeError("Cannot check execution thread: thread not set.")
+
+        if not self.execution_thread.is_alive():
+            self.finish()
+
+            return True
+
+        return False
+
+    def finish(self):
+        self.fire(Event.STEP_EXECUTION_ENDED)
+
+
+class DSEStep(EventFirer):
+    """
+        This class encapsulates and control the simulation step of a heterogeneous multicore CPU design space
+        exploration.
+
+        The main role it plays is to communicate with a DSEAdapter, and manage its execution and results.
+    """
+
+    def __new__(cls):
+        if not hasattr(cls, 'instance'):
+            cls.instance = super(
+                DSEStep,
+                cls
+            ).__new__(cls)
+
+        return cls.instance
+
+    def __init__(self):
+        EventFirer.__init__(self)
+
+        self.events = {
+            Event.STEP_EXECUTION_STARTED: [],
+            Event.STEP_EXECUTION_ENDED: [],
+        }
+
+        self.adapter = NsgaIIPredDSEAdapter()
+
+        self.execution_thread = None
+
+    @staticmethod
+    def get_label():
+        return 'DSE'
+
+    @staticmethod
+    def has_user_input():
+        return True
+
+    def get_user_inputs(self):
+        return self.adapter.get_user_inputs()
+
+    def start_execution(self):
+        self.execution_thread = threading.Thread(target=self.adapter.execute)
 
         self.execution_thread.start()
 

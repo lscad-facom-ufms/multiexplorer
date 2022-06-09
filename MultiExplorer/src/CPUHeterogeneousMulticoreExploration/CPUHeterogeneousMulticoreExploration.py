@@ -1,5 +1,5 @@
 from MultiExplorer.src.Infrastructure.Events import Event
-from Steps import CPUSimulationStep
+from Steps import CPUSimulationStep, PhysicalExplorationStep, DSEStep
 
 
 class CPUHeterogeneousMulticoreExplorationExecutionFlow(object):
@@ -40,14 +40,8 @@ class CPUHeterogeneousMulticoreExplorationExecutionFlow(object):
 
         self.steps = [
             CPUSimulationStep(),
-            CPUSimulationStep(),
-            CPUSimulationStep(),
-            CPUSimulationStep(),
-            CPUSimulationStep(),
-            CPUSimulationStep(),
-            CPUSimulationStep(),
-            CPUSimulationStep(),
-            CPUSimulationStep(),
+            PhysicalExplorationStep(),
+            DSEStep(),
         ]
 
     @staticmethod

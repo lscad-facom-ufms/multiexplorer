@@ -189,3 +189,44 @@ class MemoryModels(Enum):
         return {
             MemoryModels.BUS: MemoryModels.get_label(MemoryModels.BUS)
         }
+
+
+class Technologies(Enum):
+    TWENTY_TWO_NANOMETERS = "22nm",
+
+    @staticmethod
+    def belongs(value): return value in set(item.value for item in Technologies)
+
+    @staticmethod
+    def get_label(value):
+        if value == Technologies.TWENTY_TWO_NANOMETERS:
+            return "22nm"
+
+        raise ValueError("Value does not corresponds to a known hash type.")
+
+    @staticmethod
+    def get_dict():
+        return {
+            Technologies.TWENTY_TWO_NANOMETERS: Technologies.get_label(Technologies.TWENTY_TWO_NANOMETERS)
+        }
+
+
+class Applications(Enum):
+    ALL = "All",
+
+    @staticmethod
+    def belongs(value): return value in set(item.value for item in Applications)
+
+    @staticmethod
+    def get_label(value):
+        if value == Applications.ALL:
+            return "All"
+
+        raise ValueError("Value does not corresponds to a known hash type.")
+
+    @staticmethod
+    def get_dict():
+        return {
+            Applications.ALL: Applications.get_label(Applications.ALL)
+        }
+    
