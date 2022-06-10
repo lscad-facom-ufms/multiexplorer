@@ -1,5 +1,7 @@
 from enum import Enum
 
+from MultiExplorer.src.config import PATH_INPUTS
+
 
 class Simulators(Enum):
     Sniper = 1
@@ -37,6 +39,11 @@ class PredictedCores(Enum):
             return "Atom Silvermont"
 
         raise ValueError("Value does not corresponds to a known predicted core.")
+
+    @staticmethod
+    def get_cfg_path(value):
+        if value == PredictedCores.Quark:
+            return PATH_INPUTS + "/quark.cfg"
 
 
 class SniperCorePipelineKinds(Enum):

@@ -1072,8 +1072,28 @@ class SniperSimulatorAdapter(Adapter):
         print json.dumps(input_json, indent=4, sort_keys=True)
 
     # todo
+    def generate_cfg_from_inputs(self):
+            cfg_file_path = self.get_output_path() + "/sniper_input.cfg"
+
+            cfg_file = open(cfg_file_path, 'w')
+
+            # todo WRITE PROPER CFG FILE
+            cfg_file.writelines([
+                "#include nehalem\n",
+                "[general]\n",
+                "total_cores=" + str(self.inputs['general_modeling']['total_cores']) + "\n",
+            ])
+
+            cfg_file.close()
+
+            self.cfg_path = cfg_file_path
+
+    # todo
     def execute(self):
         time.sleep(6)
+
+    def prepare(self):
+        self.generate_cfg_from_inputs()
 
     def execute_simulation(self):
         os.system(
@@ -1090,7 +1110,7 @@ class SniperSimulatorAdapter(Adapter):
         return self.inputs["general_modeling"].inputs["total_cores"].value
 
     def get_benchmark_application(self):
-        return self.inputs["preferences"].inputs["application"].value
+        return self.inputs["application"].value
 
     def get_executable_path(self):
         if self.use_benchmarks is True:

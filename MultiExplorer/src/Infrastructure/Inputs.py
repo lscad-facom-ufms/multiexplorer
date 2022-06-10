@@ -170,3 +170,19 @@ class InputGroup:
 
     def __str__(self):
         return self.label
+
+    def __getitem__(self, item):
+        member = self.inputs[item]
+
+        if isinstance(member, Input):
+            return member.value
+
+        return member
+
+    def __setitem__(self, key, value):
+        member = self.inputs[key]
+
+        if isinstance(member, Input):
+            member.value = value
+        else:
+            member = value
