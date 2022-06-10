@@ -1072,6 +1072,12 @@ class SniperSimulatorAdapter(Adapter):
         print json.dumps(input_json, indent=4, sort_keys=True)
 
     # todo
+    def set_values_from_cfg(self, absolute_cfg_file_path):
+        cfg_file = open(absolute_cfg_file_path)
+
+        # todo properly set values by reading the cfg_file
+
+    # todo
     def generate_cfg_from_inputs(self):
             cfg_file_path = self.get_output_path() + "/sniper_input.cfg"
 
