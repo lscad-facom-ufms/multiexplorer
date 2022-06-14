@@ -147,7 +147,7 @@ class SelectEntry(ttk.Combobox, object):
         return False
 
     def set_input_value(self, event):
-        self.infra_input.set_value_from_GUI(self.get())
+        self.infra_input.set_value_from_gui(self.get())
 
 
 class Select(InputFrame):
@@ -205,7 +205,7 @@ class TypeInEntry(Tkinter.Entry, object):
         return False
 
     def set_input_value(self, event):
-        self.infra_input.set_value_from_GUI(self.get())
+        self.infra_input.set_value_from_gui(self.get())
 
 
 class Integer(InputFrame):

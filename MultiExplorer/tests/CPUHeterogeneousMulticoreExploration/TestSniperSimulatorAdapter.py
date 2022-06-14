@@ -26,6 +26,9 @@ class TestSniperSimulatorAdapter(unittest.TestCase):
 
         expected_file_path = simulator_adapter.cfg_path
 
+        with open(expected_file_path, 'r') as fin:
+            print(fin.read())
+
         cfg_file = open(expected_file_path)
 
         self.assertEqual("#include nehalem\n", cfg_file.readline())

@@ -110,14 +110,17 @@ class Input:
 
         return False
 
-    def set_value_from_GUI(self, value):
+    def set_value_from_gui(self, value):
         if self.values_are_fixed():
             self.value = self.allowed_values.keys()[self.allowed_values.values().index(value)]
         else:
             self.value = value
 
     def __str__(self):
-        return self.label + ' ' + str(self.is_user_input)
+        try:
+            return ','.join(map(str, self.value))
+        except TypeError:
+            return str(self.value)
 
 
 class InputGroup:
@@ -168,21 +171,24 @@ class InputGroup:
 
         return True
 
-    def __str__(self):
-        return self.label
-
     def __getitem__(self, item):
-        member = self.inputs[item]
+        element = self.inputs[item]
 
-        if isinstance(member, Input):
-            return member.value
+        if isinstance(element, Input):
+            return element.value
 
-        return member
+        return element
 
     def __setitem__(self, key, value):
-        member = self.inputs[key]
-
-        if isinstance(member, Input):
-            member.value = value
+        if isinstance(value, Input) or isinstance(value, InputGroup):
+            self.inputs[key] = value
         else:
-            member = value
+            element = self.inputs[key]
+
+            if isinstance(element, Input):
+                element.value = value
+            elif value is dict:
+                for k in value:
+                    element.inputs[k] = value[k]
+            else:
+                raise ValueError("When setting elements in a nested InputGroup you must pass a dict as argument.")

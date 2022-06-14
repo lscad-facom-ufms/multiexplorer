@@ -1084,10 +1084,52 @@ class SniperSimulatorAdapter(Adapter):
             cfg_file = open(cfg_file_path, 'w')
 
             # todo WRITE PROPER CFG FILE
+
             cfg_file.writelines([
                 "#include nehalem\n",
                 "[general]\n",
-                "total_cores=" + str(self.inputs['general_modeling']['total_cores']) + "\n",
+                "total_cores=" + str(self.inputs['general_modeling']['total_cores']) + "\n\n",
+            ])
+
+            global_frequency = str(self.inputs['general_modeling']['core']['global_frequency'])
+
+            try:
+                frequencies = ','.join(map(str, self.inputs['general_modeling']['core']['frequency']))
+            except TypeError:
+                frequencies = global_frequency
+
+            cfg_file.writelines([
+                "[perf_model/core]\n",
+                "logical_cpus=" + str(self.inputs['general_modeling']['core']['logical_cpus']) + "\n",
+                "frequency=" + global_frequency + "\n",
+                "frequency[]=" + frequencies + "\n\n",
+            ])
+
+            cfg_file.writelines([
+                "[perf_model/cache]\n",
+                "levels=" + str(self.inputs['general_modeling']['memory']['cache']['levels']) + "\n",
+            ])
+
+            cfg_file.writelines([
+                "[perf_model/tlb]\n",
+                "size[]=" + str(self.inputs['general_modeling']['memory']['tlb']['sets']) + "\n",
+                "penalty=" + str(self.inputs['general_modeling']['memory']['tlb']['latency']) + "\n",
+                "policy=" + str(self.inputs['general_modeling']['memory']['tlb']['policy']) + "\n",
+                "associativity=" + str(self.inputs['general_modeling']['memory']['tlb']['associativity']) + "\n",
+                "block_size=" + str(self.inputs['general_modeling']['memory']['tlb']['block_size']) + "\n",
+                "latency=" + str(self.inputs['general_modeling']['memory']['tlb']['latency']) + "\n",
+                "sets=" + str(self.inputs['general_modeling']['memory']['tlb']['sets']) + "\n\n",
+            ])
+
+            cfg_file.writelines([
+                "[perf_model/itlb]\n",
+                "size[]=" + str(self.inputs['general_modeling']['memory']['itlb']['sets']) + "\n",
+                "penalty=" + str(self.inputs['general_modeling']['memory']['itlb']['latency']) + "\n",
+                "policy=" + str(self.inputs['general_modeling']['memory']['itlb']['policy']) + "\n",
+                "associativity=" + str(self.inputs['general_modeling']['memory']['itlb']['associativity']) + "\n",
+                "block_size=" + str(self.inputs['general_modeling']['memory']['itlb']['block_size']) + "\n",
+                "latency=" + str(self.inputs['general_modeling']['memory']['itlb']['latency']) + "\n",
+                "sets=" + str(self.inputs['general_modeling']['memory']['itlb']['sets']) + "\n\n",
             ])
 
             cfg_file.close()
