@@ -391,7 +391,7 @@ class SniperSimulatorAdapter(Adapter):
                             }),
                             InputGroup({
                                 "label": "L1 iCache",
-                                "key": "li_icache-0",
+                                "key": "l1_icache",
                                 "inputs": [
                                     Input({
                                         "label": "Perfect?",
@@ -510,7 +510,7 @@ class SniperSimulatorAdapter(Adapter):
                             }),
                             InputGroup({
                                 "label": "L1 dCache",
-                                "key": "li_dcache-0",
+                                "key": "l1_dcache",
                                 "inputs": [
                                     Input({
                                         "label": "Perfect?",
@@ -629,7 +629,7 @@ class SniperSimulatorAdapter(Adapter):
                             }),
                             InputGroup({
                                 "label": "L2 Cache",
-                                "key": "l2_cache-0",
+                                "key": "l2_cache",
                                 "inputs": [
                                     Input({
                                         "label": "Perfect?",
@@ -748,7 +748,7 @@ class SniperSimulatorAdapter(Adapter):
                             }),
                             InputGroup({
                                 "label": "L3 Cache",
-                                "key": "l3_cache-0",
+                                "key": "l3_cache",
                                 "inputs": [
                                     Input({
                                         "label": "Perfect?",
@@ -890,8 +890,8 @@ class SniperSimulatorAdapter(Adapter):
                                                 },
                                             }),
                                             Input({
-                                                "label": "Total Number of Entries",
-                                                "key": "total_entries",
+                                                "label": "Directory Type",
+                                                "key": "directory_type",
                                                 "allowed_values": DramDirectoryTypes.get_dict(),
                                             }),
                                         ]
@@ -1079,62 +1079,291 @@ class SniperSimulatorAdapter(Adapter):
 
     # todo
     def generate_cfg_from_inputs(self):
-            cfg_file_path = self.get_output_path() + "/sniper_input.cfg"
+        cfg_file_path = self.get_output_path() + "/sniper_input.cfg"
 
-            cfg_file = open(cfg_file_path, 'w')
+        cfg_file = open(cfg_file_path, 'w')
 
-            # todo WRITE PROPER CFG FILE
+        # todo WRITE PROPER CFG FILE
 
+        cfg_file.writelines([
+            "#include nehalem\n",
+            "[general]\n",
+            "total_cores=" + str(self.inputs['general_modeling']['total_cores']) + "\n\n",
+        ])
+
+        global_frequency = str(self.inputs['general_modeling']['core']['global_frequency'])
+
+        try:
+            frequencies = ','.join(map(str, self.inputs['general_modeling']['core']['frequency']))
+        except TypeError:
+            frequencies = global_frequency
+
+        cfg_file.writelines([
+            "[perf_model/core]\n",
+            "logical_cpus=" + str(self.inputs['general_modeling']['core']['logical_cpus']) + "\n",
+            "frequency=" + global_frequency + "\n",
+            "frequency[]=" + frequencies + "\n\n",
+        ])
+
+        try:
+            nbr_cache_levels = int(self.inputs['general_modeling']['memory']['cache']['levels'])
+        except TypeError:
+            nbr_cache_levels = 2
+
+        cfg_file.writelines([
+            "[perf_model/cache]\n",
+            "levels=" + str(nbr_cache_levels) + "\n",
+        ])
+
+        cfg_file.writelines([
+            "[perf_model/tlb]\n",
+            "size[]=" + str(self.inputs['general_modeling']['memory']['tlb']['sets']) + "\n",
+            "penalty=" + str(self.inputs['general_modeling']['memory']['tlb']['latency']) + "\n",
+            "policy=" + str(self.inputs['general_modeling']['memory']['tlb']['policy']) + "\n",
+            "associativity=" + str(self.inputs['general_modeling']['memory']['tlb']['associativity']) + "\n",
+            "block_size=" + str(self.inputs['general_modeling']['memory']['tlb']['block_size']) + "\n",
+            "latency=" + str(self.inputs['general_modeling']['memory']['tlb']['latency']) + "\n",
+            "sets=" + str(self.inputs['general_modeling']['memory']['tlb']['sets']) + "\n\n",
+        ])
+
+        cfg_file.writelines([
+            "[perf_model/itlb]\n",
+            "size[]=" + str(self.inputs['general_modeling']['memory']['itlb']['sets']) + "\n",
+            "penalty=" + str(self.inputs['general_modeling']['memory']['itlb']['latency']) + "\n",
+            "policy=" + str(self.inputs['general_modeling']['memory']['itlb']['policy']) + "\n",
+            "associativity=" + str(self.inputs['general_modeling']['memory']['itlb']['associativity']) + "\n",
+            "block_size=" + str(self.inputs['general_modeling']['memory']['itlb']['block_size']) + "\n",
+            "latency=" + str(self.inputs['general_modeling']['memory']['itlb']['latency']) + "\n",
+            "sets=" + str(self.inputs['general_modeling']['memory']['itlb']['sets']) + "\n\n",
+        ])
+
+        cfg_file.writelines([
+            "[perf_model/dtlb]\n",
+            "size[]=" + str(self.inputs['general_modeling']['memory']['dtlb']['sets']) + "\n",
+            "penalty=" + str(self.inputs['general_modeling']['memory']['dtlb']['latency']) + "\n",
+            "policy=" + str(self.inputs['general_modeling']['memory']['dtlb']['policy']) + "\n",
+            "associativity=" + str(self.inputs['general_modeling']['memory']['dtlb']['associativity']) + "\n",
+            "block_size=" + str(self.inputs['general_modeling']['memory']['dtlb']['block_size']) + "\n",
+            "latency=" + str(self.inputs['general_modeling']['memory']['dtlb']['latency']) + "\n",
+            "sets=" + str(self.inputs['general_modeling']['memory']['dtlb']['sets']) + "\n\n",
+        ])
+
+        cfg_file.writelines([
+            "[perf_model/stlb]\n",
+            "size[]=" + str(self.inputs['general_modeling']['memory']['stlb']['sets']) + "\n",
+            "penalty=" + str(self.inputs['general_modeling']['memory']['stlb']['latency']) + "\n",
+            "policy=" + str(self.inputs['general_modeling']['memory']['stlb']['policy']) + "\n",
+            "associativity=" + str(self.inputs['general_modeling']['memory']['stlb']['associativity']) + "\n",
+            "block_size=" + str(self.inputs['general_modeling']['memory']['stlb']['block_size']) + "\n",
+            "latency=" + str(self.inputs['general_modeling']['memory']['stlb']['latency']) + "\n",
+            "sets=" + str(self.inputs['general_modeling']['memory']['stlb']['sets']) + "\n\n",
+        ])
+
+        cfg_file.writelines([
+            "[perf_model/l1_icache]\n",
+            "perfect=" + str(self.inputs['general_modeling']['memory']['l1_icache']['perfect']) + "\n",
+            "perf_model_type=" + str(self.inputs['general_modeling']['memory']['l1_icache']['perf_model_type']) + "\n",
+            "replacement_policy=" + str(
+                self.inputs['general_modeling']['memory']['l1_icache']['replacement_policy']) + "\n",
+            "shared_cores=" + str(self.inputs['general_modeling']['memory']['l1_icache']['shared_cores']) + "\n",
+            "dvfs_domain=" + str(self.inputs['general_modeling']['memory']['l1_icache']['dvfs_domain']) + "\n",
+            "passthrough=" + str(self.inputs['general_modeling']['memory']['l1_icache']['passthrough']) + "\n",
+            "cache_block_size=" + str(
+                self.inputs['general_modeling']['memory']['l1_icache']['cache_block_size']) + "\n",
+            "prefetcher=" + str(self.inputs['general_modeling']['memory']['l1_icache']['prefetcher']) + "\n",
+            "address_hash=" + str(self.inputs['general_modeling']['memory']['l1_icache']['address_hash']) + "\n",
+            "writethrough[]=" + str(self.inputs['general_modeling']['memory']['l1_icache']['writethrough']) + "\n",
+            "cache_size[]=" + str(self.inputs['general_modeling']['memory']['l1_icache']['cache_size']) + "\n",
+            "writeback_time[]=" + str(self.inputs['general_modeling']['memory']['l1_icache']['writeback_time']) + "\n",
+            "associativity[]=" + str(self.inputs['general_modeling']['memory']['l1_icache']['associativity']) + "\n",
+            "tags_access_time[]=" + str(
+                self.inputs['general_modeling']['memory']['l1_icache']['tags_access_time']) + "\n",
+            "next_level_read_bandwidth[]="
+            + str(self.inputs['general_modeling']['memory']['l1_icache']['next_level_read_bandwidth'])
+            + "\n",
+            "ports=" + str(self.inputs['general_modeling']['memory']['l1_icache']['ports']) + "\n",
+            "data_access_time[]="
+            + str(self.inputs['general_modeling']['memory']['l1_icache']['data_access_time'])
+            + "\n\n",
+        ])
+
+        cfg_file.writelines([
+            "[perf_model/l1_dcache]\n",
+            "perfect=" + str(self.inputs['general_modeling']['memory']['l1_dcache']['perfect']) + "\n",
+            "perf_model_type=" + str(
+                self.inputs['general_modeling']['memory']['l1_dcache']['perf_model_type']) + "\n",
+            "replacement_policy=" + str(
+                self.inputs['general_modeling']['memory']['l1_dcache']['replacement_policy']) + "\n",
+            "shared_cores=" + str(self.inputs['general_modeling']['memory']['l1_dcache']['shared_cores']) + "\n",
+            "dvfs_domain=" + str(self.inputs['general_modeling']['memory']['l1_dcache']['dvfs_domain']) + "\n",
+            "passthrough=" + str(self.inputs['general_modeling']['memory']['l1_dcache']['passthrough']) + "\n",
+            "cache_block_size=" + str(
+                self.inputs['general_modeling']['memory']['l1_dcache']['cache_block_size']) + "\n",
+            "prefetcher=" + str(self.inputs['general_modeling']['memory']['l1_dcache']['prefetcher']) + "\n",
+            "address_hash=" + str(self.inputs['general_modeling']['memory']['l1_dcache']['address_hash']) + "\n",
+            "writethrough[]=" + str(self.inputs['general_modeling']['memory']['l1_dcache']['writethrough']) + "\n",
+            "cache_size[]=" + str(self.inputs['general_modeling']['memory']['l1_dcache']['cache_size']) + "\n",
+            "writeback_time[]=" + str(
+                self.inputs['general_modeling']['memory']['l1_dcache']['writeback_time']) + "\n",
+            "associativity[]=" + str(
+                self.inputs['general_modeling']['memory']['l1_dcache']['associativity']) + "\n",
+            "tags_access_time[]=" + str(
+                self.inputs['general_modeling']['memory']['l1_dcache']['tags_access_time']) + "\n",
+            "next_level_read_bandwidth[]="
+            + str(self.inputs['general_modeling']['memory']['l1_dcache']['next_level_read_bandwidth'])
+            + "\n",
+            "ports=" + str(self.inputs['general_modeling']['memory']['l1_dcache']['ports']) + "\n",
+            "data_access_time[]="
+            + str(self.inputs['general_modeling']['memory']['l1_dcache']['data_access_time'])
+            + "\n",
+        ])
+
+        if nbr_cache_levels >= 2:
             cfg_file.writelines([
-                "#include nehalem\n",
-                "[general]\n",
-                "total_cores=" + str(self.inputs['general_modeling']['total_cores']) + "\n\n",
+                "[perf_model/l2_cache]\n",
+                "perfect=" + str(self.inputs['general_modeling']['memory']['l2_cache']['perfect']) + "\n",
+                "perf_model_type=" + str(
+                    self.inputs['general_modeling']['memory']['l2_cache']['perf_model_type']) + "\n",
+                "replacement_policy=" + str(
+                    self.inputs['general_modeling']['memory']['l2_cache']['replacement_policy']) + "\n",
+                "shared_cores=" + str(
+                    self.inputs['general_modeling']['memory']['l2_cache']['shared_cores']) + "\n",
+                "dvfs_domain=" + str(self.inputs['general_modeling']['memory']['l2_cache']['dvfs_domain']) + "\n",
+                "passthrough=" + str(self.inputs['general_modeling']['memory']['l2_cache']['passthrough']) + "\n",
+                "cache_block_size=" + str(
+                    self.inputs['general_modeling']['memory']['l2_cache']['cache_block_size']) + "\n",
+                "prefetcher=" + str(self.inputs['general_modeling']['memory']['l2_cache']['prefetcher']) + "\n",
+                "address_hash=" + str(
+                    self.inputs['general_modeling']['memory']['l2_cache']['address_hash']) + "\n",
+                "writethrough[]=" + str(
+                    self.inputs['general_modeling']['memory']['l2_cache']['writethrough']) + "\n",
+                "cache_size[]=" + str(self.inputs['general_modeling']['memory']['l2_cache']['cache_size']) + "\n",
+                "writeback_time[]=" + str(
+                    self.inputs['general_modeling']['memory']['l2_cache']['writeback_time']) + "\n",
+                "associativity[]=" + str(
+                    self.inputs['general_modeling']['memory']['l2_cache']['associativity']) + "\n",
+                "tags_access_time[]=" + str(
+                    self.inputs['general_modeling']['memory']['l2_cache']['tags_access_time']) + "\n",
+                "next_level_read_bandwidth[]="
+                + str(self.inputs['general_modeling']['memory']['l2_cache']['next_level_read_bandwidth'])
+                + "\n",
+                "ports=" + str(self.inputs['general_modeling']['memory']['l2_cache']['ports']) + "\n",
+                "data_access_time[]="
+                + str(self.inputs['general_modeling']['memory']['l2_cache']['data_access_time'])
+                + "\n\n",
             ])
 
-            global_frequency = str(self.inputs['general_modeling']['core']['global_frequency'])
-
-            try:
-                frequencies = ','.join(map(str, self.inputs['general_modeling']['core']['frequency']))
-            except TypeError:
-                frequencies = global_frequency
-
+        if nbr_cache_levels >= 3:
             cfg_file.writelines([
-                "[perf_model/core]\n",
-                "logical_cpus=" + str(self.inputs['general_modeling']['core']['logical_cpus']) + "\n",
-                "frequency=" + global_frequency + "\n",
-                "frequency[]=" + frequencies + "\n\n",
+                "[perf_model/l3_cache]\n",
+                "perfect=" + str(self.inputs['general_modeling']['memory']['l3_cache']['perfect']) + "\n",
+                "perf_model_type=" + str(
+                    self.inputs['general_modeling']['memory']['l3_cache']['perf_model_type']) + "\n",
+                "replacement_policy=" + str(
+                    self.inputs['general_modeling']['memory']['l3_cache']['replacement_policy']) + "\n",
+                "shared_cores=" + str(
+                    self.inputs['general_modeling']['memory']['l3_cache']['shared_cores']) + "\n",
+                "dvfs_domain=" + str(self.inputs['general_modeling']['memory']['l3_cache']['dvfs_domain']) + "\n",
+                "passthrough=" + str(self.inputs['general_modeling']['memory']['l3_cache']['passthrough']) + "\n",
+                "cache_block_size=" + str(
+                    self.inputs['general_modeling']['memory']['l3_cache']['cache_block_size']) + "\n",
+                "prefetcher=" + str(self.inputs['general_modeling']['memory']['l3_cache']['prefetcher']) + "\n",
+                "address_hash=" + str(
+                    self.inputs['general_modeling']['memory']['l3_cache']['address_hash']) + "\n",
+                "writethrough[]=" + str(
+                    self.inputs['general_modeling']['memory']['l3_cache']['writethrough']) + "\n",
+                "cache_size[]=" + str(self.inputs['general_modeling']['memory']['l3_cache']['cache_size']) + "\n",
+                "writeback_time[]=" + str(
+                    self.inputs['general_modeling']['memory']['l3_cache']['writeback_time']) + "\n",
+                "associativity[]=" + str(
+                    self.inputs['general_modeling']['memory']['l3_cache']['associativity']) + "\n",
+                "tags_access_time[]=" + str(
+                    self.inputs['general_modeling']['memory']['l3_cache']['tags_access_time']) + "\n",
+                "next_level_read_bandwidth[]="
+                + str(self.inputs['general_modeling']['memory']['l3_cache']['next_level_read_bandwidth'])
+                + "\n",
+                "ports=" + str(self.inputs['general_modeling']['memory']['l3_cache']['ports']) + "\n",
+                "data_access_time[]="
+                + str(self.inputs['general_modeling']['memory']['l3_cache']['data_access_time'])
+                + "\n\n",
             ])
 
-            cfg_file.writelines([
-                "[perf_model/cache]\n",
-                "levels=" + str(self.inputs['general_modeling']['memory']['cache']['levels']) + "\n",
-            ])
+        cfg_file.writelines([
+            "[perf_model/dram]\n",
+            "latency=" + str(self.inputs['general_modeling']['memory']['dram']['latency']) + "\n",
+            "num_controllers=" + str(self.inputs['general_modeling']['memory']['dram']['num_controllers']) + "\n",
+            "chips_per_dimm=" + str(self.inputs['general_modeling']['memory']['dram']['chips_per_dimm']) + "\n",
+            "controllers_interleaving=" + str(self.inputs['general_modeling']['memory']['dram']['controllers_interleaving']) + "\n",
+            "per_controller_bandwidth=" + str(self.inputs['general_modeling']['memory']['dram']['per_controller_bandwidth']) + "\n",
+            "block_size=" + str(self.inputs['general_modeling']['memory']['dram']['block_size']) + "\n",
+            "dimms_per_controller=" + str(self.inputs['general_modeling']['memory']['dram']['dimms_per_controller']) + "\n\n",
+        ])
 
-            cfg_file.writelines([
-                "[perf_model/tlb]\n",
-                "size[]=" + str(self.inputs['general_modeling']['memory']['tlb']['sets']) + "\n",
-                "penalty=" + str(self.inputs['general_modeling']['memory']['tlb']['latency']) + "\n",
-                "policy=" + str(self.inputs['general_modeling']['memory']['tlb']['policy']) + "\n",
-                "associativity=" + str(self.inputs['general_modeling']['memory']['tlb']['associativity']) + "\n",
-                "block_size=" + str(self.inputs['general_modeling']['memory']['tlb']['block_size']) + "\n",
-                "latency=" + str(self.inputs['general_modeling']['memory']['tlb']['latency']) + "\n",
-                "sets=" + str(self.inputs['general_modeling']['memory']['tlb']['sets']) + "\n\n",
-            ])
+        cfg_file.writelines([
+            "[perf_model/dram_directory]\n",
+            "associativity="
+            + str(self.inputs['general_modeling']['memory']['dram']['dram_directory']['associativity'])
+            + "\n",
+            "total_entries="
+            + str(self.inputs['general_modeling']['memory']['dram']['dram_directory']['total_entries'])
+            + "\n",
+            "directory_type="
+            + str(self.inputs['general_modeling']['memory']['dram']['dram_directory']['directory_type'])
+            + "\n\n",
+        ])
 
-            cfg_file.writelines([
-                "[perf_model/itlb]\n",
-                "size[]=" + str(self.inputs['general_modeling']['memory']['itlb']['sets']) + "\n",
-                "penalty=" + str(self.inputs['general_modeling']['memory']['itlb']['latency']) + "\n",
-                "policy=" + str(self.inputs['general_modeling']['memory']['itlb']['policy']) + "\n",
-                "associativity=" + str(self.inputs['general_modeling']['memory']['itlb']['associativity']) + "\n",
-                "block_size=" + str(self.inputs['general_modeling']['memory']['itlb']['block_size']) + "\n",
-                "latency=" + str(self.inputs['general_modeling']['memory']['itlb']['latency']) + "\n",
-                "sets=" + str(self.inputs['general_modeling']['memory']['itlb']['sets']) + "\n\n",
-            ])
+        cfg_file.writelines([
+            "[network/emesh_hop_by_hop]\n",
+            "link_bandwidth=" + str(self.inputs['general_modeling']['network']['emesh_hop_by_hop']['link_bandwidth'])
+            + "\n",
+            "concentration=" + str(self.inputs['general_modeling']['network']['emesh_hop_by_hop']['concentration'])
+            + "\n",
+            "wrap_around=" + str(self.inputs['general_modeling']['network']['emesh_hop_by_hop']['wrap_around'])
+            + "\n",
+            "hop_latency=" + str(self.inputs['general_modeling']['network']['emesh_hop_by_hop']['hop_latency'])
+            + "\n",
+            "dimensions=" + str(self.inputs['general_modeling']['network']['emesh_hop_by_hop']['dimensions'])
+            + "\n\n",
+        ])
 
-            cfg_file.close()
+        cfg_file.writelines([
+            "[network/bus]\n",
+            "bandwidth =" + str(self.inputs['general_modeling']['network']['bus']['bandwidth']) + "\n",
+            "ignore_local_traffic =" + str(self.inputs['general_modeling']['network']['bus']['ignore_local_traffic'])
+            + "\n\n",
+        ])
 
-            self.cfg_path = cfg_file_path
+        cfg_file.writelines([
+            "[network/emesh_hop_counter]\n",
+            "link_bandwidth=" + str(self.inputs['general_modeling']['network']['emesh_hop_counter']['bandwidth'])
+            + "\n",
+            "hop_latency="
+            + str(self.inputs['general_modeling']['network']['emesh_hop_counter']['ignore_local_traffic'])
+            + "\n\n",
+        ])
+
+        cfg_file.writelines([
+            "[network]\n",
+            "memory_model_1 =" + str(self.inputs['general_modeling']['network']['memory_model_1']) + "\n",
+            + "\n\n",
+        ])
+
+        cfg_file.writelines([
+            "[network]\n",
+            "memory_model_2 =" + str(self.inputs['general_modeling']['network']['memory_model_2']) + "\n",
+            + "\n\n",
+        ])
+
+        cfg_file.writelines([
+            "[power]\n",
+            "technology_node =" + str(self.inputs['general_modeling']['power']['technology_node']) + "\n"                                                                                                      
+            "vdd =" + str(self.inputs['general_modeling']['power']['vdd']) + "\n\n",
+            # "temperature=" + str(self.inputs['general_modeling']['power']['temperature']) + "\n\n",
+        ])
+
+        cfg_file.close()
+
+        self.cfg_path = cfg_file_path
 
     # todo
     def execute(self):
