@@ -110,6 +110,18 @@ class Input:
 
         return False
 
+    def get_fixed_value(self):
+        if isinstance(self.value, Enum):
+            return self.value.value
+
+        if self.value is not None:
+            try:
+                return self.allowed_values[self.value]
+            except KeyError:
+                return self.allowed_values[int(self.value)]
+
+        return None
+
     def set_value_from_gui(self, value):
         if self.values_are_fixed():
             self.value = self.allowed_values.keys()[self.allowed_values.values().index(value)]
@@ -175,6 +187,9 @@ class InputGroup:
         element = self.inputs[item]
 
         if isinstance(element, Input):
+            if element.values_are_fixed():
+                return element.get_fixed_value()
+
             return element.value
 
         return element

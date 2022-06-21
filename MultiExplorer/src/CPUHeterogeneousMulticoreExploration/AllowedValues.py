@@ -45,6 +45,33 @@ class PredictedCores(Enum):
         if value == PredictedCores.Quark:
             return PATH_INPUTS + "/quark.cfg"
 
+        if value == PredictedCores.Arm53:
+            return PATH_INPUTS + "/armA53.cfg"
+
+        if value == PredictedCores.Arm57:
+            return PATH_INPUTS + "/armA57.cfg"
+
+        if value == PredictedCores.Atom:
+            return PATH_INPUTS + "/atom.cfg"
+
+        raise ValueError("Can't find default sniper configuration file for unknown/unpredicted cores.")
+
+    @staticmethod
+    def get_json_path(value):
+        if value == PredictedCores.Quark:
+            return PATH_INPUTS + "/quark.json"
+
+        if value == PredictedCores.Arm53:
+            return PATH_INPUTS + "/armA53.json"
+
+        if value == PredictedCores.Arm57:
+            return PATH_INPUTS + "/armA57.json"
+
+        if value == PredictedCores.Atom:
+            return PATH_INPUTS + "/atom.json"
+
+        raise ValueError("Can't find default input json file for unknown/unpredicted cores.")
+
 
 class SniperCorePipelineKinds(Enum):
     Shared = "Shared"
@@ -77,6 +104,13 @@ class CachePolicies(Enum):
 
         raise ValueError("Value does not corresponds to a known mode of cache policy.")
 
+    @staticmethod
+    def from_json(value):
+        if value == "LRU":
+            return CachePolicies.LRU
+
+        raise ValueError("Unknown cache policy.")
+
 
 class PerformanceModelTypes(Enum):
     Parallel = "parallel"
@@ -96,6 +130,14 @@ class PerformanceModelTypes(Enum):
         return {
             PerformanceModelTypes.Parallel: PerformanceModelTypes.get_label(PerformanceModelTypes.Parallel)
         }
+
+    @staticmethod
+    def from_json(value):
+        if value == 'parallel':
+            return PerformanceModelTypes.Parallel
+
+        raise ValueError("Unknown performance model type.")
+
 
 
 class HashTypes(Enum):
@@ -117,6 +159,13 @@ class HashTypes(Enum):
             HashTypes.Mask: HashTypes.get_label(HashTypes.Mask)
         }
 
+    @staticmethod
+    def from_json(value):
+        if value == 'mask':
+            return HashTypes.Mask
+
+        raise ValueError("Unknown performance model type.")
+
 
 class Domains(Enum):
     Core = "core"
@@ -137,6 +186,13 @@ class Domains(Enum):
             Domains.Core: Domains.get_label(Domains.Core)
         }
 
+    @staticmethod
+    def from_json(value):
+        if value == "core":
+            return Domains.Core
+
+        raise ValueError("Unknown domain.")
+
 
 class Prefetchers(Enum):
     NA = "none"
@@ -149,13 +205,20 @@ class Prefetchers(Enum):
         if value == Prefetchers.NA:
             return "None"
 
-        raise ValueError("Value does not corresponds to a known hash type.")
+        raise ValueError("Value does not corresponds to a known prefetching mechanism.")
 
     @staticmethod
     def get_dict():
         return {
             Prefetchers.NA: Prefetchers.get_label(Prefetchers.NA)
         }
+
+    @staticmethod
+    def from_json(value):
+        if value == "none":
+            return Prefetchers.NA
+
+        raise ValueError("Unknown prefetching mechanism.")
 
 
 class DramDirectoryTypes(Enum):
@@ -177,9 +240,16 @@ class DramDirectoryTypes(Enum):
             DramDirectoryTypes.FULL_MAP: DramDirectoryTypes.get_label(DramDirectoryTypes.FULL_MAP)
         }
 
+    @staticmethod
+    def from_json(value):
+        if value == "full_map":
+            return DramDirectoryTypes.FULL_MAP
+
+        raise ValueError("Unknown DRAM directory type.")
+
 
 class MemoryModels(Enum):
-    BUS = "bus",
+    BUS = "bus"
 
     @staticmethod
     def belongs(value): return value in set(item.value for item in DramDirectoryTypes)
@@ -196,6 +266,13 @@ class MemoryModels(Enum):
         return {
             MemoryModels.BUS: MemoryModels.get_label(MemoryModels.BUS)
         }
+
+    @staticmethod
+    def from_json(value):
+        if value == "bus":
+            return MemoryModels.BUS
+
+        raise ValueError("Unknown memory model.")
 
 
 class Technologies(Enum):

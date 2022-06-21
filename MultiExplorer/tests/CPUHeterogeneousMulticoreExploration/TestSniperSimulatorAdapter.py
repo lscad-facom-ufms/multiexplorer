@@ -14,6 +14,11 @@ class TestSniperSimulatorAdapter(unittest.TestCase):
 
         simulator_adapter.set_values_from_file("/home/ufms/projetos/multiexplorer/input-examples/quark.json")
 
+    def test_set_values_from_json(self):
+        simulator_adapter = SniperSimulatorAdapter()
+
+        simulator_adapter.set_values_from_json("/home/ufms/projetos/multiexplorer/input-examples/quark.json")
+
     def test_generate_cfg_from_inputs(self):
         simulator_adapter = SniperSimulatorAdapter()
 
