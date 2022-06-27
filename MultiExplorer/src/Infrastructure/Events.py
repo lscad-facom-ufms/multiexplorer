@@ -1,10 +1,18 @@
 class Event:
+    FLOW_EXECUTION_STARTED = "flow_execution_started"
+
+    FLOW_EXECUTION_ENDED = "flow_execution_ended"
+
+    FLOW_EXECUTION_FAILED = "flow_execution_failed"
+
     STEP_EXECUTION_STARTED = "step_execution_started"
 
     STEP_EXECUTION_ENDED = "step_execution_ended"
 
+    STEP_EXECUTION_FAILED = "step_execution_failed"
 
-class EventFirer:
+
+class EventFirer(object):
     """
     Extending this class allows some sort simple communication between objects in the form of event firing and handling.
 

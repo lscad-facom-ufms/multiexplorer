@@ -1,8 +1,8 @@
-from MultiExplorer.src.Infrastructure.Events import Event
+from MultiExplorer.src.Infrastructure.ExecutionFlow import ExecutionFlow
 from Steps import CPUSimulationStep, PhysicalExplorationStep, DSEStep
 
 
-class CPUHeterogeneousMulticoreExplorationExecutionFlow(object):
+class CPUHeterogeneousMulticoreExplorationExecutionFlow(ExecutionFlow):
     """
     This class controls an execution flow that performs a DSE process based on an initial
     homogeneous multicore architecture. This process is composed of three steps: simulation, physical evaluation, and
@@ -46,19 +46,3 @@ class CPUHeterogeneousMulticoreExplorationExecutionFlow(object):
 
     @staticmethod
     def get_label(): return 'Multicore CPU Heterogeneous DSE'
-
-    def get_steps(self): return self.steps
-
-    def execute(self):
-        self.cur_step = -1
-
-        self.execute_next_step()
-
-    def execute_next_step(self):
-        self.cur_step += 1
-
-        step = self.steps[self.cur_step]
-
-        step.add_handler(Event.STEP_EXECUTION_ENDED, self.execute_next_step)
-
-        step.start_execution()

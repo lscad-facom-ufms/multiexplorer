@@ -1761,8 +1761,6 @@ class NsgaIIPredDSEAdapter(Adapter):
         This adapter uses a NSGA-II implementation as it's exploration engine, and a heterogeneous multicore CPU
         architecture performance predictor as it's evaluation engine, in order to perform a design space exploration.
     """
-
-    # todo
     def __init__(self):
         Adapter.__init__(self)
 
