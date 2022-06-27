@@ -1,4 +1,5 @@
 from enum import Enum
+import copy
 
 from MultiExplorer.src.Infrastructure.Validators import Validator, IntegerValidator, FloatValidator
 
@@ -207,3 +208,33 @@ class InputGroup:
                     element.inputs[k] = value[k]
             else:
                 raise ValueError("When setting elements in a nested InputGroup you must pass a dict as argument.")
+
+    def copy_with_only_user_inputs(self):
+        input_group_copy = InputGroup({'label': self.label, 'key': self.key})
+
+        input_group_copy.inputs = {}
+
+        for i in self.inputs:
+            cur_input = self.inputs[i]
+
+            if isinstance(cur_input, Input):
+                if cur_input.is_user_input:
+                    input_group_copy.inputs[i] = copy.deepcopy(cur_input)
+
+            if isinstance(cur_input, InputGroup):
+                if cur_input.has_user_input():
+                    input_group_copy.inputs[i] = cur_input.copy_with_only_user_inputs()
+
+        return input_group_copy
+
+    def set_values_from_group(self, input_group):
+        for i in input_group.inputs:
+            from_input = input_group.inputs[i]
+
+            cur_input = self.inputs[i]
+
+            if isinstance(from_input, Input) and isinstance(cur_input, Input):
+                cur_input.value = from_input.value
+
+            if isinstance(from_input, InputGroup) and isinstance(cur_input, InputGroup):
+                cur_input.set_values_from_group(from_input)

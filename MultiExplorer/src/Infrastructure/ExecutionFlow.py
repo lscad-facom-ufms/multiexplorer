@@ -1,4 +1,5 @@
 from abc import ABCMeta, abstractmethod
+import copy
 
 from MultiExplorer.src.Infrastructure.Inputs import Input, InputGroup
 
@@ -58,6 +59,20 @@ class Adapter:
                 user_inputs[key] = cur_input
 
         return user_inputs
+
+    def copy_user_inputs(self):
+        copied_user_inputs = {}
+
+        for key in self.inputs:
+            cur_input = self.inputs[key]
+
+            if isinstance(cur_input, Input) and cur_input.is_user_input:
+                copied_user_inputs[key] = copy.deepcopy(cur_input)
+
+            if isinstance(cur_input, InputGroup) and cur_input.has_user_input():
+                copied_user_inputs[key] = cur_input.copy_with_only_user_inputs()
+
+        return copied_user_inputs
 
 
 class ExecutionFlow:

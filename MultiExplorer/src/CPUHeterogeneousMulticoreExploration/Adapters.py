@@ -25,7 +25,7 @@ class SniperSimulatorAdapter(Adapter):
 
         self.set_inputs([
             Input({
-                'label': 'application',
+                'label': 'Application',
                 'key': 'application',
                 'allowed_values': Applications.get_dict(),
                 "required": True,
@@ -1068,6 +1068,8 @@ class SniperSimulatorAdapter(Adapter):
             }),
         ])
 
+        self.stashed_user_inputs = None
+
         self.results = {}
 
         self.use_benchmarks = True
@@ -1077,21 +1079,6 @@ class SniperSimulatorAdapter(Adapter):
         self.cfg_path = None
 
         self.output_path = None
-
-    # todo
-    def set_values_from_file(self, absolute_file_path):
-        """
-        This method reads a json file and sets the values of the inputs.
-        """
-        input_json = json.loads(open(absolute_file_path).read())
-
-        print json.dumps(input_json, indent=4, sort_keys=True)
-
-    # todo
-    def set_values_from_cfg(self, absolute_cfg_file_path):
-        cfg_file = open(absolute_cfg_file_path)
-
-        # todo properly set values by reading the cfg_file
 
     def set_values_from_json(self, absolute_file_path):
         """
@@ -1679,7 +1666,30 @@ class SniperSimulatorAdapter(Adapter):
     def execute(self):
         time.sleep(6)
 
+    # todo
+    def stash_user_inputs(self):
+        self.stashed_user_inputs = self.copy_user_inputs()
+
+    # todo
+    def pop_user_inputs(self):
+        for i in self.stashed_user_inputs:
+            cur_stashed_input = self.stashed_user_inputs[i]
+
+            cur_input = self.inputs[i]
+
+            if isinstance(cur_stashed_input, Input) and isinstance(cur_input, Input):
+                cur_input.value = cur_stashed_input.value
+
+            if isinstance(cur_stashed_input, InputGroup) and isinstance(cur_input, InputGroup):
+                cur_input.set_values_from_group(cur_stashed_input)
+
     def prepare(self):
+        self.stash_user_inputs()
+
+        self.set_values_from_json(PredictedCores.get_json_path(self.inputs['general_modeling']['model_name']))
+
+        self.pop_user_inputs()
+
         self.generate_cfg_from_inputs()
 
     def execute_simulation(self):
