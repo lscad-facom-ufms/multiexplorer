@@ -36,7 +36,7 @@ class CPUHeterogeneousMulticoreExplorationExecutionFlow(ExecutionFlow):
         return cls.instance
 
     def __init__(self):
-        self.cur_step = -1
+        super(CPUHeterogeneousMulticoreExplorationExecutionFlow, self).__init__()
 
         self.steps = [
             CPUSimulationStep(),
