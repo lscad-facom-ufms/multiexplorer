@@ -100,6 +100,8 @@ class Adapter(object):
     def __init__(self):
         self.inputs = {}
 
+        self.stashed_user_inputs = None
+
     def set_inputs(self, inputs):
         for i in inputs:
             if isinstance(i, Input) or isinstance(i, InputGroup):
@@ -126,15 +128,30 @@ class Adapter(object):
         copied_user_inputs = {}
 
         for key in self.inputs:
-            cur_input = self.inputs[key]
+            if isinstance(self.inputs[key], Input) and self.inputs[key].is_user_input:
+                copied_user_inputs[key] = copy.deepcopy(self.inputs[key])
 
-            if isinstance(cur_input, Input) and cur_input.is_user_input:
-                copied_user_inputs[key] = copy.deepcopy(cur_input)
-
-            if isinstance(cur_input, InputGroup) and cur_input.has_user_input():
-                copied_user_inputs[key] = cur_input.copy_with_only_user_inputs()
+            if isinstance(self.inputs[key], InputGroup) and self.inputs[key].has_user_input():
+                copied_user_inputs[key] = self.inputs[key].copy_with_only_user_inputs()
 
         return copied_user_inputs
+
+    def stash_user_inputs(self):
+        self.stashed_user_inputs = self.copy_user_inputs()
+
+    def pop_user_inputs(self):
+        if self.stashed_user_inputs is not None:
+            self.copy_input_values(self.stashed_user_inputs)
+
+            self.stashed_user_inputs = None
+
+    def copy_input_values(self, inputs):
+        for key in inputs:
+            if isinstance(inputs[key], Input) and isinstance(self.inputs[key], Input):
+                self.inputs[key].value = self.stashed_user_inputs[key].value
+
+            if isinstance(inputs[key], InputGroup) and isinstance(self.inputs[key], InputGroup):
+                self.inputs[key].set_values_from_group(inputs[key])
 
 
 class ExecutionFlow(EventFirer):

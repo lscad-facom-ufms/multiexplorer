@@ -1,5 +1,6 @@
 import unittest
 from MultiExplorer.src.CPUHeterogeneousMulticoreExploration.Adapters import SniperSimulatorAdapter
+from MultiExplorer.src.CPUHeterogeneousMulticoreExploration.AllowedValues import PredictedCores
 from MultiExplorer.src.config import PATH_RUNDIR
 
 
@@ -41,6 +42,20 @@ class TestSniperSimulatorAdapter(unittest.TestCase):
         self.assertEqual("[general]\n", cfg_file.readline())
 
         self.assertEqual("total_cores="+str(total_cores_value)+"\n", cfg_file.readline())
+
+    def test_get_user_inputs(self):
+        simulator_adapter = SniperSimulatorAdapter()
+
+        user_inputs = simulator_adapter.get_user_inputs()
+
+        self.assertEquals(
+            user_inputs['general_modeling']['model_name'],
+            simulator_adapter.inputs['general_modeling']['model_name']
+        )
+
+        user_inputs['general_modeling']['model_name'] = PredictedCores.Quark
+
+        self.assertEqual(simulator_adapter.inputs['general_modeling']['model_name'], PredictedCores.Quark)
 
 
 if __name__ == '__main__':

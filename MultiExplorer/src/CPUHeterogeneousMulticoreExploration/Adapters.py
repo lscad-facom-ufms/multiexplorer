@@ -21,8 +21,6 @@ class SniperSimulatorAdapter(Adapter):
     def __init__(self):
         Adapter.__init__(self)
 
-        self.inputs = {}
-
         self.set_inputs([
             Input({
                 'label': 'Application',
@@ -1068,8 +1066,6 @@ class SniperSimulatorAdapter(Adapter):
             }),
         ])
 
-        self.stashed_user_inputs = None
-
         self.results = {}
 
         self.use_benchmarks = True
@@ -1664,29 +1660,16 @@ class SniperSimulatorAdapter(Adapter):
 
     # todo
     def execute(self):
-        time.sleep(6)
+        self.prepare()
 
-    # todo
-    def stash_user_inputs(self):
-        self.stashed_user_inputs = self.copy_user_inputs()
-
-    # todo
-    def pop_user_inputs(self):
-        for i in self.stashed_user_inputs:
-            cur_stashed_input = self.stashed_user_inputs[i]
-
-            cur_input = self.inputs[i]
-
-            if isinstance(cur_stashed_input, Input) and isinstance(cur_input, Input):
-                cur_input.value = cur_stashed_input.value
-
-            if isinstance(cur_stashed_input, InputGroup) and isinstance(cur_input, InputGroup):
-                cur_input.set_values_from_group(cur_stashed_input)
+        self.execute_simulation()
 
     def prepare(self):
+        json_path = PredictedCores.get_json_path(self.inputs['general_modeling']['model_name'])
+
         self.stash_user_inputs()
 
-        self.set_values_from_json(PredictedCores.get_json_path(self.inputs['general_modeling']['model_name']))
+        self.set_values_from_json(json_path)
 
         self.pop_user_inputs()
 

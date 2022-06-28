@@ -215,15 +215,13 @@ class InputGroup:
         input_group_copy.inputs = {}
 
         for i in self.inputs:
-            cur_input = self.inputs[i]
+            if isinstance(self.inputs[i], Input):
+                if self.inputs[i].is_user_input:
+                    input_group_copy.inputs[i] = copy.deepcopy(self.inputs[i])
 
-            if isinstance(cur_input, Input):
-                if cur_input.is_user_input:
-                    input_group_copy.inputs[i] = copy.deepcopy(cur_input)
-
-            if isinstance(cur_input, InputGroup):
-                if cur_input.has_user_input():
-                    input_group_copy.inputs[i] = cur_input.copy_with_only_user_inputs()
+            if isinstance(self.inputs[i], InputGroup):
+                if self.inputs[i].has_user_input():
+                    input_group_copy.inputs[i] = self.inputs[i].copy_with_only_user_inputs()
 
         return input_group_copy
 
