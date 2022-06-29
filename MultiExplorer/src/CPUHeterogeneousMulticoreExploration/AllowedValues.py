@@ -41,33 +41,42 @@ class PredictedCores(Enum):
         raise ValueError("Value does not corresponds to a known predicted core.")
 
     @staticmethod
+    def get_dict():
+        return {
+            PredictedCores.Quark.value: PredictedCores.get_label(PredictedCores.Quark),
+            PredictedCores.Arm53.value: PredictedCores.get_label(PredictedCores.Arm53),
+            PredictedCores.Arm57.value: PredictedCores.get_label(PredictedCores.Arm57),
+            PredictedCores.Atom.value: PredictedCores.get_label(PredictedCores.Atom),
+        }
+
+    @staticmethod
     def get_cfg_path(value):
-        if value == PredictedCores.Quark:
+        if value == PredictedCores.Quark.value:
             return PATH_INPUTS + "/quark.cfg"
 
-        if value == PredictedCores.Arm53:
+        if value == PredictedCores.Arm53.value:
             return PATH_INPUTS + "/armA53.cfg"
 
-        if value == PredictedCores.Arm57:
+        if value == PredictedCores.Arm57.value:
             return PATH_INPUTS + "/armA57.cfg"
 
-        if value == PredictedCores.Atom:
+        if value == PredictedCores.Atom.value:
             return PATH_INPUTS + "/atom.cfg"
 
         raise ValueError("Can't find default sniper configuration file for unknown/unpredicted cores.")
 
     @staticmethod
     def get_json_path(value):
-        if value == PredictedCores.Quark:
+        if value == PredictedCores.Quark.value:
             return PATH_INPUTS + "/quark.json"
 
-        if value == PredictedCores.Arm53:
+        if value == PredictedCores.Arm53.value:
             return PATH_INPUTS + "/armA53.json"
 
-        if value == PredictedCores.Arm57:
+        if value == PredictedCores.Arm57.value:
             return PATH_INPUTS + "/armA57.json"
 
-        if value == PredictedCores.Atom:
+        if value == PredictedCores.Atom.value:
             return PATH_INPUTS + "/atom.json"
 
         raise ValueError("Can't find default input json file for unknown/unpredicted cores.")
@@ -111,6 +120,10 @@ class CachePolicies(Enum):
 
         raise ValueError("Unknown cache policy.")
 
+    def to_cfg(self):
+        if self.value == "LRU":
+            return "lru"
+
 
 class PerformanceModelTypes(Enum):
     Parallel = "parallel"
@@ -128,7 +141,7 @@ class PerformanceModelTypes(Enum):
     @staticmethod
     def get_dict():
         return {
-            PerformanceModelTypes.Parallel: PerformanceModelTypes.get_label(PerformanceModelTypes.Parallel)
+            PerformanceModelTypes.Parallel.value: PerformanceModelTypes.get_label(PerformanceModelTypes.Parallel)
         }
 
     @staticmethod
@@ -138,6 +151,9 @@ class PerformanceModelTypes(Enum):
 
         raise ValueError("Unknown performance model type.")
 
+    def to_cfg(self):
+        if self.value == "parallel":
+            return "parallel"
 
 
 class HashTypes(Enum):
@@ -156,7 +172,7 @@ class HashTypes(Enum):
     @staticmethod
     def get_dict():
         return {
-            HashTypes.Mask: HashTypes.get_label(HashTypes.Mask)
+            HashTypes.Mask.value: HashTypes.get_label(HashTypes.Mask)
         }
 
     @staticmethod
@@ -166,6 +182,9 @@ class HashTypes(Enum):
 
         raise ValueError("Unknown performance model type.")
 
+    def to_cfg(self):
+        if self.value == "mask":
+            return "mask"
 
 class Domains(Enum):
     Core = "core"
@@ -183,7 +202,7 @@ class Domains(Enum):
     @staticmethod
     def get_dict():
         return {
-            Domains.Core: Domains.get_label(Domains.Core)
+            Domains.Core.value: Domains.get_label(Domains.Core)
         }
 
     @staticmethod
@@ -192,6 +211,10 @@ class Domains(Enum):
             return Domains.Core
 
         raise ValueError("Unknown domain.")
+
+    def to_cfg(self):
+        if self.value == "core":
+            return "core"
 
 
 class Prefetchers(Enum):
@@ -210,7 +233,7 @@ class Prefetchers(Enum):
     @staticmethod
     def get_dict():
         return {
-            Prefetchers.NA: Prefetchers.get_label(Prefetchers.NA)
+            Prefetchers.NA.value: Prefetchers.get_label(Prefetchers.NA)
         }
 
     @staticmethod
@@ -219,6 +242,10 @@ class Prefetchers(Enum):
             return Prefetchers.NA
 
         raise ValueError("Unknown prefetching mechanism.")
+
+    def to_cfg(self):
+        if self.value == "none":
+            return "none"
 
 
 class DramDirectoryTypes(Enum):
@@ -237,7 +264,7 @@ class DramDirectoryTypes(Enum):
     @staticmethod
     def get_dict():
         return {
-            DramDirectoryTypes.FULL_MAP: DramDirectoryTypes.get_label(DramDirectoryTypes.FULL_MAP)
+            DramDirectoryTypes.FULL_MAP.value: DramDirectoryTypes.get_label(DramDirectoryTypes.FULL_MAP)
         }
 
     @staticmethod
@@ -246,6 +273,10 @@ class DramDirectoryTypes(Enum):
             return DramDirectoryTypes.FULL_MAP
 
         raise ValueError("Unknown DRAM directory type.")
+
+    def to_cfg(self):
+        if self.value == "full_map":
+            return "full_map"
 
 
 class MemoryModels(Enum):
@@ -264,7 +295,7 @@ class MemoryModels(Enum):
     @staticmethod
     def get_dict():
         return {
-            MemoryModels.BUS: MemoryModels.get_label(MemoryModels.BUS)
+            MemoryModels.BUS.value: MemoryModels.get_label(MemoryModels.BUS)
         }
 
     @staticmethod
@@ -274,9 +305,13 @@ class MemoryModels(Enum):
 
         raise ValueError("Unknown memory model.")
 
+    def to_cfg(self):
+        if self.value == "bus":
+            return "bus"
+
 
 class Technologies(Enum):
-    TWENTY_TWO_NANOMETERS = "22nm",
+    TWENTY_TWO_NANOMETERS = "22nm"
 
     @staticmethod
     def belongs(value): return value in set(item.value for item in Technologies)
@@ -291,26 +326,30 @@ class Technologies(Enum):
     @staticmethod
     def get_dict():
         return {
-            Technologies.TWENTY_TWO_NANOMETERS: Technologies.get_label(Technologies.TWENTY_TWO_NANOMETERS)
+            Technologies.TWENTY_TWO_NANOMETERS.value: Technologies.get_label(Technologies.TWENTY_TWO_NANOMETERS)
         }
 
 
 class Applications(Enum):
-    ALL = "All",
+    SPLASH_II_CHOLESKY = "splash2-cholesky"
 
     @staticmethod
     def belongs(value): return value in set(item.value for item in Applications)
 
     @staticmethod
     def get_label(value):
-        if value == Applications.ALL:
-            return "All"
+        if value == Applications.SPLASH_II_CHOLESKY:
+            return "Splash II - Cholesky"
 
         raise ValueError("Value does not corresponds to a known hash type.")
 
     @staticmethod
     def get_dict():
         return {
-            Applications.ALL: Applications.get_label(Applications.ALL)
+            Applications.SPLASH_II_CHOLESKY.value: Applications.get_label(Applications.SPLASH_II_CHOLESKY)
         }
+
+    def to_cfg(self):
+        if self.value == "splash2-cholesky":
+            return "splash2-cholesky"
     

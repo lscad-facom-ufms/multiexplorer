@@ -18,6 +18,8 @@ class Step(EventFirer):
     def __init__(self):
         super(Step, self).__init__()
 
+        self.adapter = None
+
         self.events = {
             Event.STEP_EXECUTION_STARTED: [],
             Event.STEP_EXECUTION_ENDED: [],
@@ -46,8 +48,13 @@ class Step(EventFirer):
     @staticmethod
     def has_user_input(): return False
 
-    def get_user_inputs(self):
-        return {}
+    def get_user_inputs(self): return {}
+
+    def copy_input_values(self, inputs):
+        if self.adapter is not None:
+            self.adapter.copy_input_values(inputs)
+        else:
+            raise NotImplementedError("Since this Step uses no Adapter it must implement it's own input copy.")
 
     def start_execution(self):
         self.execution_thread = threading.Thread(target=self.__execute__)
@@ -148,7 +155,7 @@ class Adapter(object):
     def copy_input_values(self, inputs):
         for key in inputs:
             if isinstance(inputs[key], Input) and isinstance(self.inputs[key], Input):
-                self.inputs[key].value = self.stashed_user_inputs[key].value
+                self.inputs[key].value = inputs[key].value
 
             if isinstance(inputs[key], InputGroup) and isinstance(self.inputs[key], InputGroup):
                 self.inputs[key].set_values_from_group(inputs[key])

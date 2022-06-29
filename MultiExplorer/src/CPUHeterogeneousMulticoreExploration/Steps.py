@@ -30,7 +30,7 @@ class CPUSimulationStep(Step):
             Event.STEP_EXECUTION_ENDED: [],
         }
 
-        self.simulator_adapter = SniperSimulatorAdapter()
+        self.adapter = SniperSimulatorAdapter()
 
         self.execution_thread = None
 
@@ -43,11 +43,11 @@ class CPUSimulationStep(Step):
         return True
 
     def get_user_inputs(self):
-        return self.simulator_adapter.get_user_inputs()
+        return self.adapter.get_user_inputs()
 
     # todo
     def __execute__(self):
-        self.simulator_adapter.execute()
+        self.adapter.execute()
 
     # todo
     def __finish__(self):

@@ -194,6 +194,14 @@ class InputTab(Tkinter.Frame, object):
 
         self.pack(fill=FILL_BOTH, expand=True)
 
+    def get_infra_inputs(self):
+        infra_inputs = {}
+
+        for key in self.inputs:
+            infra_inputs[key] = self.inputs[key].get_infra_input()
+
+        return infra_inputs
+
     # todo
     def is_valid(self):
         """
@@ -228,6 +236,14 @@ class InputTabsController(ttk.Notebook, object):
         self.input_tabs.append(input_tab)
 
         self.add(input_tab, text=step.get_label())
+
+    def get_infra_inputs_per_step(self):
+        infra_inputs_per_step = {}
+
+        for tab in self.input_tabs:
+            infra_inputs_per_step[tab.step.get_label()] = tab.get_infra_inputs()
+
+        return infra_inputs_per_step
 
     def is_valid(self):
         """
@@ -309,6 +325,9 @@ class InputScreen(ScreenFrame):
             execution_screen.set_flow(self.flow_label)
 
             self.navigate(execution_screen)
+
+    def get_infra_inputs_per_step(self):
+        return self.tabs_controller.get_infra_inputs_per_step()
 
     def reset_tabs(self):
         self.tabs_controller.destroy()
@@ -596,6 +615,15 @@ class ExecutionScreen(ScreenFrame):
         self.execution_display.set_execution_flow(self.flow)
 
         self.title.configure(text=self.flow.get_label() + ''' Execution''')
+
+    def prepare(self):
+        input_screen = self.master.get_screen(InputScreen.__name__)
+
+        infra_inputs_per_step = input_screen.get_infra_inputs_per_step()
+
+        for step in self.flow.steps:
+            if step.has_user_input():
+                step.copy_input_values(infra_inputs_per_step[step.get_label()])
 
     def ready(self):
         self.flow.execute()

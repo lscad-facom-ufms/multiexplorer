@@ -67,6 +67,9 @@ class InputGroupFrame(Tkinter.LabelFrame, object):
         """
         pass
 
+    def get_infra_input(self):
+        return self.infra_group
+
 
 class InputFrame(Tkinter.Frame, object):
     def __init__(self, infra_input, master=None, cnf={}, **kw):
@@ -85,6 +88,9 @@ class InputFrame(Tkinter.Frame, object):
 
     def is_valid(self):
         self.infra_input.is_valid()
+
+    def get_infra_input(self):
+        return self.infra_input
 
 
 class InputLabel(Tkinter.Label, object):

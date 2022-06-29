@@ -188,9 +188,6 @@ class InputGroup:
         element = self.inputs[item]
 
         if isinstance(element, Input):
-            if element.values_are_fixed():
-                return element.get_fixed_value()
-
             return element.value
 
         return element

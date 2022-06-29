@@ -20,6 +20,15 @@ class TestSniperSimulatorAdapter(unittest.TestCase):
 
         simulator_adapter.set_values_from_json("/home/ufms/projetos/multiexplorer/input-examples/quark.json")
 
+        simulator_adapter.output_path = "/home/ufms/projetos/multiexplorer/rundir"
+
+        simulator_adapter.generate_cfg_from_inputs()
+
+        expected_file_path = simulator_adapter.cfg_path
+
+        with open(expected_file_path, 'r') as fin:
+            print(fin.read())
+
     def test_generate_cfg_from_inputs(self):
         simulator_adapter = SniperSimulatorAdapter()
 

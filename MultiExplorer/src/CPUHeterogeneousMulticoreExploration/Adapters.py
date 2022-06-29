@@ -38,12 +38,7 @@ class SniperSimulatorAdapter(Adapter):
                         "key": "model_name",
                         "is_user_input": True,
                         "required": True,
-                        "allowed_values": {
-                            PredictedCores.Quark: PredictedCores.get_label(PredictedCores.Quark),
-                            PredictedCores.Arm53: PredictedCores.get_label(PredictedCores.Arm53),
-                            PredictedCores.Arm57: PredictedCores.get_label(PredictedCores.Arm57),
-                            PredictedCores.Atom: PredictedCores.get_label(PredictedCores.Atom),
-                        },
+                        "allowed_values": PredictedCores.get_dict(),
                     }),
                     Input({
                         "label": "Number of Cores",
@@ -496,7 +491,7 @@ class SniperSimulatorAdapter(Adapter):
                                     Input({
                                         "label": "shared_cores",
                                         "key": "shared_cores",
-                                        "type": InputType.IntegerArray,
+                                        "type": InputType.Integer,
                                     }),
                                     Input({
                                         "label": "prefetcher",
@@ -619,7 +614,7 @@ class SniperSimulatorAdapter(Adapter):
                                     Input({
                                         "label": "shared_cores",
                                         "key": "shared_cores",
-                                        "type": InputType.IntegerArray,
+                                        "type": InputType.Integer,
                                     }),
                                     Input({
                                         "label": "prefetcher",
@@ -742,7 +737,7 @@ class SniperSimulatorAdapter(Adapter):
                                     Input({
                                         "label": "shared_cores",
                                         "key": "shared_cores",
-                                        "type": InputType.IntegerArray,
+                                        "type": InputType.Integer,
                                     }),
                                     Input({
                                         "label": "prefetcher",
@@ -865,7 +860,7 @@ class SniperSimulatorAdapter(Adapter):
                                     Input({
                                         "label": "shared_cores",
                                         "key": "shared_cores",
-                                        "type": InputType.IntegerArray,
+                                        "type": InputType.Integer,
                                     }),
                                     Input({
                                         "label": "prefetcher",
@@ -1169,8 +1164,12 @@ class SniperSimulatorAdapter(Adapter):
             PerformanceModelTypes.from_json(input_json['General_Modeling']['memory']['l1_icache-0']['perf_model_type'])
         self.inputs['general_modeling']['memory']['l1_icache']['replacement_policy'] = \
             CachePolicies.from_json(input_json['General_Modeling']['memory']['l1_icache-0']['replacement_policy'])
-        self.inputs['general_modeling']['memory']['l1_icache']['shared_cores'] = \
-            input_json['General_Modeling']['memory']['l1_icache-0']['shared_cores']
+        shared_cores = input_json['General_Modeling']['memory']['l1_icache-0']['shared_cores']
+        if shared_cores == [0]:
+            self.inputs['general_modeling']['memory']['l1_icache']['shared_cores'] = 1
+        else:
+            self.inputs['general_modeling']['memory']['l1_icache']['shared_cores'] = tuple(shared_cores)
+
         self.inputs['general_modeling']['memory']['l1_icache']['dvfs_domain'] = \
             Domains.from_json(input_json['General_Modeling']['memory']['l1_icache-0']['dvfs_domain'])
         self.inputs['general_modeling']['memory']['l1_icache']['passthrough'] = \
@@ -1204,8 +1203,11 @@ class SniperSimulatorAdapter(Adapter):
             PerformanceModelTypes.from_json(input_json['General_Modeling']['memory']['l1_dcache-0']['perf_model_type'])
         self.inputs['general_modeling']['memory']['l1_dcache']['replacement_policy'] = \
             CachePolicies.from_json(input_json['General_Modeling']['memory']['l1_dcache-0']['replacement_policy'])
-        self.inputs['general_modeling']['memory']['l1_dcache']['shared_cores'] = \
-            input_json['General_Modeling']['memory']['l1_dcache-0']['shared_cores']
+        shared_cores = input_json['General_Modeling']['memory']['l1_dcache-0']['shared_cores']
+        if shared_cores == [0]:
+            self.inputs['general_modeling']['memory']['l1_dcache']['shared_cores'] = 1
+        else:
+            self.inputs['general_modeling']['memory']['l1_dcache']['shared_cores'] = tuple(shared_cores)
         self.inputs['general_modeling']['memory']['l1_dcache']['dvfs_domain'] = \
             Domains.from_json(input_json['General_Modeling']['memory']['l1_dcache-0']['dvfs_domain'])
         self.inputs['general_modeling']['memory']['l1_dcache']['passthrough'] = \
@@ -1241,8 +1243,11 @@ class SniperSimulatorAdapter(Adapter):
                     input_json['General_Modeling']['memory']['l2_cache-0']['perf_model_type'])
             self.inputs['general_modeling']['memory']['l2_cache']['replacement_policy'] = \
                 CachePolicies.from_json(input_json['General_Modeling']['memory']['l2_cache-0']['replacement_policy'])
-            self.inputs['general_modeling']['memory']['l2_cache']['shared_cores'] = \
-                input_json['General_Modeling']['memory']['l2_cache-0']['shared_cores']
+            shared_cores = input_json['General_Modeling']['memory']['l2_cache-0']['shared_cores']
+            if shared_cores == [0]:
+                self.inputs['general_modeling']['memory']['l2_cache']['shared_cores'] = 1
+            else:
+                self.inputs['general_modeling']['memory']['l2_cache']['shared_cores'] = tuple(shared_cores)
             self.inputs['general_modeling']['memory']['l2_cache']['dvfs_domain'] = \
                 Domains.from_json(input_json['General_Modeling']['memory']['l2_cache-0']['dvfs_domain'])
             self.inputs['general_modeling']['memory']['l2_cache']['passthrough'] = \
@@ -1278,8 +1283,11 @@ class SniperSimulatorAdapter(Adapter):
                     input_json['General_Modeling']['memory']['l3_cache-0']['perf_model_type'])
             self.inputs['general_modeling']['memory']['l3_cache']['replacement_policy'] = \
                 CachePolicies.from_json(input_json['General_Modeling']['memory']['l3_cache-0']['replacement_policy'])
-            self.inputs['general_modeling']['memory']['l3_cache']['shared_cores'] = \
-                input_json['General_Modeling']['memory']['l3_cache-0']['shared_cores']
+            shared_cores = input_json['General_Modeling']['memory']['l3_cache-0']['shared_cores']
+            if shared_cores == [0]:
+                self.inputs['general_modeling']['memory']['l3_cache']['shared_cores'] = 1
+            else:
+                self.inputs['general_modeling']['memory']['l3_cache']['shared_cores'] = tuple(shared_cores)
             self.inputs['general_modeling']['memory']['l3_cache']['dvfs_domain'] = \
                 Domains.from_json(input_json['General_Modeling']['memory']['l3_cache-0']['dvfs_domain'])
             self.inputs['general_modeling']['memory']['l3_cache']['passthrough'] = \
@@ -1408,7 +1416,7 @@ class SniperSimulatorAdapter(Adapter):
             "[perf_model/tlb]\n",
             "size[]=" + str(self.inputs['general_modeling']['memory']['tlb']['sets']) + "\n",
             "penalty=" + str(self.inputs['general_modeling']['memory']['tlb']['latency']) + "\n",
-            "policy=" + str(self.inputs['general_modeling']['memory']['tlb']['policy']).lower() + "\n",
+            "policy=" + self.inputs['general_modeling']['memory']['tlb']['policy'].to_cfg() + "\n",
             "associativity=" + str(self.inputs['general_modeling']['memory']['tlb']['associativity']) + "\n",
             "block_size=" + str(self.inputs['general_modeling']['memory']['tlb']['block_size']) + "\n",
             "latency=" + str(self.inputs['general_modeling']['memory']['tlb']['latency']) + "\n",
@@ -1419,7 +1427,7 @@ class SniperSimulatorAdapter(Adapter):
             "[perf_model/itlb]\n",
             "size[]=" + str(self.inputs['general_modeling']['memory']['itlb']['sets']) + "\n",
             "penalty=" + str(self.inputs['general_modeling']['memory']['itlb']['latency']) + "\n",
-            "policy=" + str(self.inputs['general_modeling']['memory']['itlb']['policy']).lower() + "\n",
+            "policy=" + self.inputs['general_modeling']['memory']['itlb']['policy'].to_cfg() + "\n",
             "associativity=" + str(self.inputs['general_modeling']['memory']['itlb']['associativity']) + "\n",
             "block_size=" + str(self.inputs['general_modeling']['memory']['itlb']['block_size']) + "\n",
             "latency=" + str(self.inputs['general_modeling']['memory']['itlb']['latency']) + "\n",
@@ -1430,7 +1438,7 @@ class SniperSimulatorAdapter(Adapter):
             "[perf_model/dtlb]\n",
             "size[]=" + str(self.inputs['general_modeling']['memory']['dtlb']['sets']) + "\n",
             "penalty=" + str(self.inputs['general_modeling']['memory']['dtlb']['latency']) + "\n",
-            "policy=" + str(self.inputs['general_modeling']['memory']['dtlb']['policy']).lower() + "\n",
+            "policy=" + self.inputs['general_modeling']['memory']['dtlb']['policy'].to_cfg() + "\n",
             "associativity=" + str(self.inputs['general_modeling']['memory']['dtlb']['associativity']) + "\n",
             "block_size=" + str(self.inputs['general_modeling']['memory']['dtlb']['block_size']) + "\n",
             "latency=" + str(self.inputs['general_modeling']['memory']['dtlb']['latency']) + "\n",
@@ -1441,7 +1449,7 @@ class SniperSimulatorAdapter(Adapter):
             "[perf_model/stlb]\n",
             "size[]=" + str(self.inputs['general_modeling']['memory']['stlb']['sets']) + "\n",
             "penalty=" + str(self.inputs['general_modeling']['memory']['stlb']['latency']) + "\n",
-            "policy=" + str(self.inputs['general_modeling']['memory']['stlb']['policy']).lower() + "\n",
+            "policy=" + self.inputs['general_modeling']['memory']['stlb']['policy'].to_cfg() + "\n",
             "associativity=" + str(self.inputs['general_modeling']['memory']['stlb']['associativity']) + "\n",
             "block_size=" + str(self.inputs['general_modeling']['memory']['stlb']['block_size']) + "\n",
             "latency=" + str(self.inputs['general_modeling']['memory']['stlb']['latency']) + "\n",
@@ -1451,18 +1459,18 @@ class SniperSimulatorAdapter(Adapter):
         cfg_file.writelines([
             "[perf_model/l1_icache]\n",
             "perfect=" + str(self.inputs['general_modeling']['memory']['l1_icache']['perfect']).lower() + "\n",
-            "perf_model_type=" + str(self.inputs['general_modeling']['memory']['l1_icache']['perf_model_type']).lower()
+            "perf_model_type=" + self.inputs['general_modeling']['memory']['l1_icache']['perf_model_type'].to_cfg()
             + "\n",
-            "replacement_policy=" + str(
-                self.inputs['general_modeling']['memory']['l1_icache']['replacement_policy']).lower() + "\n",
+            "replacement_policy=" +
+                self.inputs['general_modeling']['memory']['l1_icache']['replacement_policy'].to_cfg() + "\n",
             "shared_cores=" + str(self.inputs['general_modeling']['memory']['l1_icache']['shared_cores']) + "\n",
-            "dvfs_domain=" + str(self.inputs['general_modeling']['memory']['l1_icache']['dvfs_domain']).lower() + "\n",
+            "dvfs_domain=" + self.inputs['general_modeling']['memory']['l1_icache']['dvfs_domain'].to_cfg() + "\n",
             "passthrough=" + str(self.inputs['general_modeling']['memory']['l1_icache']['passthrough']).lower() + "\n",
             "cache_block_size=" + str(
                 self.inputs['general_modeling']['memory']['l1_icache']['cache_block_size']) + "\n",
-            "prefetcher=" + str(self.inputs['general_modeling']['memory']['l1_icache']['prefetcher']).lower() + "\n",
-            "address_hash=" + str(
-                self.inputs['general_modeling']['memory']['l1_icache']['address_hash']).lower() + "\n",
+            "prefetcher=" + self.inputs['general_modeling']['memory']['l1_icache']['prefetcher'].to_cfg() + "\n",
+            "address_hash=" +
+                self.inputs['general_modeling']['memory']['l1_icache']['address_hash'].to_cfg() + "\n",
             "writethrough[]=" + str(self.inputs['general_modeling']['memory']['l1_icache']['writethrough']) + "\n",
             "cache_size[]=" + str(self.inputs['general_modeling']['memory']['l1_icache']['cache_size']) + "\n",
             "writeback_time[]=" + str(self.inputs['general_modeling']['memory']['l1_icache']['writeback_time']) + "\n",
@@ -1481,17 +1489,17 @@ class SniperSimulatorAdapter(Adapter):
         cfg_file.writelines([
             "[perf_model/l1_dcache]\n",
             "perfect=" + str(self.inputs['general_modeling']['memory']['l1_dcache']['perfect']).lower()+ "\n",
-            "perf_model_type=" + str(
-                self.inputs['general_modeling']['memory']['l1_dcache']['perf_model_type']).lower() + "\n",
-            "replacement_policy=" + str(
-                self.inputs['general_modeling']['memory']['l1_dcache']['replacement_policy']).lower() + "\n",
+            "perf_model_type=" +
+                self.inputs['general_modeling']['memory']['l1_dcache']['perf_model_type'].to_cfg() + "\n",
+            "replacement_policy=" +
+                self.inputs['general_modeling']['memory']['l1_dcache']['replacement_policy'].to_cfg() + "\n",
             "shared_cores=" + str(self.inputs['general_modeling']['memory']['l1_dcache']['shared_cores']) + "\n",
-            "dvfs_domain=" + str(self.inputs['general_modeling']['memory']['l1_dcache']['dvfs_domain']).lower() + "\n",
+            "dvfs_domain=" + self.inputs['general_modeling']['memory']['l1_dcache']['dvfs_domain'].to_cfg() + "\n",
             "passthrough=" + str(self.inputs['general_modeling']['memory']['l1_dcache']['passthrough']).lower() + "\n",
             "cache_block_size=" + str(
                 self.inputs['general_modeling']['memory']['l1_dcache']['cache_block_size']) + "\n",
-            "prefetcher=" + str(self.inputs['general_modeling']['memory']['l1_dcache']['prefetcher']).lower() + "\n",
-            "address_hash=" + str(self.inputs['general_modeling']['memory']['l1_dcache']['address_hash']).lower() + "\n",
+            "prefetcher=" + self.inputs['general_modeling']['memory']['l1_dcache']['prefetcher'].to_cfg() + "\n",
+            "address_hash=" + self.inputs['general_modeling']['memory']['l1_dcache']['address_hash'].to_cfg() + "\n",
             "writethrough[]=" + str(self.inputs['general_modeling']['memory']['l1_dcache']['writethrough']) + "\n",
             "cache_size[]=" + str(self.inputs['general_modeling']['memory']['l1_dcache']['cache_size']) + "\n",
             "writeback_time[]=" + str(
@@ -1513,19 +1521,19 @@ class SniperSimulatorAdapter(Adapter):
             cfg_file.writelines([
                 "[perf_model/l2_cache]\n",
                 "perfect=" + str(self.inputs['general_modeling']['memory']['l2_cache']['perfect']).lower()+ "\n",
-                "perf_model_type=" + str(
-                    self.inputs['general_modeling']['memory']['l2_cache']['perf_model_type']).lower() + "\n",
-                "replacement_policy=" + str(
-                    self.inputs['general_modeling']['memory']['l2_cache']['replacement_policy']).lower() + "\n",
+                "perf_model_type=" +
+                    self.inputs['general_modeling']['memory']['l2_cache']['perf_model_type'].to_cfg() + "\n",
+                "replacement_policy=" +
+                    self.inputs['general_modeling']['memory']['l2_cache']['replacement_policy'].to_cfg() + "\n",
                 "shared_cores=" + str(
                     self.inputs['general_modeling']['memory']['l2_cache']['shared_cores']) + "\n",
-                "dvfs_domain=" + str(self.inputs['general_modeling']['memory']['l2_cache']['dvfs_domain']).lower() + "\n",
+                "dvfs_domain=" + self.inputs['general_modeling']['memory']['l2_cache']['dvfs_domain'].to_cfg() + "\n",
                 "passthrough=" + str(self.inputs['general_modeling']['memory']['l2_cache']['passthrough']).lower() + "\n",
                 "cache_block_size=" + str(
                     self.inputs['general_modeling']['memory']['l2_cache']['cache_block_size']) + "\n",
-                "prefetcher=" + str(self.inputs['general_modeling']['memory']['l2_cache']['prefetcher']).lower() + "\n",
-                "address_hash=" + str(
-                    self.inputs['general_modeling']['memory']['l2_cache']['address_hash']).lower() + "\n",
+                "prefetcher=" + self.inputs['general_modeling']['memory']['l2_cache']['prefetcher'].to_cfg() + "\n",
+                "address_hash=" +
+                    self.inputs['general_modeling']['memory']['l2_cache']['address_hash'].to_cfg() + "\n",
                 "writethrough[]=" + str(
                     self.inputs['general_modeling']['memory']['l2_cache']['writethrough']) + "\n",
                 "cache_size[]=" + str(self.inputs['general_modeling']['memory']['l2_cache']['cache_size']) + "\n",
@@ -1548,19 +1556,19 @@ class SniperSimulatorAdapter(Adapter):
             cfg_file.writelines([
                 "[perf_model/l3_cache]\n",
                 "perfect=" + str(self.inputs['general_modeling']['memory']['l3_cache']['perfect']).lower()+ "\n",
-                "perf_model_type=" + str(
-                    self.inputs['general_modeling']['memory']['l3_cache']['perf_model_type']).lower() + "\n",
-                "replacement_policy=" + str(
-                    self.inputs['general_modeling']['memory']['l3_cache']['replacement_policy']).lower() + "\n",
+                "perf_model_type=" +
+                    self.inputs['general_modeling']['memory']['l3_cache']['perf_model_type'].to_cfg() + "\n",
+                "replacement_policy=" +
+                    self.inputs['general_modeling']['memory']['l3_cache']['replacement_policy'].to_cfg() + "\n",
                 "shared_cores=" + str(
                     self.inputs['general_modeling']['memory']['l3_cache']['shared_cores']) + "\n",
-                "dvfs_domain=" + str(self.inputs['general_modeling']['memory']['l3_cache']['dvfs_domain']).lower() + "\n",
+                "dvfs_domain=" + self.inputs['general_modeling']['memory']['l3_cache']['dvfs_domain'].to_cfg() + "\n",
                 "passthrough=" + str(self.inputs['general_modeling']['memory']['l3_cache']['passthrough']).lower() + "\n",
                 "cache_block_size=" + str(
                     self.inputs['general_modeling']['memory']['l3_cache']['cache_block_size']) + "\n",
-                "prefetcher=" + str(self.inputs['general_modeling']['memory']['l3_cache']['prefetcher']).lower() + "\n",
-                "address_hash=" + str(
-                    self.inputs['general_modeling']['memory']['l3_cache']['address_hash']).lower() + "\n",
+                "prefetcher=" + self.inputs['general_modeling']['memory']['l3_cache']['prefetcher'].to_cfg() + "\n",
+                "address_hash=" +
+                    self.inputs['general_modeling']['memory']['l3_cache']['address_hash'].to_cfg() + "\n",
                 "writethrough[]=" + str(
                     self.inputs['general_modeling']['memory']['l3_cache']['writethrough']) + "\n",
                 "cache_size[]=" + str(self.inputs['general_modeling']['memory']['l3_cache']['cache_size']) + "\n",
@@ -1602,7 +1610,7 @@ class SniperSimulatorAdapter(Adapter):
             + str(self.inputs['general_modeling']['memory']['dram']['dram_directory']['total_entries'])
             + "\n",
             "directory_type="
-            + str(self.inputs['general_modeling']['memory']['dram']['dram_directory']['directory_type'])
+            + self.inputs['general_modeling']['memory']['dram']['dram_directory']['directory_type'].to_cfg()
             + "\n\n",
         ])
 
@@ -1638,12 +1646,12 @@ class SniperSimulatorAdapter(Adapter):
 
         cfg_file.writelines([
             "[network]\n",
-            "memory_model_1=" + str(self.inputs['general_modeling']['network']['memory_model_1']) + "\n\n",
+            "memory_model_1=" + self.inputs['general_modeling']['network']['memory_model_1'].to_cfg() + "\n\n",
         ])
 
         cfg_file.writelines([
             "[network]\n",
-            "memory_model_2=" + str(self.inputs['general_modeling']['network']['memory_model_2']) + "\n\n",
+            "memory_model_2=" + self.inputs['general_modeling']['network']['memory_model_2'].to_cfg() + "\n\n",
         ])
 
         cfg_file.writelines([
@@ -1676,14 +1684,23 @@ class SniperSimulatorAdapter(Adapter):
         self.generate_cfg_from_inputs()
 
     def execute_simulation(self):
+        print (
+                self.get_executable_path() + "./run-sniper"
+                + " -p " + str(self.get_benchmark_application())
+                + " -n " + str(self.get_original_nbr_of_cores())
+                + " -i " + str(self.get_benchmark_size())
+                + " -c " + str(self.get_cfg_path())
+                + " -d " + str(self.get_output_path())
+                + "> " + str(self.get_output_path()) + "/sniper_output.out"
+        )
         os.system(
             self.get_executable_path() + "./run-sniper"
-            + " -p " + self.get_benchmark_application()
+            + " -p " + str(self.get_benchmark_application())
             + " -n " + str(self.get_original_nbr_of_cores())
-            + " -i " + self.get_benchmark_size()
-            + " -c " + self.get_cfg_path()
-            + " -d " + self.get_output_path()
-            + "> " + self.get_output_path() + "/sniper_output.out"
+            + " -i " + str(self.get_benchmark_size())
+            + " -c " + str(self.get_cfg_path())
+            + " -d " + str(self.get_output_path())
+            + "> " + str(self.get_output_path()) + "/sniper_output.out"
         )
 
     def get_original_nbr_of_cores(self):
