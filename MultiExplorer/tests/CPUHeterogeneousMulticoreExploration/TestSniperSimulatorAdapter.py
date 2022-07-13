@@ -66,6 +66,10 @@ class TestSniperSimulatorAdapter(unittest.TestCase):
 
         self.assertEqual(simulator_adapter.inputs['general_modeling']['model_name'], PredictedCores.Quark)
 
+    def test_parse_results(self):
+        simulator_adapter = SniperSimulatorAdapter()
+
+        simulator_adapter.parse_results()
 
 if __name__ == '__main__':
     unittest.main()

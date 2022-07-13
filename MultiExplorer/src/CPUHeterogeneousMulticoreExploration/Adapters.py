@@ -3,6 +3,8 @@ import os
 import sys
 import time
 
+from xml.etree import ElementTree as ET
+
 from MultiExplorer.src.CPUHeterogeneousMulticoreExploration.AllowedValues import Simulators, PredictedCores, \
     SniperCorePipelineKinds, \
     CachePolicies, HashTypes, PerformanceModelTypes, Domains, Prefetchers, DramDirectoryTypes, MemoryModels, \
@@ -10,6 +12,9 @@ from MultiExplorer.src.CPUHeterogeneousMulticoreExploration.AllowedValues import
 from MultiExplorer.src.Infrastructure.ExecutionFlow import Adapter
 from MultiExplorer.src.Infrastructure.Inputs import Input, InputGroup, InputType
 from MultiExplorer.src.config import PATH_SNIPER, PATH_RUNDIR
+
+sys.path.append(PATH_SNIPER+'/tools')
+import sniper_lib
 
 
 class SniperSimulatorAdapter(Adapter):
@@ -1061,6 +1066,8 @@ class SniperSimulatorAdapter(Adapter):
             }),
         ])
 
+        self.config = {}
+
         self.results = {}
 
         self.use_benchmarks = True
@@ -1672,6 +1679,8 @@ class SniperSimulatorAdapter(Adapter):
 
         self.execute_simulation()
 
+        self.register_results()
+
     def prepare(self):
         json_path = PredictedCores.get_json_path(self.inputs['general_modeling']['model_name'])
 
@@ -1693,6 +1702,7 @@ class SniperSimulatorAdapter(Adapter):
                 + " -d " + str(self.get_output_path())
                 + "> " + str(self.get_output_path()) + "/sniper_output.out"
         )
+
         os.system(
             self.get_executable_path() + "./run-sniper"
             + " -p " + str(self.get_benchmark_application())
@@ -1702,6 +1712,23 @@ class SniperSimulatorAdapter(Adapter):
             + " -d " + str(self.get_output_path())
             + "> " + str(self.get_output_path()) + "/sniper_output.out"
         )
+
+    def register_results(self):
+        obj_result = sniper_lib.get_results(resultsdir=self.get_output_path())
+
+        self.config = obj_result['config']
+
+        self.results = obj_result['results']
+
+        json_output_file_path = self.get_output_path() + "/sniper_config.json"
+
+        with open(json_output_file_path, 'w') as json_output_file:
+            json.dump(self.config, json_output_file, indent=4)
+
+        json_output_file_path = self.get_output_path() + "/sniper_results.json"
+
+        with open(json_output_file_path, 'w') as json_output_file:
+            json.dump(self.results, json_output_file, indent=4)
 
     def get_original_nbr_of_cores(self):
         return self.inputs["general_modeling"].inputs["total_cores"].value
@@ -1727,12 +1754,6 @@ class SniperSimulatorAdapter(Adapter):
 
         return self.cfg_path
 
-    def get_output_path(self):
-        if self.output_path is None:
-            return PATH_RUNDIR
-
-        return self.output_path
-
     def get_results(self):
         pass
 
@@ -1743,17 +1764,58 @@ class McPATAdapter(Adapter):
         multicore, and many-core architectures) to obtain the physical parameters  for a CPU architecture.
     """
 
-    # todo
     def __init__(self):
         Adapter.__init__(self)
 
-    # todo
-    def get_user_inputs(self):
-        pass
+        self.input_xml = None
+        self.sniper_simulation_path = None
 
     # todo
     def execute(self):
         time.sleep(6)
+
+    # todo
+    def generate_xml_from_sniper_simulation(self):
+        sniper_config = json.load(open(self.get_sniper_simulation_path()+"/sniper_config.json"))
+
+        sniper_results = json.load(open(self.get_sniper_simulation_path()+"/sniper_results.json"))
+
+        xml = ET.fromstring('''<?xml version="1.0" encoding="UTF-8"?>
+            <component id="root" name="root">
+                <component id="system" name="system">
+                </component>
+            </component>
+        ''')
+
+        system = xml.find("component[@id='system']")
+
+        total_cycles = 0
+
+        for val in sniper_results["performance_model.cycle_count"]:
+            total_cycles = total_cycles + int(val)
+
+        system.extend([
+            ET.Element("param", {
+                "name": "total_cycles",
+                "value": str(total_cycles),
+            }),
+            ET.Element("param", {
+                "name": "idle_cycles",
+                "value": "0",
+            }),
+            ET.Element("param", {
+                "name": "busy_cycles",
+                "value": str(total_cycles),
+            }),
+        ])
+
+        self.input_xml = xml
+
+    def get_sniper_simulation_path(self):
+        if self.sniper_simulation_path is None:
+            return self.get_output_path()
+
+        return self.sniper_simulation_path
 
 
 class NsgaIIPredDSEAdapter(Adapter):

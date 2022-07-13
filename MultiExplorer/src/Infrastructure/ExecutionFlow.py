@@ -4,6 +4,7 @@ import copy
 
 from MultiExplorer.src.Infrastructure.Events import EventFirer, Event
 from MultiExplorer.src.Infrastructure.Inputs import Input, InputGroup
+from MultiExplorer.src.config import PATH_RUNDIR
 
 
 class Step(EventFirer):
@@ -105,6 +106,8 @@ class Adapter(object):
         """
 
     def __init__(self):
+        self.output_path = None
+
         self.inputs = {}
 
         self.stashed_user_inputs = None
@@ -159,6 +162,12 @@ class Adapter(object):
 
             if isinstance(inputs[key], InputGroup) and isinstance(self.inputs[key], InputGroup):
                 self.inputs[key].set_values_from_group(inputs[key])
+
+    def get_output_path(self):
+        if self.output_path is None:
+            return PATH_RUNDIR
+
+        return self.output_path
 
 
 class ExecutionFlow(EventFirer):

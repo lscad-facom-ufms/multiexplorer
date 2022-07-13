@@ -32,32 +32,32 @@
 		<stat name="total_cycles" value="0"/>
 		<stat name="idle_cycles" value="0"/>
 		<stat name="busy_cycles"  value="0"/>
-			<!--This page size(B) is complete different from the page size in Main memo secction. this page size is the size of 
-			virtual memory from OS/Archi perspective; the page size in Main memo secction is the actuall physical line in a DRAM bank  -->
+		<!--This page size(B) is complete different from the page size in Main memo secction. this page size is the size of
+        virtual memory from OS/Archi perspective; the page size in Main memo secction is the actuall physical line in a DRAM bank  -->
 		<!-- *********************** cores ******************* -->
 		<component id="system.core$" name="core$">
-		<!-- Core property -->
+			<!-- Core property -->
 			<param name="clock_rate" value='3200'/>
 			<param name="vdd" value="0"/><!-- 0 means using ITRS default vdd -->
 			<param name="opt_local" value="0"/>
 			<param name="instruction_length" value="0"/>
 			<param name="opcode_width" value="0"/>
 			<!-- address width determins the tag_width in Cache, LSQ and buffers in cache controller 
-			default value is machine_bits, if not set --> 
+			default value is machine_bits, if not set -->
 			<param name="machine_type" value="0"/><!-- 1 inorder; 0 OOO-->
 			<!-- inorder/OoO -->
 			<param name="number_hardware_threads" value="0"/>
 			<!-- number_instruction_fetch_ports(icache ports) is always 1 in single-thread processor,
 			it only may be more than one in SMT processors. BTB ports always equals to fetch ports since 
-			branch information in consective branch instructions in the same fetch group can be read out from BTB once.--> 
+			branch information in consective branch instructions in the same fetch group can be read out from BTB once.-->
 			<param name="fetch_width" value="0"/>
 			<!-- fetch_width determins the size of cachelines of L1 cache block -->
 			<param name="number_instruction_fetch_ports" value="0"/>
 			<param name="decode_width" value="0"/>
 			<!-- decode_width determins the number of ports of the 
 			renaming table (both RAM and CAM) scheme -->
-			<param name="x86" value="0"/> 
-			<param name="micro_opcode_width" value="0"/> 
+			<param name="x86" value="0"/>
+			<param name="micro_opcode_width" value="0"/>
 			<param name="issue_width" value="0"/>
 			<param name="peak_issue_width" value="0"/>
 			<!-- issue_width determins the number of ports of Issue window and other logic 
@@ -191,6 +191,7 @@
 			<stat name="MUL_cdb_duty_cycle" value="0"/>
 			<stat name="FPU_cdb_duty_cycle" value="0"/>
 			<param name="number_of_BPT" value="0"/>
+
 			<component id="system.core$.itlb" name="itlb">
 				<param name="number_entries" value="0"/>
 				<stat name="total_accesses" value="0"/>
@@ -199,6 +200,7 @@
 				<!-- there is no write requests to itlb although writes happen to itlb after miss,
 				which is actually a replacement -->
 			</component>
+
 			<component id="system.core$.icache" name="icache">
 				<!-- there is no write requests to itlb although writes happen to it after miss, 
 				which is actually a replacement -->
@@ -210,12 +212,14 @@
 				<stat name="read_misses" value="0"/>
 				<stat name="conflicts" value="0"/>
 			</component>
+
 			<component id="system.core$.dtlb" name="dtlb">
 				<param name="number_entries" value="0"/>
 				<stat name="total_accesses" value="0"/>
 				<stat name="total_misses" value="0"/>
 				<stat name="conflicts" value="0"/>
 			</component>
+
 			<component id="system.core$.dcache" name="dcache">
 				<!-- all the buffer related are optional -->
 				<param name="dcache_config" value="0"/>
@@ -227,6 +231,7 @@
 				<stat name="write_misses" value="0"/>
 				<stat name="conflicts" value="0"/>
 			</component>
+
 			<component id="system.core$.BTB" name="BTB">
 				<!-- all the buffer related are optional -->
 				<param name="BTB_config" value="0"/>
@@ -234,39 +239,40 @@
 				<stat name="write_accesses" value="0"/>
 				<!-- the parameters are capacity,block_width,associativity,bank, throughput w.r.t. core clock, latency w.r.t. core clock,-->
 			</component>
-	</component>
-			<!--**********************************************************************-->
+		</component>
+		<!--**********************************************************************-->
 		<component id="system.L2$" name="L2$">
-				<param name="L2_config" value="0"/>
-				<param name="buffer_sizes" value="0"/>
-				<param name="clockrate" value="0"/>
-				<param name="vdd" value="0"/><!-- 0 means using ITRS default vdd -->
-				<param name="ports" value="0"/>
-				<param name="device_type" value="0"/>
-				<stat name="read_accesses" value="0"/>
-				<stat name="write_accesses" value="0"/>
-				<stat name="read_misses" value="0"/>
-				<stat name="write_misses" value="0"/>
-				<stat name="conflicts" value="0"/>
-				<stat name="duty_cycle" value="0"/>
+			<param name="L2_config" value="0"/>
+			<param name="buffer_sizes" value="0"/>
+			<param name="clockrate" value="0"/>
+			<param name="vdd" value="0"/><!-- 0 means using ITRS default vdd -->
+			<param name="ports" value="0"/>
+			<param name="device_type" value="0"/>
+			<stat name="read_accesses" value="0"/>
+			<stat name="write_accesses" value="0"/>
+			<stat name="read_misses" value="0"/>
+			<stat name="write_misses" value="0"/>
+			<stat name="conflicts" value="0"/>
+			<stat name="duty_cycle" value="0"/>
 		</component>
+
 		<component id="system.L3$" name="L3$">
-				<param name="L3_config" value="0"/>
-		<!-- the parameters are capacity,block_width, associativity,bank, throughput w.r.t. core clock, latency w.r.t. core clock,-->
-				<param name="clockrate" value="0"/>
-				<param name="vdd" value="0"/><!-- 0 means using ITRS default vdd -->
-				<param name="ports" value="0"/>
-				<param name="device_type" value="0"/>
-				<param name="buffer_sizes" value="0"/>
-				<!-- cache controller buffer sizes: miss_buffer_size(MSHR),fill_buffer_size,prefetch_buffer_size,wb_buffer_size-->
-				<stat name="read_accesses" value="0"/>
-				<stat name="write_accesses" value="0"/>
-				<stat name="read_misses" value="0"/>
-				<stat name="write_misses" value="0"/>
-				<stat name="conflicts" value="0"/>
-				<stat name="duty_cycle" value="0"/>
+			<param name="L3_config" value="0"/>
+			<!-- the parameters are capacity,block_width, associativity,bank, throughput w.r.t. core clock, latency w.r.t. core clock,-->
+			<param name="clockrate" value="0"/>
+			<param name="vdd" value="0"/><!-- 0 means using ITRS default vdd -->
+			<param name="ports" value="0"/>
+			<param name="device_type" value="0"/>
+			<param name="buffer_sizes" value="0"/>
+			<!-- cache controller buffer sizes: miss_buffer_size(MSHR),fill_buffer_size,prefetch_buffer_size,wb_buffer_size-->
+			<stat name="read_accesses" value="0"/>
+			<stat name="write_accesses" value="0"/>
+			<stat name="read_misses" value="0"/>
+			<stat name="write_misses" value="0"/>
+			<stat name="conflicts" value="0"/>
+			<stat name="duty_cycle" value="0"/>
 		</component>
-			<!--**********************************************************************-->
+		<!--**********************************************************************-->
 		<component id="system.NoC$" name="noc$">
 			<param name="clockrate" value="0"/>
 			<param name="vdd" value="0"/><!-- 0 means using ITRS default vdd -->
@@ -285,7 +291,7 @@
 			<stat name="total_accesses" value="0"/>
 			<stat name="duty_cycle" value="0"/>
 		</component>
-			<!--**********************************************************************-->
+		<!--**********************************************************************-->
 		<component id="system.mc" name="mc">
 			<!-- current version of McPAT uses published values for base parameters of memory controller
 			improvments on MC will be added in later versions. -->

@@ -34,7 +34,6 @@
         },
         
         "system.core$":{
-
             "total_instructions":"thread.instructions_by_core[$]",
             "int_instructions": "interval_timer.uop_generic[$]",
             "fp_instructions": "interval_timer.uop_generic[$]",
@@ -60,7 +59,6 @@
             "fp_inst_window_reads":"thread.instruction_count[$] (divided) number_cores",
             "fp_inst_window_writes":"thread.instruction_count[$] (divided) number_cores",
             "fp_inst_window_wakeup_accesses":"thread.instruction_count[$]",
-            
             "int_regfile_reads":"interval_timer.uop_generic[$]",
             "float_regfile_reads":"interval_timer.uop_generic[$]",
             "int_regfile_writes":"interval_timer.uop_generic[$]",
