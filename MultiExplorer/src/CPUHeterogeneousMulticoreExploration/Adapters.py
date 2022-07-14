@@ -1,19 +1,16 @@
 import json
 import os
-import sys
 import time
-
-from xml.etree import ElementTree as ET
-
-from MultiExplorer.src.CPUHeterogeneousMulticoreExploration.AllowedValues import Simulators, PredictedCores, \
+from xml.etree import ElementTree
+from MultiExplorer.src.CPUHeterogeneousMulticoreExploration.AllowedValues import PredictedCores, \
     SniperCorePipelineKinds, \
     CachePolicies, HashTypes, PerformanceModelTypes, Domains, Prefetchers, DramDirectoryTypes, MemoryModels, \
     Technologies, Applications
 from MultiExplorer.src.Infrastructure.ExecutionFlow import Adapter
 from MultiExplorer.src.Infrastructure.Inputs import Input, InputGroup, InputType
-from MultiExplorer.src.config import PATH_SNIPER, PATH_RUNDIR
-
-sys.path.append(PATH_SNIPER+'/tools')
+from MultiExplorer.src.config import PATH_SNIPER
+import sys
+sys.path.append(PATH_SNIPER + '/tools')
 import sniper_lib
 
 
@@ -1097,14 +1094,14 @@ class SniperSimulatorAdapter(Adapter):
 
         self.inputs['general_modeling']['core']['logical_cpus'] = \
             int(input_json['General_Modeling']['core']['logical_cpus'])
-        
+
         try:
             nbr_cache_levels = int(input_json['General_Modeling']['memory']['cache']['levels'])
         except TypeError:
             nbr_cache_levels = 2
 
         self.inputs['general_modeling']['memory']['cache']['levels'] = str(nbr_cache_levels)
-            
+
         self.inputs['general_modeling']['memory']['tlb']['sets'] = \
             int(input_json['General_Modeling']['memory']['tlb']['sets'])
         self.inputs['general_modeling']['memory']['tlb']['latency'] = \
@@ -1241,7 +1238,7 @@ class SniperSimulatorAdapter(Adapter):
             input_json['General_Modeling']['memory']['l1_dcache-0']['ports']
         self.inputs['general_modeling']['memory']['l1_dcache']['data_access_time'] = \
             input_json['General_Modeling']['memory']['l1_dcache-0']['data_access_time']
-        
+
         if nbr_cache_levels >= 2:
             self.inputs['general_modeling']['memory']['l2_cache']['perfect'] = \
                 input_json['General_Modeling']['memory']['l2_cache-0']['perfect']
@@ -1281,7 +1278,7 @@ class SniperSimulatorAdapter(Adapter):
                 input_json['General_Modeling']['memory']['l2_cache-0']['ports']
             self.inputs['general_modeling']['memory']['l2_cache']['data_access_time'] = \
                 input_json['General_Modeling']['memory']['l2_cache-0']['data_access_time']
-            
+
         if nbr_cache_levels >= 3:
             self.inputs['general_modeling']['memory']['l3_cache']['perfect'] = \
                 input_json['General_Modeling']['memory']['l3_cache-0']['perfect']
@@ -1469,7 +1466,7 @@ class SniperSimulatorAdapter(Adapter):
             "perf_model_type=" + self.inputs['general_modeling']['memory']['l1_icache']['perf_model_type'].to_cfg()
             + "\n",
             "replacement_policy=" +
-                self.inputs['general_modeling']['memory']['l1_icache']['replacement_policy'].to_cfg() + "\n",
+            self.inputs['general_modeling']['memory']['l1_icache']['replacement_policy'].to_cfg() + "\n",
             "shared_cores=" + str(self.inputs['general_modeling']['memory']['l1_icache']['shared_cores']) + "\n",
             "dvfs_domain=" + self.inputs['general_modeling']['memory']['l1_icache']['dvfs_domain'].to_cfg() + "\n",
             "passthrough=" + str(self.inputs['general_modeling']['memory']['l1_icache']['passthrough']).lower() + "\n",
@@ -1477,7 +1474,7 @@ class SniperSimulatorAdapter(Adapter):
                 self.inputs['general_modeling']['memory']['l1_icache']['cache_block_size']) + "\n",
             "prefetcher=" + self.inputs['general_modeling']['memory']['l1_icache']['prefetcher'].to_cfg() + "\n",
             "address_hash=" +
-                self.inputs['general_modeling']['memory']['l1_icache']['address_hash'].to_cfg() + "\n",
+            self.inputs['general_modeling']['memory']['l1_icache']['address_hash'].to_cfg() + "\n",
             "writethrough[]=" + str(self.inputs['general_modeling']['memory']['l1_icache']['writethrough']) + "\n",
             "cache_size[]=" + str(self.inputs['general_modeling']['memory']['l1_icache']['cache_size']) + "\n",
             "writeback_time[]=" + str(self.inputs['general_modeling']['memory']['l1_icache']['writeback_time']) + "\n",
@@ -1495,11 +1492,11 @@ class SniperSimulatorAdapter(Adapter):
 
         cfg_file.writelines([
             "[perf_model/l1_dcache]\n",
-            "perfect=" + str(self.inputs['general_modeling']['memory']['l1_dcache']['perfect']).lower()+ "\n",
+            "perfect=" + str(self.inputs['general_modeling']['memory']['l1_dcache']['perfect']).lower() + "\n",
             "perf_model_type=" +
-                self.inputs['general_modeling']['memory']['l1_dcache']['perf_model_type'].to_cfg() + "\n",
+            self.inputs['general_modeling']['memory']['l1_dcache']['perf_model_type'].to_cfg() + "\n",
             "replacement_policy=" +
-                self.inputs['general_modeling']['memory']['l1_dcache']['replacement_policy'].to_cfg() + "\n",
+            self.inputs['general_modeling']['memory']['l1_dcache']['replacement_policy'].to_cfg() + "\n",
             "shared_cores=" + str(self.inputs['general_modeling']['memory']['l1_dcache']['shared_cores']) + "\n",
             "dvfs_domain=" + self.inputs['general_modeling']['memory']['l1_dcache']['dvfs_domain'].to_cfg() + "\n",
             "passthrough=" + str(self.inputs['general_modeling']['memory']['l1_dcache']['passthrough']).lower() + "\n",
@@ -1527,20 +1524,21 @@ class SniperSimulatorAdapter(Adapter):
         if nbr_cache_levels >= 2:
             cfg_file.writelines([
                 "[perf_model/l2_cache]\n",
-                "perfect=" + str(self.inputs['general_modeling']['memory']['l2_cache']['perfect']).lower()+ "\n",
+                "perfect=" + str(self.inputs['general_modeling']['memory']['l2_cache']['perfect']).lower() + "\n",
                 "perf_model_type=" +
-                    self.inputs['general_modeling']['memory']['l2_cache']['perf_model_type'].to_cfg() + "\n",
+                self.inputs['general_modeling']['memory']['l2_cache']['perf_model_type'].to_cfg() + "\n",
                 "replacement_policy=" +
-                    self.inputs['general_modeling']['memory']['l2_cache']['replacement_policy'].to_cfg() + "\n",
+                self.inputs['general_modeling']['memory']['l2_cache']['replacement_policy'].to_cfg() + "\n",
                 "shared_cores=" + str(
                     self.inputs['general_modeling']['memory']['l2_cache']['shared_cores']) + "\n",
                 "dvfs_domain=" + self.inputs['general_modeling']['memory']['l2_cache']['dvfs_domain'].to_cfg() + "\n",
-                "passthrough=" + str(self.inputs['general_modeling']['memory']['l2_cache']['passthrough']).lower() + "\n",
+                "passthrough=" + str(
+                    self.inputs['general_modeling']['memory']['l2_cache']['passthrough']).lower() + "\n",
                 "cache_block_size=" + str(
                     self.inputs['general_modeling']['memory']['l2_cache']['cache_block_size']) + "\n",
                 "prefetcher=" + self.inputs['general_modeling']['memory']['l2_cache']['prefetcher'].to_cfg() + "\n",
                 "address_hash=" +
-                    self.inputs['general_modeling']['memory']['l2_cache']['address_hash'].to_cfg() + "\n",
+                self.inputs['general_modeling']['memory']['l2_cache']['address_hash'].to_cfg() + "\n",
                 "writethrough[]=" + str(
                     self.inputs['general_modeling']['memory']['l2_cache']['writethrough']) + "\n",
                 "cache_size[]=" + str(self.inputs['general_modeling']['memory']['l2_cache']['cache_size']) + "\n",
@@ -1562,20 +1560,21 @@ class SniperSimulatorAdapter(Adapter):
         if nbr_cache_levels >= 3:
             cfg_file.writelines([
                 "[perf_model/l3_cache]\n",
-                "perfect=" + str(self.inputs['general_modeling']['memory']['l3_cache']['perfect']).lower()+ "\n",
+                "perfect=" + str(self.inputs['general_modeling']['memory']['l3_cache']['perfect']).lower() + "\n",
                 "perf_model_type=" +
-                    self.inputs['general_modeling']['memory']['l3_cache']['perf_model_type'].to_cfg() + "\n",
+                self.inputs['general_modeling']['memory']['l3_cache']['perf_model_type'].to_cfg() + "\n",
                 "replacement_policy=" +
-                    self.inputs['general_modeling']['memory']['l3_cache']['replacement_policy'].to_cfg() + "\n",
+                self.inputs['general_modeling']['memory']['l3_cache']['replacement_policy'].to_cfg() + "\n",
                 "shared_cores=" + str(
                     self.inputs['general_modeling']['memory']['l3_cache']['shared_cores']) + "\n",
                 "dvfs_domain=" + self.inputs['general_modeling']['memory']['l3_cache']['dvfs_domain'].to_cfg() + "\n",
-                "passthrough=" + str(self.inputs['general_modeling']['memory']['l3_cache']['passthrough']).lower() + "\n",
+                "passthrough=" + str(
+                    self.inputs['general_modeling']['memory']['l3_cache']['passthrough']).lower() + "\n",
                 "cache_block_size=" + str(
                     self.inputs['general_modeling']['memory']['l3_cache']['cache_block_size']) + "\n",
                 "prefetcher=" + self.inputs['general_modeling']['memory']['l3_cache']['prefetcher'].to_cfg() + "\n",
                 "address_hash=" +
-                    self.inputs['general_modeling']['memory']['l3_cache']['address_hash'].to_cfg() + "\n",
+                self.inputs['general_modeling']['memory']['l3_cache']['address_hash'].to_cfg() + "\n",
                 "writethrough[]=" + str(
                     self.inputs['general_modeling']['memory']['l3_cache']['writethrough']) + "\n",
                 "cache_size[]=" + str(self.inputs['general_modeling']['memory']['l3_cache']['cache_size']) + "\n",
@@ -1776,11 +1775,11 @@ class McPATAdapter(Adapter):
 
     # todo
     def generate_xml_from_sniper_simulation(self):
-        sniper_config = json.load(open(self.get_sniper_simulation_path()+"/sniper_config.json"))
+        sniper_config = json.load(open(self.get_sniper_simulation_path() + "/sniper_config.json"))
 
-        sniper_results = json.load(open(self.get_sniper_simulation_path()+"/sniper_results.json"))
+        sniper_results = json.load(open(self.get_sniper_simulation_path() + "/sniper_results.json"))
 
-        xml = ET.fromstring('''<?xml version="1.0" encoding="UTF-8"?>
+        xml = ElementTree.fromstring('''<?xml version="1.0" encoding="UTF-8"?>
             <component id="root" name="root">
                 <component id="system" name="system">
                 </component>
@@ -1789,21 +1788,141 @@ class McPATAdapter(Adapter):
 
         system = xml.find("component[@id='system']")
 
+        number_of_cores = sniper_config["general/total_cores"]
+
+        l2_shared_cores = number_of_l2 = l3_shared_cores = number_of_l3 = 0
+
+        cache_levels = sniper_config["perf_model/cache/levels"]
+
+        if cache_levels >= 2:
+            l2_shared_cores = int(sniper_config["perf_model/l2_cache/shared_cores"])
+
+            number_of_l2 = number_of_cores / l2_shared_cores
+
+        if cache_levels >= 3:
+            l3_shared_cores = int(sniper_config["perf_model/l3_cache/shared_cores"])
+
+            number_of_l3 = number_of_cores / l3_shared_cores
+
         total_cycles = 0
 
         for val in sniper_results["performance_model.cycle_count"]:
             total_cycles = total_cycles + int(val)
 
         system.extend([
-            ET.Element("param", {
+            ElementTree.Element("param", {
+                "name": "number_of_cores",
+                "value": str(sniper_config["general/total_cores"]),
+            }),
+            ElementTree.Element("param", {
+                "name": "number_of_L1Directories",
+                "value": str(0),
+            }),
+            ElementTree.Element("param", {
+                "name": "number_of_L2Directories",
+                "value": str(0),
+            }),
+            ElementTree.Element("param", {
+                "name": "number_of_L2s",
+                "value": str(number_of_l2),
+            }),
+            ElementTree.Element("param", {
+                "name": "Private_L2",
+                "value": str(0),
+            }),
+            ElementTree.Element("param", {
+                "name": "number_of_L3s",
+                "value": str(0),
+            }),
+            ElementTree.Element("param", {
+                "name": "number_of_NoCs",
+                "value": str(1),
+            }),
+            ElementTree.Element("param", {
+                "name": "homogeneous_cores",
+                "value": str(0),
+            }),
+            ElementTree.Element("param", {
+                "name": "homogeneous_L2s",
+                "value": str(0),
+            }),
+            ElementTree.Element("param", {
+                "name": "homogeneous_L1Directories",
+                "value": str(0),
+            }),
+            ElementTree.Element("param", {
+                "name": "homogeneous_L2Directories",
+                "value": str(0),
+            }),
+            ElementTree.Element("param", {
+                "name": "homogeneous_L3s",
+                "value": str(0),
+            }),
+            ElementTree.Element("param", {
+                "name": "homogeneous_ccs",
+                "value": str(1),
+            }),
+            ElementTree.Element("param", {
+                "name": "homogeneous_NoCs",
+                "value": str(1),
+            }),
+            ElementTree.Element("param", {
+                "name": "core_tech_node",
+                "value": str(sniper_config["power/technology_node"]),
+            }),
+            ElementTree.Element("param", {
+                "name": "target_core_clockrate",
+                "value": str(sniper_config["perf_model/core/frequency"]),
+            }),
+            ElementTree.Element("param", {
+                "name": "temperature",
+                "value": str(0),
+            }),
+            ElementTree.Element("param", {
+                "name": "number_cache_levels",
+                "value": str(0),
+            }),
+            ElementTree.Element("param", {
+                "name": "interconnect_projection_type",
+                "value": str(0),
+            }),
+            ElementTree.Element("param", {
+                "name": "device_type",
+                "value": str(0),
+            }),
+            ElementTree.Element("param", {
+                "name": "longer_channel_device",
+                "value": str(0),
+            }),
+            ElementTree.Element("param", {
+                "name": "power_gating",
+                "value": str(),
+            }),
+            ElementTree.Element("param", {
+                "name": "machine_bits",
+                "value": str(0),
+            }),
+            ElementTree.Element("param", {
+                "name": "virtual_address_width",
+                "value": str(0),
+            }),
+            ElementTree.Element("param", {
+                "name": "physical_address_width",
+                "value": str(0),
+            }),
+            ElementTree.Element("param", {
+                "name": "virtual_memory_page_size",
+                "value": str(0),
+            }),
+            ElementTree.Element("param", {
                 "name": "total_cycles",
                 "value": str(total_cycles),
             }),
-            ET.Element("param", {
+            ElementTree.Element("param", {
                 "name": "idle_cycles",
                 "value": "0",
             }),
-            ET.Element("param", {
+            ElementTree.Element("param", {
                 "name": "busy_cycles",
                 "value": str(total_cycles),
             }),
@@ -1823,6 +1942,7 @@ class NsgaIIPredDSEAdapter(Adapter):
         This adapter uses a NSGA-II implementation as it's exploration engine, and a heterogeneous multicore CPU
         architecture performance predictor as it's evaluation engine, in order to perform a design space exploration.
     """
+
     def __init__(self):
         Adapter.__init__(self)
 
