@@ -221,6 +221,7 @@ class InputTab(Tkinter.Frame, object):
         else:
             self.display_as_invalid()
             return False
+      
     # todo
     def display_as_valid(self):
         #comunicar com tkk(frame e notbook) com user(da aba)
