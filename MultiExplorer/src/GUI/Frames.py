@@ -1,3 +1,5 @@
+from multiprocessing.sharedctypes import Value
+from nis import cat
 import Tkinter
 import ttk
 
@@ -201,17 +203,27 @@ class InputTab(Tkinter.Frame, object):
             infra_inputs[key] = self.inputs[key].get_infra_input()
 
         return infra_inputs
-
-    # todo
+    
     def is_valid(self):
         """
         Verify each input and input group for validity.
         Returns True if all inputs are valid, and False otherwise.
         """
-        return True
-
+        all_valid = True
+        for key in self.inputs:
+            if self.inputs[key].is_valid():
+                pass
+            else:
+                all_valid = False
+        if  all_valid:
+            self.display_as_valid()
+            return True
+        else:
+            self.display_as_invalid()
+            return False
     # todo
     def display_as_valid(self):
+        #comunicar com tkk(frame e notbook) com user(da aba)
         pass
 
     # todo
