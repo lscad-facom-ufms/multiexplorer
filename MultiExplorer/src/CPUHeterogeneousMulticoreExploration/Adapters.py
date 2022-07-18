@@ -10,6 +10,7 @@ from MultiExplorer.src.Infrastructure.ExecutionFlow import Adapter
 from MultiExplorer.src.Infrastructure.Inputs import Input, InputGroup, InputType
 from MultiExplorer.src.config import PATH_SNIPER
 import sys
+
 sys.path.append(PATH_SNIPER + '/tools')
 import sniper_lib
 
@@ -1762,6 +1763,72 @@ class McPATAdapter(Adapter):
         This adapter utilises McPAT (an integrated power, area, and timing modeling framework for multithreading,
         multicore, and many-core architectures) to obtain the physical parameters  for a CPU architecture.
     """
+    default_params = {
+        "number_of_NoCs": "1",
+        "homogeneous_ccs": "1",
+        "homogeneous_NoCs": "1",
+        "temperature": "370",
+        "longer_channel_device": "1",
+        "power_gating": "1",
+        "machine_bits": "64",
+        "virtual_address_width": "64",
+        "physical_address_width": "52",
+        "virtual_memory_page_size": "4096",
+        "instruction_length": "64",
+        "ALU_duty_cycle": "1",
+        "MUL_duty_cycle": "0.3",
+        "FPU_duty_cycle": "0.3",
+        "ALU_cdb_duty_cycle": "1",
+        "MUL_cdb_duty_cycle": "0.3",
+        "FPU_cdb_duty_cycle": "0.3",
+        "opt_local": "1",
+        "opcode_width": "16",
+        "number_instruction_fetch_ports": "1",
+        "x86": "1",
+        "micro_opcode_width": "8",
+        "peak_issue_width": "6",
+        "fp_issue_width": "2",
+        "prediction_width": "1",
+        "pipelines_per_core": "1,1",
+        "pipeline_depth": "14,14",
+        "ALU_per_core": "4",
+        "MUL_per_core": "1",
+        "FPU_per_core": "2",
+        "instruction_buffer_size": "16",
+        "decoded_stream_buffer_size": "16",
+        "instruction_window_size": "64",
+        "archi_Regs_IRF_size": "16",
+        "archi_Regs_FRF_size": "32",
+        "phy_Regs_IRF_size": "256",
+        "phy_Regs_FRF_size": "256",
+        "LSU_order": "inorder",
+        "store_buffer_size": "96",
+        "load_buffer_size": "48",
+        "memory_ports": "1",
+        "RAS_size": "64",
+        "number_of_BPT": "2",
+        "buffer_sizes": "16, 16, 16, 16",
+        "BTB_config": "4096,4,2,1, 1,3",
+        "ports": "1,1,1",
+        "horizontal_nodes": "1",
+        "vertical_nodes": "1",
+        "link_throughput": "1",
+        "link_latency": "1",
+        "input_ports": "1",
+        "output_ports": "1",
+        "flit_bits": "256",
+        "chip_coverage": "1",
+        "link_routing_over_percentage": "0.5",
+        "mc_clock": "200",
+        "peak_transfer_rate": "3200",
+        "block_size": "64",
+        "memory_channels_per_mc": "1",
+        "number_ranks": "2",
+        "req_window_size_per_channel": "32",
+        "IO_buffer_size_per_channel": "32",
+        "databus_width": "128",
+        "addressbus_width": "51",
+    }
 
     def __init__(self):
         Adapter.__init__(self)
@@ -1773,7 +1840,58 @@ class McPATAdapter(Adapter):
     def execute(self):
         time.sleep(6)
 
-    # todo
+    @staticmethod
+    def create_param_element(name, value):
+        return ElementTree.Element("param", {
+            "name": name,
+            "value": value,
+        })
+
+    @staticmethod
+    def create_stat_element(name, value):
+        return ElementTree.Element("stat", {
+            "name": name,
+            "value": value,
+        })
+
+    @staticmethod
+    def create_ignored_param_element(name):
+        return McPATAdapter.create_param_element(name, str(0))
+
+    @staticmethod
+    def create_ignored_stat_element(name):
+        return McPATAdapter.create_stat_element(name, str(0))
+
+    def create_default_param_element(self, name):
+        return McPATAdapter.create_param_element(name, str(self.default_params[name]))
+
+    @staticmethod
+    def create_param_elements(name_value_dict):
+        param_elements = []
+
+        for name in name_value_dict:
+            param_elements.append(McPATAdapter.create_param_element(name, str(name_value_dict[name])))
+
+        return param_elements
+
+    @staticmethod
+    def create_stat_elements(name_value_dict):
+        stat_elements = []
+
+        for name in name_value_dict:
+            stat_elements.append(McPATAdapter.create_stat_element(name, str(name_value_dict[name])))
+
+        return stat_elements
+
+    def create_system_core_element(self, i):
+        system_core_element = ElementTree.Element("component", {
+            "id": "system.core" + str(i),
+            "name": "core" + str(i),
+        })
+
+        return system_core_element
+
+    # todo WIP
     def generate_xml_from_sniper_simulation(self):
         sniper_config = json.load(open(self.get_sniper_simulation_path() + "/sniper_config.json"))
 
@@ -1788,7 +1906,7 @@ class McPATAdapter(Adapter):
 
         system = xml.find("component[@id='system']")
 
-        number_of_cores = sniper_config["general/total_cores"]
+        number_of_cores = int(sniper_config["general/total_cores"])
 
         l2_shared_cores = number_of_l2 = l3_shared_cores = number_of_l3 = 0
 
@@ -1809,124 +1927,171 @@ class McPATAdapter(Adapter):
         for val in sniper_results["performance_model.cycle_count"]:
             total_cycles = total_cycles + int(val)
 
+        system.extend(self.create_param_elements({
+            "number_of_cores": sniper_config["general/total_cores"],
+            "number_cache_levels": cache_levels,
+            "number_of_L2s": number_of_l2,
+            "number_of_L3s": number_of_l3,
+            "core_tech_node": sniper_config["power/technology_node"],
+            "target_core_clockrate": int(float(sniper_config["perf_model/core/frequency"]) * 1000),
+        }))
+
+        system.extend(self.create_stat_elements({
+            "total_cycles": total_cycles,
+            "busy_cycles": total_cycles,
+        }))
+
         system.extend([
-            ElementTree.Element("param", {
-                "name": "number_of_cores",
-                "value": str(sniper_config["general/total_cores"]),
-            }),
-            ElementTree.Element("param", {
-                "name": "number_of_L1Directories",
-                "value": str(0),
-            }),
-            ElementTree.Element("param", {
-                "name": "number_of_L2Directories",
-                "value": str(0),
-            }),
-            ElementTree.Element("param", {
-                "name": "number_of_L2s",
-                "value": str(number_of_l2),
-            }),
-            ElementTree.Element("param", {
-                "name": "Private_L2",
-                "value": str(0),
-            }),
-            ElementTree.Element("param", {
-                "name": "number_of_L3s",
-                "value": str(0),
-            }),
-            ElementTree.Element("param", {
-                "name": "number_of_NoCs",
-                "value": str(1),
-            }),
-            ElementTree.Element("param", {
-                "name": "homogeneous_cores",
-                "value": str(0),
-            }),
-            ElementTree.Element("param", {
-                "name": "homogeneous_L2s",
-                "value": str(0),
-            }),
-            ElementTree.Element("param", {
-                "name": "homogeneous_L1Directories",
-                "value": str(0),
-            }),
-            ElementTree.Element("param", {
-                "name": "homogeneous_L2Directories",
-                "value": str(0),
-            }),
-            ElementTree.Element("param", {
-                "name": "homogeneous_L3s",
-                "value": str(0),
-            }),
-            ElementTree.Element("param", {
-                "name": "homogeneous_ccs",
-                "value": str(1),
-            }),
-            ElementTree.Element("param", {
-                "name": "homogeneous_NoCs",
-                "value": str(1),
-            }),
-            ElementTree.Element("param", {
-                "name": "core_tech_node",
-                "value": str(sniper_config["power/technology_node"]),
-            }),
-            ElementTree.Element("param", {
-                "name": "target_core_clockrate",
-                "value": str(sniper_config["perf_model/core/frequency"]),
-            }),
-            ElementTree.Element("param", {
-                "name": "temperature",
-                "value": str(0),
-            }),
-            ElementTree.Element("param", {
-                "name": "number_cache_levels",
-                "value": str(0),
-            }),
-            ElementTree.Element("param", {
-                "name": "interconnect_projection_type",
-                "value": str(0),
-            }),
-            ElementTree.Element("param", {
-                "name": "device_type",
-                "value": str(0),
-            }),
-            ElementTree.Element("param", {
-                "name": "longer_channel_device",
-                "value": str(0),
-            }),
-            ElementTree.Element("param", {
-                "name": "power_gating",
-                "value": str(),
-            }),
-            ElementTree.Element("param", {
-                "name": "machine_bits",
-                "value": str(0),
-            }),
-            ElementTree.Element("param", {
-                "name": "virtual_address_width",
-                "value": str(0),
-            }),
-            ElementTree.Element("param", {
-                "name": "physical_address_width",
-                "value": str(0),
-            }),
-            ElementTree.Element("param", {
-                "name": "virtual_memory_page_size",
-                "value": str(0),
-            }),
-            ElementTree.Element("param", {
-                "name": "total_cycles",
-                "value": str(total_cycles),
-            }),
-            ElementTree.Element("param", {
-                "name": "idle_cycles",
-                "value": "0",
-            }),
-            ElementTree.Element("param", {
-                "name": "busy_cycles",
-                "value": str(total_cycles),
-            }),
+            McPATAdapter.create_ignored_param_element("Private_L2"),
+            McPATAdapter.create_ignored_param_element("number_of_L1Directories"),
+            McPATAdapter.create_ignored_param_element("number_of_L2Directories"),
+            McPATAdapter.create_ignored_param_element("homogeneous_L2s"),
+            McPATAdapter.create_ignored_param_element("homogeneous_L1Directories"),
+            McPATAdapter.create_ignored_param_element("homogeneous_L2Directories"),
+            McPATAdapter.create_ignored_param_element("homogeneous_L3s"),
+            McPATAdapter.create_ignored_param_element("interconnect_projection_type"),
+            McPATAdapter.create_ignored_param_element("device_type"),
+            McPATAdapter.create_ignored_param_element("homogeneous_cores"),
+            McPATAdapter.create_ignored_stat_element("idle_cycles"),
+            self.create_default_param_element("homogeneous_ccs"),
+            self.create_default_param_element("homogeneous_NoCs"),
+            self.create_default_param_element("temperature"),
+            self.create_default_param_element("number_of_NoCs"),
+            self.create_default_param_element("longer_channel_device"),
+            self.create_default_param_element("power_gating"),
+            self.create_default_param_element("machine_bits"),
+            self.create_default_param_element("virtual_address_width"),
+            self.create_default_param_element("physical_address_width"),
+            self.create_default_param_element("virtual_memory_page_size"),
         ])
+
+        for i in range(0, number_of_cores):
+            system.append(self.create_system_core_element(i))
+        # <component id="system.core0" name="core0">
+        #      <param name="clock_rate" value="400"/>
+        #      <param name="vdd" value="1.2"/>
+        #      <param name="opt_local" value="1"/>
+        #      <param name="instruction_length" value="64"/>
+        #      <param name="opcode_width" value="16"/>
+        #      <param name="machine_type" value="0"/>
+        #      <param name="number_hardware_threads" value="1"/>
+        #      <param name="fetch_width" value="10"/>
+        #      <param name="number_instruction_fetch_ports" value="1"/>
+        #      <param name="decode_width" value="10"/>
+        #      <param name="x86" value="1"/>
+        #      <param name="micro_opcode_width" value="8"/>
+        #      <param name="issue_width" value="4"/>
+        #      <param name="peak_issue_width" value="6"/>
+        #      <param name="commit_width" value="10"/>
+        #      <param name="fp_issue_width" value="2"/>
+        #      <param name="prediction_width" value="1"/>
+        #      <param name="pipelines_per_core" value="1,1"/>
+        #      <param name="pipeline_depth" value="14,14"/>
+        #      <param name="ALU_per_core" value="4"/>
+        #      <param name="MUL_per_core" value="1"/>
+        #      <param name="FPU_per_core" value="2"/>
+        #      <param name="instruction_buffer_size" value="16"/>
+        #      <param name="decoded_stream_buffer_size" value="16"/>
+        #      <param name="instruction_window_scheme" value="0"/>
+        #      <param name="instruction_window_size" value="64"/>
+        #      <param name="fp_instruction_window_size" value="0"/>
+        #      <param name="ROB_size" value="128"/>
+        #      <param name="archi_Regs_IRF_size" value="16"/>
+        #      <param name="archi_Regs_FRF_size" value="32"/>
+        #      <param name="phy_Regs_IRF_size" value="256"/>
+        #      <param name="phy_Regs_FRF_size" value="256"/>
+        #      <param name="rename_scheme" value="0"/>
+        #      <param name="register_windows_size" value="0"/>
+        #      <param name="LSU_order" value="inorder"/>
+        #      <param name="store_buffer_size" value="96"/>
+        #      <param name="load_buffer_size" value="48"/>
+        #      <param name="memory_ports" value="1"/>
+        #      <param name="RAS_size" value="64"/>
+        #      <param name="number_of_BPT" value="2"/>
+        #      <stat name="total_instructions" value="23282822"/>
+        #      <stat name="int_instructions" value="7241610"/>
+        #      <stat name="fp_instructions" value="7241610"/>
+        #      <stat name="branch_instructions" value="783721"/>
+        #      <stat name="branch_mispredictions" value="5184"/>
+        #      <stat name="load_instructions" value="5261387"/>
+        #      <stat name="store_instructions" value="1505744"/>
+        #      <stat name="committed_instructions" value="23282822"/>
+        #      <stat name="committed_int_instructions" value="7241610"/>
+        #      <stat name="committed_fp_instructions" value="7241610"/>
+        #      <stat name="total_cycles" value="18275571.125"/>
+        #      <stat name="idle_cycles" value="627.125"/>
+        #      <stat name="busy_cycles" value="18274944"/>
+        #      <stat name="ROB_reads" value="24108400"/>
+        #      <stat name="ROB_writes" value="24108400"/>
+        #      <stat name="rename_reads" value="23282822"/>
+        #      <stat name="rename_writes" value="23282822"/>
+        #      <stat name="fp_rename_reads" value="0"/>
+        #      <stat name="fp_rename_writes" value="0"/>
+        #      <stat name="inst_window_reads" value="23282822"/>
+        #      <stat name="inst_window_writes" value="23282822"/>
+        #      <stat name="inst_window_wakeup_accesses" value="23282822"/>
+        #      <stat name="fp_inst_window_reads" value="23282822"/>
+        #      <stat name="fp_inst_window_writes" value="23282822"/>
+        #      <stat name="fp_inst_window_wakeup_accesses" value="23282822"/>
+        #      <stat name="int_regfile_reads" value="7241610"/>
+        #      <stat name="float_regfile_reads" value="7241610"/>
+        #      <stat name="int_regfile_writes" value="7241610"/>
+        #      <stat name="float_regfile_writes" value="7241610"/>
+        #      <stat name="function_calls" value="0"/>
+        #      <stat name="context_switches" value="0"/>
+        #      <stat name="ialu_accesses" value="7241610"/>
+        #      <stat name="fpu_accesses" value="7241610"/>
+        #      <stat name="mul_accesses" value="7241610"/>
+        #      <stat name="cdb_alu_accesses" value="7241610"/>
+        #      <stat name="cdb_mul_accesses" value="7241610"/>
+        #      <stat name="cdb_fpu_accesses" value="7241610"/>
+        #      <stat name="IFU_duty_cycle" value="1.27398601339"/>
+        #      <stat name="LSU_duty_cycle" value="0"/>
+        #      <stat name="MemManU_I_duty_cycle" value="1.27398601339"/>
+        #      <stat name="MemManU_D_duty_cycle" value="0"/>
+        #      <stat name="ALU_duty_cycle" value="1"/>
+        #      <stat name="MUL_duty_cycle" value="0.3"/>
+        #      <stat name="FPU_duty_cycle" value="0.3"/>
+        #      <stat name="ALU_cdb_duty_cycle" value="1"/>
+        #      <stat name="MUL_cdb_duty_cycle" value="0.3"/>
+        #      <stat name="FPU_cdb_duty_cycle" value="0.3"/>
+        #
+        #      <component id="system.core0.itlb" name="itlb"><param name="number_entries" value="64"/>
+        #          <stat name="total_accesses" value="3954162"/>
+        #          <stat name="total_misses" value="20"/>
+        #          <stat name="conflicts" value="0"/>
+        #      </component>
+        #
+        #      <component id="system.core0.icache" name="icache">
+        #          <param name="icache_config" value="8192,32,2,1,3,4,16,1"/>
+        #          <param name="buffer_sizes" value="16, 16, 16, 16"/>
+        #          <stat name="read_accesses" value="3954162"/>
+        #          <stat name="read_misses" value="205221"/>
+        #          <stat name="conflicts" value="0"/>
+        #      </component>
+        #
+        #      <component id="system.core0.dtlb" name="dtlb"><param name="number_entries" value="64"/>
+        #          <stat name="total_accesses" value="7094619"/>
+        #          <stat name="total_misses" value="547"/>
+        #          <stat name="conflicts" value="0"/>
+        #      </component>
+        #
+        #      <component id="system.core0.dcache" name="dcache">
+        #          <param name="dcache_config" value="8192,32,2,1,3,4,16,1"/>
+        #          <param name="buffer_sizes" value="16, 16, 16, 16"/>
+        #          <stat name="read_accesses" value="5507084"/>
+        #          <stat name="write_accesses" value="1587535"/>
+        #          <stat name="read_misses" value="770283"/>
+        #          <stat name="write_misses" value="290369"/>
+        #          <stat name="conflicts" value="0"/>
+        #      </component>
+        #
+        #      <component id="system.core0.BTB" name="BTB">
+        #          <param name="BTB_config" value="4096,4,2,1, 1,3"/>
+        #          <stat name="read_accesses" value="783721"/>
+        #          <stat name="write_accesses" value="0"/>
+        #      </component>
+        #  </component>
 
         self.input_xml = xml
 
