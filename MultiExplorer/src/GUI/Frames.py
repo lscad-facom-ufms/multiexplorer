@@ -203,7 +203,7 @@ class InputTab(Tkinter.Frame, object):
             infra_inputs[key] = self.inputs[key].get_infra_input()
 
         return infra_inputs
-    
+
     def is_valid(self):
         """
         Verify each input and input group for validity.
@@ -215,16 +215,18 @@ class InputTab(Tkinter.Frame, object):
                 pass
             else:
                 all_valid = False
-        if  all_valid:
+        if all_valid:
             self.display_as_valid()
+
             return True
         else:
             self.display_as_invalid()
+
             return False
-      
+
     # todo
     def display_as_valid(self):
-        #comunicar com tkk(frame e notbook) com user(da aba)
+        # comunicar com tkk(frame e notbook) com user(da aba)
         pass
 
     # todo
@@ -332,12 +334,12 @@ class InputScreen(ScreenFrame):
         self.title.configure(text=self.flow.get_label() + ''' Settings''')
 
     def execute_flow(self):
-        if self.tabs_controller.is_valid():
-            execution_screen = self.master.get_screen(ExecutionScreen.__name__)
+        # if self.tabs_controller.is_valid():
+        execution_screen = self.master.get_screen(ExecutionScreen.__name__)
 
-            execution_screen.set_flow(self.flow_label)
+        execution_screen.set_flow(self.flow_label)
 
-            self.navigate(execution_screen)
+        self.navigate(execution_screen)
 
     def get_infra_inputs_per_step(self):
         return self.tabs_controller.get_infra_inputs_per_step()

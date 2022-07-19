@@ -1833,7 +1833,12 @@ class McPATAdapter(Adapter):
     def __init__(self):
         Adapter.__init__(self)
 
+        self.sniper_results = None
+
+        self.sniper_config = None
+
         self.input_xml = None
+
         self.sniper_simulation_path = None
 
     # todo
@@ -1859,11 +1864,26 @@ class McPATAdapter(Adapter):
         return McPATAdapter.create_param_element(name, str(0))
 
     @staticmethod
+    def create_ignored_param_elements(name_list):
+        ignored_param_elements = []
+
+        for name in name_list:
+            ignored_param_elements.append(McPATAdapter.create_ignored_param_element(name))
+
+        return ignored_param_elements
+
+    @staticmethod
     def create_ignored_stat_element(name):
         return McPATAdapter.create_stat_element(name, str(0))
 
-    def create_default_param_element(self, name):
-        return McPATAdapter.create_param_element(name, str(self.default_params[name]))
+    @staticmethod
+    def create_ignored_stat_elements(name_list):
+        ignored_stat_elements = []
+
+        for name in name_list:
+            ignored_stat_elements.append(McPATAdapter.create_ignored_stat_element(name))
+
+        return ignored_stat_elements
 
     @staticmethod
     def create_param_elements(name_value_dict):
@@ -1883,95 +1903,34 @@ class McPATAdapter(Adapter):
 
         return stat_elements
 
+    def create_default_param_element(self, name):
+        return McPATAdapter.create_param_element(name, str(self.default_params[name]))
+
+    def create_default_param_elements(self, name_list):
+        default_param_elements = []
+
+        for name in name_list:
+            default_param_elements.append(self.create_default_param_element(name))
+
+        return default_param_elements
+
+    # todo WIP
     def create_system_core_element(self, i):
         system_core_element = ElementTree.Element("component", {
             "id": "system.core" + str(i),
             "name": "core" + str(i),
         })
 
-        return system_core_element
-
-    # todo WIP
-    def generate_xml_from_sniper_simulation(self):
-        sniper_config = json.load(open(self.get_sniper_simulation_path() + "/sniper_config.json"))
-
-        sniper_results = json.load(open(self.get_sniper_simulation_path() + "/sniper_results.json"))
-
-        xml = ElementTree.fromstring('''<?xml version="1.0" encoding="UTF-8"?>
-            <component id="root" name="root">
-                <component id="system" name="system">
-                </component>
-            </component>
-        ''')
-
-        system = xml.find("component[@id='system']")
-
-        number_of_cores = int(sniper_config["general/total_cores"])
-
-        l2_shared_cores = number_of_l2 = l3_shared_cores = number_of_l3 = 0
-
-        cache_levels = sniper_config["perf_model/cache/levels"]
-
-        if cache_levels >= 2:
-            l2_shared_cores = int(sniper_config["perf_model/l2_cache/shared_cores"])
-
-            number_of_l2 = number_of_cores / l2_shared_cores
-
-        if cache_levels >= 3:
-            l3_shared_cores = int(sniper_config["perf_model/l3_cache/shared_cores"])
-
-            number_of_l3 = number_of_cores / l3_shared_cores
-
-        total_cycles = 0
-
-        for val in sniper_results["performance_model.cycle_count"]:
-            total_cycles = total_cycles + int(val)
-
-        system.extend(self.create_param_elements({
-            "number_of_cores": sniper_config["general/total_cores"],
-            "number_cache_levels": cache_levels,
-            "number_of_L2s": number_of_l2,
-            "number_of_L3s": number_of_l3,
-            "core_tech_node": sniper_config["power/technology_node"],
-            "target_core_clockrate": int(float(sniper_config["perf_model/core/frequency"]) * 1000),
+        system_core_element.extend(self.create_param_elements({
+            "clock_rate": int(float(self.sniper_config["perf_model/core/frequency"]) * 1000),
+            "vdd": self.sniper_config["power/vdd"],
         }))
 
-        system.extend(self.create_stat_elements({
-            "total_cycles": total_cycles,
-            "busy_cycles": total_cycles,
-        }))
+        system_core_element.extend(self.create_default_param_elements([
+            "opt_local",
+            "instruction_length",
+        ]))
 
-        system.extend([
-            McPATAdapter.create_ignored_param_element("Private_L2"),
-            McPATAdapter.create_ignored_param_element("number_of_L1Directories"),
-            McPATAdapter.create_ignored_param_element("number_of_L2Directories"),
-            McPATAdapter.create_ignored_param_element("homogeneous_L2s"),
-            McPATAdapter.create_ignored_param_element("homogeneous_L1Directories"),
-            McPATAdapter.create_ignored_param_element("homogeneous_L2Directories"),
-            McPATAdapter.create_ignored_param_element("homogeneous_L3s"),
-            McPATAdapter.create_ignored_param_element("interconnect_projection_type"),
-            McPATAdapter.create_ignored_param_element("device_type"),
-            McPATAdapter.create_ignored_param_element("homogeneous_cores"),
-            McPATAdapter.create_ignored_stat_element("idle_cycles"),
-            self.create_default_param_element("homogeneous_ccs"),
-            self.create_default_param_element("homogeneous_NoCs"),
-            self.create_default_param_element("temperature"),
-            self.create_default_param_element("number_of_NoCs"),
-            self.create_default_param_element("longer_channel_device"),
-            self.create_default_param_element("power_gating"),
-            self.create_default_param_element("machine_bits"),
-            self.create_default_param_element("virtual_address_width"),
-            self.create_default_param_element("physical_address_width"),
-            self.create_default_param_element("virtual_memory_page_size"),
-        ])
-
-        for i in range(0, number_of_cores):
-            system.append(self.create_system_core_element(i))
-        # <component id="system.core0" name="core0">
-        #      <param name="clock_rate" value="400"/>
-        #      <param name="vdd" value="1.2"/>
-        #      <param name="opt_local" value="1"/>
-        #      <param name="instruction_length" value="64"/>
         #      <param name="opcode_width" value="16"/>
         #      <param name="machine_type" value="0"/>
         #      <param name="number_hardware_threads" value="1"/>
@@ -2008,6 +1967,90 @@ class McPATAdapter(Adapter):
         #      <param name="memory_ports" value="1"/>
         #      <param name="RAS_size" value="64"/>
         #      <param name="number_of_BPT" value="2"/>
+
+        return system_core_element
+
+    # todo WIP
+    def generate_xml_from_sniper_simulation(self):
+        self.sniper_config = json.load(open(self.get_sniper_simulation_path() + "/sniper_config.json"))
+
+        self.sniper_results = json.load(open(self.get_sniper_simulation_path() + "/sniper_results.json"))
+
+        xml = ElementTree.fromstring('''<?xml version="1.0" encoding="UTF-8"?>
+            <component id="root" name="root">
+                <component id="system" name="system">
+                </component>
+            </component>
+        ''')
+
+        system = xml.find("component[@id='system']")
+
+        number_of_cores = int(self.sniper_config["general/total_cores"])
+
+        l2_shared_cores = number_of_l2 = l3_shared_cores = number_of_l3 = 0
+
+        cache_levels = self.sniper_config["perf_model/cache/levels"]
+
+        if cache_levels >= 2:
+            l2_shared_cores = int(self.sniper_config["perf_model/l2_cache/shared_cores"])
+
+            number_of_l2 = number_of_cores / l2_shared_cores
+
+        if cache_levels >= 3:
+            l3_shared_cores = int(self.sniper_config["perf_model/l3_cache/shared_cores"])
+
+            number_of_l3 = number_of_cores / l3_shared_cores
+
+        total_cycles = 0
+
+        for val in self.sniper_results["performance_model.cycle_count"]:
+            total_cycles = total_cycles + int(val)
+
+        system.extend(self.create_param_elements({
+            "number_of_cores": self.sniper_config["general/total_cores"],
+            "number_cache_levels": cache_levels,
+            "number_of_L2s": number_of_l2,
+            "number_of_L3s": number_of_l3,
+            "core_tech_node": self.sniper_config["power/technology_node"],
+            "target_core_clockrate": int(float(self.sniper_config["perf_model/core/frequency"]) * 1000),
+        }))
+
+        system.extend(self.create_default_param_elements([
+            "homogeneous_ccs",
+            "homogeneous_NoCs",
+            "temperature",
+            "number_of_NoCs",
+            "longer_channel_device",
+            "power_gating",
+            "machine_bits",
+            "virtual_address_width",
+            "physical_address_width",
+            "virtual_memory_page_size",
+        ]))
+
+        system.extend(McPATAdapter.create_ignored_param_elements([
+            "Private_L2",
+            "number_of_L1Directories",
+            "number_of_L2Directories",
+            "homogeneous_L2s",
+            "homogeneous_L1Directories",
+            "homogeneous_L2Directories",
+            "homogeneous_L3s",
+            "interconnect_projection_type",
+            "device_type",
+            "homogeneous_cores",
+        ]))
+
+        system.extend(self.create_stat_elements({
+            "total_cycles": total_cycles,
+            "busy_cycles": total_cycles,
+        }))
+
+        system.append(McPATAdapter.create_ignored_stat_element("idle_cycles"))
+
+        for i in range(0, number_of_cores):
+            system.append(self.create_system_core_element(i))
+        # <component id="system.core0" name="core0">
         #      <stat name="total_instructions" value="23282822"/>
         #      <stat name="int_instructions" value="7241610"/>
         #      <stat name="fp_instructions" value="7241610"/>
