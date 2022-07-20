@@ -76,9 +76,9 @@ class MultiExplorer(object):
         root = os.getcwd() + "/rundir/" 
         findFolderOldSimul = False
         for pasta in os.listdir(root):
-            if pasta == '.gitignore':
+            if not os.path.isdir(root + pasta):
                 continue
-            for file in os.listdir(root+ "/" +pasta):
+            for file in os.listdir(root + pasta):
                 if file.lower().endswith(".json"):
                     with open(root+pasta+"/"+file) as data_file:
                         fileJson = json.load(data_file)

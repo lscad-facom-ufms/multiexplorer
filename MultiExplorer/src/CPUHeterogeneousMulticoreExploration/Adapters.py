@@ -1828,6 +1828,9 @@ class McPATAdapter(Adapter):
         "IO_buffer_size_per_channel": "32",
         "databus_width": "128",
         "addressbus_width": "51",
+        "fetch_width": "10",
+        "decode_width": "10",
+        "commit_width": "10",
     }
 
     def __init__(self):
@@ -1924,49 +1927,51 @@ class McPATAdapter(Adapter):
         system_core_element.extend(self.create_param_elements({
             "clock_rate": int(float(self.sniper_config["perf_model/core/frequency"]) * 1000),
             "vdd": self.sniper_config["power/vdd"],
+            "number_hardware_threads": self.sniper_config["perf_model/core/logical_cpus"],
+            "issue_width": self.sniper_config["perf_model/core/interval_timer/dispatch_width"],
+            "ROB_size": self.sniper_config["perf_model/core/interval_timer/window_size"],
         }))
 
         system_core_element.extend(self.create_default_param_elements([
             "opt_local",
             "instruction_length",
+            "opcode_width",
+            "fetch_width",
+            "number_instruction_fetch_ports",
+            "decode_width",
+            "x86",
+            "micro_opcode_width",
+            "peak_issue_width",
+            "commit_width",
+            "fp_issue_width",
+            "prediction_width",
+            "pipelines_per_core",
+            "pipeline_depth",
+            "ALU_per_core",
+            "MUL_per_core",
+            "FPU_per_core",
+            "instruction_buffer_size",
+            "decoded_stream_buffer_size",
+            "instruction_window_size",
+            "archi_Regs_IRF_size",
+            "archi_Regs_FRF_size",
+            "phy_Regs_IRF_size",
+            "phy_Regs_IRF_size",
+            "LSU_order",
+            "store_buffer_size",
+            "load_buffer_size",
+            "memory_ports",
+            "RAS_size",
+            "number_of_BPT",
         ]))
 
-        #      <param name="opcode_width" value="16"/>
-        #      <param name="machine_type" value="0"/>
-        #      <param name="number_hardware_threads" value="1"/>
-        #      <param name="fetch_width" value="10"/>
-        #      <param name="number_instruction_fetch_ports" value="1"/>
-        #      <param name="decode_width" value="10"/>
-        #      <param name="x86" value="1"/>
-        #      <param name="micro_opcode_width" value="8"/>
-        #      <param name="issue_width" value="4"/>
-        #      <param name="peak_issue_width" value="6"/>
-        #      <param name="commit_width" value="10"/>
-        #      <param name="fp_issue_width" value="2"/>
-        #      <param name="prediction_width" value="1"/>
-        #      <param name="pipelines_per_core" value="1,1"/>
-        #      <param name="pipeline_depth" value="14,14"/>
-        #      <param name="ALU_per_core" value="4"/>
-        #      <param name="MUL_per_core" value="1"/>
-        #      <param name="FPU_per_core" value="2"/>
-        #      <param name="instruction_buffer_size" value="16"/>
-        #      <param name="decoded_stream_buffer_size" value="16"/>
-        #      <param name="instruction_window_scheme" value="0"/>
-        #      <param name="instruction_window_size" value="64"/>
-        #      <param name="fp_instruction_window_size" value="0"/>
-        #      <param name="ROB_size" value="128"/>
-        #      <param name="archi_Regs_IRF_size" value="16"/>
-        #      <param name="archi_Regs_FRF_size" value="32"/>
-        #      <param name="phy_Regs_IRF_size" value="256"/>
-        #      <param name="phy_Regs_FRF_size" value="256"/>
-        #      <param name="rename_scheme" value="0"/>
-        #      <param name="register_windows_size" value="0"/>
-        #      <param name="LSU_order" value="inorder"/>
-        #      <param name="store_buffer_size" value="96"/>
-        #      <param name="load_buffer_size" value="48"/>
-        #      <param name="memory_ports" value="1"/>
-        #      <param name="RAS_size" value="64"/>
-        #      <param name="number_of_BPT" value="2"/>
+        system_core_element.extend(self.create_ignored_param_elements([
+            "machine_type",
+            "instruction_window_scheme",
+            "fp_instruction_window_size",
+            "rename_scheme",
+            "register_windows_size",
+        ]))
 
         return system_core_element
 
