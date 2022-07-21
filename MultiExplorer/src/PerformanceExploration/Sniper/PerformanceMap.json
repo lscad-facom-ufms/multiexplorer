@@ -123,51 +123,48 @@
             "RAS_size": "64", 
             "number_of_BPT": "2", 
 
-            "system.core$.itlb":
-            {
-                "total_accesses":"itlb.access[$]",
-                "total_misses":"itlb.miss[$]",
-                "conflicts":"0",
-
-                "number_entries": "perf_model/itlb/sets"
-            },
             "system.core$.icache":
             {
                 "read_accesses":"L1-I.loads[$]",
                 "read_misses":"L1-I.load-misses-I[$]",
                 "conflicts":"0",
-
                 "icache_config":["perf_model/l1_icache/cache_size","perf_model/l1_icache/cache_block_size","perf_model/l1_icache/associativity","1","3","perf_model/l1_icache/data_access_time","16", "1"],
-                "buffer_sizes": "16, 16, 16, 16" 
+                "buffer_sizes": "16, 16, 16, 16"
             },
-            "system.core$.dtlb":
-            {
-                "total_accesses":"dtlb.access[$]",
-                "total_misses":"dtlb.miss[$]",
-                "conflicts":"0",
 
-                "number_entries": "perf_model/dtlb/sets"
-            },
-            "system.core$.dcache":
+             "system.core$.dcache":
             {
                 "read_accesses":"L1-D.loads[$]",
                 "write_accesses":"L1-D.stores[$]",
                 "read_misses":"L1-D.load-misses[$]",
                 "write_misses":"L1-D.store-misses[$]",
                 "conflicts":"0",
-
                 "dcache_config":["perf_model/l1_dcache/cache_size","perf_model/l1_dcache/cache_block_size","perf_model/l1_dcache/associativity","1","3","perf_model/l1_dcache/data_access_time","16", "1"],
-                "buffer_sizes": "16, 16, 16, 16"  
-
+                "buffer_sizes": "16, 16, 16, 16"
             },
+
+            "system.core$.itlb":
+            {
+                "total_accesses":"itlb.access[$]",
+                "total_misses":"itlb.miss[$]",
+                "conflicts":"0",
+                "number_entries": "perf_model/itlb/sets"
+            },
+
+            "system.core$.dtlb":
+            {
+                "total_accesses":"dtlb.access[$]",
+                "total_misses":"dtlb.miss[$]",
+                "conflicts":"0",
+                "number_entries": "perf_model/dtlb/sets"
+            },
+
             "system.core$.BTB":
             {
                 "read_accesses":"interval_timer.uop_branch[$]",
                 "write_accesses":"0",
-
                 "BTB_config": "0" 
             }
-
         },
         "system.L2$":
         {

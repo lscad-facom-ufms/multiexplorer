@@ -1918,13 +1918,95 @@ class McPATAdapter(Adapter):
         return default_param_elements
 
     # todo WIP
-    def create_system_core_element(self, i):
-        system_core_element = ElementTree.Element("component", {
+    def create_core_icache_component(self, i):
+        core_icache_component = ElementTree.Element("component", {
+            "id": "system.core" + str(i) + ".icache",
+            "name": "core" + str(i),
+        })
+
+        #      <component id="system.core0.icache" name="icache">
+        #          <param name="icache_config" value="8192,32,2,1,3,4,16,1"/>
+        #          <param name="buffer_sizes" value="16, 16, 16, 16"/>
+
+        #          <stat name="read_accesses" value="3954162"/>
+        #          <stat name="read_misses" value="205221"/>
+        #          <stat name="conflicts" value="0"/>
+        #      </component>
+
+        return core_icache_component
+
+    # todo WIP
+    def create_core_dcache_component(self, i):
+        core_dcache_component = ElementTree.Element("component", {
+            "id": "system.core" + str(i) + ".dcache",
+            "name": "core" + str(i),
+        })
+
+        #      <component id="system.core0.dcache" name="dcache">
+        #          <param name="dcache_config" value="8192,32,2,1,3,4,16,1"/>
+        #          <param name="buffer_sizes" value="16, 16, 16, 16"/>
+
+        #          <stat name="read_accesses" value="5507084"/>
+        #          <stat name="write_accesses" value="1587535"/>
+        #          <stat name="read_misses" value="770283"/>
+        #          <stat name="write_misses" value="290369"/>
+        #          <stat name="conflicts" value="0"/>
+        #      </component>
+
+        return core_dcache_component
+
+    # todo WIP
+    def create_core_dtlb_component(self, i):
+        core_dtlb_component = ElementTree.Element("component", {
+            "id": "system.core" + str(i) + ".dtlb",
+            "name": "core" + str(i),
+        })
+
+        #      <component id="system.core0.itlb" name="itlb"><param name="number_entries" value="64"/>
+        #          <stat name="total_accesses" value="3954162"/>
+        #          <stat name="total_misses" value="20"/>
+        #          <stat name="conflicts" value="0"/>
+        #      </component>
+
+        return core_dtlb_component
+
+    # todo WIP
+    def create_core_itlb_component(self, i):
+        core_itlb_component = ElementTree.Element("component", {
+            "id": "system.core" + str(i) + ".itlb",
+            "name": "core" + str(i),
+        })
+
+        #      <component id="system.core0.dtlb" name="dtlb"><param name="number_entries" value="64"/>
+        #          <stat name="total_accesses" value="7094619"/>
+        #          <stat name="total_misses" value="547"/>
+        #          <stat name="conflicts" value="0"/>
+        #      </component>
+
+        return core_itlb_component
+
+    # todo WIP
+    def create_core_btb_component(self, i):
+        core_btb_component = ElementTree.Element("component", {
+            "id": "system.core" + str(i) + ".BTB",
+            "name": "core" + str(i),
+        })
+
+        #      <component id="system.core0.BTB" name="BTB">
+        #          <param name="BTB_config" value="4096,4,2,1, 1,3"/>
+        #          <stat name="read_accesses" value="783721"/>
+        #          <stat name="write_accesses" value="0"/>
+        #      </component>
+
+        return core_btb_component
+
+    def create_system_core_component(self, i):
+        system_core_component = ElementTree.Element("component", {
             "id": "system.core" + str(i),
             "name": "core" + str(i),
         })
 
-        system_core_element.extend(self.create_param_elements({
+        system_core_component.extend(self.create_param_elements({
             "clock_rate": int(float(self.sniper_config["perf_model/core/frequency"]) * 1000),
             "vdd": self.sniper_config["power/vdd"],
             "number_hardware_threads": self.sniper_config["perf_model/core/logical_cpus"],
@@ -1932,7 +2014,7 @@ class McPATAdapter(Adapter):
             "ROB_size": self.sniper_config["perf_model/core/interval_timer/window_size"],
         }))
 
-        system_core_element.extend(self.create_default_param_elements([
+        system_core_component.extend(self.create_default_param_elements([
             "opt_local",
             "instruction_length",
             "opcode_width",
@@ -1965,7 +2047,7 @@ class McPATAdapter(Adapter):
             "number_of_BPT",
         ]))
 
-        system_core_element.extend(self.create_ignored_param_elements([
+        system_core_component.extend(self.create_ignored_param_elements([
             "machine_type",
             "instruction_window_scheme",
             "fp_instruction_window_size",
@@ -1973,7 +2055,17 @@ class McPATAdapter(Adapter):
             "register_windows_size",
         ]))
 
-        return system_core_element
+        system_core_component.append(self.create_core_icache_component(i))
+
+        system_core_component.append(self.create_core_dcache_component(i))
+
+        system_core_component.append(self.create_core_itlb_component(i))
+
+        system_core_component.append(self.create_core_dtlb_component(i))
+
+        system_core_component.append(self.create_core_btb_component(i))
+
+        return system_core_component
 
     # todo WIP
     def generate_xml_from_sniper_simulation(self):
@@ -2054,92 +2146,7 @@ class McPATAdapter(Adapter):
         system.append(McPATAdapter.create_ignored_stat_element("idle_cycles"))
 
         for i in range(0, number_of_cores):
-            system.append(self.create_system_core_element(i))
-        # <component id="system.core0" name="core0">
-        #      <stat name="total_instructions" value="23282822"/>
-        #      <stat name="int_instructions" value="7241610"/>
-        #      <stat name="fp_instructions" value="7241610"/>
-        #      <stat name="branch_instructions" value="783721"/>
-        #      <stat name="branch_mispredictions" value="5184"/>
-        #      <stat name="load_instructions" value="5261387"/>
-        #      <stat name="store_instructions" value="1505744"/>
-        #      <stat name="committed_instructions" value="23282822"/>
-        #      <stat name="committed_int_instructions" value="7241610"/>
-        #      <stat name="committed_fp_instructions" value="7241610"/>
-        #      <stat name="total_cycles" value="18275571.125"/>
-        #      <stat name="idle_cycles" value="627.125"/>
-        #      <stat name="busy_cycles" value="18274944"/>
-        #      <stat name="ROB_reads" value="24108400"/>
-        #      <stat name="ROB_writes" value="24108400"/>
-        #      <stat name="rename_reads" value="23282822"/>
-        #      <stat name="rename_writes" value="23282822"/>
-        #      <stat name="fp_rename_reads" value="0"/>
-        #      <stat name="fp_rename_writes" value="0"/>
-        #      <stat name="inst_window_reads" value="23282822"/>
-        #      <stat name="inst_window_writes" value="23282822"/>
-        #      <stat name="inst_window_wakeup_accesses" value="23282822"/>
-        #      <stat name="fp_inst_window_reads" value="23282822"/>
-        #      <stat name="fp_inst_window_writes" value="23282822"/>
-        #      <stat name="fp_inst_window_wakeup_accesses" value="23282822"/>
-        #      <stat name="int_regfile_reads" value="7241610"/>
-        #      <stat name="float_regfile_reads" value="7241610"/>
-        #      <stat name="int_regfile_writes" value="7241610"/>
-        #      <stat name="float_regfile_writes" value="7241610"/>
-        #      <stat name="function_calls" value="0"/>
-        #      <stat name="context_switches" value="0"/>
-        #      <stat name="ialu_accesses" value="7241610"/>
-        #      <stat name="fpu_accesses" value="7241610"/>
-        #      <stat name="mul_accesses" value="7241610"/>
-        #      <stat name="cdb_alu_accesses" value="7241610"/>
-        #      <stat name="cdb_mul_accesses" value="7241610"/>
-        #      <stat name="cdb_fpu_accesses" value="7241610"/>
-        #      <stat name="IFU_duty_cycle" value="1.27398601339"/>
-        #      <stat name="LSU_duty_cycle" value="0"/>
-        #      <stat name="MemManU_I_duty_cycle" value="1.27398601339"/>
-        #      <stat name="MemManU_D_duty_cycle" value="0"/>
-        #      <stat name="ALU_duty_cycle" value="1"/>
-        #      <stat name="MUL_duty_cycle" value="0.3"/>
-        #      <stat name="FPU_duty_cycle" value="0.3"/>
-        #      <stat name="ALU_cdb_duty_cycle" value="1"/>
-        #      <stat name="MUL_cdb_duty_cycle" value="0.3"/>
-        #      <stat name="FPU_cdb_duty_cycle" value="0.3"/>
-        #
-        #      <component id="system.core0.itlb" name="itlb"><param name="number_entries" value="64"/>
-        #          <stat name="total_accesses" value="3954162"/>
-        #          <stat name="total_misses" value="20"/>
-        #          <stat name="conflicts" value="0"/>
-        #      </component>
-        #
-        #      <component id="system.core0.icache" name="icache">
-        #          <param name="icache_config" value="8192,32,2,1,3,4,16,1"/>
-        #          <param name="buffer_sizes" value="16, 16, 16, 16"/>
-        #          <stat name="read_accesses" value="3954162"/>
-        #          <stat name="read_misses" value="205221"/>
-        #          <stat name="conflicts" value="0"/>
-        #      </component>
-        #
-        #      <component id="system.core0.dtlb" name="dtlb"><param name="number_entries" value="64"/>
-        #          <stat name="total_accesses" value="7094619"/>
-        #          <stat name="total_misses" value="547"/>
-        #          <stat name="conflicts" value="0"/>
-        #      </component>
-        #
-        #      <component id="system.core0.dcache" name="dcache">
-        #          <param name="dcache_config" value="8192,32,2,1,3,4,16,1"/>
-        #          <param name="buffer_sizes" value="16, 16, 16, 16"/>
-        #          <stat name="read_accesses" value="5507084"/>
-        #          <stat name="write_accesses" value="1587535"/>
-        #          <stat name="read_misses" value="770283"/>
-        #          <stat name="write_misses" value="290369"/>
-        #          <stat name="conflicts" value="0"/>
-        #      </component>
-        #
-        #      <component id="system.core0.BTB" name="BTB">
-        #          <param name="BTB_config" value="4096,4,2,1, 1,3"/>
-        #          <stat name="read_accesses" value="783721"/>
-        #          <stat name="write_accesses" value="0"/>
-        #      </component>
-        #  </component>
+            system.append(self.create_system_core_component(i))
 
         self.input_xml = xml
 
