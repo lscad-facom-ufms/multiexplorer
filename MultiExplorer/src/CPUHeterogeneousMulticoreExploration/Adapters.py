@@ -1852,14 +1852,14 @@ class McPATAdapter(Adapter):
     def create_param_element(name, value):
         return ElementTree.Element("param", {
             "name": name,
-            "value": value,
+            "value": str(value),
         })
 
     @staticmethod
     def create_stat_element(name, value):
         return ElementTree.Element("stat", {
             "name": name,
-            "value": value,
+            "value": str(value),
         })
 
     @staticmethod
@@ -1917,86 +1917,118 @@ class McPATAdapter(Adapter):
 
         return default_param_elements
 
-    # todo WIP
+    def get_icache_config(self):
+        icache_configurations = [
+            self.sniper_config["perf_model/l1_icache/cache_size"],
+            self.sniper_config["perf_model/l1_icache/cache_block_size"],
+            self.sniper_config["perf_model/l1_icache/associativity"],
+            "1",
+            "3",
+            self.sniper_config["perf_model/l1_icache/data_access_time"],
+            "16",
+            "1",
+        ]
+
+        return ",".join(icache_configurations)
+
     def create_core_icache_component(self, i):
         core_icache_component = ElementTree.Element("component", {
             "id": "system.core" + str(i) + ".icache",
             "name": "core" + str(i),
         })
 
-        #      <component id="system.core0.icache" name="icache">
-        #          <param name="icache_config" value="8192,32,2,1,3,4,16,1"/>
-        #          <param name="buffer_sizes" value="16, 16, 16, 16"/>
+        core_icache_component.extend([
+            McPATAdapter.create_param_element("icache_config", self.get_icache_config()),
+            self.create_default_param_element("buffer_sizes"),
+        ])
 
-        #          <stat name="read_accesses" value="3954162"/>
-        #          <stat name="read_misses" value="205221"/>
-        #          <stat name="conflicts" value="0"/>
-        #      </component>
+        core_icache_component.extend([
+            McPATAdapter.create_stat_element("read_accesses", self.sniper_results["L1-I.loads"][i]),
+            McPATAdapter.create_stat_element("read_misses", self.sniper_results["L1-I.load-misses-I"][i]),
+            McPATAdapter.create_ignored_stat_element("conflicts"),
+        ])
 
         return core_icache_component
 
-    # todo WIP
+    def get_dcache_config(self):
+        dcache_configurations = [
+            self.sniper_config["perf_model/l1_dcache/cache_size"],
+            self.sniper_config["perf_model/l1_dcache/cache_block_size"],
+            self.sniper_config["perf_model/l1_dcache/associativity"],
+            "1",
+            "3",
+            self.sniper_config["perf_model/l1_dcache/data_access_time"],
+            "16",
+            "1",
+        ]
+
+        return ",".join(dcache_configurations)
+
     def create_core_dcache_component(self, i):
         core_dcache_component = ElementTree.Element("component", {
             "id": "system.core" + str(i) + ".dcache",
             "name": "core" + str(i),
         })
 
-        #      <component id="system.core0.dcache" name="dcache">
-        #          <param name="dcache_config" value="8192,32,2,1,3,4,16,1"/>
-        #          <param name="buffer_sizes" value="16, 16, 16, 16"/>
+        core_dcache_component.extend([
+            McPATAdapter.create_param_element("dcache_config", self.get_dcache_config()),
+            self.create_default_param_element("buffer_sizes"),
+        ])
 
-        #          <stat name="read_accesses" value="5507084"/>
-        #          <stat name="write_accesses" value="1587535"/>
-        #          <stat name="read_misses" value="770283"/>
-        #          <stat name="write_misses" value="290369"/>
-        #          <stat name="conflicts" value="0"/>
-        #      </component>
+        core_dcache_component.extend([
+            McPATAdapter.create_stat_element("read_accesses", self.sniper_results["L1-D.loads"][i]),
+            McPATAdapter.create_stat_element("write_accesses", self.sniper_results["L1-D.stores"][i]),
+            McPATAdapter.create_stat_element("read_misses", self.sniper_results["L1-D.load-misses"][i]),
+            McPATAdapter.create_stat_element("write_misses", self.sniper_results["L1-D.store-misses"][i]),
+            McPATAdapter.create_ignored_stat_element("conflicts"),
+        ])
 
         return core_dcache_component
 
-    # todo WIP
-    def create_core_dtlb_component(self, i):
-        core_dtlb_component = ElementTree.Element("component", {
-            "id": "system.core" + str(i) + ".dtlb",
-            "name": "core" + str(i),
-        })
-
-        #      <component id="system.core0.itlb" name="itlb"><param name="number_entries" value="64"/>
-        #          <stat name="total_accesses" value="3954162"/>
-        #          <stat name="total_misses" value="20"/>
-        #          <stat name="conflicts" value="0"/>
-        #      </component>
-
-        return core_dtlb_component
-
-    # todo WIP
     def create_core_itlb_component(self, i):
         core_itlb_component = ElementTree.Element("component", {
             "id": "system.core" + str(i) + ".itlb",
             "name": "core" + str(i),
         })
 
-        #      <component id="system.core0.dtlb" name="dtlb"><param name="number_entries" value="64"/>
-        #          <stat name="total_accesses" value="7094619"/>
-        #          <stat name="total_misses" value="547"/>
-        #          <stat name="conflicts" value="0"/>
-        #      </component>
+        core_itlb_component.extend([
+            McPATAdapter.create_param_element("number_entries", self.sniper_config["perf_model/itlb/sets"]),
+            McPATAdapter.create_stat_element("total_accesses", self.sniper_results["itlb.access"][i]),
+            McPATAdapter.create_stat_element("total_misses", self.sniper_results["itlb.miss"][i]),
+            McPATAdapter.create_ignored_stat_element("conflicts"),
+        ])
 
         return core_itlb_component
 
-    # todo WIP
+    def create_core_dtlb_component(self, i):
+        core_dtlb_component = ElementTree.Element("component", {
+            "id": "system.core" + str(i) + ".dtlb",
+            "name": "core" + str(i),
+        })
+
+        core_dtlb_component.extend([
+            McPATAdapter.create_param_element("number_entries", self.sniper_config["perf_model/dtlb/sets"]),
+            McPATAdapter.create_stat_element("total_accesses", self.sniper_results["dtlb.access"][i]),
+            McPATAdapter.create_stat_element("total_misses", self.sniper_results["dtlb.miss"][i]),
+            McPATAdapter.create_ignored_stat_element("conflicts"),
+        ])
+
+        return core_dtlb_component
+
     def create_core_btb_component(self, i):
         core_btb_component = ElementTree.Element("component", {
             "id": "system.core" + str(i) + ".BTB",
             "name": "core" + str(i),
         })
 
-        #      <component id="system.core0.BTB" name="BTB">
-        #          <param name="BTB_config" value="4096,4,2,1, 1,3"/>
-        #          <stat name="read_accesses" value="783721"/>
-        #          <stat name="write_accesses" value="0"/>
-        #      </component>
+        core_btb_component.append(self.create_default_param_element("BTB_config"))
+
+        core_btb_component.append(McPATAdapter.create_stat_element(
+            "read_accesses",
+            self.sniper_results["interval_timer.uop_branch"][i])
+        )
+
+        core_btb_component.append(McPATAdapter.create_ignored_stat_element("write_accesses"))
 
         return core_btb_component
 
@@ -2007,7 +2039,7 @@ class McPATAdapter(Adapter):
         })
 
         system_core_component.extend(self.create_param_elements({
-            "clock_rate": int(float(self.sniper_config["perf_model/core/frequency"]) * 1000),
+            "clock_rate": self.get_target_core_clockrate(),
             "vdd": self.sniper_config["power/vdd"],
             "number_hardware_threads": self.sniper_config["perf_model/core/logical_cpus"],
             "issue_width": self.sniper_config["perf_model/core/interval_timer/dispatch_width"],
@@ -2067,6 +2099,83 @@ class McPATAdapter(Adapter):
 
         return system_core_component
 
+    def get_cache_lx_config(self, x):
+        lx_settings = [
+            self.sniper_config["perf_model/l" + str(x) + "_cache/cache_size"],
+            self.sniper_config["perf_model/l" + str(x) + "_cache/cache_block_size"],
+            self.sniper_config["perf_model/l" + str(x) + "_cache/associativity"],
+            "8",
+            "8",
+            self.sniper_config["perf_model/l" + str(x) + "_cache/data_access_time"],
+            "32",
+            "0",
+        ]
+
+        return ",".join(lx_settings)
+
+    def create_system_cache_lx_component(self, x, i):
+        lx_component = ElementTree.Element("component", {
+            "id": "system.L" + str(x) + str(i),
+            "name": "L" + str(x) + str(i),
+        })
+
+        lx_component.extend([
+            McPATAdapter.create_param_element("L" + str(x) + "_config", self.get_cache_lx_config(x)),
+            self.create_default_param_element("buffer_sizes"),
+            McPATAdapter.create_param_element("clockrate", self.get_target_core_clockrate()),
+            McPATAdapter.create_param_element("vdd", self.sniper_config["power/vdd"]),
+            self.create_default_param_element("ports"),
+            McPATAdapter.create_ignored_param_element("device_type"),
+        ])
+
+        lx_component.extend(
+            McPATAdapter.create_stat_elements({
+                "read_accesses": self.sniper_results["L" + str(x) + ".loads-I"][i],
+                "write_accesses": self.sniper_results["L" + str(x) + ".stores"][i],
+                "read_misses": self.sniper_results["L" + str(x) + ".load-misses"][i],
+                "write_misses": self.sniper_results["L" + str(x) + ".store-misses"][i],
+            })
+        )
+
+        lx_component.extend(
+            McPATAdapter.create_ignored_stat_elements([
+                "conflicts",
+                "duty_cycle",
+            ])
+        )
+
+        return lx_component
+
+    def get_cache_numbers(self):
+        number_of_cores = int(self.sniper_config["general/total_cores"])
+
+        cache_levels = self.sniper_config["perf_model/cache/levels"]
+
+        l2_shared_cores = number_of_l2 = l3_shared_cores = number_of_l3 = 0
+
+        if cache_levels >= 2:
+            l2_shared_cores = int(self.sniper_config["perf_model/l2_cache/shared_cores"])
+
+            number_of_l2 = number_of_cores / l2_shared_cores
+
+        if cache_levels >= 3:
+            l3_shared_cores = int(self.sniper_config["perf_model/l3_cache/shared_cores"])
+
+            number_of_l3 = number_of_cores / l3_shared_cores
+
+        return number_of_cores, cache_levels, l2_shared_cores, number_of_l2, l3_shared_cores, number_of_l3
+
+    def get_total_cycles(self):
+        total_cycles = 0
+
+        for val in self.sniper_results["performance_model.cycle_count"]:
+            total_cycles = total_cycles + int(val)
+
+        return total_cycles
+
+    def get_target_core_clockrate(self):
+        return int(float(self.sniper_config["perf_model/core/frequency"]) * 1000)
+
     # todo WIP
     def generate_xml_from_sniper_simulation(self):
         self.sniper_config = json.load(open(self.get_sniper_simulation_path() + "/sniper_config.json"))
@@ -2082,26 +2191,10 @@ class McPATAdapter(Adapter):
 
         system = xml.find("component[@id='system']")
 
-        number_of_cores = int(self.sniper_config["general/total_cores"])
+        number_of_cores, cache_levels, l2_shared_cores, number_of_l2, l3_shared_cores, number_of_l3 =\
+            self.get_cache_numbers()
 
-        l2_shared_cores = number_of_l2 = l3_shared_cores = number_of_l3 = 0
-
-        cache_levels = self.sniper_config["perf_model/cache/levels"]
-
-        if cache_levels >= 2:
-            l2_shared_cores = int(self.sniper_config["perf_model/l2_cache/shared_cores"])
-
-            number_of_l2 = number_of_cores / l2_shared_cores
-
-        if cache_levels >= 3:
-            l3_shared_cores = int(self.sniper_config["perf_model/l3_cache/shared_cores"])
-
-            number_of_l3 = number_of_cores / l3_shared_cores
-
-        total_cycles = 0
-
-        for val in self.sniper_results["performance_model.cycle_count"]:
-            total_cycles = total_cycles + int(val)
+        total_cycles = self.get_total_cycles()
 
         system.extend(self.create_param_elements({
             "number_of_cores": self.sniper_config["general/total_cores"],
@@ -2109,7 +2202,7 @@ class McPATAdapter(Adapter):
             "number_of_L2s": number_of_l2,
             "number_of_L3s": number_of_l3,
             "core_tech_node": self.sniper_config["power/technology_node"],
-            "target_core_clockrate": int(float(self.sniper_config["perf_model/core/frequency"]) * 1000),
+            "target_core_clockrate": self.get_target_core_clockrate(),
         }))
 
         system.extend(self.create_default_param_elements([
@@ -2147,6 +2240,14 @@ class McPATAdapter(Adapter):
 
         for i in range(0, number_of_cores):
             system.append(self.create_system_core_component(i))
+
+        if cache_levels >= 2:
+            for i in range(0, number_of_l2):
+                system.append(self.create_system_cache_lx_component(2, i))
+
+        if cache_levels >= 3:
+            for i in range(0, number_of_l3):
+                system.append(self.create_system_cache_lx_component(3, i))
 
         self.input_xml = xml
 
