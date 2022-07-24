@@ -1,5 +1,3 @@
-from multiprocessing.sharedctypes import Value
-from nis import cat
 import Tkinter
 import ttk
 
