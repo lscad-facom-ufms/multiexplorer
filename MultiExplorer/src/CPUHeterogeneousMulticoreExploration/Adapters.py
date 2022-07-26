@@ -2213,6 +2213,70 @@ class McPATAdapter(Adapter):
 
         return mc_component
 
+    def create_system_niu_component(self):
+        niu_component = ElementTree.Element("component", {
+            "id": "system.niu",
+            "name": "niu",
+        })
+
+        niu_component.extend(McPATAdapter.create_ignored_param_element([
+            "type",
+            "clockrate",
+            "vdd",
+            "number_units",
+
+        ]))
+
+        niu_component.extend(McPATAdapter.create_ignored_stat_elements([
+            "duty_cycle",
+            "total_load_perc",
+        ]))
+
+        return niu_component
+
+    def create_system_pcie_component(self):
+        pcie_component = ElementTree.Element("component", {
+            "id": "system.pcie",
+            "name": "pcie",
+        })
+
+        pcie_component.extend(McPATAdapter.create_ignored_param_element([
+            "type",
+            "withPHY",
+            "clockrate",
+            "vdd",
+            "number_units",
+            "num_channels",
+        ]))
+
+        pcie_component.extend(McPATAdapter.create_ignored_stat_elements([
+            "duty_cycle",
+            "total_load_perc",
+        ]))
+
+        return pcie_component
+
+    def create_system_flashc_component(self):
+        flashc_component = ElementTree.Element("component", {
+            "id": "system.flashc",
+            "name": "flashc",
+        })
+
+        flashc_component.extend(McPATAdapter.create_ignored_param_element([
+            "number_flashcs",
+            "type",
+            "withPHY",
+            "peak_transfer_rate",
+            "vdd",
+        ]))
+
+        flashc_component.extend(McPATAdapter.create_ignored_stat_elements([
+            "duty_cycle",
+            "total_load_perc",
+        ]))
+
+        return flashc_component
+
     def get_cache_numbers(self):
         number_of_cores = int(self.sniper_config["general/total_cores"])
 
@@ -2320,6 +2384,12 @@ class McPATAdapter(Adapter):
             system.append(self.create_system_noc_component(i))
 
         system.append(self.create_system_memory_controller_component())
+
+        system.append(self.create_system_niu_component())
+
+        system.append(self.create_system_pcie_component())
+
+        system.append(self.create_system_flashc_component())
 
         self.input_xml = xml
 

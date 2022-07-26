@@ -1,6 +1,6 @@
 from unittest import TestCase
 from mock import Mock
-from MultiExplorer.tests.Utils import data_provider
+from MultiExplorer.test.Utils import data_provider
 from MultiExplorer.src.GUI.Frames import InputTab
 
 
