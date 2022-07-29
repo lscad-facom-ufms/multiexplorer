@@ -1,6 +1,7 @@
 import json
 import os
 import time
+from xml.dom import minidom
 from xml.etree import ElementTree
 from MultiExplorer.src.CPUHeterogeneousMulticoreExploration.AllowedValues import PredictedCores, \
     SniperCorePipelineKinds, \
@@ -8,7 +9,7 @@ from MultiExplorer.src.CPUHeterogeneousMulticoreExploration.AllowedValues import
     Technologies, Applications
 from MultiExplorer.src.Infrastructure.ExecutionFlow import Adapter
 from MultiExplorer.src.Infrastructure.Inputs import Input, InputGroup, InputType
-from MultiExplorer.src.config import PATH_SNIPER
+from MultiExplorer.src.config import PATH_SNIPER, PATH_MCPAT
 import sys
 
 sys.path.append(PATH_SNIPER + '/tools')
@@ -1673,7 +1674,6 @@ class SniperSimulatorAdapter(Adapter):
 
         self.cfg_path = cfg_file_path
 
-    # todo
     def execute(self):
         self.prepare()
 
@@ -1740,7 +1740,7 @@ class SniperSimulatorAdapter(Adapter):
         if self.use_benchmarks is True:
             return PATH_SNIPER + "/benchmarks/"
         else:
-            return PATH_SNIPER
+            return PATH_SNIPER + "/"
 
     def get_benchmark_size(self):
         if self.benchmark_size is None:
@@ -1836,6 +1836,12 @@ class McPATAdapter(Adapter):
     def __init__(self):
         Adapter.__init__(self)
 
+        self.input_file_name = None
+
+        self.output_file_name = None
+
+        self.executable_path = None
+
         self.sniper_results = None
 
         self.sniper_config = None
@@ -1844,9 +1850,64 @@ class McPATAdapter(Adapter):
 
         self.sniper_simulation_path = None
 
-    # todo
     def execute(self):
-        time.sleep(6)
+        self.prepare()
+
+        self.execute_simulation()
+
+        self.register_results()
+
+    def write_input_xml_to_file(self):
+        xmlstr = minidom.parseString(ElementTree.tostring(self.input_xml.getroot())).toprettyxml(indent="   ")
+
+        with open(self.get_input_file_path(), "w") as f:
+            f.write(xmlstr.encode('utf-8'))
+
+    def prepare(self):
+        self.generate_xml_from_sniper_simulation()
+
+        self.write_input_xml_to_file()
+
+    def get_executable_path(self):
+        if self.executable_path is None:
+            return PATH_MCPAT + "/"
+
+        return self.executable_path + "/"
+
+    def get_input_file_name(self):
+        if self.input_file_name is None:
+            return "mcpat_input.xml"
+
+        return self.input_file_name
+
+    def get_input_file_path(self):
+        return self.get_output_path() + "/" + self.get_input_file_name()
+
+    def get_output_file_name(self):
+        if self.output_file_name is None:
+            return "mcpat.out"
+
+        return self.output_file_name
+
+    def get_output_file_path(self):
+        return self.get_output_path() + "/" + self.get_output_file_name()
+
+    def execute_simulation(self):
+        print (
+            self.get_executable_path() + "./mcpat"
+            + " -infile " + self.get_input_file_path()
+            + " -print_level 5 > " + self.get_output_file_path()
+        )
+
+        os.system(
+            self.get_executable_path() + "./mcpat"
+            + " -infile " + self.get_input_file_path()
+            + " -print_level 5 > " + self.get_output_file_path()
+        )
+
+    # todo
+    def register_results(self):
+        pass
 
     @staticmethod
     def create_param_element(name, value):
@@ -2307,22 +2368,21 @@ class McPATAdapter(Adapter):
     def get_target_core_clockrate(self):
         return int(float(self.sniper_config["perf_model/core/frequency"]) * 1000)
 
-    # todo WIP
     def generate_xml_from_sniper_simulation(self):
         self.sniper_config = json.load(open(self.get_sniper_simulation_path() + "/sniper_config.json"))
 
         self.sniper_results = json.load(open(self.get_sniper_simulation_path() + "/sniper_results.json"))
 
-        xml = ElementTree.fromstring('''<?xml version="1.0" encoding="UTF-8"?>
+        xml = ElementTree.ElementTree(ElementTree.fromstring('''<?xml version="1.0" encoding="UTF-8"?>
             <component id="root" name="root">
                 <component id="system" name="system">
                 </component>
             </component>
-        ''')
+        '''))
 
         system = xml.find("component[@id='system']")
 
-        number_of_cores, cache_levels, l2_shared_cores, number_of_l2, l3_shared_cores, number_of_l3 =\
+        number_of_cores, cache_levels, l2_shared_cores, number_of_l2, l3_shared_cores, number_of_l3 = \
             self.get_cache_numbers()
 
         total_cycles = self.get_total_cycles()

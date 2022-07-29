@@ -11,7 +11,9 @@ class TestMcPATAdapter(unittest.TestCase):
 
         adapter.generate_xml_from_sniper_simulation()
 
-        print(BeautifulSoup(ElementTree.tostring(adapter.input_xml, encoding="utf8"), "xml").prettify())
+        adapter.write_input_xml_to_file()
+
+        print(BeautifulSoup(ElementTree.tostring(adapter.input_xml.getroot(), encoding="utf8"), "xml").prettify())
 
 
 if __name__ == '__main__':

@@ -45,11 +45,9 @@ class CPUSimulationStep(Step):
     def get_user_inputs(self):
         return self.adapter.get_user_inputs()
 
-    # todo
     def __execute__(self):
         self.adapter.execute()
 
-    # todo
     def __finish__(self):
         self.fire(Event.STEP_EXECUTION_ENDED)
 
@@ -86,11 +84,9 @@ class PhysicalExplorationStep(Step):
     @staticmethod
     def get_label(): return 'Physical Exploration'
 
-    # todo
     def __execute__(self):
         self.adapter.execute()
 
-    # todo
     def __finish__(self):
         self.fire(Event.STEP_EXECUTION_ENDED)
 
