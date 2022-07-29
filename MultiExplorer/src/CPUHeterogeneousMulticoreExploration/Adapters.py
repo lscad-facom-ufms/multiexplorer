@@ -2146,6 +2146,137 @@ class McPATAdapter(Adapter):
 
         return lx_component
 
+    def create_system_noc_component(self, i):
+        noc_component = ElementTree.Element("component", {
+            "id": "system.NoC" + str(i),
+            "name": "noc" + str(i),
+        })
+
+        noc_component.extend(McPATAdapter.create_param_elements({
+            "clockrate": self.get_target_core_clockrate(),
+            "vdd": self.sniper_config["power/vdd"],
+            "type": self.sniper_config["network/memory_model_1"],
+        }))
+
+        noc_component.extend(self.create_default_param_elements([
+            "horizontal_nodes",
+            "vertical_nodes",
+            "link_throughput",
+            "link_latency",
+            "input_ports",
+        ]))
+
+        noc_component.extend(McPATAdapter.create_ignored_param_elements([
+            "has_global_link",
+            "output_ports",
+            "flit_bits",
+            "chip_coverage",
+            "link_routing_over_percentage",
+        ]))
+
+        noc_component.extend(McPATAdapter.create_ignored_stat_elements([
+            "total_accesses",
+            "duty_cycle",
+        ]))
+
+        return noc_component
+
+    def create_system_memory_controller_component(self):
+        mc_component = ElementTree.Element("component", {
+            "id": "system.mc",
+            "name": "mc",
+        })
+
+        mc_component.extend(self.create_default_param_elements([
+            "mc_clock",
+            "peak_transfer_rate",
+            "block_size",
+            "memory_channels_per_mc",
+            "number_ranks",
+            "req_window_size_per_channel",
+            "IO_buffer_size_per_channel",
+            "databus_width",
+            "addressbus_width",
+        ]))
+
+        mc_component.extend(McPATAdapter.create_ignored_param_elements([
+            "vdd",
+            "number_mcs",
+            "withPHY",
+        ]))
+
+        mc_component.extend(McPATAdapter.create_stat_elements({
+            "memory_accesses": self.sniper_results["dram-queue.num-requests"][0],
+            "memory_reads": self.sniper_results["dram-queue.num-requests"][0] - self.sniper_results["dram.writes"][0],
+            "memory_writes": self.sniper_results["dram.writes"][0],
+        }))
+
+        return mc_component
+
+    def create_system_niu_component(self):
+        niu_component = ElementTree.Element("component", {
+            "id": "system.niu",
+            "name": "niu",
+        })
+
+        niu_component.extend(McPATAdapter.create_ignored_param_element([
+            "type",
+            "clockrate",
+            "vdd",
+            "number_units",
+
+        ]))
+
+        niu_component.extend(McPATAdapter.create_ignored_stat_elements([
+            "duty_cycle",
+            "total_load_perc",
+        ]))
+
+        return niu_component
+
+    def create_system_pcie_component(self):
+        pcie_component = ElementTree.Element("component", {
+            "id": "system.pcie",
+            "name": "pcie",
+        })
+
+        pcie_component.extend(McPATAdapter.create_ignored_param_element([
+            "type",
+            "withPHY",
+            "clockrate",
+            "vdd",
+            "number_units",
+            "num_channels",
+        ]))
+
+        pcie_component.extend(McPATAdapter.create_ignored_stat_elements([
+            "duty_cycle",
+            "total_load_perc",
+        ]))
+
+        return pcie_component
+
+    def create_system_flashc_component(self):
+        flashc_component = ElementTree.Element("component", {
+            "id": "system.flashc",
+            "name": "flashc",
+        })
+
+        flashc_component.extend(McPATAdapter.create_ignored_param_element([
+            "number_flashcs",
+            "type",
+            "withPHY",
+            "peak_transfer_rate",
+            "vdd",
+        ]))
+
+        flashc_component.extend(McPATAdapter.create_ignored_stat_elements([
+            "duty_cycle",
+            "total_load_perc",
+        ]))
+
+        return flashc_component
+
     def get_cache_numbers(self):
         number_of_cores = int(self.sniper_config["general/total_cores"])
 
@@ -2248,6 +2379,17 @@ class McPATAdapter(Adapter):
         if cache_levels >= 3:
             for i in range(0, number_of_l3):
                 system.append(self.create_system_cache_lx_component(3, i))
+
+        for i in range(0, int(self.default_params["number_of_NoCs"])):
+            system.append(self.create_system_noc_component(i))
+
+        system.append(self.create_system_memory_controller_component())
+
+        system.append(self.create_system_niu_component())
+
+        system.append(self.create_system_pcie_component())
+
+        system.append(self.create_system_flashc_component())
 
         self.input_xml = xml
 

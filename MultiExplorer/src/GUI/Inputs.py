@@ -62,7 +62,8 @@ class InputGroupFrame(Tkinter.LabelFrame, object):
 
     def is_valid(self):
         """
-        Returns True if all values from inputs and inputs subgroups that belong to this group are valid. False otherwise.
+        Returns True if all values from inputs and inputs subgroups that belong to this group are valid. False
+        otherwise.
         """
         all_valid = True
         for key in self.inputs:

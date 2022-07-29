@@ -1,6 +1,6 @@
 from unittest import TestCase
 from mock import Mock
-from MultiExplorer.tests.Utils import data_provider
+from MultiExplorer.test.Utils import data_provider
 from MultiExplorer.src.GUI.Frames import InputTab
 
 
@@ -27,6 +27,10 @@ def test_is_valid_data_provider():
 
     invalid_input.is_valid.return_value = False
 
+    invalid_input_2 = Mock()
+
+    invalid_input_2.is_valid = invalid_input.is_valid
+
     return (
         (step, {
             'valid_input': valid_input,
@@ -35,6 +39,10 @@ def test_is_valid_data_provider():
         (step, {
             'valid_input': valid_input,
             'invalid_input': invalid_input,
+        }, False),
+        (step, {
+            'invalid_input': invalid_input,
+            'invalid_input_2': invalid_input_2,
         }, False),
     )
 

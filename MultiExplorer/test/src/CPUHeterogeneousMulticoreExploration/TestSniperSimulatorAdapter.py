@@ -20,7 +20,7 @@ class TestSniperSimulatorAdapter(unittest.TestCase):
 
         simulator_adapter.set_values_from_json("/home/ufms/projetos/multiexplorer/input-examples/quark.json")
 
-        simulator_adapter.output_path = "/home/ufms/projetos/multiexplorer/rundir"
+        simulator_adapter.output_path = "/rundir"
 
         simulator_adapter.generate_cfg_from_inputs()
 
@@ -32,7 +32,7 @@ class TestSniperSimulatorAdapter(unittest.TestCase):
     def test_generate_cfg_from_inputs(self):
         simulator_adapter = SniperSimulatorAdapter()
 
-        simulator_adapter.output_path = "/home/ufms/projetos/multiexplorer/rundir"
+        simulator_adapter.output_path = "/rundir"
 
         total_cores_value = 2
         simulator_adapter.inputs['general_modeling']['total_cores'] = total_cores_value
