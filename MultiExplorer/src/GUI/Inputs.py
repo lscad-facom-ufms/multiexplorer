@@ -35,7 +35,7 @@ class InputGUI:
         raise NotImplementedError("The GUI counterpart of '" + str(infra_input.type) + "' is not implemented.")
 
 
-class InputGroupFrame(Tkinter.LabelFrame, object):
+class InputGroupFrame(Tkinter.LabelFrame, object): 
     def __init__(self, infra_group, master=None, cnf={}, **kw):
         super(InputGroupFrame, self).__init__(master, cnf, **kw)
 
@@ -60,11 +60,20 @@ class InputGroupFrame(Tkinter.LabelFrame, object):
 
         self.pack()
 
-    # todo
     def is_valid(self):
         """
         Returns True if all values from inputs and inputs subgroups that belong to this group are valid. False otherwise.
         """
+        all_valid = True
+        for key in self.inputs:
+            if self.inputs[key].is_valid():
+                pass
+            else:
+                all_valid = False
+        if all_valid:
+            return True
+        else:
+            return False
         pass
 
     def get_infra_input(self):
