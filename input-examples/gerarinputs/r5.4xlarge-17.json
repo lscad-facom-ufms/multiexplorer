@@ -1,0 +1,36 @@
+{
+    "General_Modeling": {
+        "mips": 62, 
+        "price": 1.008, 
+        "coresVM": 16, 
+        "model_name": "r5.4xlarge", 
+        "memory": 128000
+    }, 
+    "DSE": {
+        "Constraints": {
+            "benchmark": "Experimentos", 
+            "maximum_cost": 2.0, 
+            "technology": "vm", 
+            "maximum_time": 1.0, 
+            "application": "all_vm"
+        }, 
+        "ExplorationSpace": {
+            "instructions_for_design": 17918186, 
+            "sup_vm_for_design": [
+                1, 
+                10
+            ], 
+            "original_vm_for_design": [
+                1, 
+                10
+            ], 
+            "corescloudlet_for_design": 32
+        }
+    }, 
+    "Preferences": {
+        "application": 17918186, 
+        "project_name": "r5.4xlarge-17918186", 
+        "simtool": "cloudsim", 
+        "DSE": "true"
+    }
+}

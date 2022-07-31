@@ -1,9 +1,0 @@
-
-Baixe e instale o Anaconda em:
-https://conda.io/docs/user-guide/install/linux.html
-
-conda install scikit-learn
-
-O script regression.py tem um exemplo bem simples de como chamar a funcao para obter os resultados Thiago.
-Qualquer problema me avise.
-

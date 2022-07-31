@@ -1,10 +1,21 @@
 # -*- coding: UTF-8 -*-
 import json, os, sys
 import csv
+
 sys.path.append(os.path.dirname(os.path.realpath(__file__))+'/../')
-from InOut import InOut
+
+sys.path.append(os.path.dirname(os.path.realpath(__file__))+'/../cloudsim-3.0.3/')
+
+
+from InOutVM import InOut
 from DbSelector import DbSelector
-from PerformancePredictor import PerformancePredictor
+from PerformancePredictorVM import PerformancePredictor
+from CloudSim import CloudSim
+import math
+
+cwd = os.getcwd()
+
+
 
 class DsDseBruteForce(object):
 
@@ -15,85 +26,193 @@ class DsDseBruteForce(object):
         self.inputDict= InOut(projectFolder).makeInputDict()
         self.db = json.loads(open(path_db).read())
         self.pathCSV=projectFolder+"/outputBruteForce.csv"
+	self.pathCSVfinal=projectFolder+"/outputBruteForcefinal.csv"
         self.first_solution = [] #plataformas que obedecem a restricao de area 
         self.final_solution = [] #plataformas que obedecem a restrição de area e tem performance maxima
         
         
         self.combinations()        
         self.printCSV()
+	self.printCSVfinal()
 
     def combinations(self):
         combinationList=[]
 
         def is_viable(parameters):
-            #power density and total área, are restrictions
-            if parameters[1] <= self.inputDict["restrictions"]["total_area"] and parameters[0] <= self.inputDict["restrictions"]["power_density"]:
+            #total time and total cost, are restrictions
+
+            if parameters[0] <= self.inputDict["restrictions"]["total_time"] and parameters[1] <= self.inputDict["restrictions"]["total_cost"]:
                 return True
             else:
                 return False
 
 
-        for amount_orig_core in range(self.inputDict["parameters"]["amount_original_cores"][0], self.inputDict["parameters"]["amount_original_cores"][1]+1):
-            for amount_ip_core in range(self.inputDict["parameters"]["amount_ip_cores"][0], self.inputDict["parameters"]["amount_ip_cores"][1]+1):
+        for amount_orig_vm in range(self.inputDict["parameters"]["amount_original_vm"][0], self.inputDict["parameters"]["amount_original_vm"][1]+1):
+            for amount_sup_vm in range(self.inputDict["parameters"]["amount_sup_vm"][0], self.inputDict["parameters"]["amount_sup_vm"][1]+1):
+                print(amount_orig_vm, amount_sup_vm)
                 for ip_core in self.db["ipcores"]:
-                    parameters= self.calculateParameters(amount_orig_core, amount_ip_core, ip_core)
                     
                     processor = ip_core["id"]
-                    #processor = ""
-                    #if ip_core["id"] == "ARM_A53_22nm":
-                    #    processor = "arm53"
-                    #if ip_core["id"] == "ARM_A57_22nm":
-                    #    processor = "arm57"
-                    #if ip_core["id"] == "Atom_Silvermont_22nm":
-                    #    processor = "atom"
-                    #if ip_core["id"] == "Quark_x1000_32nm":
-                    #    processor = "quark"
-                    #if ip_core["id"] == "Smithfield_90nm":
-                    #    processor = "smithfield"
 
-                    performancePred = PerformancePredictor(processor, amount_ip_core, amount_orig_core).getResults()
-                    _dict={"amount_orig_core":amount_orig_core, "amount_ip_core":amount_ip_core, "ip_core":ip_core,"powerDensity":parameters[0],"area":parameters[1], "performance":parameters[2], "performancePred":performancePred}
+ 		    instructions = self.inputDict["parameters"]["instructions"]
+		    corescloudlet = self.inputDict["parameters"]["corescloudlet"]
+
+		    mips_orig = self.inputDict["parameters"]["mips"]
+		    coresvm_orig = self.inputDict["parameters"]["coresVM"]
+		    price_orig = self.inputDict["parameters"]["price_orig"]
+
+		    mips_sup = ip_core["mips"]
+		    coresvm_sup = ip_core["coresVM"]
+		    price_sup = ip_core["price"]
+
+		    cores_cloudlet_orig = int(round(amount_orig_vm*coresvm_orig*corescloudlet/(coresvm_orig*amount_orig_vm+coresvm_sup*amount_sup_vm)))
+		    cores_cloudlet_sup = corescloudlet - cores_cloudlet_orig
+		    
+
+		    instructions_orig = round(instructions*cores_cloudlet_orig/corescloudlet)
+		    instructions_sup = instructions - instructions_orig
+		    
+		    instructions_orig = int(instructions_orig/1000000)
+		    instructions_sup = int(instructions_sup/1000000)
+		    
+		    # get time by CloudSim 
+		    obj_orig = CloudSim(mips_orig, 10000, 512, coresvm_orig, int(cores_cloudlet_orig/amount_orig_vm), int(instructions_orig/amount_orig_vm))
+
+
+
+		    
+		    #Time in hours
+		    tempo = obj_orig.getTime()
+		    time_vm_orig = float(tempo.replace(',','.'))/3600
+		    if math.ceil(time_vm_orig) == 0:
+		    	cost_vm_orig = 1*price_orig*amount_orig_vm
+		    else:
+		    	cost_vm_orig = math.ceil(time_vm_orig)*price_orig*amount_orig_vm
+		    	
+		   
+		    obj_sup = CloudSim(mips_sup, 10000, 512, coresvm_sup, int(cores_cloudlet_sup/amount_sup_vm), int(instructions_sup/amount_sup_vm))
+
+
+		    tempo = obj_sup.getTime()
+		    time_vm_sup = float(tempo.replace(',','.'))/3600
+		    
+
+		    if math.ceil(time_vm_sup) == 0:
+		    	cost_vm_sup = 1*price_sup*amount_sup_vm
+		    else:
+		    	cost_vm_sup = math.ceil(time_vm_sup)*price_sup*amount_sup_vm
+		    	
+		    
+		    if time_vm_orig > time_vm_sup:
+		    	totalTime = time_vm_orig
+		    else:
+		    	totalTime = time_vm_sup
+
+		    totalCost = cost_vm_orig + cost_vm_sup
+
+		
+		    
+                    # Predictors
+                    instructions_orig = round(instructions*cores_cloudlet_orig/corescloudlet)
+		    instructions_sup = instructions - instructions_orig
+		    time_vm_orig = ((((instructions_orig/1000000)/amount_orig_vm)*(cores_cloudlet_orig/amount_orig_vm))/(mips_orig*coresvm_orig))/3600
+		    time_vm_sup = ((((instructions_sup/1000000)/amount_sup_vm)*(cores_cloudlet_sup/amount_sup_vm))/(mips_sup*coresvm_sup))/3600
+		    
+		    
+		    if time_vm_orig > time_vm_sup:
+		    	timePred = time_vm_orig
+		    else:
+		    	timePred = time_vm_sup
+		    	
+		    	
+		    if math.ceil(time_vm_orig) == 0:
+		    	cost_vm_orig = 1*price_orig*amount_orig_vm
+		    else:
+		    	cost_vm_orig = math.ceil(time_vm_orig)*price_orig*amount_orig_vm
+		    
+		    if math.ceil(time_vm_sup) == 0:
+		    	cost_vm_sup = 1*price_sup*amount_sup_vm
+		    else:
+		    	cost_vm_sup = math.ceil(time_vm_sup)*price_sup*amount_sup_vm
+		    	
+		    costPred = cost_vm_orig + cost_vm_sup
+
+
+		   
+
+
+                    _dict={"amount_sup_vm":amount_sup_vm, "ip_core":ip_core, "time":totalTime,"cost":totalCost, "amount_orig_vm":amount_orig_vm, "time_pred": timePred, "cost_pred": costPred, "time_orig": time_vm_orig, "time_sup": time_vm_sup, "cost_orig":cost_vm_orig, "cost_sup":cost_vm_sup}
                     self.first_solution.append(_dict)    
-                    if is_viable(parameters):
+                    if is_viable((totalTime, totalCost)):
                         self.final_solution.append(_dict)
 
-    def calculateParameters(self, amount_original, amount_ip, ip_core):
-        origPower = self.inputDict["parameters"]["power_orig"][1]
-        origArea = self.inputDict["parameters"]["area_orig"][1]
-        origPerf = self.inputDict["parameters"]["performance_orig"][1]
-
-        powerDensity= float(amount_original*origPower+amount_ip*ip_core["pow"])/float(amount_original*origArea+amount_ip*ip_core["area"])
-        totalArea=(amount_original*origArea+amount_ip*ip_core["area"])
-        totalPeformance= (amount_original*origPerf+amount_ip*ip_core["perf"])
-
-        return (powerDensity, totalArea, totalPeformance)
 
     def printCSV(self):
         csvFile= open(self.pathCSV, "w")
         csvWriter= csv.writer(csvFile)
 
-        header = 'total_area', 'total_performance', 'performance_pred','total_power_density','id_ip_core', 'amount_ip_cores','performance ip', 'power ip', 'area_ip','amount_original_cores','performance_orig', 'power_orig', 'area orig'
+	header = 'total_time', 'total_cost', 'time_pred', 'cost_pred', 'id_sup_vm', 'amount_sup_vm', 'time_sup_vm', 'cost_sup_vm', 'amount_original_vm', 'time_original_vm', 'cost_original_vm'
         csvWriter.writerow(header)
 
+
         for element in self.first_solution:
-           #_dict={"amount_orig_core":amount_orig_core, "amount_ip_core":amount_ip_core, "ip_core":ip_core,"powerDensity":parameters[0],"area":parameters[1], "performance":parameters[2]}
+
 
             _list=[]
-            _list.append(element["area"])
-            _list.append(element["performance"])
-            _list.append(element["performancePred"])
-            _list.append(element["powerDensity"])
+	   
+	    _list.append(element["time"])
+	    _list.append(element["cost"])
+	    _list.append(element["time_pred"])
+	    _list.append(element["cost_pred"])
+	    
             _list.append(element["ip_core"]["id"])
-            _list.append(element["amount_ip_core"])
-            _list.append(element["ip_core"]["perf"])
-            _list.append(element["ip_core"]["pow"])
-            _list.append(element["ip_core"]["area"])
-            _list.append(element["amount_orig_core"])
-            _list.append(self.inputDict["parameters"]["performance_orig"][1])
-            _list.append(self.inputDict["parameters"]["power_orig"][1])
-            _list.append(self.inputDict["parameters"]["area_orig"][1])
+	    _list.append(element["amount_sup_vm"])
+	    _list.append(element["time_sup"])
+	    _list.append(element["cost_sup"])
+	    _list.append(element["amount_orig_vm"])
+	    _list.append(element["time_orig"])
+            _list.append(element["cost_orig"])
+
+
+
+
+            csvWriter.writerow(_list)
+        csvFile.close()
+
+
+    def printCSVfinal(self):
+        csvFile= open(self.pathCSVfinal, "w")
+        csvWriter= csv.writer(csvFile)
+
+    
+
+	header = 'total_time', 'total_cost', 'time_pred', 'cost_pred', 'id_sup_vm', 'amount_sup_vm', 'time_sup_vm', 'cost_sup_vm', 'amount_original_vm', 'time_original_vm', 'cost_original_vm'
+        csvWriter.writerow(header)
+
+
+        for element in self.final_solution:
+
+
+            _list=[]
+	   
+
+	    _list.append(element["time"])
+	    _list.append(element["cost"])
+	    _list.append(element["time_pred"])
+	    _list.append(element["cost_pred"])
+	    
+            _list.append(element["ip_core"]["id"])
+	    _list.append(element["amount_sup_vm"])
+	    _list.append(element["time_sup"])
+	    _list.append(element["cost_sup"])
+	    _list.append(element["amount_orig_vm"])
+	    _list.append(element["time_orig"])
+            _list.append(element["cost_orig"])
+
+
 
             csvWriter.writerow(_list)
         csvFile.close()
 if __name__ == "__main__":
     objDse = DsDseBruteForce()
+

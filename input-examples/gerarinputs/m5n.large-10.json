@@ -1,0 +1,36 @@
+{
+    "General_Modeling": {
+        "mips": 62, 
+        "price": 0.119, 
+        "coresVM": 2, 
+        "model_name": "m5n.large", 
+        "memory": 8000
+    }, 
+    "DSE": {
+        "Constraints": {
+            "benchmark": "Experimentos", 
+            "maximum_cost": 2.0, 
+            "technology": "vm", 
+            "maximum_time": 1.0, 
+            "application": "all_vm"
+        }, 
+        "ExplorationSpace": {
+            "instructions_for_design": 82643621399, 
+            "sup_vm_for_design": [
+                1, 
+                10
+            ], 
+            "original_vm_for_design": [
+                1, 
+                10
+            ], 
+            "corescloudlet_for_design": 32
+        }
+    }, 
+    "Preferences": {
+        "application": 82643621399, 
+        "project_name": "m5n.large-82643621399", 
+        "simtool": "cloudsim", 
+        "DSE": "true"
+    }
+}

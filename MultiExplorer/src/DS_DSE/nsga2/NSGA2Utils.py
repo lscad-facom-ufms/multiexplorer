@@ -8,7 +8,7 @@ import functools, json
 from nsga2.Population import Population
 from DbSelector import DbSelector
 import random
-from InOut import InOut
+from InOutVM import InOut
 class NSGA2Utils(object):
 
     def __init__(self, problem, num_of_individuals, projectFolder, mutation_rate= 0.9 ,mutation_strength=0.01, num_of_genes_to_mutate=2, num_of_tour_particips=2):
@@ -61,6 +61,7 @@ class NSGA2Utils(object):
                 individual.crowding_distance = 0
 
             for m in range(len(front[0].objectives)):
+		#print "AQUI", (self.problem.max_objectives[m], self.problem.min_objectives[m])
                 front = sorted(front, cmp=functools.partial(self.__sort_objective, m=m))
                 front[0].crowding_distance = self.problem.max_objectives[m]
                 front[solutions_num-1].crowding_distance = self.problem.max_objectives[m]
@@ -123,7 +124,7 @@ class NSGA2Utils(object):
     def __crossover(self, individual1, individual2):
         child1 = self.problem.generateIndividual()
         child2 = self.problem.generateIndividual()
-        genes_indexes = [0, 4, 5] #0 : amount original cores ; 4 amount ip cores; 5 ip cores
+        genes_indexes = [0, 1, 5] #0 : amount original cores ; 4 amount ip cores; 5 ip cores
         half_genes_indexes = random.sample(genes_indexes, 1)
         for i in genes_indexes:
             if i in half_genes_indexes:
@@ -146,16 +147,16 @@ class NSGA2Utils(object):
 
     def __mutate(self, child):
         #0 : amount original cores ; 4 amount ip cores; 5 ip cores
-        genes_to_mutate = random.sample([0,4,5], self.number_of_genes_to_mutate)
+        genes_to_mutate = random.sample([0,1,5], self.number_of_genes_to_mutate)
        
         for gene in genes_to_mutate:
             #quando for núcleo ip, substituir por algum do banco aleatoriamente
             if gene == 5:
                 child.features[gene] = random.choice(self.bd["ipcores"])
             if gene == 0:
-                child.features[gene] = random.randint(self.dict_entry["parameters"]["amount_original_cores"][0], self.dict_entry["parameters"]["amount_original_cores"][1])
-            if gene == 4:
-                child.features[gene]= random.randint(self.dict_entry["parameters"]["amount_ip_cores"][0], self.dict_entry["parameters"]["amount_ip_cores"][1])
+                child.features[gene] = random.randint(self.dict_entry["parameters"]["amount_original_vm"][0], self.dict_entry["parameters"]["amount_original_vm"][1])
+            if gene == 1:
+                child.features[gene]= random.randint(self.dict_entry["parameters"]["amount_sup_vm"][0], self.dict_entry["parameters"]["amount_sup_vm"][1])
    
     def __tournament(self, population):
         participants = random.sample(population, self.num_of_tour_particips)

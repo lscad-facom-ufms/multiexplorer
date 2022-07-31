@@ -1,13 +1,9 @@
 Multiexplorer Design Space Exploration Framework and Simulator
-Copyright 2021 Federal University of Mato Grosso do Sul (UFMS) and Contributors
+Copyright 2022 Federal University of Mato Grosso do Sul (UFMS) and Contributors
 
-Portions of this software are based on the Sniper Multicore Simulator
-developed at the University of Belgium. The original
-software is available from
-   https://www.snipersim.org
 
-Portions of this software are based on the McPAT. The code was originally obtained from:
-    https://github.com/HewlettPackard/mcpat
+Portions of this software are based on the CloudSim. The code was originally obtained from:
+    http://www.cloudbus.org/cloudsim/
 
 
 All other files are covered under the MIT license, see the file LICENSE.

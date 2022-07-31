@@ -1,7 +1,0 @@
-{
-"ipcores":[
-	{"id":"ARM_A53_22nm", "pow": 1.39117, "area": 10.5853, "perf": 3125.68},
-    	{"id":"ARM_A57_22nm", "pow": 1.59445, "area": 10.5023, "perf":4006.64},
-	{"id":"Atom_Silvermont_22nm", "pow": 0.830237, "area":8.19052, "perf":648.47}
-] 
-}

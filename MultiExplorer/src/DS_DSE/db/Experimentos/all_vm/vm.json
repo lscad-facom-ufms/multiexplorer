@@ -1,0 +1,41 @@
+{
+"ipcores":[
+	{"id":"c3.large", "mips": 56, "coresVM": 2, "memory": 3750, "price": 0.163, "time": 0.01984126984},
+    	{"id":"c3.xlarge", "mips": 56, "coresVM": 4, "memory": 7500, "price": 0.325, "time": 0.00992063492},
+	{"id":"c3.2xlarge", "mips": 56, "coresVM": 8, "memory": 15000, "price": 0.65, "time": 0.00496031746},
+
+	{"id":"m3.large", "mips": 52, "coresVM": 2, "memory": 7500, "price": 0.19, "time": 0.0213675214},
+    	{"id":"m3.xlarge", "mips": 52, "coresVM": 4, "memory": 15000, "price": 0.381, "time": 0.0106837607},
+	{"id":"m3.2xlarge", "mips": 52, "coresVM": 8, "memory": 30000, "price": 0.761, "time": 0.0053418803},
+
+	{"id":"r3.large", "mips": 50, "coresVM": 2, "memory": 15250, "price": 0.35, "time": 0.0222222222},
+    	{"id":"r3.xlarge", "mips": 50, "coresVM": 4, "memory": 30500, "price": 0.70, "time": 0.0111111111},
+	{"id":"r3.2xlarge", "mips": 50, "coresVM": 8, "memory": 61000, "price": 1.399, "time": 0.0055555556},
+
+	{"id":"c4.large", "mips": 52, "coresVM": 2, "memory": 3750, "price": 0.10, "time": 0.0213675214},
+    	{"id":"c4.xlarge", "mips": 52, "coresVM": 4, "memory": 7500, "price": 0.199, "time": 0.0106837607},
+	{"id":"c4.2xlarge", "mips": 52, "coresVM": 8, "memory": 15000, "price": 0.398, "time": 0.0053418803},
+
+	{"id":"m4.large", "mips": 46, "coresVM": 2, "memory": 8000, "price": 0.10, "time": 0.0241545894},
+    	{"id":"m4.xlarge", "mips": 46, "coresVM": 4, "memory": 16000, "price": 0.20, "time": 0.0120772947},
+	{"id":"m4.2xlarge", "mips": 46, "coresVM": 8, "memory": 32000, "price": 0.40, "time": 0.0060386473},
+
+	{"id":"r4.large", "mips": 46, "coresVM": 2, "memory": 15250, "price": 0.133, "time": 0.0241545894},
+    	{"id":"r4.xlarge", "mips": 46, "coresVM": 4, "memory": 30500, "price": 0.266, "time": 0.0120772947},
+	{"id":"r4.2xlarge", "mips": 46, "coresVM": 8, "memory": 61000, "price": 0.532, "time": 0.0060386473},
+
+	{"id":"c5.large", "mips": 60, "coresVM": 2, "memory": 4000, "price": 0.131, "time": 0.0185185185},
+    	{"id":"c5.xlarge", "mips": 60, "coresVM": 4, "memory": 8000, "price": 0.262, "time": 0.0092592593},
+	{"id":"c5.2xlarge", "mips": 60, "coresVM": 8, "memory": 16000, "price": 0.524, "time": 0.0046296296},
+
+	{"id":"m5.large", "mips": 50, "coresVM": 2, "memory": 8000, "price": 0.153, "time": 0.0222222222},
+    	{"id":"m5.xlarge", "mips": 50, "coresVM": 4, "memory": 16000, "price": 0.306, "time": 0.0111111111},
+	{"id":"m5.2xlarge", "mips": 50, "coresVM": 8, "memory": 32000, "price": 0.612, "time": 0.0055555556},
+
+	{"id":"r5.large", "mips": 50, "coresVM": 2, "memory": 16000, "price": 0.201, "time": 0.0222222222},
+    	{"id":"r5.xlarge", "mips": 50, "coresVM": 4, "memory": 32000, "price": 0.402, "time": 0.0111111111},
+	{"id":"r5.2xlarge", "mips": 50, "coresVM": 8, "memory": 64000, "price": 0.804, "time": 0.0055555556}
+
+
+] 
+}
