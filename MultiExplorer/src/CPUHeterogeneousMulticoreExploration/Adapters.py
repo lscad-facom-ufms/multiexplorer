@@ -1980,7 +1980,7 @@ class McPATAdapter(Adapter):
 
     def get_icache_config(self):
         icache_configurations = [
-            self.sniper_config["perf_model/l1_icache/cache_size"],
+            str(1024 * int(self.sniper_config["perf_model/l1_icache/cache_size"])),
             self.sniper_config["perf_model/l1_icache/cache_block_size"],
             self.sniper_config["perf_model/l1_icache/associativity"],
             "1",
@@ -2013,7 +2013,7 @@ class McPATAdapter(Adapter):
 
     def get_dcache_config(self):
         dcache_configurations = [
-            self.sniper_config["perf_model/l1_dcache/cache_size"],
+            str(1024 * int(self.sniper_config["perf_model/l1_dcache/cache_size"])),
             self.sniper_config["perf_model/l1_dcache/cache_block_size"],
             self.sniper_config["perf_model/l1_dcache/associativity"],
             "1",
@@ -2131,7 +2131,7 @@ class McPATAdapter(Adapter):
             "archi_Regs_IRF_size",
             "archi_Regs_FRF_size",
             "phy_Regs_IRF_size",
-            "phy_Regs_IRF_size",
+            "phy_Regs_FRF_size",
             "LSU_order",
             "store_buffer_size",
             "load_buffer_size",
@@ -2162,7 +2162,7 @@ class McPATAdapter(Adapter):
 
     def get_cache_lx_config(self, x):
         lx_settings = [
-            self.sniper_config["perf_model/l" + str(x) + "_cache/cache_size"],
+            str(1024 * int(self.sniper_config["perf_model/l" + str(x) + "_cache/cache_size"])),
             self.sniper_config["perf_model/l" + str(x) + "_cache/cache_block_size"],
             self.sniper_config["perf_model/l" + str(x) + "_cache/associativity"],
             "8",
@@ -2225,14 +2225,14 @@ class McPATAdapter(Adapter):
             "link_throughput",
             "link_latency",
             "input_ports",
+            "flit_bits",
+            "link_routing_over_percentage",
+            "output_ports",
+            "chip_coverage",
         ]))
 
         noc_component.extend(McPATAdapter.create_ignored_param_elements([
             "has_global_link",
-            "output_ports",
-            "flit_bits",
-            "chip_coverage",
-            "link_routing_over_percentage",
         ]))
 
         noc_component.extend(McPATAdapter.create_ignored_stat_elements([
@@ -2280,12 +2280,11 @@ class McPATAdapter(Adapter):
             "name": "niu",
         })
 
-        niu_component.extend(McPATAdapter.create_ignored_param_element([
+        niu_component.extend(McPATAdapter.create_ignored_param_elements([
             "type",
             "clockrate",
             "vdd",
             "number_units",
-
         ]))
 
         niu_component.extend(McPATAdapter.create_ignored_stat_elements([
@@ -2301,7 +2300,7 @@ class McPATAdapter(Adapter):
             "name": "pcie",
         })
 
-        pcie_component.extend(McPATAdapter.create_ignored_param_element([
+        pcie_component.extend(McPATAdapter.create_ignored_param_elements([
             "type",
             "withPHY",
             "clockrate",
@@ -2323,7 +2322,7 @@ class McPATAdapter(Adapter):
             "name": "flashc",
         })
 
-        flashc_component.extend(McPATAdapter.create_ignored_param_element([
+        flashc_component.extend(McPATAdapter.create_ignored_param_elements([
             "number_flashcs",
             "type",
             "withPHY",

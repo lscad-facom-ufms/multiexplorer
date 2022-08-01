@@ -39,9 +39,9 @@ class CPUHeterogeneousMulticoreExplorationExecutionFlow(ExecutionFlow):
         super(CPUHeterogeneousMulticoreExplorationExecutionFlow, self).__init__()
 
         self.steps = [
-            # CPUSimulationStep(),
+            CPUSimulationStep(),
             PhysicalExplorationStep(),
-            # DSEStep(),
+            DSEStep(),
         ]
 
     @staticmethod
