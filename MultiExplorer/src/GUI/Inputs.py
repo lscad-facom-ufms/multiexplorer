@@ -75,7 +75,6 @@ class InputGroupFrame(Tkinter.LabelFrame, object):
             return True
         else:
             return False
-        pass
 
     def get_infra_input(self):
         return self.infra_group
