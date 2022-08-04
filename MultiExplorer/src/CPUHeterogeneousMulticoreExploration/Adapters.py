@@ -1,6 +1,9 @@
 import json
 import os
 import time
+import sys
+import re
+
 from xml.dom import minidom
 from xml.etree import ElementTree
 from MultiExplorer.src.CPUHeterogeneousMulticoreExploration.AllowedValues import PredictedCores, \
@@ -10,7 +13,6 @@ from MultiExplorer.src.CPUHeterogeneousMulticoreExploration.AllowedValues import
 from MultiExplorer.src.Infrastructure.ExecutionFlow import Adapter
 from MultiExplorer.src.Infrastructure.Inputs import Input, InputGroup, InputType
 from MultiExplorer.src.config import PATH_SNIPER, PATH_MCPAT
-import sys
 
 sys.path.append(PATH_SNIPER + '/tools')
 import sniper_lib
@@ -1850,6 +1852,8 @@ class McPATAdapter(Adapter):
 
         self.sniper_simulation_path = None
 
+        self.results = None
+
     def execute(self):
         self.prepare()
 
@@ -1894,9 +1898,9 @@ class McPATAdapter(Adapter):
 
     def execute_simulation(self):
         print (
-            self.get_executable_path() + "./mcpat"
-            + " -infile " + self.get_input_file_path()
-            + " -print_level 5 > " + self.get_output_file_path()
+                self.get_executable_path() + "./mcpat"
+                + " -infile " + self.get_input_file_path()
+                + " -print_level 5 > " + self.get_output_file_path()
         )
 
         os.system(
@@ -1905,9 +1909,39 @@ class McPATAdapter(Adapter):
             + " -print_level 5 > " + self.get_output_file_path()
         )
 
-    # todo
     def register_results(self):
-        pass
+        output_file = open(self.get_output_file_path(), 'r')
+
+        self.results = {}
+
+        scope_regex = re.compile('([a-zA-Z \d(/)]+)( \(Count: *\d *\))?:[ ]*\n')
+
+        key_value_regex = re.compile('([a-zA-Z *%]*[a-zA-Z]) = ([+-]?\d+\.\d+(e[+-]\d+)?)( ([a-zA-Z\d^]+))?')
+
+        scope = None
+
+        for line in output_file.readlines():
+            scope_match = scope_regex.search(line)
+
+            if scope_match is not None:
+                scope = scope_match.group(1).strip("\t\n *:").replace(" ", "_").replace("(", "").replace(")", "") \
+                    .replace("/", "_").lower()
+
+                self.results[scope] = {}
+
+                continue
+
+            if scope is None:
+                continue
+
+            key_value_match = key_value_regex.search(line)
+
+            if key_value_match is None:
+                continue
+
+            key, value, measurement_unit = key_value_match.group(1, 2, 5)
+
+            self.results[scope][key.strip("\t *:").replace(" ", "_").lower()] = float(value), measurement_unit
 
     @staticmethod
     def create_param_element(name, value):
@@ -2523,19 +2557,3 @@ class NsgaIIPredDSEAdapter(Adapter):
     # todo
     def execute(self):
         time.sleep(6)
-
-
-def main():
-    sim = SniperSimulatorAdapter()
-
-    sim.inputs = json.loads(open("/home/ufms/projetos/multiexplorer/input-examples/quark.json").read())
-
-    sim.output_path = "/home/ufms/projetos/multiexplorer/rundir/test"
-
-    sim.cfg_path = "/home/ufms/projetos/multiexplorer/input-examples/quark.cfg"
-
-    sim.execute_simulation()
-
-
-if __name__ == '__main__':
-    sys.exit(main())
