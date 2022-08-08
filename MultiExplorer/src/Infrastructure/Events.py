@@ -1,4 +1,10 @@
+from typing import Callable, Any
+
+
 class Event:
+    def __init__(self):
+        pass
+
     FLOW_EXECUTION_STARTED = "flow_execution_started"
 
     FLOW_EXECUTION_ENDED = "flow_execution_ended"
@@ -31,6 +37,7 @@ class EventFirer(object):
         self.events = {}
 
     def add_handler(self, event_name, callback_fn):
+        # type: (str, Callable) -> None
         """
         Add an event handler
         """
@@ -41,12 +48,14 @@ class EventFirer(object):
             self.events[event_name].append(callback_fn)
 
     def remove_handler(self, event_name, callback_fn):
+        # type: (str, Callable) -> None
         """
         Remove an event handler
         """
         self.events[event_name].remove(callback_fn)
 
     def fire(self, event_name, *args):
+        # type: (str, Any) -> None
         """
         Fires an event, i.e., evokes it's handlers.
         """

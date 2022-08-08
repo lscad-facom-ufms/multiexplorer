@@ -1,11 +1,12 @@
 import re
 from abc import ABCMeta, abstractmethod
+from typing import Any, Optional
 
 
 class Validator:
     __metaclass__ = ABCMeta
 
-    def __init__(self, rules={}):
+    def __init__(self):
         pass
 
     @classmethod
@@ -14,15 +15,17 @@ class Validator:
                 callable(subclass.is_valid))
 
     @abstractmethod
-    def is_valid(self): raise NotImplementedError
+    def is_valid(self, value):
+        # type: (Any) -> bool
+        raise NotImplementedError
 
 
 class TextValidator:
-    min_len = None
+    min_len = None  # type: Optional[int]
 
-    max_len = None
+    max_len = None  # type: Optional[int]
 
-    pattern = None
+    pattern = None  # type: 're.RegexObject'
 
     def __init__(self, rules={}):
         if 'min_len' in rules:
@@ -32,7 +35,7 @@ class TextValidator:
             self.max_length = rules['max_length']
 
         if 'regexp' in rules:
-            self.pattern = re.compile(rules['min_length'])
+            self.pattern = re.compile(rules['regexp'])
 
     def is_valid(self, value):
         if self.min_len is not None:
@@ -51,9 +54,9 @@ class TextValidator:
 
 
 class IntegerValidator:
-    min_val = None
+    min_val = None  # type: int
 
-    max_val = None
+    max_val = None  # type: int
 
     def __init__(self, rules={}):
         if 'min_val' in rules:
@@ -80,9 +83,9 @@ class IntegerValidator:
 
 
 class FloatValidator:
-    min_val = None
+    min_val = None  # type: float
 
-    max_val = None
+    max_val = None  # type: float
 
     def __init__(self, rules={}):
         if 'min_val' in rules:

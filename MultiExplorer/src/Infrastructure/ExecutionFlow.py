@@ -1,7 +1,7 @@
 import threading
-from abc import abstractmethod
 import copy
-
+from abc import abstractmethod
+from typing import List, Optional, Dict, Union
 from MultiExplorer.src.Infrastructure.Events import EventFirer, Event
 from MultiExplorer.src.Infrastructure.Inputs import Input, InputGroup
 from MultiExplorer.src.config import PATH_RUNDIR
@@ -19,7 +19,7 @@ class Step(EventFirer):
     def __init__(self):
         super(Step, self).__init__()
 
-        self.adapter = None
+        self.adapter = None  # type: Optional[Adapter]
 
         self.events = {
             Event.STEP_EXECUTION_STARTED: [],
@@ -52,6 +52,7 @@ class Step(EventFirer):
     def get_user_inputs(self): return {}
 
     def copy_input_values(self, inputs):
+        # type: (List[Input]) -> None
         if self.adapter is not None:
             self.adapter.copy_input_values(inputs)
         else:
@@ -106,13 +107,14 @@ class Adapter(object):
         """
 
     def __init__(self):
-        self.output_path = None
+        self.output_path = None  # type: Optional[str]
 
-        self.inputs = {}
+        self.inputs = {}  # type: Dict[str, Union[Input, InputGroup]]
 
-        self.stashed_user_inputs = None
+        self.stashed_user_inputs = None  # type: Optional[Dict[str, Union[Input, InputGroup]]]
 
     def set_inputs(self, inputs):
+        # type: (Dict[str, Union[Input, InputGroup]]) -> None
         for i in inputs:
             if isinstance(i, Input) or isinstance(i, InputGroup):
                 self.inputs[i.key] = i
@@ -180,9 +182,9 @@ class ExecutionFlow(EventFirer):
     def __init__(self):
         super(ExecutionFlow, self).__init__()
 
-        self.steps = {}
+        self.steps = []  # type: List[Step]
 
-        self.cur_step = None
+        self.cur_step = -1  # type: int
 
     @classmethod
     def __subclasshook__(cls, subclass):
