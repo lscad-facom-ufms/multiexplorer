@@ -30,6 +30,18 @@ class InputType(Enum):
 
 class Input:
     def __init__(self, options):
+        """
+        options = Dict {
+            "label" : str,
+            "key": str,
+            "type": InputType,
+            "value": Any,
+            "is_user_input": bool,
+            "validator: Validator,
+            "allowed_values": Dict,
+            "required": bool,
+        }
+        """
         self.label = 'Input Label'
 
         self.key = 'input_key'
