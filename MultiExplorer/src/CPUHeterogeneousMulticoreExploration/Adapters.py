@@ -1,19 +1,17 @@
 import json
 import os
-import time
 import sys
 import re
-
 from xml.dom import minidom
 from xml.etree import ElementTree
 from MultiExplorer.src.CPUHeterogeneousMulticoreExploration.AllowedValues import PredictedCores, \
     SniperCorePipelineKinds, \
     CachePolicies, HashTypes, PerformanceModelTypes, Domains, Prefetchers, DramDirectoryTypes, MemoryModels, \
     Technologies, Applications
+from MultiExplorer.src.CPUHeterogeneousMulticoreExploration.DSDSE.Nsga2Main import Nsga2Main
 from MultiExplorer.src.Infrastructure.ExecutionFlow import Adapter
 from MultiExplorer.src.Infrastructure.Inputs import Input, InputGroup, InputType
 from MultiExplorer.src.config import PATH_SNIPER, PATH_MCPAT
-
 sys.path.append(PATH_SNIPER + '/tools')
 import sniper_lib
 
@@ -1702,7 +1700,7 @@ class SniperSimulatorAdapter(Adapter):
                 + " -i " + str(self.get_benchmark_size())
                 + " -c " + str(self.get_cfg_path())
                 + " -d " + str(self.get_output_path())
-                + "> " + str(self.get_output_path()) + "/sniper_output.out"
+                + "> " + str(self.get_output_path()) + "/sniper.out"
         )
 
         os.system(
@@ -1712,7 +1710,7 @@ class SniperSimulatorAdapter(Adapter):
             + " -i " + str(self.get_benchmark_size())
             + " -c " + str(self.get_cfg_path())
             + " -d " + str(self.get_output_path())
-            + "> " + str(self.get_output_path()) + "/sniper_output.out"
+            + "> " + str(self.get_output_path()) + "/sniper.out"
         )
 
     def register_results(self):
@@ -1842,6 +1840,8 @@ class McPATAdapter(Adapter):
 
         self.output_file_name = None
 
+        self.results_file_name = None
+
         self.executable_path = None
 
         self.sniper_results = None
@@ -1893,8 +1893,17 @@ class McPATAdapter(Adapter):
 
         return self.output_file_name
 
+    def get_results_file_name(self):
+        if self.results_file_name is None:
+            return "mcpat_results.json"
+
+        return self.results_file_name
+
     def get_output_file_path(self):
         return self.get_output_path() + "/" + self.get_output_file_name()
+
+    def get_results_file_path(self):
+        return self.get_output_path() + "/" + self.get_results_file_name()
 
     def execute_simulation(self):
         print (
@@ -1914,7 +1923,7 @@ class McPATAdapter(Adapter):
 
         self.results = {}
 
-        scope_regex = re.compile('([a-zA-Z \d(/)]+)( \(Count: *\d *\))?:[ ]*\n')
+        scope_regex = re.compile('([a-zA-Z \d(/)]+)( \(Count: *\d *\))?: *\n')
 
         key_value_regex = re.compile('([a-zA-Z *%]*[a-zA-Z]) = ([+-]?\d+\.\d+(e[+-]\d+)?)( ([a-zA-Z\d^]+))?')
 
@@ -1942,6 +1951,10 @@ class McPATAdapter(Adapter):
             key, value, measurement_unit = key_value_match.group(1, 2, 5)
 
             self.results[scope][key.strip("\t *:").replace(" ", "_").lower()] = float(value), measurement_unit
+
+        results_file = open(self.get_results_file_path(), 'w')
+
+        results_file.write(json.dumps(self.results, indent=4, sort_keys=True))
 
     @staticmethod
     def create_param_element(name, value):
@@ -2308,7 +2321,8 @@ class McPATAdapter(Adapter):
 
         return mc_component
 
-    def create_system_niu_component(self):
+    @staticmethod
+    def create_system_niu_component():
         niu_component = ElementTree.Element("component", {
             "id": "system.niu",
             "name": "niu",
@@ -2328,7 +2342,8 @@ class McPATAdapter(Adapter):
 
         return niu_component
 
-    def create_system_pcie_component(self):
+    @staticmethod
+    def create_system_pcie_component():
         pcie_component = ElementTree.Element("component", {
             "id": "system.pcie",
             "name": "pcie",
@@ -2350,7 +2365,8 @@ class McPATAdapter(Adapter):
 
         return pcie_component
 
-    def create_system_flashc_component(self):
+    @staticmethod
+    def create_system_flashc_component():
         flashc_component = ElementTree.Element("component", {
             "id": "system.flashc",
             "name": "flashc",
@@ -2478,11 +2494,11 @@ class McPATAdapter(Adapter):
 
         system.append(self.create_system_memory_controller_component())
 
-        system.append(self.create_system_niu_component())
+        system.append(McPATAdapter.create_system_niu_component())
 
-        system.append(self.create_system_pcie_component())
+        system.append(McPATAdapter.create_system_pcie_component())
 
-        system.append(self.create_system_flashc_component())
+        system.append(McPATAdapter.create_system_flashc_component())
 
         self.input_xml = xml
 
@@ -2498,9 +2514,10 @@ class NsgaIIPredDSEAdapter(Adapter):
         This adapter uses a NSGA-II implementation as it's exploration engine, and a heterogeneous multicore CPU
         architecture performance predictor as it's evaluation engine, in order to perform a design space exploration.
     """
-
     def __init__(self):
         Adapter.__init__(self)
+
+        self.project_path = None
 
         self.inputs = {}
 
@@ -2554,6 +2571,29 @@ class NsgaIIPredDSEAdapter(Adapter):
             }),
         ])
 
+        self.dse_engine = None
+
     # todo
     def execute(self):
-        time.sleep(6)
+        self.prepare()
+
+        self.dse_engine.run()
+
+    def prepare(self):
+        self.dse_engine = Nsga2Main(self.get_settings())
+
+    # todo
+    def get_settings(self):
+        return {
+            'processor': 'todo',
+            'nbr_ip_cores': 'todo',
+            'nbr_orig_cores': 'todo',
+            'project_folder': 'todo',
+            'bench': 'todo',
+            'app': 'todo',
+            'tech': 'todo',
+        }
+
+    def get_project_folder(self):
+        if self.project_path is None:
+            return self.get_output_path()

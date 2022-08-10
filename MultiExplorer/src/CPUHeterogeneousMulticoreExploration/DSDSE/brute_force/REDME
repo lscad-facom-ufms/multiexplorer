@@ -1,0 +1,4 @@
+For execution of brute_force_algorithm
+$ python main.py input_name.json output_name.csv
+
+For more details, see diagram of relation between classes, in branch docs.
