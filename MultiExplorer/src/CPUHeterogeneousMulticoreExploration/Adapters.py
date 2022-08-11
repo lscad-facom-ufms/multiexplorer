@@ -1073,6 +1073,8 @@ class SniperSimulatorAdapter(Adapter):
 
         self.benchmark_size = None
 
+        self.dse_settings_file_name = None
+
         self.cfg_path = None
 
         self.output_path = None
@@ -1691,6 +1693,38 @@ class SniperSimulatorAdapter(Adapter):
         self.pop_user_inputs()
 
         self.generate_cfg_from_inputs()
+
+        self.register_dse_settings()
+
+    # This method forwards settings to the DSE Step through a json file
+    def register_dse_settings(self):
+        try:
+            dse_settings_json = json.loads(open(self.get_dse_settings_file_path(), 'r').read())
+        except (OSError, ValueError):
+            dse_settings_json = {}
+
+        str(self.inputs['application'].value).split('-')
+
+        benchmark, application = str(self.inputs['application'].value).split('-')
+
+        dse_settings_json['benchmark'] = benchmark
+
+        dse_settings_json['application'] = application
+
+        dse_settings_json['processor'] = PredictedCores.get_processor(self.inputs['general_modeling']['model_name'])
+
+        dse_settings_json['technology'] = PredictedCores.get_technology(self.inputs['general_modeling']['model_name'])
+
+        open(self.get_dse_settings_file_path(), 'w').write(json.dumps(dse_settings_json, sort_keys=True, indent=4))
+
+    def get_dse_settings_file_path(self):
+        return self.get_output_path() + "/" + self.get_dse_settings_file_name()
+
+    def get_dse_settings_file_name(self):
+        if self.dse_settings_file_name is None:
+            return "dse_settings.json"
+
+        return self.get_dse_settings_file_name
 
     def execute_simulation(self):
         print (
@@ -2519,6 +2553,10 @@ class NsgaIIPredDSEAdapter(Adapter):
 
         self.project_path = None
 
+        self.dse_settings_file_name = None
+
+        self.dse_settings = None
+
         self.inputs = {}
 
         self.set_inputs([
@@ -2564,8 +2602,8 @@ class NsgaIIPredDSEAdapter(Adapter):
                         'label': 'Technology',
                         'key': 'technology',
                         'allowed_values': Technologies.get_dict(),
-                        "is_user_input": True,
-                        "required": True,
+                        "is_user_input": False,
+                        "required": False,
                     }),
                 ],
             }),
@@ -2573,7 +2611,7 @@ class NsgaIIPredDSEAdapter(Adapter):
 
         self.dse_engine = None
 
-    # todo
+    # todo WIP
     def execute(self):
         self.prepare()
 
@@ -2582,17 +2620,31 @@ class NsgaIIPredDSEAdapter(Adapter):
     def prepare(self):
         self.dse_engine = Nsga2Main(self.get_settings())
 
-    # todo
+    # todo WIP
     def get_settings(self):
+        self.read_dse_settings()
+
         return {
-            'processor': 'todo',
-            'nbr_ip_cores': 'todo',
-            'nbr_orig_cores': 'todo',
-            'project_folder': 'todo',
-            'bench': 'todo',
-            'app': 'todo',
-            'tech': 'todo',
+            'project_folder': self.get_project_folder(),
+            'bench': self.dse_settings['benchmark'],
+            'app': self.dse_settings['application'],
+            'processor':  self.dse_settings['processor'],
+            'tech': self.dse_settings['technology'],
+            'nbr_ip_cores': self.inputs['exploration_space']['original_cores_for_design'][1],
+            'nbr_orig_cores': self.inputs['exploration_space']['ip_cores_for_design'][1],
         }
+
+    def read_dse_settings(self):
+        self.dse_settings = json.loads(open(self.get_dse_settings_file_path()).read())
+
+    def get_dse_settings_file_path(self):
+        return self.get_project_folder() + "/" + self.get_dse_settings_file_name()
+
+    def get_dse_settings_file_name(self):
+        if self.dse_settings_file_name is None:
+            return "dse_settings.json"
+
+        return self.get_dse_settings_file_name
 
     def get_project_folder(self):
         if self.project_path is None:

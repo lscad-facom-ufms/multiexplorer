@@ -226,7 +226,7 @@ class InputGroup:
                 for k in value:
                     element.inputs[k] = value[k]
             else:
-                raise ValueError("When setting elements in a nested InputGroup you must pass a dict as argument.")
+                raise ValueError("When setting values for a InputGroup you must pass a dict as argument.")
 
     def copy_with_only_user_inputs(self):
         # type: () -> InputGroup
