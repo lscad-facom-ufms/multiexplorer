@@ -25,7 +25,7 @@ class NSGA2Utils(object):
 
         self.bd= json.loads(open(DbSelector(inputName=sys.argv[1]).select_db()).read())
         inputNsga= InOut(projectFolder)
-        self.dict_entry= inputNsga.makeInputDict()
+        self.dict_entry= inputNsga.make_input_dict()
 
     def fast_nondominated_sort(self, population):
         population.fronts = []

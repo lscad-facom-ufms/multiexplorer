@@ -12,7 +12,7 @@ class DsDseBruteForce(object):
 
     def __init__(self, projectFolder, pathCSV=sys.argv[1], path_db=DbSelector(inputName=sys.argv[1]).select_db()):
         
-        self.inputDict= InOut(projectFolder).makeInputDict()
+        self.inputDict= InOut(projectFolder).make_input_dict()
         self.db = json.loads(open(path_db).read())
         self.pathCSV=projectFolder+"/outputBruteForce.csv"
         self.first_solution = [] #plataformas que obedecem a restricao de area 

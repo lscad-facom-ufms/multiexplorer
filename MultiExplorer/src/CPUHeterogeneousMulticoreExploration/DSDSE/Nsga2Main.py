@@ -38,9 +38,9 @@ class Nsga2Main(object):
 
         pareto_front = evolution.evolve()
 
-        output = InOut()
+        output = InOut(self.settings)
 
-        output.printResults(pareto_front)
+        output.print_results(pareto_front)
 
     @staticmethod
     def print_generation(population, generation_num):

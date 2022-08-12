@@ -20,7 +20,7 @@ class DSDSE(Problem):
 
         input_nsga = InOut(settings['project_folder'])
 
-        self.dict_entry = input_nsga.makeInputDict()
+        self.dict_entry = input_nsga.make_input_dict()
 
         self.dse_definitions = DSEDefinitions
 

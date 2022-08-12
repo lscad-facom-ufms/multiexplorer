@@ -7,6 +7,10 @@ class TestMcPATAdapter(unittest.TestCase):
         self.adapter = NsgaIIPredDSEAdapter()
 
     def test_execute(self):
+        self.adapter.inputs['exploration_space']['original_cores_for_design'] = (1, 25)
+
+        self.adapter.inputs['exploration_space']['ip_cores_for_design'] = (1, 25)
+
         self.adapter.execute()
 
 
