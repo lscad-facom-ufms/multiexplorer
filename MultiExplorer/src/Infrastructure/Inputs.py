@@ -1,6 +1,6 @@
 import copy
 from enum import Enum
-from typing import Optional, Any, Dict, Union
+from typing import Optional, Any, Dict, Union, List
 from MultiExplorer.src.Infrastructure.Validators import Validator, IntegerValidator, FloatValidator
 
 
@@ -257,3 +257,19 @@ class InputGroup:
 
             if isinstance(from_input, InputGroup) and isinstance(cur_input, InputGroup):
                 cur_input.set_values_from_group(from_input)
+
+    def get_dict(self, cumulative_dict=None, keys=None):
+        # type: (Optional[Dict], Optional[List[str]]) -> Dict
+        if cumulative_dict is None:
+            cumulative_dict = {}
+
+        for key in self.inputs:
+            if (keys is not None) and (key not in keys):
+                continue
+
+            if isinstance(self.inputs[key], Input):
+                cumulative_dict[key] = self.inputs[key].value
+            elif isinstance(self.inputs[key], InputGroup):
+                self.inputs[key].get_dict(cumulative_dict, keys)
+
+        return cumulative_dict

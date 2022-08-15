@@ -2,6 +2,7 @@ import json
 import os
 import sys
 import re
+from typing import Dict, Union, Any
 from xml.dom import minidom
 from xml.etree import ElementTree
 from MultiExplorer.src.CPUHeterogeneousMulticoreExploration.AllowedValues import PredictedCores, \
@@ -2555,9 +2556,17 @@ class NsgaIIPredDSEAdapter(Adapter):
 
         self.dse_settings_file_name = None
 
-        self.dse_settings = None
+        self.dse_settings = None  # type: Dict[str, Any]
 
-        self.inputs = {}
+        self.mcpat_results_json_file_name = None
+
+        self.mcpat_results = None
+
+        self.sniper_results_json_file_name = None
+
+        self.sniper_results = None
+
+        self.inputs = {}  # type: Dict[str, Union[Input, InputGroup]]
 
         self.set_inputs([
             InputGroup({
@@ -2611,7 +2620,6 @@ class NsgaIIPredDSEAdapter(Adapter):
 
         self.dse_engine = None
 
-    # todo WIP
     def execute(self):
         self.prepare()
 
@@ -2624,18 +2632,60 @@ class NsgaIIPredDSEAdapter(Adapter):
     def get_settings(self):
         self.read_dse_settings()
 
+        self.read_mcpat_results()
+
+        self.read_sniper_results()
+
         return {
             'project_folder': self.get_project_folder(),
-            'bench': self.dse_settings['benchmark'],
-            'app': self.dse_settings['application'],
-            'processor':  self.dse_settings['processor'],
-            'tech': self.dse_settings['technology'],
-            'nbr_ip_cores': self.inputs['exploration_space']['original_cores_for_design'][1],
-            'nbr_orig_cores': self.inputs['exploration_space']['ip_cores_for_design'][1],
+            'mcpat_results': self.mcpat_results,
+            'sniper_results': self.sniper_results,
+            'dse': self.dse_settings,
         }
+
+    def read_mcpat_results(self):
+        self.mcpat_results = json.loads(open(self.get_mcpat_results_json_file_path()).read())
+
+        return self.mcpat_results
+
+    def get_mcpat_results_json_file_path(self):
+        if self.mcpat_results_json_file_name is None:
+            return self.get_project_folder() + "/mcpat_results.json"
+
+    def read_sniper_results(self):
+        self.sniper_results = json.loads(open(self.get_sniper_results_json_file_path()).read())
+
+    def get_sniper_results_json_file_path(self):
+        if self.sniper_results_json_file_name is None:
+            return self.get_project_folder() + "/sniper_results.json"
+
+        return self.get_project_folder() + "/" + self.sniper_results_json_file_name
 
     def read_dse_settings(self):
         self.dse_settings = json.loads(open(self.get_dse_settings_file_path()).read())
+
+        self.set_dse_settings_from_inputs([
+            'exploration_space',
+            'constraints',
+            'original_cores_for_design',
+            'ip_cores_for_design',
+            'maximum_power_density',
+            'maximum_area',
+        ])
+
+    def set_dse_settings_from_inputs(self, keys=None):
+        # type: (Optional[List[str]]) -> None
+        if self.dse_settings is None:
+            self.dse_settings = {}
+
+        for key in self.inputs:
+            if (keys is not None) and (key not in keys):
+                continue
+
+            if isinstance(self.inputs[key], Input):
+                self.dse_settings[key] = self.inputs[key].value
+            elif isinstance(self.inputs[key], InputGroup):
+                self.dse_settings.update(self.inputs[key].get_dict(None, keys))
 
     def get_dse_settings_file_path(self):
         return self.get_project_folder() + "/" + self.get_dse_settings_file_name()

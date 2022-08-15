@@ -13,7 +13,7 @@ class PerformancePredictor(object):
         self.originalProcessor = "Smithfield_90nm"
         self.processor = processor
         self.frequencyOriginal = 2.8
-        self.frequencyIP =  float(self.bd[str(processor)][0]["freq"])
+        self.frequencyIP = float(self.bd[str(processor)][0]["freq"])
         self.cpi = 0.6
         self.percent = 0.5
         self.amountIpCore = amountIpCore

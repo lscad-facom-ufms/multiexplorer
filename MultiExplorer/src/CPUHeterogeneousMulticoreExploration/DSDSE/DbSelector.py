@@ -16,7 +16,7 @@ class DbSelector(object):
         id_input = model_name + "_" + tech
 
         list_itens_bd = json.loads(
-            open(os.path.dirname(os.path.realpath(__file__)) + '/db/' + bench + '/' + app + '/' + tech + '.json').read()
+            open(os.path.dirname(os.path.realpath(__file__)) + '/db/Experimentos/all/' + tech + '.json').read()
         )
 
         for item_bd in list_itens_bd["ipcores"]:
@@ -35,6 +35,6 @@ class DbSelector(object):
     @staticmethod
     def select_db(bench, app, tech):
         # type: (str, str, str) -> str
-        database_path = os.path.dirname(os.path.realpath(__file__)) + '/db/' + bench + '/' + app + '/' + tech + '.json'
+        database_path = os.path.dirname(os.path.realpath(__file__)) + '/db/Experimentos/all/' + tech + '.json'
 
         return database_path

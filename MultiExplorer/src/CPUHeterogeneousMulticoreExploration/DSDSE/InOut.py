@@ -1,131 +1,106 @@
 # -*- coding: UTF-8 -*-
-import sys
 import json
+from typing import List
 from JsonToCSV import JsonToCSV
 from DbSelector import DbSelector
 from PerformancePredictor import PerformancePredictor
+from nsga2.Individual import Individual
 
 
 class InOut(object):
-    """ This class makes the interface between user entry and input of nsga, and also, makes de output of algorithm nsga.
+    """ This class makes the interface between user entry and input of nsga, and also, makes the output of the nsga
+    algorithm.
     """
 
     def __init__(self, settings):
+        self.project_folder = settings['project_folder']
 
-        self.project_folder = projectFolder
-        self.inputPathForMCPATFile = str(projectFolder) + "/MCPATPhysicalResults.txt"
-        self.inputPathForSNIPERFile = str(projectFolder) + "/simplePerformanceValue"
-        self.outputPath = ""
-        self.inputName = sys.argv[1]
-        self.outputName = str(projectFolder) + "/populationResults.json"
-        self.jsonFile = None
-        self.objDict = {}
-        self.inputDict = {}
+        self.mcpat_results = settings['mcpat_results']
 
-        self.selector = DbSelector()
+        self.sniper_results = settings['sniper_results']
+
+        self.output_file_name = None  # type: str # File name, without extension, for writing outputs
+
+        self.dse_settings = settings['dse']
+
+        self.input_dict = {}
+
+        self.population = {}
 
     # método que imprime em um json e em uma planilha todos os indivíduos gerados no nsga
     def print_results(self, population):
+        # type: (List[Individual]) -> None
         num = 0
+
         for individual in population:
-            self.insert_in_dict(individual, num)
-            num = num + 1
+            self.insert_in_result_population_dict(individual, num)
+
+            num += 1
+
         self.write_results()
-        JsonToCSV(self.project_folder).convertJSONToCSV()
+
+        JsonToCSV(
+            self.project_folder,
+            self.get_output_file_name() + ".json",
+            self.get_output_file_name() + ".csv",
+        ).convertJSONToCSV()
+
+    def get_output_file_name(self):
+        if self.output_file_name is None:
+            return "population_results"
+
+        return self.output_file_name.split(".")[0]
 
     # método responsável por criar um dicionário de saída, com as características dos indivíduos gerados pelo nsga
-    def insert_in_dict(self, individual, num):
-        self.objDict[num] = {}
+    def insert_in_result_population_dict(self, individual, num):
+        # type: (Individual, int) -> None
+        self.population[num] = {}
         # inserction of features
-        self.objDict[num]["amount_original_cores"] = individual.features[0]
-        self.objDict[num]["area_orig"] = individual.features[1]
-        self.objDict[num]["power_orig"] = individual.features[2]
-        self.objDict[num]["performance_orig"] = individual.features[3]
-        self.objDict[num]["amount_ip_cores"] = individual.features[4]
-        self.objDict[num]["core_ip"] = individual.features[5]
+        self.population[num]["amount_original_cores"] = individual.features[0]
+        self.population[num]["area_orig"] = individual.features[1]
+        self.population[num]["power_orig"] = individual.features[2]
+        self.population[num]["performance_orig"] = individual.features[3]
+        self.population[num]["amount_ip_cores"] = individual.features[4]
+        self.population[num]["core_ip"] = individual.features[5]
 
         # metrics
-        self.objDict[num]["Results"] = {}
-        # inserction of power_density and total_area
-        self.objDict[num]["Results"]["total_power_density"] = (individual.features[2] * individual.features[0] +
-                                                               individual.features[5]["pow"] * individual.features[
-                                                                   4]) / (individual.features[1] * individual.features[
-            0] + individual.features[5]["area"] * individual.features[4])
-        self.objDict[num]["Results"]["total_area"] = individual.features[0] * individual.features[1] + \
-                                                     individual.features[4] * individual.features[5]["area"]
-        self.objDict[num]["Results"]["total_performance"] = (
-                individual.features[3] * individual.features[0] + individual.features[5]["perf"] *
-                individual.features[4])
+        self.population[num]["Results"] = {}
+        # insertion of power_density and total_area
+        self.population[num]["Results"]["total_power_density"] = (
+            individual.features[2] * individual.features[0]
+            + individual.features[5]["pow"] * individual.features[4]
+        ) / (
+            individual.features[1] * individual.features[0]
+            + individual.features[5]["area"] * individual.features[4]
+        )
+
+        self.population[num]["Results"]["total_area"] = (
+                individual.features[0] * individual.features[1]
+                + individual.features[4] * individual.features[5]["area"]
+        )
+
+        self.population[num]["Results"]["total_performance"] = (
+                individual.features[3] * individual.features[0]
+                + individual.features[5]["perf"] * individual.features[4]
+        )
 
         processor = individual.features[5]["id"]
-        # processor = ""
-        # if individual.features[5]["id"] == "ARM_A53_22nm":
-        #    processor = "arm53"
-        # if individual.features[5]["id"] == "ARM_A57_22nm":
-        #    processor = "arm57"
-        # if individual.features[5]["id"] == "Atom_Silvermont_22nm":
-        #    processor = "atom"
-        # if individual.features[5]["id"] == "Quark_x1000_32nm":
-        #    processor = "quark"
-        # if individual.features[5]["id"] == "Smithfield_90nm":
-        #    processor = "smithfield"
 
-        # processor, amountIpCore, amountOriginalCore
-        # PerformancePredictor(individual.features[5]["id"], individual.features[4], individual.features[0])
-        self.objDict[num]["Results"]["performance_pred"] = PerformancePredictor(processor, individual.features[4],
-                                                                                individual.features[0]).getResults()
+        self.population[num]["Results"]["performance_pred"] = PerformancePredictor(
+            processor,
+            individual.features[4],
+            individual.features[0]
+        ).getResults()
 
     def write_results(self):
-        json_file = open(self.outputPath + self.outputName, "w")
+        json_file = open(self.get_output_json_file_path(), "w")
 
-        json_file.write(json.dumps(self.objDict, indent=4, sort_keys=True))
+        json_file.write(json.dumps(self.population, indent=4, sort_keys=True))
+
         json_file.close()
 
-    # método responsável por extrair resultados de simulação uteis do desempenho como
-    # power density
-    # area core
-    # peak dynamic
-    # core amount
-    def read_input_from_mcpat(self):
-        mcpat_dict = {}
-
-        lines_mcpat_file = []
-
-        with open(self.inputPathForMCPATFile) as inFile:
-            for line in inFile:
-                lines_mcpat_file.append(line)
-
-        for line in lines_mcpat_file:
-            if '*Power Density' in line:
-                power_density_orig = line.split()[3]
-
-            if 'Total Cores' in line:
-                amount_original_cores = line.split()[2]
-
-            if 'Core:' in line:
-                area_orig = lines_mcpat_file[lines_mcpat_file.index(line) + 1].split()[2]
-                peak_dynamic = lines_mcpat_file[lines_mcpat_file.index(line) + 2].split()[3]
-                subthreshold_leakage = lines_mcpat_file[lines_mcpat_file.index(line) + 3].split()[3]
-                gate_leakage = lines_mcpat_file[lines_mcpat_file.index(line) + 5].split()[3]
-
-        mcpat_dict["power_density_orig"] = round(float(power_density_orig), 3)
-
-        mcpat_dict["amount_original_cores"] = int(amount_original_cores)
-
-        mcpat_dict["area_orig"] = float(area_orig)
-
-        mcpat_dict["power_orig"] = round(float(peak_dynamic) + float(subthreshold_leakage) + float(gate_leakage), 3)
-
-        mcpat_dict["power_density_orig"] = round(float(0.0475), 3)
-
-        return mcpat_dict
-
-    def read_input_from_performance_sim(self):
-        sniperDict = {}
-
-        sniperDict["performance_orig"] = self.selector.get_performance_in_db()
-
-        return sniperDict
+    def get_output_json_file_path(self):
+        return self.project_folder + "/" + self.get_output_file_name() + ".json"
 
     # faz o interfaceamento entre a Descrição de DSE passada pelo usuário, e o dicionário de entrada do algoritmo
     def make_input_dict(self):
@@ -152,62 +127,47 @@ class InOut(object):
         # performance_orig --> é a performance do core original, obtida através de algum simulador de performance,
         # por exemplo, sniper ou multi2sim amount_ip_cores --> é a quantidade de cores ip, que serão acrescentados no
         # projeto (cores ip, são cores diferentes do original)
-        def set_default():
-            print "-> default DSE input"
-            parameters = {}
-            restriction = {}
+        parameters = {}
 
-            mcpat = self.read_input_from_mcpat()
-            performanceSim = self.read_input_from_performance_sim()
+        restriction = {}
 
-            parameters["amount_original_cores"] = [1, mcpat["amount_original_cores"]]
-            parameters["area_orig"] = [mcpat["area_orig"], mcpat["area_orig"]]
-            parameters["power_orig"] = [mcpat["power_orig"], mcpat["power_orig"]]
-            parameters["performance_orig"] = [performanceSim["performance_orig"], performanceSim["performance_orig"]]
-            parameters["amount_ip_cores"] = [int(mcpat["amount_original_cores"]) / 2,
-                                             int(mcpat["amount_original_cores"]) * 2]
+        min_orig_core = self.dse_settings['original_cores_for_design'][0]
 
-            restriction["total_area"] = float(mcpat["area_orig"]) * float(mcpat["amount_original_cores"])
-            restriction["power_density"] = float(mcpat["power_orig"]) / float(mcpat["area_orig"])  # para o força bruta
+        max_orig_core = self.dse_settings['original_cores_for_design'][1]
 
-            self.inputDict["parameters"] = parameters
-            self.inputDict["restrictions"] = restriction
+        parameters["amount_original_cores"] = [min_orig_core, max_orig_core]
 
-            return self.inputDict
+        parameters["area_orig"] = [
+            self.mcpat_results['processor']['area'][0],
+            self.mcpat_results['processor']['area'][0]
+        ]
 
-        def set_input_dict(descriptionInput):
-            parameters = {}
-            restriction = {}
+        parameters["power_orig"] = [
+            self.mcpat_results['processor']['peak_power'][0],
+            self.mcpat_results['processor']['peak_power'][0]
+        ]
 
-            mcpat = self.read_input_from_mcpat()
-            performanceSim = self.read_input_from_performance_sim()
+        performance = DbSelector.get_performance_in_db(
+            model_name=self.dse_settings['processor'],
+            bench=self.dse_settings['benchmark'],
+            app=self.dse_settings['application'],
+            tech=self.dse_settings['technology'],
+        )
 
-            min_orig_core = descriptionInput["DSE"]["ExplorationSpace"]["original_cores_for_design"][0]
-            max_orig_core = descriptionInput["DSE"]["ExplorationSpace"]["original_cores_for_design"][1]
-            parameters["amount_original_cores"] = [min_orig_core, max_orig_core]
+        parameters["performance_orig"] = [performance, performance]
 
-            parameters["area_orig"] = [mcpat["area_orig"], mcpat["area_orig"]]
-            parameters["power_orig"] = [mcpat["power_orig"], mcpat["power_orig"]]
+        min_ip_core = self.dse_settings['ip_cores_for_design'][0]
 
-            parameters["performance_orig"] = [performanceSim["performance_orig"], performanceSim["performance_orig"]]
-            min_ip_core = descriptionInput["DSE"]["ExplorationSpace"]["ip_cores_for_design"][0]
-            max_ip_core = descriptionInput["DSE"]["ExplorationSpace"]["ip_cores_for_design"][1]
-            parameters["amount_ip_cores"] = [min_ip_core, max_ip_core]
+        max_ip_core = self.dse_settings['ip_cores_for_design'][1]
 
-            restriction["total_area"] = descriptionInput["DSE"]["Constraints"]["maximum_area"]
-            restriction["power_density"] = descriptionInput["DSE"]["Constraints"][
-                "maximum_powerDensity"]  # para o força bruta
+        parameters["amount_ip_cores"] = [min_ip_core, max_ip_core]
 
-            self.inputDict["parameters"] = parameters
-            self.inputDict["restrictions"] = restriction
+        restriction["total_area"] = self.dse_settings['maximum_area']
 
-            return self.inputDict
+        restriction["power_density"] = self.dse_settings['maximum_power_density']
 
-        description_input = json.loads(open(self.inputName).read())
-        # verificar se tem chave DSE, caso tenha, criar dicionário com o que o usuário passou no arquivo de entrada
-        if "DSE" in description_input:
-            return set_input_dict(description_input)
-        # caso contrário, criar deicionário com os valores defaults(valores defaults são valores baseados apenas nas
-        # saídas de simulação de desempenho e física)
-        else:
-            return set_default()
+        self.input_dict["parameters"] = parameters
+
+        self.input_dict["restrictions"] = restriction
+
+        return self.input_dict

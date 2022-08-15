@@ -1,7 +1,7 @@
 from sklearn.externals import joblib
 
 
-class PerformancePredictor(object):
+class PerformancePredictor():
     """Main Class"""
     def __init__(self, processor, nbr_ip_cores, nbr_orig_cores):
         # type: (str, int, int) -> None

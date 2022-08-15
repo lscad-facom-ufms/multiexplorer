@@ -3,25 +3,30 @@
 """Module with main parts of NSGA-II algorithm.
 Contains main loop"""
 
+from typing import Dict
+from problems.model_dse import DSDSE
 from NSGA2Utils import NSGA2Utils
 from Population import Population
 
 
 class Evolution(object):
 
-    def __init__(self, problem, num_of_generations, num_of_individuals, projectFolder):
-        self.utils = NSGA2Utils(problem, num_of_individuals, projectFolder)
+    def __init__(self, problem, num_of_generations, num_of_individuals, settings):
+        # type: (DSDSE, int, int, Dict) -> None
+        self.utils = NSGA2Utils(problem, num_of_individuals, settings)
 
         self.population = None
+
         self.num_of_generations = num_of_generations
+
         self.on_generation_finished = []
+
         self.num_of_individuals = num_of_individuals
 
     def register_on_new_generation(self, func):
         self.on_generation_finished.append(func)
 
     def evolve(self):
-
         self.population = self.utils.create_initial_population()
         self.utils.fast_nondominated_sort(self.population)
         for front in self.population.fronts:

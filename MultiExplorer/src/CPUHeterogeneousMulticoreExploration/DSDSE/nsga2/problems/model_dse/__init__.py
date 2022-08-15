@@ -18,7 +18,7 @@ class DSDSE(Problem):
     def __init__(self, DSEDefinitions, settings):
         super(DSDSE, self).__init__()
 
-        input_nsga = InOut(settings['project_folder'])
+        input_nsga = InOut(settings)
 
         self.dict_entry = input_nsga.make_input_dict()
 
@@ -58,10 +58,10 @@ class DSDSE(Problem):
             individual.violations = {"area": 0}
             individual.violations = {"pow": 0}
 
-            if self.dse_definitions.totalArea(individual) > area_base:
-                individual.violations["area"] = self.dse_definitions.totalArea(individual) - area_base
-            if self.dse_definitions.totalPower(individual) > densidade_de_referencia:
-                individual.violations["pow"] = self.dse_definitions.totalPower(individual) - densidade_de_referencia
+            if self.dse_definitions.total_area(individual) > area_base:
+                individual.violations["area"] = self.dse_definitions.total_area(individual) - area_base
+            if self.dse_definitions.total_power(individual) > densidade_de_referencia:
+                individual.violations["pow"] = self.dse_definitions.total_power(individual) - densidade_de_referencia
             return individual.violations
 
         individual1.violations = calculate_violations(individual1)
@@ -84,17 +84,17 @@ class DSDSE(Problem):
 
         # se os dois individuos não são viáveis
         elif individual1.viable == False and individual2.viable == False:
-            if self.dse_definitions.totalArea(individual1) <= self.dse_definitions.totalArea(individual2):
+            if self.dse_definitions.total_area(individual1) <= self.dse_definitions.total_area(individual2):
                 return True
-            if self.dse_definitions.totalArea(individual2) < self.dse_definitions.totalArea(individual1):
+            if self.dse_definitions.total_area(individual2) < self.dse_definitions.total_area(individual1):
                 return False
         # se os dois individuos são viaveis
         else:
             pf1 = self.dse_definitions.performance(individual1)
             pf2 = self.dse_definitions.performance(individual2)
-            worse_than_other = self.dse_definitions.powerDensity(individual1) <= self.dse_definitions.powerDensity(
+            worse_than_other = self.dse_definitions.power_density(individual1) <= self.dse_definitions.power_density(
                 individual2) and pf2 <= pf1
-            better_than_other = self.dse_definitions.powerDensity(individual1) < self.dse_definitions.powerDensity(
+            better_than_other = self.dse_definitions.power_density(individual1) < self.dse_definitions.power_density(
                 individual2) or pf2 < pf1
             return worse_than_other and better_than_other
 
@@ -134,7 +134,7 @@ class DSDSE(Problem):
 
     def calculate_objectives(self, individual):
         individual.objectives = []
-        individual.objectives.append(self.dse_definitions.powerDensity(individual))
+        individual.objectives.append(self.dse_definitions.power_density(individual))
         individual.objectives.append(self.dse_definitions.performance(individual))
         for i in range(2):
             if self.min_objectives[i] is None or individual.objectives[i] < self.min_objectives[i]:
