@@ -1,7 +1,7 @@
 import threading
-from abc import abstractmethod
 import copy
-
+from abc import abstractmethod
+from typing import List, Optional, Dict, Union
 from MultiExplorer.src.Infrastructure.Events import EventFirer, Event
 from MultiExplorer.src.Infrastructure.Inputs import Input, InputGroup
 from MultiExplorer.src.config import PATH_RUNDIR
@@ -10,8 +10,6 @@ from MultiExplorer.src.config import PATH_RUNDIR
 class Step(EventFirer):
     """
     This is the class used to extend MultiExplorer execution flows with new steps.
-    
-    Step classes should be implemented as SINGLETONS.
 
     The execution is handled in a separated execution thread, as to not cause the GUI to be stalled.
     """
@@ -19,7 +17,7 @@ class Step(EventFirer):
     def __init__(self):
         super(Step, self).__init__()
 
-        self.adapter = None
+        self.adapter = None  # type: Optional[Adapter]
 
         self.events = {
             Event.STEP_EXECUTION_STARTED: [],
@@ -52,6 +50,7 @@ class Step(EventFirer):
     def get_user_inputs(self): return {}
 
     def copy_input_values(self, inputs):
+        # type: (List[Input]) -> None
         if self.adapter is not None:
             self.adapter.copy_input_values(inputs)
         else:
@@ -106,13 +105,14 @@ class Adapter(object):
         """
 
     def __init__(self):
-        self.output_path = None
+        self.output_path = None  # type: Optional[str]
 
-        self.inputs = {}
+        self.inputs = {}  # type: Dict[str, Union[Input, InputGroup]]
 
-        self.stashed_user_inputs = None
+        self.stashed_user_inputs = None  # type: Optional[Dict[str, Union[Input, InputGroup]]]
 
     def set_inputs(self, inputs):
+        # type: (List[Union[Input, InputGroup]]) -> None
         for i in inputs:
             if isinstance(i, Input) or isinstance(i, InputGroup):
                 self.inputs[i.key] = i
@@ -121,6 +121,7 @@ class Adapter(object):
                                 "the Input or the InputGroup classes.")
 
     def get_user_inputs(self):
+        # type: () -> Dict[str, Union[Input, InputGroup]]
         user_inputs = {}
 
         for key in self.inputs:
@@ -135,6 +136,7 @@ class Adapter(object):
         return user_inputs
 
     def copy_user_inputs(self):
+        # type: () -> Dict[str, Union[Input, InputGroup]]
         copied_user_inputs = {}
 
         for key in self.inputs:
@@ -173,16 +175,14 @@ class Adapter(object):
 class ExecutionFlow(EventFirer):
     """
     This is the interface used to extend MultiExplorer with a new execution flow.
-
-    ExecutionFlow classes should be implemented as SINGLETONS.
     """
 
     def __init__(self):
         super(ExecutionFlow, self).__init__()
 
-        self.steps = {}
+        self.steps = []  # type: List[Step]
 
-        self.cur_step = None
+        self.cur_step = -1  # type: int
 
     @classmethod
     def __subclasshook__(cls, subclass):
@@ -192,7 +192,9 @@ class ExecutionFlow(EventFirer):
     @staticmethod
     def get_label(self): raise NotImplementedError
 
-    def get_steps(self): return self.steps
+    def get_steps(self):
+        # type: () -> List[Step]
+        return self.steps
 
     def get_next_step(self):
         self.cur_step += 1

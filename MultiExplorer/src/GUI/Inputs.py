@@ -31,11 +31,13 @@ class InputGUI:
             return Float
         if infra_input.type == InputType.Integer:
             return Integer
+        if infra_input.type == InputType.IntegerRange:
+            return IntegerRange
 
         raise NotImplementedError("The GUI counterpart of '" + str(infra_input.type) + "' is not implemented.")
 
 
-class InputGroupFrame(Tkinter.LabelFrame, object): 
+class InputGroupFrame(Tkinter.LabelFrame, object):
     def __init__(self, infra_group, master=None, cnf={}, **kw):
         super(InputGroupFrame, self).__init__(master, cnf, **kw)
 
@@ -102,6 +104,59 @@ class InputFrame(Tkinter.Frame, object):
         return self.infra_input
 
 
+class MultipleInputFrame(Tkinter.Frame, object):
+    def __init__(self, conf, master=None, cnf={}, **kw):
+        """
+        conf = Dict {
+            "infra_input" : Input,
+            "number_of_entries": int,
+            "labels": List[str],
+        }
+        """
+        super(MultipleInputFrame, self).__init__(master, cnf, **kw)
+
+        self.infra_input = conf['infra_input']  # type: Input
+
+        self.number_of_entries = conf['number_of_entries']
+
+        self.entries = []  # type: List[SubTypeInEntry]
+
+        self.values = [None] * self.number_of_entries  # type: List[int]
+
+        self.columnconfigure(0, weight=self.number_of_entries + len(conf['labels']) + 1)
+        self.rowconfigure(0, weight=1)
+
+        self.label = InputLabel(self.infra_input.get_label() + " - ", self)
+
+        for indx in range(0, self.number_of_entries):
+            self.entries.append(SubTypeInEntry(self, int(indx), conf['labels'][indx]))
+
+        self.pack()
+
+    def entry_is_valid(self, indx, value):
+        # type: (int, str) -> bool
+        new_values = self.values
+
+        new_values[indx] = value
+
+        self.infra_input.is_valid(tuple(new_values))
+
+        return True
+
+    def is_valid(self):
+        # type: () -> bool
+        return self.infra_input.is_valid(self.values)
+
+    def set_entry_value(self, indx, value):
+        # type: (int, str) -> None
+        self.values[indx] = value
+
+        self.set_input_value()
+
+    def set_input_value(self):
+        self.infra_input.set_value_from_gui(tuple(self.values))
+
+
 class InputLabel(Tkinter.Label, object):
     def __init__(self, label_text, master=None, cnf={}, **kw):
         super(InputLabel, self).__init__(master, cnf, **kw)
@@ -113,7 +168,7 @@ class InputLabel(Tkinter.Label, object):
 
         self.grid(
             column=0,
-            columnspan=3,
+            columnspan=1,
             row=0,
             rowspan=1,
         )
@@ -124,8 +179,8 @@ class SelectEntry(ttk.Combobox, object):
         super(SelectEntry, self).__init__(master, **kw)
 
         self.grid(
-            column=3,
-            columnspan=3,
+            column=1,
+            columnspan=1,
             row=0,
             rowspan=1,
         )
@@ -205,8 +260,8 @@ class TypeInEntry(Tkinter.Entry, object):
         )
 
         self.grid(
-            column=3,
-            columnspan=3,
+            column=1,
+            columnspan=1,
             row=0,
             rowspan=1,
         )
@@ -223,6 +278,69 @@ class TypeInEntry(Tkinter.Entry, object):
         self.infra_input.set_value_from_gui(self.get())
 
 
+class SubTypeInEntry(Tkinter.Entry, object):
+    def __init__(self, master, indx, label_text, cnf={}, **kw):
+        # type: (MultipleInputFrame, int, str, Dict, str**) -> None
+        super(SubTypeInEntry, self).__init__(master, cnf, **kw)
+
+        self.master = master
+
+        self.indx = indx
+
+        self.label = InputLabel(label_text, master)
+
+        self.label.grid(
+            column=1 + 2 * self.indx,
+            columnspan=1,
+            row=0,
+            rowspan=1,
+        )
+
+        self.configure(
+            background=DefaultStyleSettings.input_bg_color,
+            font=DefaultStyleSettings.input_font,
+            selectbackground=DefaultStyleSettings.input_selected_bg_color,
+            selectforeground=DefaultStyleSettings.input_selected_fg_color,
+        )
+
+        self.bind("<FocusOut>", self.set_input_value)
+
+        # %d = Type of action (1=insert, 0=delete, -1 for others)
+        # %i = index of char string to be inserted/deleted, or -1
+        # %P = value of the entry if the edit is allowed
+        # %s = value of entry prior to editing
+        # %S = the text string being inserted or deleted, if any
+        # %v = the type of validation that is currently set
+        # %V = the type of validation that triggered the callback
+        #      (key, focusin, focusout, forced)
+        # %W = the tk name of the widget
+        validate_command = (self.register(self.on_validate),
+                            '%d', '%i', '%P', '%s', '%S', '%v', '%V', '%W')
+
+        self.configure(
+            validate="key",
+            validatecommand=validate_command,
+        )
+
+        self.grid(
+            column=1 + 2 * self.indx + 1,
+            columnspan=1,
+            row=0,
+            rowspan=1,
+        )
+
+    def on_validate(self, d, i, P, s, S, v, V, W):
+        if self.master.entry_is_valid(self.indx, S) is True:
+            return True
+
+        self.bell()
+
+        return False
+
+    def set_input_value(self, event):
+        self.master.set_entry_value(self.indx, self.get())
+
+
 class Integer(InputFrame):
     def __init__(self, infra_input, master=None, cnf={}, **kw):
         super(Integer, self).__init__(infra_input, master, cnf, **kw)
@@ -237,3 +355,12 @@ class Float(InputFrame):
         super(Float, self).__init__(infra_input, master, cnf, **kw)
 
         self.entry = TypeInEntry(infra_input, self)
+
+
+class IntegerRange(MultipleInputFrame):
+    def __init__(self, infra_input, master=None, cnf={}, **kw):
+        super(IntegerRange, self).__init__({
+            'infra_input': infra_input,
+            'labels': ['from', 'to'],
+            'number_of_entries': 2,
+        }, master, cnf, **kw)

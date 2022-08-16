@@ -1,6 +1,6 @@
-from enum import Enum
 import copy
-
+from enum import Enum
+from typing import Optional, Any, Dict, Union, List
 from MultiExplorer.src.Infrastructure.Validators import Validator, IntegerValidator, FloatValidator
 
 
@@ -19,6 +19,7 @@ class InputType(Enum):
 
     @staticmethod
     def get_default_validator(input_type):
+        # type: (InputType) -> Optional[Validator]
         if input_type == InputType.Integer:
             return IntegerValidator()
 
@@ -30,21 +31,33 @@ class InputType(Enum):
 
 class Input:
     def __init__(self, options):
-        self.label = 'Input Label'
+        """
+        options = Dict {
+            "label" : str,
+            "key": str,
+            "type": InputType,
+            "value": Any,
+            "is_user_input": bool,
+            "validator: Validator,
+            "allowed_values": Dict,
+            "required": bool,
+        }
+        """
+        self.label = 'Input Label'  # type: str
 
-        self.key = 'input_key'
+        self.key = 'input_key'  # type: str
 
-        self.type = InputType.Text
+        self.type = InputType.Text  # type: InputType
 
-        self.value = None
+        self.value = None  # type: Optional[Any]
 
-        self.is_user_input = False
+        self.is_user_input = False  # type: bool
 
-        self.validator = None
+        self.validator = None  # type: Optional[Validator]
 
-        self.allowed_values = None
+        self.allowed_values = None  # type: Optional[Dict]
 
-        self.required = False
+        self.required = False  # type: bool
 
         if 'key' in options:
             self.key = str(options['key'])
@@ -85,6 +98,7 @@ class Input:
         return self.label
 
     def is_valid(self, value=None):
+        # type: (Optional[Any]) -> bool
         if value is None:
             if self.value is None:
                 return not self.required
@@ -137,13 +151,20 @@ class Input:
 
 
 class InputGroup:
-    label = 'Group Label'
+    label = 'Group Label'  # type: str
 
-    key = 'group_key'
+    key = 'group_key'  # type: str
 
-    inputs = {}
+    inputs = {}  # type: Dict[str, Union[Input, 'InputGroup']]
 
     def __init__(self, options):
+        """
+        options = Dict {
+            "label": str,
+            "key": str,
+            "inputs": Dict[str, Union[Input, InputGroup]],
+        }
+        """
         if 'label' in options:
             self.label = options['label']
 
@@ -154,6 +175,7 @@ class InputGroup:
             self.set_inputs(options['inputs'])
 
     def set_inputs(self, inputs):
+        # type: (Dict[str, Union[Input, 'InputGroup']]) -> None
         self.inputs = {}
 
         for i in inputs:
@@ -204,9 +226,10 @@ class InputGroup:
                 for k in value:
                     element.inputs[k] = value[k]
             else:
-                raise ValueError("When setting elements in a nested InputGroup you must pass a dict as argument.")
+                raise ValueError("When setting values for a InputGroup you must pass a dict as argument.")
 
     def copy_with_only_user_inputs(self):
+        # type: () -> InputGroup
         input_group_copy = InputGroup({'label': self.label, 'key': self.key})
 
         input_group_copy.inputs = {}
@@ -223,6 +246,7 @@ class InputGroup:
         return input_group_copy
 
     def set_values_from_group(self, input_group):
+        # type: ('InputGroup') -> None
         for i in input_group.inputs:
             from_input = input_group.inputs[i]
 
@@ -233,3 +257,19 @@ class InputGroup:
 
             if isinstance(from_input, InputGroup) and isinstance(cur_input, InputGroup):
                 cur_input.set_values_from_group(from_input)
+
+    def get_dict(self, cumulative_dict=None, keys=None):
+        # type: (Optional[Dict], Optional[List[str]]) -> Dict
+        if cumulative_dict is None:
+            cumulative_dict = {}
+
+        for key in self.inputs:
+            if (keys is not None) and (key not in keys):
+                continue
+
+            if isinstance(self.inputs[key], Input):
+                cumulative_dict[key] = self.inputs[key].value
+            elif isinstance(self.inputs[key], InputGroup):
+                self.inputs[key].get_dict(cumulative_dict, keys)
+
+        return cumulative_dict

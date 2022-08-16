@@ -1,17 +1,18 @@
 import json
 import os
-import time
+import sys
+import re
+from typing import Dict, Union, Any
 from xml.dom import minidom
 from xml.etree import ElementTree
 from MultiExplorer.src.CPUHeterogeneousMulticoreExploration.AllowedValues import PredictedCores, \
     SniperCorePipelineKinds, \
     CachePolicies, HashTypes, PerformanceModelTypes, Domains, Prefetchers, DramDirectoryTypes, MemoryModels, \
     Technologies, Applications
+from MultiExplorer.src.CPUHeterogeneousMulticoreExploration.DSDSE.Nsga2Main import Nsga2Main
 from MultiExplorer.src.Infrastructure.ExecutionFlow import Adapter
 from MultiExplorer.src.Infrastructure.Inputs import Input, InputGroup, InputType
 from MultiExplorer.src.config import PATH_SNIPER, PATH_MCPAT
-import sys
-
 sys.path.append(PATH_SNIPER + '/tools')
 import sniper_lib
 
@@ -1073,6 +1074,8 @@ class SniperSimulatorAdapter(Adapter):
 
         self.benchmark_size = None
 
+        self.dse_settings_file_name = None
+
         self.cfg_path = None
 
         self.output_path = None
@@ -1692,6 +1695,38 @@ class SniperSimulatorAdapter(Adapter):
 
         self.generate_cfg_from_inputs()
 
+        self.register_dse_settings()
+
+    # This method forwards settings to the DSE Step through a json file
+    def register_dse_settings(self):
+        try:
+            dse_settings_json = json.loads(open(self.get_dse_settings_file_path(), 'r').read())
+        except (OSError, ValueError):
+            dse_settings_json = {}
+
+        str(self.inputs['application'].value).split('-')
+
+        benchmark, application = str(self.inputs['application'].value).split('-')
+
+        dse_settings_json['benchmark'] = benchmark
+
+        dse_settings_json['application'] = application
+
+        dse_settings_json['processor'] = PredictedCores.get_processor(self.inputs['general_modeling']['model_name'])
+
+        dse_settings_json['technology'] = PredictedCores.get_technology(self.inputs['general_modeling']['model_name'])
+
+        open(self.get_dse_settings_file_path(), 'w').write(json.dumps(dse_settings_json, sort_keys=True, indent=4))
+
+    def get_dse_settings_file_path(self):
+        return self.get_output_path() + "/" + self.get_dse_settings_file_name()
+
+    def get_dse_settings_file_name(self):
+        if self.dse_settings_file_name is None:
+            return "dse_settings.json"
+
+        return self.get_dse_settings_file_name
+
     def execute_simulation(self):
         print (
                 self.get_executable_path() + "./run-sniper"
@@ -1700,7 +1735,7 @@ class SniperSimulatorAdapter(Adapter):
                 + " -i " + str(self.get_benchmark_size())
                 + " -c " + str(self.get_cfg_path())
                 + " -d " + str(self.get_output_path())
-                + "> " + str(self.get_output_path()) + "/sniper_output.out"
+                + "> " + str(self.get_output_path()) + "/sniper.out"
         )
 
         os.system(
@@ -1710,7 +1745,7 @@ class SniperSimulatorAdapter(Adapter):
             + " -i " + str(self.get_benchmark_size())
             + " -c " + str(self.get_cfg_path())
             + " -d " + str(self.get_output_path())
-            + "> " + str(self.get_output_path()) + "/sniper_output.out"
+            + "> " + str(self.get_output_path()) + "/sniper.out"
         )
 
     def register_results(self):
@@ -1840,6 +1875,8 @@ class McPATAdapter(Adapter):
 
         self.output_file_name = None
 
+        self.results_file_name = None
+
         self.executable_path = None
 
         self.sniper_results = None
@@ -1849,6 +1886,8 @@ class McPATAdapter(Adapter):
         self.input_xml = None
 
         self.sniper_simulation_path = None
+
+        self.results = None
 
     def execute(self):
         self.prepare()
@@ -1889,14 +1928,23 @@ class McPATAdapter(Adapter):
 
         return self.output_file_name
 
+    def get_results_file_name(self):
+        if self.results_file_name is None:
+            return "mcpat_results.json"
+
+        return self.results_file_name
+
     def get_output_file_path(self):
         return self.get_output_path() + "/" + self.get_output_file_name()
 
+    def get_results_file_path(self):
+        return self.get_output_path() + "/" + self.get_results_file_name()
+
     def execute_simulation(self):
         print (
-            self.get_executable_path() + "./mcpat"
-            + " -infile " + self.get_input_file_path()
-            + " -print_level 5 > " + self.get_output_file_path()
+                self.get_executable_path() + "./mcpat"
+                + " -infile " + self.get_input_file_path()
+                + " -print_level 5 > " + self.get_output_file_path()
         )
 
         os.system(
@@ -1905,9 +1953,43 @@ class McPATAdapter(Adapter):
             + " -print_level 5 > " + self.get_output_file_path()
         )
 
-    # todo
     def register_results(self):
-        pass
+        output_file = open(self.get_output_file_path(), 'r')
+
+        self.results = {}
+
+        scope_regex = re.compile('([a-zA-Z \d(/)]+)( \(Count: *\d *\))?: *\n')
+
+        key_value_regex = re.compile('([a-zA-Z *%]*[a-zA-Z]) = ([+-]?\d+\.\d+(e[+-]\d+)?)( ([a-zA-Z\d^]+))?')
+
+        scope = None
+
+        for line in output_file.readlines():
+            scope_match = scope_regex.search(line)
+
+            if scope_match is not None:
+                scope = scope_match.group(1).strip("\t\n *:").replace(" ", "_").replace("(", "").replace(")", "") \
+                    .replace("/", "_").lower()
+
+                self.results[scope] = {}
+
+                continue
+
+            if scope is None:
+                continue
+
+            key_value_match = key_value_regex.search(line)
+
+            if key_value_match is None:
+                continue
+
+            key, value, measurement_unit = key_value_match.group(1, 2, 5)
+
+            self.results[scope][key.strip("\t *:").replace(" ", "_").lower()] = float(value), measurement_unit
+
+        results_file = open(self.get_results_file_path(), 'w')
+
+        results_file.write(json.dumps(self.results, indent=4, sort_keys=True))
 
     @staticmethod
     def create_param_element(name, value):
@@ -2274,7 +2356,8 @@ class McPATAdapter(Adapter):
 
         return mc_component
 
-    def create_system_niu_component(self):
+    @staticmethod
+    def create_system_niu_component():
         niu_component = ElementTree.Element("component", {
             "id": "system.niu",
             "name": "niu",
@@ -2294,7 +2377,8 @@ class McPATAdapter(Adapter):
 
         return niu_component
 
-    def create_system_pcie_component(self):
+    @staticmethod
+    def create_system_pcie_component():
         pcie_component = ElementTree.Element("component", {
             "id": "system.pcie",
             "name": "pcie",
@@ -2316,7 +2400,8 @@ class McPATAdapter(Adapter):
 
         return pcie_component
 
-    def create_system_flashc_component(self):
+    @staticmethod
+    def create_system_flashc_component():
         flashc_component = ElementTree.Element("component", {
             "id": "system.flashc",
             "name": "flashc",
@@ -2444,11 +2529,11 @@ class McPATAdapter(Adapter):
 
         system.append(self.create_system_memory_controller_component())
 
-        system.append(self.create_system_niu_component())
+        system.append(McPATAdapter.create_system_niu_component())
 
-        system.append(self.create_system_pcie_component())
+        system.append(McPATAdapter.create_system_pcie_component())
 
-        system.append(self.create_system_flashc_component())
+        system.append(McPATAdapter.create_system_flashc_component())
 
         self.input_xml = xml
 
@@ -2464,11 +2549,24 @@ class NsgaIIPredDSEAdapter(Adapter):
         This adapter uses a NSGA-II implementation as it's exploration engine, and a heterogeneous multicore CPU
         architecture performance predictor as it's evaluation engine, in order to perform a design space exploration.
     """
-
     def __init__(self):
         Adapter.__init__(self)
 
-        self.inputs = {}
+        self.project_path = None
+
+        self.dse_settings_file_name = None
+
+        self.dse_settings = None  # type: Dict[str, Any]
+
+        self.mcpat_results_json_file_name = None
+
+        self.mcpat_results = None
+
+        self.sniper_results_json_file_name = None
+
+        self.sniper_results = None
+
+        self.inputs = {}  # type: Dict[str, Union[Input, InputGroup]]
 
         self.set_inputs([
             InputGroup({
@@ -2478,15 +2576,15 @@ class NsgaIIPredDSEAdapter(Adapter):
                     Input({
                         'label': 'Number of Original Cores for Design',
                         'key': 'original_cores_for_design',
-                        # "is_user_input": True,
-                        # "required": True,
+                        "is_user_input": True,
+                        "required": True,
                         'type': InputType.IntegerRange,
                     }),
                     Input({
                         'label': 'Number of IP Cores for Design',
                         'key': 'ip_cores_for_design',
-                        # "is_user_input": True,
-                        # "required": True,
+                        "is_user_input": True,
+                        "required": True,
                         'type': InputType.IntegerRange,
                     }),
                 ],
@@ -2513,29 +2611,91 @@ class NsgaIIPredDSEAdapter(Adapter):
                         'label': 'Technology',
                         'key': 'technology',
                         'allowed_values': Technologies.get_dict(),
-                        "is_user_input": True,
-                        "required": True,
+                        "is_user_input": False,
+                        "required": False,
                     }),
                 ],
             }),
         ])
 
-    # todo
+        self.dse_engine = None
+
     def execute(self):
-        time.sleep(6)
+        self.prepare()
 
+        self.dse_engine.run()
 
-def main():
-    sim = SniperSimulatorAdapter()
+    def prepare(self):
+        self.dse_engine = Nsga2Main(self.get_settings())
 
-    sim.inputs = json.loads(open("/home/ufms/projetos/multiexplorer/input-examples/quark.json").read())
+    # todo WIP
+    def get_settings(self):
+        self.read_dse_settings()
 
-    sim.output_path = "/home/ufms/projetos/multiexplorer/rundir/test"
+        self.read_mcpat_results()
 
-    sim.cfg_path = "/home/ufms/projetos/multiexplorer/input-examples/quark.cfg"
+        self.read_sniper_results()
 
-    sim.execute_simulation()
+        return {
+            'project_folder': self.get_project_folder(),
+            'mcpat_results': self.mcpat_results,
+            'sniper_results': self.sniper_results,
+            'dse': self.dse_settings,
+        }
 
+    def read_mcpat_results(self):
+        self.mcpat_results = json.loads(open(self.get_mcpat_results_json_file_path()).read())
 
-if __name__ == '__main__':
-    sys.exit(main())
+        return self.mcpat_results
+
+    def get_mcpat_results_json_file_path(self):
+        if self.mcpat_results_json_file_name is None:
+            return self.get_project_folder() + "/mcpat_results.json"
+
+    def read_sniper_results(self):
+        self.sniper_results = json.loads(open(self.get_sniper_results_json_file_path()).read())
+
+    def get_sniper_results_json_file_path(self):
+        if self.sniper_results_json_file_name is None:
+            return self.get_project_folder() + "/sniper_results.json"
+
+        return self.get_project_folder() + "/" + self.sniper_results_json_file_name
+
+    def read_dse_settings(self):
+        self.dse_settings = json.loads(open(self.get_dse_settings_file_path()).read())
+
+        self.set_dse_settings_from_inputs([
+            'exploration_space',
+            'constraints',
+            'original_cores_for_design',
+            'ip_cores_for_design',
+            'maximum_power_density',
+            'maximum_area',
+        ])
+
+    def set_dse_settings_from_inputs(self, keys=None):
+        # type: (Optional[List[str]]) -> None
+        if self.dse_settings is None:
+            self.dse_settings = {}
+
+        for key in self.inputs:
+            if (keys is not None) and (key not in keys):
+                continue
+
+            if isinstance(self.inputs[key], Input):
+                self.dse_settings[key] = self.inputs[key].value
+            elif isinstance(self.inputs[key], InputGroup):
+                self.dse_settings.update(self.inputs[key].get_dict(None, keys))
+
+    def get_dse_settings_file_path(self):
+        return self.get_project_folder() + "/" + self.get_dse_settings_file_name()
+
+    def get_dse_settings_file_name(self):
+        if self.dse_settings_file_name is None:
+            return "dse_settings.json"
+
+        return self.get_dse_settings_file_name
+
+    def get_project_folder(self):
+        if self.project_path is None:
+            return self.get_output_path()

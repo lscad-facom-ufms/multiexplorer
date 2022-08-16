@@ -22,6 +22,7 @@ class PredictedCores(Enum):
     Arm53 = 2
     Arm57 = 3
     Atom = 4
+    Smithfield = 5
 
     @staticmethod
     def belongs(value):
@@ -37,6 +38,8 @@ class PredictedCores(Enum):
             return "ARM A57"
         elif value == PredictedCores.Atom:
             return "Atom Silvermont"
+        elif value == PredictedCores.Smithfield:
+            return "Smithfield"
 
         raise ValueError("Value does not corresponds to a known predicted core.")
 
@@ -47,21 +50,53 @@ class PredictedCores(Enum):
             PredictedCores.Arm53.value: PredictedCores.get_label(PredictedCores.Arm53),
             PredictedCores.Arm57.value: PredictedCores.get_label(PredictedCores.Arm57),
             PredictedCores.Atom.value: PredictedCores.get_label(PredictedCores.Atom),
+            PredictedCores.Smithfield.value: PredictedCores.get_label(PredictedCores.Smithfield),
         }
+
+    @staticmethod
+    def get_processor(value):
+        # type: (int) -> str
+        if value == PredictedCores.Quark.value:
+            return "Quark_x1000"
+        elif value == PredictedCores.Arm53.value:
+            return "ARM_A53"
+        elif value == PredictedCores.Arm57.value:
+            return "ARM_A57"
+        elif value == PredictedCores.Atom.value:
+            return "Atom_Silvermont"
+        elif value == PredictedCores.Smithfield.value:
+            return "Smithfield"
+
+        raise ValueError("Value does not corresponds to a known predicted core.")
+
+    @staticmethod
+    def get_technology(value):
+        # type: (int) -> str
+        if value == PredictedCores.Quark.value:
+            return "32nm"
+        elif value == PredictedCores.Arm53.value:
+            return "22nm"
+        elif value == PredictedCores.Arm57.value:
+            return "22nm"
+        elif value == PredictedCores.Atom.value:
+            return "22nm"
+        elif value == PredictedCores.Smithfield.value:
+            return "90nm"
+
+        raise ValueError("Value does not corresponds to a known predicted core.")
 
     @staticmethod
     def get_cfg_path(value):
         if value == PredictedCores.Quark.value:
             return PATH_INPUTS + "/quark.cfg"
-
-        if value == PredictedCores.Arm53.value:
+        elif value == PredictedCores.Arm53.value:
             return PATH_INPUTS + "/armA53.cfg"
-
-        if value == PredictedCores.Arm57.value:
+        elif value == PredictedCores.Arm57.value:
             return PATH_INPUTS + "/armA57.cfg"
-
-        if value == PredictedCores.Atom.value:
+        elif value == PredictedCores.Atom.value:
             return PATH_INPUTS + "/atom.cfg"
+        elif value == PredictedCores.Smithfield.value:
+            return PATH_INPUTS + "/smithfield.cfg"
 
         raise ValueError("Can't find default sniper configuration file for unknown/unpredicted cores.")
 
@@ -69,15 +104,14 @@ class PredictedCores(Enum):
     def get_json_path(value):
         if value == PredictedCores.Quark.value:
             return PATH_INPUTS + "/quark.json"
-
-        if value == PredictedCores.Arm53.value:
+        elif value == PredictedCores.Arm53.value:
             return PATH_INPUTS + "/armA53.json"
-
-        if value == PredictedCores.Arm57.value:
+        elif value == PredictedCores.Arm57.value:
             return PATH_INPUTS + "/armA57.json"
-
-        if value == PredictedCores.Atom.value:
+        elif value == PredictedCores.Atom.value:
             return PATH_INPUTS + "/atom.json"
+        elif value == PredictedCores.Smithfield.value:
+            return PATH_INPUTS + "/smithfield.json"
 
         raise ValueError("Can't find default input json file for unknown/unpredicted cores.")
 
