@@ -35,9 +35,12 @@ class Definitions:
         if self.contador % 10000 == 0:
             print("SVR Counter Performance: { " + str(self.contador) + " }\n")
 
-        self.performance_predictor.setProcessor(individual.features[5]["id"])
+        self.performance_predictor.set_imported_processor(individual.features[5]["id"])
 
-        performance_pred = float(self.performance_predictor.getResultsL(individual.features[4], individual.features[0]))
+        performance_pred = float(self.performance_predictor.get_results_l(
+            individual.features[4],
+            individual.features[0]
+        ))
 
         return int(performance_pred)
 
@@ -47,8 +50,10 @@ class Definitions:
         if self.contador % 1000000 == 0:
             print("Counter Performance: { " + str(self.contador) + " }\n")
         # print "Gerou indivíduo com parâmetros" + str(individual.features)
-        return (individual.features[3] * individual.features[0] + individual.features[5]["perf"] * individual.features[
-            4])
+        return (
+            individual.features[3] * individual.features[0]
+            + individual.features[5]["perf"] * individual.features[4]
+        )
 
     # restriction
     @staticmethod
@@ -57,10 +62,14 @@ class Definitions:
 
     @staticmethod
     def total_power(individual):
-        t_power =\
-            individual.features[0] * individual.features[2] + individual.features[4] * individual.features[5]["pow"]
+        t_power = (
+                individual.features[0] * individual.features[2]
+                + individual.features[4] * individual.features[5]["pow"]
+        )
 
-        t_area =\
-            individual.features[0] * individual.features[1] + individual.features[4] * individual.features[5]["area"]
+        t_area = (
+            individual.features[0] * individual.features[1]
+            + individual.features[4] * individual.features[5]["area"]
+        )
 
         return t_power / t_area

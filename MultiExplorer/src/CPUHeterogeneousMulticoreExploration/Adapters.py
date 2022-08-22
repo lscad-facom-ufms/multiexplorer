@@ -1381,6 +1381,11 @@ class SniperSimulatorAdapter(Adapter):
         self.inputs['general_modeling']['power']['temperature'] = \
             input_json['General_Modeling']['power']['temperature']
 
+    # Returns the float value of the global frequency for the original core in GHz
+    def get_global_frequency(self):
+        # type: () -> float
+        return float(self.inputs['general_modeling']['core']['global_frequency']) / 1000.0
+
     def generate_cfg_from_inputs(self):
         cfg_file_path = self.get_output_path() + "/sniper_input.cfg"
 
@@ -1392,7 +1397,7 @@ class SniperSimulatorAdapter(Adapter):
             "total_cores=" + str(self.inputs['general_modeling']['total_cores']) + "\n\n",
         ])
 
-        global_frequency = str(float(self.inputs['general_modeling']['core']['global_frequency']) / 1000.0)
+        global_frequency = str(self.get_global_frequency())
 
         try:
             frequencies = []
@@ -1715,6 +1720,8 @@ class SniperSimulatorAdapter(Adapter):
         dse_settings_json['processor'] = PredictedCores.get_processor(self.inputs['general_modeling']['model_name'])
 
         dse_settings_json['technology'] = PredictedCores.get_technology(self.inputs['general_modeling']['model_name'])
+
+        dse_settings_json['frequency'] = self.get_global_frequency()
 
         open(self.get_dse_settings_file_path(), 'w').write(json.dumps(dse_settings_json, sort_keys=True, indent=4))
 

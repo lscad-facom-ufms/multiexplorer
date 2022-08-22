@@ -86,11 +86,13 @@ class InOut(object):
 
         processor = individual.features[5]["id"]
 
-        self.population[num]["Results"]["performance_pred"] = PerformancePredictor(
-            processor,
-            individual.features[4],
-            individual.features[0]
-        ).getResults()
+        self.population[num]["Results"]["performance_pred"] = PerformancePredictor({
+                'ip_processor': processor,
+                'ip_core_nbr': individual.features[4],
+                'orig_processor': self.dse_settings['processor'] + "_" + self.dse_settings['technology'],
+                'orig_core_nbr': individual.features[0],
+                'orig_frequency': self.dse_settings['frequency'],
+        }).get_results()
 
     def write_results(self):
         json_file = open(self.get_output_json_file_path(), "w")

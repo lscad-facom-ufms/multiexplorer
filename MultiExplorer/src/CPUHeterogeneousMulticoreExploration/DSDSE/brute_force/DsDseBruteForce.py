@@ -51,7 +51,7 @@ class DsDseBruteForce(object):
                     #if ip_core["id"] == "Smithfield_90nm":
                     #    processor = "smithfield"
 
-                    performancePred = PerformancePredictor(processor, amount_ip_core, amount_orig_core).getResults()
+                    performancePred = PerformancePredictor(processor, amount_ip_core, amount_orig_core).get_results()
                     _dict={"amount_orig_core":amount_orig_core, "amount_ip_core":amount_ip_core, "ip_core":ip_core,"powerDensity":parameters[0],"area":parameters[1], "performance":parameters[2], "performancePred":performancePred}
                     self.first_solution.append(_dict)    
                     if is_viable(parameters):

@@ -14,11 +14,12 @@ class Nsga2Main(object):
         self.settings = settings
 
     def run(self):
-        performance_predictor = PerformancePredictor(
-            processor=self.settings['dse']['processor'] + "_" + self.settings['dse']['technology'],
-            amountIpCore=self.settings['dse']['ip_cores_for_design'][1],
-            amountOriginalCore=self.settings['dse']['original_cores_for_design'][1],
-        )
+        performance_predictor = PerformancePredictor({
+            "ip_core_nbr": self.settings['dse']['ip_cores_for_design'][1],
+            "orig_processor": self.settings['dse']['processor'] + "_" + self.settings['dse']['technology'],
+            "orig_core_nbr": self.settings['dse']['original_cores_for_design'][1],
+            "orig_frequency": self.settings['dse']['frequency'],
+        })
 
         dse_definitions = Definitions(performance_predictor)
 
