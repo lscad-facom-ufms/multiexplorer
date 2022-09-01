@@ -84,3 +84,5 @@ Please send us any doubt or comments to lscad.facom.ufms@gmail.com
 Attributions
 ==========================
 <a href="https://www.flaticon.com/free-icons/close" title="close icons">Close icons created by Alfredo Hernandez - Flaticon</a>
+
+<a href="https://www.flaticon.com/free-icons/tick" title="tick icons">Tick icons created by Alfredo Hernandez - Flaticon</a>

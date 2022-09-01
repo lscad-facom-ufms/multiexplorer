@@ -68,15 +68,29 @@ class InputGroupFrame(Tkinter.LabelFrame, object):
         otherwise.
         """
         all_valid = True
+
         for key in self.inputs:
             if self.inputs[key].is_valid():
                 pass
             else:
                 all_valid = False
+
         if all_valid:
+            self.display_as_valid()
+
             return True
         else:
+            self.display_as_invalid()
+
             return False
+
+    # todo
+    def display_as_valid(self):
+        pass
+
+    # todo
+    def display_as_invalid(self):
+        pass
 
     def get_infra_input(self):
         return self.infra_group
@@ -86,19 +100,34 @@ class InputFrame(Tkinter.Frame, object):
     def __init__(self, infra_input, master=None, cnf={}, **kw):
         super(InputFrame, self).__init__(master, cnf, **kw)
 
+        self.label = InputLabel(infra_input.get_label(), self)
+
         self.entry = None
+
+        self.validation_label = ValidationLabel(None, self)
 
         self.infra_input = infra_input
 
         self.columnconfigure(0, weight=3)
         self.rowconfigure(0, weight=1)
 
-        self.label = InputLabel(infra_input.get_label(), self)
-
         self.pack()
 
     def is_valid(self):
-        self.infra_input.is_valid()
+        validation_result = self.infra_input.is_valid()
+
+        if validation_result:
+            self.display_as_valid()
+        else:
+            self.display_as_invalid()
+
+        return validation_result
+
+    def display_as_valid(self):
+        self.validation_label.display_as_valid()
+
+    def display_as_invalid(self):
+        self.validation_label.display_as_invalid()
 
     def get_infra_input(self):
         return self.infra_input
@@ -172,6 +201,36 @@ class InputLabel(Tkinter.Label, object):
             row=0,
             rowspan=1,
         )
+
+
+class ValidationLabel(Tkinter.Label, object):
+    def __init__self(self, pos=None, master=None, cnf={}, **kw):
+        super(ValidationLabel, self).__init__(master, cnf, **kw)
+
+        self.img = None
+
+        if pos is None:
+            pos = (0, 2)
+
+        self.configure(
+            activebackground=DefaultStyle.bg_color,
+            text=None
+        )
+
+        self.grid(
+            row=pos[0],
+            column=pos[1],
+            columnspan=1,
+            rowspan=1,
+        )
+
+    # todo
+    def display_as_valid(self):
+        pass
+
+    # todo
+    def display_as_invalid(self):
+        pass
 
 
 class SelectEntry(ttk.Combobox, object):

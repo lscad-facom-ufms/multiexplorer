@@ -223,7 +223,6 @@ class InputTab(Tkinter.Frame, object):
                 pass
             else:
                 all_valid = False
-        all_valid = False
         if all_valid:
             self.display_as_valid()
 
@@ -233,12 +232,16 @@ class InputTab(Tkinter.Frame, object):
 
             return False
 
-    # todo
     def display_as_valid(self):
-        # comunicar com tkk(frame e notbook) com user(da aba)
-        pass
+        self.img = DefaultStyle.get_image("check.png", (10, 10))
 
-    # todo
+        self.master.tab(
+            self.master.index(self),
+            text=self.step.get_label(),
+            image=self.img,
+            compound=Tkinter.LEFT,
+        )
+
     def display_as_invalid(self):
         self.img = DefaultStyle.get_image("close.png", (10, 10))
 
