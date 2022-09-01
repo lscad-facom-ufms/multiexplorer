@@ -1,6 +1,6 @@
 import Tkinter
 
-from MultiExplorer.src.GUI.Styles import DefaultStyleSettings
+from MultiExplorer.src.GUI.Styles import DefaultStyle
 
 
 class NavigateButton(Tkinter.Button, object):
@@ -13,7 +13,7 @@ class NavigateButton(Tkinter.Button, object):
 
         self.configure(
             command=lambda: self.navigate(),
-            activebackground=DefaultStyleSettings.button_active_bg_color,
+            activebackground=DefaultStyle.button_active_bg_color,
             borderwidth="2",
         )
 

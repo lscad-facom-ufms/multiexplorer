@@ -10,3 +10,4 @@ argparse~=1.2.1
 enum~=0.4.7
 beautifulsoup4~=4.9.3
 mock~=3.0.5
+Pillow==6.2.2

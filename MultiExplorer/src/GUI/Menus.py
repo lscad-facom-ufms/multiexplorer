@@ -1,15 +1,15 @@
 import Tkinter as Tk
 
-from MultiExplorer.src.GUI.Styles import DefaultStyleSettings
+from MultiExplorer.src.GUI.Styles import DefaultStyle
 
 
 class DefaultMenu(Tk.Menu, object):
     def __init__(self, master=None):
         super(DefaultMenu, self).__init__(
             master=master,
-            font=DefaultStyleSettings.font,
-            bg=DefaultStyleSettings.bg_color,
-            fg=DefaultStyleSettings.fg_color
+            font=DefaultStyle.font,
+            bg=DefaultStyle.bg_color,
+            fg=DefaultStyle.fg_color
         )
 
         master.configure(menu=self)

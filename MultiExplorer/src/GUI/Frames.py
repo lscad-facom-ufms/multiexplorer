@@ -9,13 +9,16 @@ from Tkconstants import CENTER as ANCHOR_CENTER
 from Tkconstants import S as ANCHOR_S, N as ANCHOR_N, NW as ANCHOR_NW, SW as ANCHOR_SW, SE as ANCHOR_SE
 from Tkconstants import BOTTOM as SIDE_BOTTOM, TOP as SIDE_TOP, LEFT as SIDE_LEFT
 
+from PIL import ImageTk, Image
+
 from MultiExplorer.src.GUI.Buttons import NavigateButton
 from MultiExplorer.src.GUI.Inputs import InputGUI
 from MultiExplorer.src.GUI.Menus import DefaultMenu
-from MultiExplorer.src.GUI.Styles import DefaultStyle, DefaultStyleSettings
+from MultiExplorer.src.GUI.Styles import DefaultStyle
 from MultiExplorer.src.GUI.Widgets import ScreenTitle
 from MultiExplorer.src.Infrastructure.Events import Event
 from MultiExplorer.src.Infrastructure.Registries import ExecutionFlowRegistry
+from MultiExplorer.src.config import PATH_IMG
 
 
 class MainWindow(Tkinter.Tk, object):
@@ -25,15 +28,20 @@ class MainWindow(Tkinter.Tk, object):
         super(MainWindow, self).__init__(screenName, baseName, className, useTk, sync, use)
 
         self.geometry("1024x768")
+
         self.minsize(640, 480)
+
         self.maxsize(1920, 1080)
+
         self.resizable(1, 1)
+
         self.title("MultiExplorer")
+
         self.configure(highlightcolor="black")
 
         self.style = DefaultStyle()
 
-        self.menu = DefaultMenu(self)
+        # self.menu = DefaultMenu(self)
 
         self.screens = {
             LoadScreen.__name__: LoadScreen(self),
@@ -108,10 +116,10 @@ class LaunchScreen(ScreenFrame):
         super(LaunchScreen, self).__init__(master, cnf, focus, **kw)
 
         self.selected_flow_label = None
-        self.me_logo_image = Tkinter.Label(self)
-        self.me_logo_image.place(relx=0.5, anchor="n", height=150, width=250)
-        self.me_logo_image.configure(activebackground=DefaultStyleSettings.bg_color)
-        self.me_logo_image.configure(text='''MultiExplorer.png''')
+        # self.me_logo_image = Tkinter.Label(self)
+        # self.me_logo_image.place(relx=0.5, anchor="n", height=150, width=250)
+        # self.me_logo_image.configure(activebackground=DefaultStyleSettings.bg_color)
+        # self.me_logo_image.configure(text='''MultiExplorer.png''')
 
         self.execution_flow_label_frame = Tkinter.LabelFrame(self)
 
@@ -156,8 +164,8 @@ class LaunchScreen(ScreenFrame):
         )
 
         self.execute_button.configure(
-            activebackground=DefaultStyleSettings.button_active_bg_color,
-            borderwidth=DefaultStyleSettings.button_border_width,
+            activebackground=DefaultStyle.button_active_bg_color,
+            borderwidth=DefaultStyle.button_border_width,
             text='''Start'''
         )
 
@@ -182,6 +190,8 @@ class InputTab(Tkinter.Frame, object):
            top is the toplevel containing window."""
 
         super(InputTab, self).__init__(master, cnf, **kw)
+
+        self.img = None
 
         self.step = step
 
@@ -213,6 +223,7 @@ class InputTab(Tkinter.Frame, object):
                 pass
             else:
                 all_valid = False
+        all_valid = False
         if all_valid:
             self.display_as_valid()
 
@@ -229,7 +240,14 @@ class InputTab(Tkinter.Frame, object):
 
     # todo
     def display_as_invalid(self):
-        pass
+        self.img = DefaultStyle.get_image("close.png", (10, 10))
+
+        self.master.tab(
+            self.master.index(self),
+            text=self.step.get_label(),
+            image=self.img,
+            compound=Tkinter.LEFT,
+        )
 
 
 class InputTabsController(ttk.Notebook, object):
@@ -246,9 +264,9 @@ class InputTabsController(ttk.Notebook, object):
 
         input_tab = InputTab(step, self)
 
-        self.input_tabs.append(input_tab)
-
         self.add(input_tab, text=step.get_label())
+
+        self.input_tabs.append(input_tab)
 
     def get_infra_inputs_per_step(self):
         infra_inputs_per_step = {}
@@ -319,8 +337,8 @@ class InputScreen(ScreenFrame):
         )
 
         self.execute_button.configure(
-            activebackground=DefaultStyleSettings.button_active_bg_color,
-            borderwidth=DefaultStyleSettings.button_border_width,
+            activebackground=DefaultStyle.button_active_bg_color,
+            borderwidth=DefaultStyle.button_border_width,
             text='''Execute'''
         )
 
@@ -332,12 +350,12 @@ class InputScreen(ScreenFrame):
         self.title.configure(text=self.flow.get_label() + ''' Settings''')
 
     def execute_flow(self):
-        # if self.tabs_controller.is_valid():
-        execution_screen = self.master.get_screen(ExecutionScreen.__name__)
+        if self.tabs_controller.is_valid():
+            execution_screen = self.master.get_screen(ExecutionScreen.__name__)
 
-        execution_screen.set_flow(self.flow_label)
+            execution_screen.set_flow(self.flow_label)
 
-        self.navigate(execution_screen)
+            self.navigate(execution_screen)
 
     def get_infra_inputs_per_step(self):
         return self.tabs_controller.get_infra_inputs_per_step()
@@ -452,7 +470,7 @@ class StepDisplay(object):
 
         self.is_executing = False
 
-        self.canvas.itemconfig(self.shape_id, fill=DefaultStyleSettings.bg_color)
+        self.canvas.itemconfig(self.shape_id, fill=DefaultStyle.bg_color)
 
     def create_step_shape(self, x, y):
         step_shape_id = self.canvas.create_polygon(
@@ -465,19 +483,19 @@ class StepDisplay(object):
                 x + 200, y,
                 x, y
             ],
-            fill=DefaultStyleSettings.bg_color,
-            outline=DefaultStyleSettings.fg_color,
+            fill=DefaultStyle.bg_color,
+            outline=DefaultStyle.fg_color,
         )
 
         return step_shape_id
 
     def blink(self, blink_ctrl):
         if blink_ctrl is True:
-            self.canvas.itemconfig(self.shape_id, fill=DefaultStyleSettings.active_color)
+            self.canvas.itemconfig(self.shape_id, fill=DefaultStyle.active_color)
 
             blink_ctrl = False
         else:
-            self.canvas.itemconfig(self.shape_id, fill=DefaultStyleSettings.bg_color)
+            self.canvas.itemconfig(self.shape_id, fill=DefaultStyle.bg_color)
 
             blink_ctrl = True
 
@@ -517,7 +535,7 @@ class ExecutionDisplay(Tkinter.Canvas, object):
         )
 
         self.config(
-            bg=DefaultStyleSettings.bg_color,
+            bg=DefaultStyle.bg_color,
             xscrollcommand=self.scrollbar.set,
         )
 
@@ -577,7 +595,7 @@ class ExecutionScreen(ScreenFrame):
 
         self.title = Tkinter.Label(self)
         self.title.place(relx=0.5, anchor="n", height=50, relwidth=1)
-        self.title.configure(activebackground=DefaultStyleSettings.bg_color)
+        self.title.configure(activebackground=DefaultStyle.bg_color)
         self.title.configure(text='''Flow Execution''')
 
         self.input_info = InputInfo(self)
@@ -615,7 +633,7 @@ class ExecutionScreen(ScreenFrame):
             fill='x',
             expand=True,
             side=SIDE_BOTTOM,
-            padx=DefaultStyleSettings.padx,
+            padx=DefaultStyle.padx,
         )
 
         self.execution_display = ExecutionDisplay(self.display_area)

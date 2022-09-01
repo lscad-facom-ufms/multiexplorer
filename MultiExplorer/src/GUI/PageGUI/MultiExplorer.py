@@ -2,7 +2,7 @@ import Tkinter as Tk
 import ttk
 
 from Tkconstants import CENTER
-from ..Styles import DefaultStyle, DefaultStyleSettings
+from ..Styles import DefaultStyle, DefaultStyle
 
 
 class LaunchScreen:
@@ -14,7 +14,7 @@ class LaunchScreen:
 
         self.me_logo_image = Tk.Label(top)
         self.me_logo_image.place(relx=0.5, anchor="n", height=150, width=250)
-        self.me_logo_image.configure(activebackground=DefaultStyleSettings.bg_color)
+        self.me_logo_image.configure(activebackground=DefaultStyle.bg_color)
         self.me_logo_image.configure(text='''MultiExplorer.png''')
 
         self.execution_flow_label_frame = Tk.LabelFrame(top)

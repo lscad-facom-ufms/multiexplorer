@@ -1,9 +1,21 @@
 import sys
-import ttk
-from enum import Enum
+from ttk import Style
+from Tkinter import PhotoImage
+from PIL import Image, ImageTk
+
+from MultiExplorer.src.config import PATH_IMG
 
 
-class DefaultStyleSettings:
+class MultiStyle(object):
+    @staticmethod
+    def get_image(file_name, size):
+        # type: (str, tuple) -> PhotoImage
+        photo = Image.open(PATH_IMG + "/" + file_name)
+
+        return ImageTk.PhotoImage(photo.resize(size))
+
+
+class DefaultStyle(Style, MultiStyle):
     padx = 50
 
     bg_color = '#d9d9d9'  # X11 color: 'gray85'
@@ -20,19 +32,17 @@ class DefaultStyleSettings:
     button_active_bg_color = "#f9f9f9"
     button_border_width = "2"
 
-
-class DefaultStyle(ttk.Style):
     def __init__(self):
         super(DefaultStyle, self).__init__()
 
         if sys.platform == "win32":
             self.theme_use('winnative')
 
-        self.configure('.', background=DefaultStyleSettings.bg_color)
+        self.configure('.', background=DefaultStyle.bg_color)
 
-        self.configure('.', foreground=DefaultStyleSettings.fg_color)
+        self.configure('.', foreground=DefaultStyle.fg_color)
 
-        self.configure('.', font=DefaultStyleSettings.font)
+        self.configure('.', font=DefaultStyle.font)
 
-        self.map('.', background=[('selected', DefaultStyleSettings.selected_color),
-                                  ('active', DefaultStyleSettings.active_color)])
+        self.map('.', background=[('selected', DefaultStyle.selected_color),
+                                  ('active', DefaultStyle.active_color)])

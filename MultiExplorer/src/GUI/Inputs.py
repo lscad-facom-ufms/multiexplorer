@@ -2,7 +2,7 @@ import Tkinter
 import ttk
 
 from Tkconstants import LEFT as SIDE_LEFT, TOP as SIDE_TOP
-from MultiExplorer.src.GUI.Styles import DefaultStyleSettings
+from MultiExplorer.src.GUI.Styles import DefaultStyle
 from MultiExplorer.src.Infrastructure.Inputs import InputType, InputGroup, Input
 
 
@@ -162,7 +162,7 @@ class InputLabel(Tkinter.Label, object):
         super(InputLabel, self).__init__(master, cnf, **kw)
 
         self.configure(
-            activebackground=DefaultStyleSettings.bg_color,
+            activebackground=DefaultStyle.bg_color,
             text=label_text
         )
 
@@ -232,10 +232,10 @@ class TypeInEntry(Tkinter.Entry, object):
         super(TypeInEntry, self).__init__(master, cnf, **kw)
 
         self.configure(
-            background=DefaultStyleSettings.input_bg_color,
-            font=DefaultStyleSettings.input_font,
-            selectbackground=DefaultStyleSettings.input_selected_bg_color,
-            selectforeground=DefaultStyleSettings.input_selected_fg_color,
+            background=DefaultStyle.input_bg_color,
+            font=DefaultStyle.input_font,
+            selectbackground=DefaultStyle.input_selected_bg_color,
+            selectforeground=DefaultStyle.input_selected_fg_color,
         )
 
         self.infra_input = infra_input
@@ -297,10 +297,10 @@ class SubTypeInEntry(Tkinter.Entry, object):
         )
 
         self.configure(
-            background=DefaultStyleSettings.input_bg_color,
-            font=DefaultStyleSettings.input_font,
-            selectbackground=DefaultStyleSettings.input_selected_bg_color,
-            selectforeground=DefaultStyleSettings.input_selected_fg_color,
+            background=DefaultStyle.input_bg_color,
+            font=DefaultStyle.input_font,
+            selectbackground=DefaultStyle.input_selected_bg_color,
+            selectforeground=DefaultStyle.input_selected_fg_color,
         )
 
         self.bind("<FocusOut>", self.set_input_value)
