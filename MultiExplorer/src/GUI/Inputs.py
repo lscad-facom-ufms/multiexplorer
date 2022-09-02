@@ -104,7 +104,7 @@ class InputFrame(Tkinter.Frame, object):
 
         self.entry = None
 
-        self.validation_label = ValidationLabel(None, self)
+        self.validation_label = ValidationLabel(self)
 
         self.infra_input = infra_input
 
@@ -204,7 +204,7 @@ class InputLabel(Tkinter.Label, object):
 
 
 class ValidationLabel(Tkinter.Label, object):
-    def __init__self(self, pos=None, master=None, cnf={}, **kw):
+    def __init__(self, master=None, pos=None, cnf={}, **kw):
         super(ValidationLabel, self).__init__(master, cnf, **kw)
 
         self.img = None
@@ -224,13 +224,19 @@ class ValidationLabel(Tkinter.Label, object):
             rowspan=1,
         )
 
-    # todo
     def display_as_valid(self):
-        pass
+        self.img = DefaultStyle.get_image('check.png', (10, 10))
 
-    # todo
+        self.configure(
+            image=self.img
+        )
+
     def display_as_invalid(self):
-        pass
+        self.img = DefaultStyle.get_image('close.png', (10, 10))
+
+        self.configure(
+            image=self.img
+        )
 
 
 class SelectEntry(ttk.Combobox, object):
