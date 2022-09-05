@@ -4,6 +4,7 @@ import ttk
 from Tkconstants import LEFT as SIDE_LEFT, TOP as SIDE_TOP
 from MultiExplorer.src.GUI.Styles import DefaultStyle
 from MultiExplorer.src.Infrastructure.Inputs import InputType, InputGroup, Input
+from MultiExplorer.src.Infrastructure.Validators import FloatValidator
 
 
 class InputGUI:
@@ -114,6 +115,9 @@ class InputFrame(Tkinter.Frame, object):
         self.pack()
 
     def is_valid(self):
+        if self.entry:
+            self.entry.set_input_value()
+
         validation_result = self.infra_input.is_valid()
 
         if validation_result:
@@ -152,13 +156,17 @@ class MultipleInputFrame(Tkinter.Frame, object):
 
         self.values = [None] * self.number_of_entries  # type: List[int]
 
-        self.columnconfigure(0, weight=self.number_of_entries + len(conf['labels']) + 1)
+        nbr_of_columns = self.number_of_entries + len(conf['labels']) + 2
+
+        self.columnconfigure(0, weight=nbr_of_columns)
         self.rowconfigure(0, weight=1)
 
         self.label = InputLabel(self.infra_input.get_label() + " - ", self)
 
         for indx in range(0, self.number_of_entries):
             self.entries.append(SubTypeInEntry(self, int(indx), conf['labels'][indx]))
+
+        self.validation_label = ValidationLabel(self, (0, nbr_of_columns-1))
 
         self.pack()
 
@@ -174,7 +182,22 @@ class MultipleInputFrame(Tkinter.Frame, object):
 
     def is_valid(self):
         # type: () -> bool
-        return self.infra_input.is_valid(self.values)
+        self.set_input_value()
+
+        validation_result = self.infra_input.is_valid()
+
+        if validation_result:
+            self.display_as_valid()
+        else:
+            self.display_as_invalid()
+
+        return validation_result
+
+    def display_as_valid(self):
+        self.validation_label.display_as_valid()
+
+    def display_as_invalid(self):
+        self.validation_label.display_as_invalid()
 
     def set_entry_value(self, indx, value):
         # type: (int, str) -> None
@@ -281,8 +304,11 @@ class SelectEntry(ttk.Combobox, object):
 
         return False
 
-    def set_input_value(self, event):
-        self.infra_input.set_value_from_gui(self.get())
+    def set_input_value(self, event=None):
+        try:
+            self.infra_input.set_value_from_gui(self.get())
+        except ValueError:
+            pass
 
 
 class Select(InputFrame):
@@ -305,7 +331,7 @@ class TypeInEntry(Tkinter.Entry, object):
 
         self.infra_input = infra_input
 
-        self.bind("<FocusOut>", self.set_input_value)
+        self.bind("<Leave>", self.set_input_value)
 
         # %d = Type of action (1=insert, 0=delete, -1 for others)
         # %i = index of char string to be inserted/deleted, or -1
@@ -339,8 +365,21 @@ class TypeInEntry(Tkinter.Entry, object):
 
         return False
 
-    def set_input_value(self, event):
-        self.infra_input.set_value_from_gui(self.get())
+    def set_input_value(self, event=None):
+        try:
+            self.infra_input.set_value_from_gui(self.get())
+        except ValueError:
+            pass
+
+
+class FloatEntry(TypeInEntry, object):
+    def on_validate(self, d, i, P, s, S, v, V, W):
+        if FloatValidator.validate_typing_float_string(S) is True:
+            return True
+
+        self.bell()
+
+        return False
 
 
 class SubTypeInEntry(Tkinter.Entry, object):
@@ -368,7 +407,7 @@ class SubTypeInEntry(Tkinter.Entry, object):
             selectforeground=DefaultStyle.input_selected_fg_color,
         )
 
-        self.bind("<FocusOut>", self.set_input_value)
+        self.bind("<Leave>", self.set_input_value)
 
         # %d = Type of action (1=insert, 0=delete, -1 for others)
         # %i = index of char string to be inserted/deleted, or -1
@@ -402,8 +441,11 @@ class SubTypeInEntry(Tkinter.Entry, object):
 
         return False
 
-    def set_input_value(self, event):
-        self.master.set_entry_value(self.indx, self.get())
+    def set_input_value(self, event=None):
+        try:
+            self.master.set_entry_value(self.indx, self.get())
+        except ValueError:
+            pass
 
 
 class Integer(InputFrame):
@@ -419,7 +461,7 @@ class Float(InputFrame):
     def __init__(self, infra_input, master=None, cnf={}, **kw):
         super(Float, self).__init__(infra_input, master, cnf, **kw)
 
-        self.entry = TypeInEntry(infra_input, self)
+        self.entry = FloatEntry(infra_input, self)
 
 
 class IntegerRange(MultipleInputFrame):

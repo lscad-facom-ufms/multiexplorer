@@ -104,24 +104,22 @@ class DSDSE(Problem):
         individual.features = []
 
         iterDict = self.dict_entry["parameters"]
-        #########################
-        # caracteristicas do individuos são 6, qtde de core originais, area deste core original, potencia deste core original
-        # performance deste core original, qtde de cores ip, e o ip core que irá ser alocado no projeto
-        # OBS: este ip core é buscado no banco
-        # add amount
-        value = random.randint(iterDict["amount_original_cores"][0], iterDict["amount_original_cores"][1])
+        # ######################## caracteristicas do individuos são 6, qtde de core originais, area deste core
+        # original, potencia deste core original performance deste core original, qtde de cores ip, e o ip core que
+        # irá ser alocado no projeto OBS: este ip core é buscado no banco add amount
+        value = random.randint(int(iterDict["amount_original_cores"][0]), int(iterDict["amount_original_cores"][1]))
         individual.features.append(value)
         # add_area
-        value = round(random.uniform(iterDict["area_orig"][0], iterDict["area_orig"][1]), 2)
+        value = round(random.uniform(float(iterDict["area_orig"][0]), float(iterDict["area_orig"][1])), 2)
         individual.features.append(value)
         # add power orig
-        value = round(random.uniform(iterDict["power_orig"][0], iterDict["power_orig"][1]), 2)
+        value = round(random.uniform(float(iterDict["power_orig"][0]), float(iterDict["power_orig"][1])), 2)
         individual.features.append(value)
         # add performance_orig
-        value = round(random.uniform(iterDict["performance_orig"][0], iterDict["performance_orig"][1]), 2)
+        value = round(random.uniform(float(iterDict["performance_orig"][0]), float(iterDict["performance_orig"][1])), 2)
         individual.features.append(value)
         # add amount_ip_cores
-        value = random.randint(iterDict["amount_ip_cores"][0], iterDict["amount_ip_cores"][1])
+        value = random.randint(int(iterDict["amount_ip_cores"][0]), int(iterDict["amount_ip_cores"][1]))
         individual.features.append(value)
 
         # add ip_core do banco

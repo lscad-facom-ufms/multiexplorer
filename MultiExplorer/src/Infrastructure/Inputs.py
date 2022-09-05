@@ -1,7 +1,7 @@
 import copy
 from enum import Enum
 from typing import Optional, Any, Dict, Union, List
-from MultiExplorer.src.Infrastructure.Validators import Validator, IntegerValidator, FloatValidator
+from MultiExplorer.src.Infrastructure.Validators import *
 
 
 class InputType(Enum):
@@ -25,6 +25,9 @@ class InputType(Enum):
 
         if input_type == InputType.Float:
             return FloatValidator()
+
+        if input_type == InputType.IntegerRange:
+            return IntegerRangeValidator()
 
         return None
 
@@ -94,19 +97,32 @@ class Input:
             if not self.is_valid():
                 raise ValueError("Value informed is invalid.")
 
+        if 'required' in options:
+            self.required = options['required']
+
     def get_label(self):
         return self.label
 
     def is_valid(self, value=None):
         # type: (Optional[Any]) -> bool
         if value is None:
-            if self.value is None:
-                return not self.required
-
             value = self.value
 
+        if value is None or (
+            value is str
+            and len(value) == 0
+        ):
+            return not self.required
+
+        try:
+            for v in value:
+                if v is None or len(v) == 0:
+                    return not self.required
+        except TypeError:
+            pass
+
         if self.allowed_values is not None:
-            return value in list(self.allowed_values.values())
+            return value in list(self.allowed_values.keys())
 
         if self.validator is None:
             return True
@@ -136,6 +152,18 @@ class Input:
                 return self.allowed_values[int(self.value)]
 
         return None
+
+    def get_typed_value(self):
+        if self.type is InputType.Integer:
+            return int(self.value)
+
+        if self.type is InputType.Float:
+            return float(self.value)
+
+        if self.type is InputType.IntegerRange:
+            return int(self.value[0]), int(self.value[1])
+
+        return self.value
 
     def set_value_from_gui(self, value):
         if self.values_are_fixed():
@@ -268,7 +296,7 @@ class InputGroup:
                 continue
 
             if isinstance(self.inputs[key], Input):
-                cumulative_dict[key] = self.inputs[key].value
+                cumulative_dict[key] = self.inputs[key].get_typed_value()
             elif isinstance(self.inputs[key], InputGroup):
                 self.inputs[key].get_dict(cumulative_dict, keys)
 

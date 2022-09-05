@@ -1,13 +1,11 @@
 import re
 from abc import ABCMeta, abstractmethod
 from typing import Any, Optional
+import re
 
 
 class Validator:
     __metaclass__ = ABCMeta
-
-    def __init__(self):
-        pass
 
     @classmethod
     def __subclasshook__(cls, subclass):
@@ -20,7 +18,7 @@ class Validator:
         raise NotImplementedError
 
 
-class TextValidator:
+class TextValidator(Validator):
     min_len = None  # type: Optional[int]
 
     max_len = None  # type: Optional[int]
@@ -53,7 +51,7 @@ class TextValidator:
         return True
 
 
-class IntegerValidator:
+class IntegerValidator(Validator):
     min_val = None  # type: int
 
     max_val = None  # type: int
@@ -82,7 +80,7 @@ class IntegerValidator:
         return True
 
 
-class FloatValidator:
+class FloatValidator(Validator):
     min_val = None  # type: float
 
     max_val = None  # type: float
@@ -106,6 +104,42 @@ class FloatValidator:
 
         if self.max_val is not None:
             if value > self.max_val:
+                return False
+
+        return True
+
+    @staticmethod
+    def validate_typing_float_string(text):
+        return re.match('\d+|\.|\.\d+|\d+\.|\d+\.\d+', text) is not None
+
+
+class IntegerRangeValidator:
+    min_val = None  # type: int
+
+    max_val = None  # type: int
+
+    def __init__(self, rules={}):
+        if 'min_val' in rules:
+            self.min_val = int(rules['min_val'])
+
+        if 'max_val' in rules:
+            self.max_val = int(rules['max_val'])
+
+    def is_valid(self, values):
+        try:
+            values = (int(values[0]), int(values[1]))
+        except ValueError:
+            return False
+
+        if self.min_val is not None:
+            if values[0] < self.min_val:
+                return False
+
+        if values[0] > values[1]:
+            return False
+
+        if self.max_val is not None:
+            if values[1] > self.max_val:
                 return False
 
         return True

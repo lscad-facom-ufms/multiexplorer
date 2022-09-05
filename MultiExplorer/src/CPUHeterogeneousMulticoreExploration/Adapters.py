@@ -2635,7 +2635,6 @@ class NsgaIIPredDSEAdapter(Adapter):
     def prepare(self):
         self.dse_engine = Nsga2Main(self.get_settings())
 
-    # todo WIP
     def get_settings(self):
         self.read_dse_settings()
 
@@ -2690,7 +2689,7 @@ class NsgaIIPredDSEAdapter(Adapter):
                 continue
 
             if isinstance(self.inputs[key], Input):
-                self.dse_settings[key] = self.inputs[key].value
+                self.dse_settings[key] = self.inputs[key].get_typed_value()
             elif isinstance(self.inputs[key], InputGroup):
                 self.dse_settings.update(self.inputs[key].get_dict(None, keys))
 
