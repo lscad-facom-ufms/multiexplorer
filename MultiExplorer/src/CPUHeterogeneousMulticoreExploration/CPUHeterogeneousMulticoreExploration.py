@@ -1,4 +1,7 @@
+import os
+
 from MultiExplorer.src.Infrastructure.ExecutionFlow import ExecutionFlow
+from MultiExplorer.src.config import PATH_RUNDIR
 from Steps import CPUSimulationStep, PhysicalExplorationStep, DSEStep
 
 
@@ -45,4 +48,34 @@ class CPUHeterogeneousMulticoreExplorationExecutionFlow(ExecutionFlow):
         ]
 
     @staticmethod
-    def get_label(): return 'Multicore CPU Heterogeneous DSE'
+    def get_label(): return 'Multicore CPU Heterogeneous DSDSE'
+
+    def get_output_path(self):
+        return (
+            PATH_RUNDIR
+            + "/" + CPUHeterogeneousMulticoreExplorationExecutionFlow.get_label().replace(' ', '_')
+        )
+
+    def setup_dirs(self):
+        output_path = self.get_output_path()
+
+        if not os.path.exists(output_path):
+            os.makedirs(output_path)
+
+        nbr_of_dir = len(next(os.walk(output_path))[1])
+
+        nbr_of_dir = nbr_of_dir & 63
+
+        output_path = output_path + "/" + str(nbr_of_dir)
+
+        if not os.path.exists(output_path):
+            os.makedirs(output_path)
+            
+        for step in self.steps:
+            step.set_output_path(output_path)
+
+    def execute(self):
+        self.setup_dirs()
+
+        ExecutionFlow.execute(self)
+

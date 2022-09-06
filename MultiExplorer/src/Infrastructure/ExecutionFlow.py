@@ -17,6 +17,8 @@ class Step(EventFirer):
     def __init__(self):
         super(Step, self).__init__()
 
+        self.output_path = None  # type: str
+
         self.adapter = None  # type: Optional[Adapter]
 
         self.events = {
@@ -46,6 +48,12 @@ class Step(EventFirer):
     """
     @staticmethod
     def has_user_input(): return False
+
+    def set_output_path(self, abs_path):
+        self.output_path = abs_path
+
+        if self.adapter is not None:
+            self.adapter.set_output_path(abs_path)
 
     def get_user_inputs(self): return {}
 
@@ -165,6 +173,9 @@ class Adapter(object):
             if isinstance(inputs[key], InputGroup) and isinstance(self.inputs[key], InputGroup):
                 self.inputs[key].set_values_from_group(inputs[key])
 
+    def set_output_path(self, abs_path):
+        self.output_path = abs_path
+
     def get_output_path(self):
         if self.output_path is None:
             return PATH_RUNDIR
@@ -190,7 +201,9 @@ class ExecutionFlow(EventFirer):
                 callable(subclass.get_title))
 
     @staticmethod
-    def get_label(self): raise NotImplementedError
+    def get_label(): raise NotImplementedError
+
+    def get_output_path(self): raise NotImplementedError
 
     def get_steps(self):
         # type: () -> List[Step]

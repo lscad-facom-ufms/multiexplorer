@@ -1389,7 +1389,7 @@ class SniperSimulatorAdapter(Adapter):
     def generate_cfg_from_inputs(self):
         cfg_file_path = self.get_output_path() + "/sniper_input.cfg"
 
-        cfg_file = open(cfg_file_path, 'w')
+        cfg_file = open(cfg_file_path, 'w+')
 
         cfg_file.writelines([
             "#include nehalem\n",
@@ -1705,8 +1705,8 @@ class SniperSimulatorAdapter(Adapter):
     # This method forwards settings to the DSE Step through a json file
     def register_dse_settings(self):
         try:
-            dse_settings_json = json.loads(open(self.get_dse_settings_file_path(), 'r').read())
-        except (OSError, ValueError):
+            dse_settings_json = json.loads(open(self.get_dse_settings_file_path(), 'r+').read())
+        except (OSError, ValueError, IOError):
             dse_settings_json = {}
 
         str(self.inputs['application'].value).split('-')
@@ -1723,7 +1723,7 @@ class SniperSimulatorAdapter(Adapter):
 
         dse_settings_json['frequency'] = self.get_global_frequency()
 
-        open(self.get_dse_settings_file_path(), 'w').write(json.dumps(dse_settings_json, sort_keys=True, indent=4))
+        open(self.get_dse_settings_file_path(), 'w+').write(json.dumps(dse_settings_json, sort_keys=True, indent=4))
 
     def get_dse_settings_file_path(self):
         return self.get_output_path() + "/" + self.get_dse_settings_file_name()
@@ -1764,12 +1764,12 @@ class SniperSimulatorAdapter(Adapter):
 
         json_output_file_path = self.get_output_path() + "/sniper_config.json"
 
-        with open(json_output_file_path, 'w') as json_output_file:
+        with open(json_output_file_path, 'w+') as json_output_file:
             json.dump(self.config, json_output_file, indent=4)
 
         json_output_file_path = self.get_output_path() + "/sniper_results.json"
 
-        with open(json_output_file_path, 'w') as json_output_file:
+        with open(json_output_file_path, 'w+') as json_output_file:
             json.dump(self.results, json_output_file, indent=4)
 
     def get_original_nbr_of_cores(self):
@@ -1994,7 +1994,7 @@ class McPATAdapter(Adapter):
 
             self.results[scope][key.strip("\t *:").replace(" ", "_").lower()] = float(value), measurement_unit
 
-        results_file = open(self.get_results_file_path(), 'w')
+        results_file = open(self.get_results_file_path(), 'w+')
 
         results_file.write(json.dumps(self.results, indent=4, sort_keys=True))
 
@@ -2460,9 +2460,9 @@ class McPATAdapter(Adapter):
         return int(float(self.sniper_config["perf_model/core/frequency"]) * 1000)
 
     def generate_xml_from_sniper_simulation(self):
-        self.sniper_config = json.load(open(self.get_sniper_simulation_path() + "/sniper_config.json"))
+        self.sniper_config = json.load(open(self.get_sniper_simulation_path() + "/sniper_config.json", 'r+'))
 
-        self.sniper_results = json.load(open(self.get_sniper_simulation_path() + "/sniper_results.json"))
+        self.sniper_results = json.load(open(self.get_sniper_simulation_path() + "/sniper_results.json", 'r+'))
 
         xml = ElementTree.ElementTree(ElementTree.fromstring('''<?xml version="1.0" encoding="UTF-8"?>
             <component id="root" name="root">
