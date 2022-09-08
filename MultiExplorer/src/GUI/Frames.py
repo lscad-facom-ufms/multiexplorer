@@ -9,8 +9,8 @@ from Tkconstants import CENTER as ANCHOR_CENTER
 from Tkconstants import S as ANCHOR_S, N as ANCHOR_N, NW as ANCHOR_NW, SW as ANCHOR_SW, SE as ANCHOR_SE
 from Tkconstants import BOTTOM as SIDE_BOTTOM, TOP as SIDE_TOP, LEFT as SIDE_LEFT
 
-from PIL import ImageTk, Image
-
+from MultiExplorer.src.CPUHeterogeneousMulticoreExploration.CPUHeterogeneousMulticoreExploration import \
+    CPUHeterogeneousMulticoreExplorationExecutionFlow
 from MultiExplorer.src.GUI.Buttons import NavigateButton
 from MultiExplorer.src.GUI.Inputs import InputGUI
 from MultiExplorer.src.GUI.Menus import DefaultMenu
@@ -18,7 +18,6 @@ from MultiExplorer.src.GUI.Styles import DefaultStyle
 from MultiExplorer.src.GUI.Widgets import ScreenTitle
 from MultiExplorer.src.Infrastructure.Events import Event
 from MultiExplorer.src.Infrastructure.Registries import ExecutionFlowRegistry
-from MultiExplorer.src.config import PATH_IMG
 
 
 class MainWindow(Tkinter.Tk, object):
@@ -45,9 +44,11 @@ class MainWindow(Tkinter.Tk, object):
 
         self.screens = {
             LoadScreen.__name__: LoadScreen(self),
-            LaunchScreen.__name__: LaunchScreen(self, focus=True),
+            # LaunchScreen.__name__: LaunchScreen(self, focus=True),
+            LaunchScreen.__name__: LaunchScreen(self,),
             InputScreen.__name__: InputScreen(self),
-            ExecutionScreen.__name__: ExecutionScreen(self),
+            # ExecutionScreen.__name__: ExecutionScreen(self),
+            ExecutionScreen.__name__: ExecutionScreen(self, focus=True),
         }
 
     def get_screen(self, class_name):
@@ -394,6 +395,13 @@ class StepButtons(Tkinter.Frame, object):
     def __init__(self, step, master=None, cnf={}, **kw):
         super(StepButtons, self).__init__(master, cnf, **kw)
 
+        self.step = step
+
+        self.step.add_handler(Event.STEP_EXECUTION_ENDED, self.show_result_buttons())
+
+    def show_result_buttons(self):
+        pass
+
 
 class StepFrame(Tkinter.Frame, object):
     HEIGHT = 400
@@ -443,6 +451,8 @@ class StepDisplay(object):
 
         self.step.add_handler(Event.STEP_EXECUTION_ENDED, self.stop_execution_animation)
 
+        self.step.add_handler(Event.STEP_EXECUTION_FAILED, self.stop_execution_animation)
+
         self.is_executing = False
 
         self.animation_job = None
@@ -450,6 +460,8 @@ class StepDisplay(object):
         self.execution_job = None
 
         self.canvas = canvas
+
+        self.label_id = None
 
         self.shape_id = self.create_step_shape(x, y)
 
@@ -490,6 +502,12 @@ class StepDisplay(object):
             outline=DefaultStyle.fg_color,
         )
 
+        # self.canvas.create_line(0, y + 50, x + 25, y + 50, fill="black", width=1)
+
+        # self.canvas.create_line(x + 225, y + 50, x + 225 + 225, y + 50, fill="black", width=1)
+
+        self.label_id = self.canvas.create_text(x + 112, y + 50, text=self.step.get_label(), anchor=ANCHOR_CENTER)
+
         return step_shape_id
 
     def blink(self, blink_ctrl):
@@ -513,10 +531,13 @@ class ExecutionDisplay(Tkinter.Canvas, object):
         super(ExecutionDisplay, self).__init__(master, cnf, **kw)
 
         self.master = master
+
         self.frame_id = None
+
         self.frame = None
 
         self.execution_flow = None
+
         self.step_frames = {}
 
         self.scrollbar = Tkinter.Scrollbar(master, orient=HORIZONTAL_ORIENTATION)
@@ -640,6 +661,8 @@ class ExecutionScreen(ScreenFrame):
         )
 
         self.execution_display = ExecutionDisplay(self.display_area)
+
+        self.set_flow(CPUHeterogeneousMulticoreExplorationExecutionFlow.get_label())
 
     def set_flow(self, flow_label):
         self.flow_label = flow_label

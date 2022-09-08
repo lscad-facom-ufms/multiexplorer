@@ -19,7 +19,7 @@ class ExecutionFlowRegistry(object):
 
         self.register_flow_class(
             CPUHeterogeneousMulticoreExplorationExecutionFlow,
-            'Multicore CPU Heterogeneous DSE'
+            CPUHeterogeneousMulticoreExplorationExecutionFlow.get_label()
         )
 
     def register_flow_class(self, flow_class, label):

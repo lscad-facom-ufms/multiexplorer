@@ -2642,6 +2642,8 @@ class NsgaIIPredDSEAdapter(Adapter):
 
         self.dse_engine.run()
 
+        self.register_results()
+
     def prepare(self):
         self.dse_engine = Nsga2Main(self.get_settings())
 

@@ -25,14 +25,7 @@ class CPUSimulationStep(Step):
     def __init__(self):
         super(CPUSimulationStep, self).__init__()
 
-        self.events = {
-            Event.STEP_EXECUTION_STARTED: [],
-            Event.STEP_EXECUTION_ENDED: [],
-        }
-
         self.adapter = SniperSimulatorAdapter()
-
-        self.execution_thread = None
 
     @staticmethod
     def get_label():
@@ -46,10 +39,18 @@ class CPUSimulationStep(Step):
         return self.adapter.get_user_inputs()
 
     def __execute__(self):
-        self.adapter.execute()
+        self.execution_exception = None
+
+        try:
+            self.adapter.execute()
+        except BaseException as exception:
+            self.execution_exception = exception
 
     def __finish__(self):
-        self.fire(Event.STEP_EXECUTION_ENDED)
+        if self.execution_exception is None:
+            self.fire(Event.STEP_EXECUTION_ENDED)
+        else:
+            self.fire(Event.STEP_EXECUTION_FAILED, self)
 
 
 class PhysicalExplorationStep(Step):
@@ -72,23 +73,24 @@ class PhysicalExplorationStep(Step):
     def __init__(self):
         super(PhysicalExplorationStep, self).__init__()
 
-        self.events = {
-            Event.STEP_EXECUTION_STARTED: [],
-            Event.STEP_EXECUTION_ENDED: [],
-        }
-
         self.adapter = McPATAdapter()
-
-        self.execution_thread = None
 
     @staticmethod
     def get_label(): return 'Physical Exploration'
 
     def __execute__(self):
-        self.adapter.execute()
+        self.execution_exception = None
+
+        try:
+            self.adapter.execute()
+        except BaseException as exception:
+            self.execution_exception = exception
 
     def __finish__(self):
-        self.fire(Event.STEP_EXECUTION_ENDED)
+        if self.execution_exception is None:
+            self.fire(Event.STEP_EXECUTION_ENDED)
+        else:
+            self.fire(Event.STEP_EXECUTION_FAILED, self)
 
 
 class DSEStep(Step):
@@ -121,10 +123,16 @@ class DSEStep(Step):
 
     def get_user_inputs(self): return self.adapter.get_user_inputs()
 
-    # todo
     def __execute__(self):
-        self.adapter.execute()
+        self.execution_exception = None
 
-    # todo
+        try:
+            self.adapter.execute()
+        except BaseException as exception:
+            self.execution_exception = exception
+
     def __finish__(self):
-        self.fire(Event.STEP_EXECUTION_ENDED)
+        if self.execution_exception is None:
+            self.fire(Event.STEP_EXECUTION_ENDED)
+        else:
+            self.fire(Event.STEP_EXECUTION_FAILED, self)

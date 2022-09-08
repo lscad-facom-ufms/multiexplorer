@@ -1,6 +1,7 @@
-import threading
 import copy
+
 from abc import abstractmethod
+from threading import Thread
 from typing import List, Optional, Dict, Union
 from MultiExplorer.src.Infrastructure.Events import EventFirer, Event
 from MultiExplorer.src.Infrastructure.Inputs import Input, InputGroup
@@ -17,7 +18,7 @@ class Step(EventFirer):
     def __init__(self):
         super(Step, self).__init__()
 
-        self.output_path = None  # type: str
+        self.output_path = None  # type: Optional[str]
 
         self.adapter = None  # type: Optional[Adapter]
 
@@ -27,7 +28,9 @@ class Step(EventFirer):
             Event.STEP_EXECUTION_FAILED: [],
         }
 
-        self.execution_thread = None
+        self.execution_thread = None  # type: Optional[Thread]
+
+        self.execution_exception = None  # type: Optional[BaseException]
 
     @classmethod
     def __subclasshook__(cls, subclass):
@@ -65,15 +68,15 @@ class Step(EventFirer):
             raise NotImplementedError("Since this Step uses no Adapter it must implement it's own input copy.")
 
     def start_execution(self):
-        self.execution_thread = threading.Thread(target=self.__execute__)
-
-        self.execution_thread.start()
+        self.execution_thread = Thread(target=self.__execute__)
 
         self.fire(Event.STEP_EXECUTION_STARTED)
 
+        self.execution_thread.start()
+
     def is_finished(self):
         if self.execution_thread is None:
-            raise RuntimeError("Cannot check execution thread: thread not set.")
+            raise RuntimeError("Cannot check execution thread: execution thread not set.")
 
         if not self.execution_thread.is_alive():
             self.__finish__()
@@ -228,8 +231,17 @@ class ExecutionFlow(EventFirer):
         if next_step is not None:
             next_step.add_handler(Event.STEP_EXECUTION_ENDED, self.execute_next_step)
 
+            next_step.add_handler(Event.STEP_EXECUTION_FAILED, self.handle_step_failure)
+
             next_step.start_execution()
         else:
             self.finish()
+
+    """
+    Handling step failure is optional.
+    
+    By default, execution will halt.
+    """
+    def handle_step_failure(self, step): self.finish()
 
     def finish(self): pass
