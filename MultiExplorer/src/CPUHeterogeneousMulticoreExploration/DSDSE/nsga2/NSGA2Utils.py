@@ -47,7 +47,8 @@ class NSGA2Utils(object):
 
         self.dict_entry = input_nsga.make_input_dict()
 
-    def fast_nondominated_sort(self, population):
+    @staticmethod
+    def fast_nondominated_sort(population):
         population.fronts = []
         population.fronts.append([])
         for individual in population:
@@ -74,7 +75,8 @@ class NSGA2Utils(object):
             i = i + 1
             population.fronts.append(temp)
 
-    def __sort_objective(self, val1, val2, m):
+    @staticmethod
+    def __sort_objective(val1, val2, m):
         return cmp(val1.objectives[m], val2.objectives[m])
 
     def calculate_crowding_distance(self, front):
@@ -85,14 +87,27 @@ class NSGA2Utils(object):
 
             for m in range(len(front[0].objectives)):
                 front = sorted(front, cmp=functools.partial(self.__sort_objective, m=m))
-                front[0].crowding_distance = self.problem.max_objectives[m]
-                front[solutions_num - 1].crowding_distance = self.problem.max_objectives[m]
-                for index, value in enumerate(front[1:solutions_num - 1]):
-                    front[index].crowding_distance = (front[index + 1].crowding_distance - front[
-                        index - 1].crowding_distance) / (self.problem.max_objectives[m] - self.problem.min_objectives[
-                        m])
 
-    def crowding_operator(self, individual, other_individual):
+                front[0].crowding_distance = self.problem.max_objectives[m]
+
+                front[solutions_num - 1].crowding_distance = self.problem.max_objectives[m]
+
+                for index, value in enumerate(front[1:solutions_num - 1]):
+                    divisor = (
+                        self.problem.max_objectives[m]
+                        - self.problem.min_objectives[m]
+                    )
+
+                    if divisor != 0:
+                        front[index].crowding_distance = (
+                            (
+                                front[index + 1].crowding_distance
+                                - front[index - 1].crowding_distance
+                            ) / divisor
+                        )
+
+    @staticmethod
+    def crowding_operator(individual, other_individual):
         if (individual.rank < other_individual.rank) or \
                 ((individual.rank == other_individual.rank) and (
                         individual.crowding_distance > other_individual.crowding_distance)):
@@ -159,16 +174,6 @@ class NSGA2Utils(object):
                 child1.features[i] = individual1.features[i]
                 child2.features[i] = individual2.features[i]
         return child1, child2
-
-    # original
-    # def __mutate(self, child):
-    #    genes_to_mutate = random.sample(range(0, len(child.features)), self.number_of_genes_to_mutate)
-    #    for gene in genes_to_mutate:
-    #        child.features[gene] = child.features[gene] - self.mutation_strength/2 + random.random() * self.mutation_strength
-    #        if child.features[gene] < 0:
-    #            child.features[gene] = 0
-    #        elif child.features[gene] > 1:
-    #            child.features[gene] = 1
 
     def __mutate(self, child):
         # 0 : amount original cores ; 4 amount ip cores; 5 ip cores

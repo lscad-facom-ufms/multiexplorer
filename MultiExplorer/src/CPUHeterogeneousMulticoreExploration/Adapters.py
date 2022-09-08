@@ -1334,11 +1334,8 @@ class SniperSimulatorAdapter(Adapter):
             input_json['General_Modeling']['memory']['dram']['controllers_interleaving']
         self.inputs['general_modeling']['memory']['dram']['per_controller_bandwidth'] = \
             input_json['General_Modeling']['memory']['dram']['per_controller_bandwidth']
-        self.inputs['general_modeling']['memory']['dram']['block_size'] = \
-            input_json['General_Modeling']['memory']['dram']['block_size']
         self.inputs['general_modeling']['memory']['dram']['dimms_per_controller'] = \
             input_json['General_Modeling']['memory']['dram']['dimms_per_controller']
-
         self.inputs['general_modeling']['memory']['dram']['dram_directory']['associativity'] = \
             input_json['General_Modeling']['memory']['dram']['dram_directory']['associativity']
         self.inputs['general_modeling']['memory']['dram']['dram_directory']['total_entries'] = \
@@ -1348,26 +1345,32 @@ class SniperSimulatorAdapter(Adapter):
                 input_json['General_Modeling']['memory']['dram']['dram_directory']['directory_type']
             )
 
-        self.inputs['general_modeling']['network']['emesh_hop_by_hop']['link_bandwidth'] = \
-            input_json['General_Modeling']['network']['emesh_hop_by_hop']['link_bandwidth']
-        self.inputs['general_modeling']['network']['emesh_hop_by_hop']['concentration'] = \
-            input_json['General_Modeling']['network']['emesh_hop_by_hop']['concentration']
-        self.inputs['general_modeling']['network']['emesh_hop_by_hop']['wrap_around'] = \
-            input_json['General_Modeling']['network']['emesh_hop_by_hop']['wrap_around']
-        self.inputs['general_modeling']['network']['emesh_hop_by_hop']['hop_latency'] = \
-            input_json['General_Modeling']['network']['emesh_hop_by_hop']['hop_latency']
-        self.inputs['general_modeling']['network']['emesh_hop_by_hop']['dimensions'] = \
-            input_json['General_Modeling']['network']['emesh_hop_by_hop']['dimensions']
+        if 'block_size' in input_json['General_Modeling']['memory']['dram']:
+            self.inputs['general_modeling']['memory']['dram']['block_size'] = \
+                input_json['General_Modeling']['memory']['dram']['block_size']
+
+        if 'emesh_hop_by_hop' in input_json['General_Modeling']['network']:
+            self.inputs['general_modeling']['network']['emesh_hop_by_hop']['link_bandwidth'] = \
+                input_json['General_Modeling']['network']['emesh_hop_by_hop']['link_bandwidth']
+            self.inputs['general_modeling']['network']['emesh_hop_by_hop']['concentration'] = \
+                input_json['General_Modeling']['network']['emesh_hop_by_hop']['concentration']
+            self.inputs['general_modeling']['network']['emesh_hop_by_hop']['wrap_around'] = \
+                input_json['General_Modeling']['network']['emesh_hop_by_hop']['wrap_around']
+            self.inputs['general_modeling']['network']['emesh_hop_by_hop']['hop_latency'] = \
+                input_json['General_Modeling']['network']['emesh_hop_by_hop']['hop_latency']
+            self.inputs['general_modeling']['network']['emesh_hop_by_hop']['dimensions'] = \
+                input_json['General_Modeling']['network']['emesh_hop_by_hop']['dimensions']
 
         self.inputs['general_modeling']['network']['bus']['bandwidth'] = \
             input_json['General_Modeling']['network']['bus']['bandwidth']
         self.inputs['general_modeling']['network']['bus']['ignore_local_traffic'] = \
             input_json['General_Modeling']['network']['bus']['ignore_local_traffic']
 
-        self.inputs['general_modeling']['network']['emesh_hop_counter']['link_bandwidth'] = \
-            input_json['General_Modeling']['network']['emesh_hop_counter']['link_bandwidth']
-        self.inputs['general_modeling']['network']['emesh_hop_counter']['hop_latency'] = \
-            input_json['General_Modeling']['network']['emesh_hop_counter']['hop_latency']
+        if 'emesh_hop_counter' in input_json['General_Modeling']['network']:
+            self.inputs['general_modeling']['network']['emesh_hop_counter']['link_bandwidth'] = \
+                input_json['General_Modeling']['network']['emesh_hop_counter']['link_bandwidth']
+            self.inputs['general_modeling']['network']['emesh_hop_counter']['hop_latency'] = \
+                input_json['General_Modeling']['network']['emesh_hop_counter']['hop_latency']
 
         self.inputs['general_modeling']['network']['memory_model_1'] = \
             MemoryModels.from_json(input_json['General_Modeling']['network']['memory_model_1'])
@@ -1603,19 +1606,24 @@ class SniperSimulatorAdapter(Adapter):
                 + "\n\n",
             ])
 
-        cfg_file.writelines([
-            "[perf_model/dram]\n",
-            "latency=" + str(self.inputs['general_modeling']['memory']['dram']['latency']) + "\n",
-            "num_controllers=" + str(self.inputs['general_modeling']['memory']['dram']['num_controllers']) + "\n",
-            "chips_per_dimm=" + str(self.inputs['general_modeling']['memory']['dram']['chips_per_dimm']) + "\n",
-            "controllers_interleaving=" + str(
-                self.inputs['general_modeling']['memory']['dram']['controllers_interleaving']) + "\n",
-            "per_controller_bandwidth=" + str(
-                self.inputs['general_modeling']['memory']['dram']['per_controller_bandwidth']) + "\n",
-            "block_size=" + str(self.inputs['general_modeling']['memory']['dram']['block_size']) + "\n",
-            "dimms_per_controller=" + str(
-                self.inputs['general_modeling']['memory']['dram']['dimms_per_controller']) + "\n\n",
-        ])
+            dram_lines = [
+                "[perf_model/dram]\n",
+                "latency=" + str(self.inputs['general_modeling']['memory']['dram']['latency']) + "\n",
+                "num_controllers=" + str(self.inputs['general_modeling']['memory']['dram']['num_controllers']) + "\n",
+                "chips_per_dimm=" + str(self.inputs['general_modeling']['memory']['dram']['chips_per_dimm']) + "\n",
+                "controllers_interleaving=" + str(
+                    self.inputs['general_modeling']['memory']['dram']['controllers_interleaving']) + "\n",
+                "per_controller_bandwidth=" + str(
+                    self.inputs['general_modeling']['memory']['dram']['per_controller_bandwidth']) + "\n",
+                "dimms_per_controller=" + str(
+                    self.inputs['general_modeling']['memory']['dram']['dimms_per_controller']) + "\n\n",
+            ]
+
+            if self.inputs['general_modeling']['memory']['dram']['block_size'] is not None:
+                dram_lines.append(
+                    "block_size="
+                    + str(self.inputs['general_modeling']['memory']['dram']['block_size']) + "\n"
+                )
 
         cfg_file.writelines([
             "[perf_model/dram_directory]\n",
@@ -1630,19 +1638,20 @@ class SniperSimulatorAdapter(Adapter):
             + "\n\n",
         ])
 
-        cfg_file.writelines([
-            "[network/emesh_hop_by_hop]\n",
-            "link_bandwidth=" + str(self.inputs['general_modeling']['network']['emesh_hop_by_hop']['link_bandwidth'])
-            + "\n",
-            "concentration=" + str(self.inputs['general_modeling']['network']['emesh_hop_by_hop']['concentration'])
-            + "\n",
-            "wrap_around=" + str(self.inputs['general_modeling']['network']['emesh_hop_by_hop']['wrap_around'])
-            + "\n",
-            "hop_latency=" + str(self.inputs['general_modeling']['network']['emesh_hop_by_hop']['hop_latency'])
-            + "\n",
-            "dimensions=" + str(self.inputs['general_modeling']['network']['emesh_hop_by_hop']['dimensions'])
-            + "\n\n",
-        ])
+        if self.inputs['general_modeling']['network']['emesh_hop_by_hop']['link_bandwidth'] is not None:
+            cfg_file.writelines([
+                "[network/emesh_hop_by_hop]\n",
+                "link_bandwidth=" + str(self.inputs['general_modeling']['network']['emesh_hop_by_hop']['link_bandwidth'])
+                + "\n",
+                "concentration=" + str(self.inputs['general_modeling']['network']['emesh_hop_by_hop']['concentration'])
+                + "\n",
+                "wrap_around=" + str(self.inputs['general_modeling']['network']['emesh_hop_by_hop']['wrap_around'])
+                + "\n",
+                "hop_latency=" + str(self.inputs['general_modeling']['network']['emesh_hop_by_hop']['hop_latency'])
+                + "\n",
+                "dimensions=" + str(self.inputs['general_modeling']['network']['emesh_hop_by_hop']['dimensions'])
+                + "\n\n",
+            ])
 
         cfg_file.writelines([
             "[network/bus]\n",
@@ -1651,14 +1660,15 @@ class SniperSimulatorAdapter(Adapter):
             + "\n\n",
         ])
 
-        cfg_file.writelines([
-            "[network/emesh_hop_counter]\n",
-            "link_bandwidth=" + str(self.inputs['general_modeling']['network']['emesh_hop_counter']['link_bandwidth'])
-            + "\n",
-            "hop_latency="
-            + str(self.inputs['general_modeling']['network']['emesh_hop_counter']['hop_latency'])
-            + "\n\n",
-        ])
+        if self.inputs['general_modeling']['network']['emesh_hop_counter']['link_bandwidth'] is not None:
+            cfg_file.writelines([
+                "[network/emesh_hop_counter]\n",
+                "link_bandwidth=" + str(self.inputs['general_modeling']['network']['emesh_hop_counter']['link_bandwidth'])
+                + "\n",
+                "hop_latency="
+                + str(self.inputs['general_modeling']['network']['emesh_hop_counter']['hop_latency'])
+                + "\n\n",
+            ])
 
         cfg_file.writelines([
             "[network]\n",

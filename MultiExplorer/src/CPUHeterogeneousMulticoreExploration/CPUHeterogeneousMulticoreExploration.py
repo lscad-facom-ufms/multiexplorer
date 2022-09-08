@@ -62,11 +62,11 @@ class CPUHeterogeneousMulticoreExplorationExecutionFlow(ExecutionFlow):
         if not os.path.exists(output_path):
             os.makedirs(output_path)
 
-        nbr_of_dir = len(next(os.walk(output_path))[1])
+        nbr_of_dirs = len(next(os.walk(output_path))[1])
 
-        nbr_of_dir = nbr_of_dir & 63
+        nbr_of_dirs = nbr_of_dirs & 63
 
-        output_path = output_path + "/" + str(nbr_of_dir)
+        output_path = output_path + "/" + "{:02d}".format(nbr_of_dirs)
 
         if not os.path.exists(output_path):
             os.makedirs(output_path)
