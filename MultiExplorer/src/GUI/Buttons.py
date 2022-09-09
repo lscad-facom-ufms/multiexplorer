@@ -17,5 +17,5 @@ class NavigateButton(Tkinter.Button, object):
             borderwidth="2",
         )
 
-    def navigate(self):
-        self.screen.navigate_by_class_name(self.to_screen_class_name)
+    def navigate(self, **kw):
+        self.screen.navigate_by_class_name(self.to_screen_class_name, **kw)

@@ -97,15 +97,22 @@ class Step(EventFirer):
         raise NotImplementedError
 
     """
-        This method is not supposed to be evoked out of the "is_finished" method.
+    This method is not supposed to be evoked out of the "is_finished" method.
 
-        You should implement in this method the handling of the execution results of this step.
+    You should implement in this method the handling of the execution results of this step.
 
-        In this method you should verify if the execution was successful, firing the appropriate events to notify
-        other objects.
+    In this method you should verify if the execution was successful, firing the appropriate events to notify
+    other objects.
     """
     def __finish__(self):
         self.fire(Event.STEP_EXECUTION_ENDED)
+
+    """
+    Should return a dictionary with all presentable results.
+    """
+    def get_results(self):
+        # type: () -> Dict
+        raise NotImplementedError
 
 
 class Adapter(object):
@@ -245,3 +252,22 @@ class ExecutionFlow(EventFirer):
     def handle_step_failure(self, step): self.finish()
 
     def finish(self): pass
+
+    """
+    todo
+    
+    Returns a dict with all the presentable results
+    """
+    def get_results(self):
+        # type: () -> Dict
+        results = {
+            'matplot_figures': {},
+        }
+
+        for step in self.steps:
+            step_results = step.get_results()
+
+            if 'matplot_figures' in step_results:
+                    results['matplot_figures'].update(step_results['matplot_figures'])
+
+        return results

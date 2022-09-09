@@ -8,7 +8,7 @@ from Tkconstants import W as STICKY_WEST, E as STICKY_EAST
 from Tkconstants import CENTER as ANCHOR_CENTER
 from Tkconstants import S as ANCHOR_S, N as ANCHOR_N, NW as ANCHOR_NW, SW as ANCHOR_SW, SE as ANCHOR_SE
 from Tkconstants import BOTTOM as SIDE_BOTTOM, TOP as SIDE_TOP, LEFT as SIDE_LEFT
-
+from MultiExplorer.src.Infrastructure.ExecutionFlow import ExecutionFlow
 from MultiExplorer.src.CPUHeterogeneousMulticoreExploration.CPUHeterogeneousMulticoreExploration import \
     CPUHeterogeneousMulticoreExplorationExecutionFlow
 from MultiExplorer.src.GUI.Buttons import NavigateButton
@@ -18,6 +18,9 @@ from MultiExplorer.src.GUI.Styles import DefaultStyle
 from MultiExplorer.src.GUI.Widgets import ScreenTitle
 from MultiExplorer.src.Infrastructure.Events import Event
 from MultiExplorer.src.Infrastructure.Registries import ExecutionFlowRegistry
+from matplotlib.figure import Figure as MatplotFigure
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+from typing import List
 
 
 class MainWindow(Tkinter.Tk, object):
@@ -47,14 +50,15 @@ class MainWindow(Tkinter.Tk, object):
             # LaunchScreen.__name__: LaunchScreen(self, focus=True),
             LaunchScreen.__name__: LaunchScreen(self,),
             InputScreen.__name__: InputScreen(self),
-            # ExecutionScreen.__name__: ExecutionScreen(self),
-            ExecutionScreen.__name__: ExecutionScreen(self, focus=True),
+            ExecutionScreen.__name__: ExecutionScreen(self),
+            # ExecutionScreen.__name__: ExecutionScreen(self, focus=True),
+            ResultScreen.__name__: ResultScreen(self, focus=True),
         }
 
     def get_screen(self, class_name):
         return self.screens[class_name]
 
-    def navigate(self, from_screen, to_screen):
+    def navigate(self, from_screen, to_screen, **kw):
         from_screen.pack_forget()
 
         load_screen = self.get_screen(LoadScreen.__name__)
@@ -63,7 +67,7 @@ class MainWindow(Tkinter.Tk, object):
 
         from_screen.close_gracefully()
 
-        to_screen.prepare()
+        to_screen.prepare(**kw)
 
         load_screen.pack_forget()
 
@@ -82,16 +86,16 @@ class ScreenFrame(Tkinter.Frame, object):
         if focus is True:
             self.pack(fill=FILL_BOTH, expand=True)
 
-    def navigate(self, to_screen):
+    def navigate(self, to_screen, **kw):
         self.master.navigate(self, to_screen)
 
-    def navigate_by_class_name(self, to_screen_class_name):
-        self.navigate(self.master.get_screen(to_screen_class_name))
+    def navigate_by_class_name(self, to_screen_class_name, **kw):
+        self.navigate(self.master.get_screen(to_screen_class_name, **kw))
 
     def reset(self):
         pass
 
-    def prepare(self):
+    def prepare(self, **kw):
         pass
 
     def ready(self):
@@ -647,6 +651,17 @@ class ExecutionScreen(ScreenFrame):
             padx=50,
         )
 
+        self.results_button = NavigateButton(ResultScreen.__name__, self, self.button_area, {
+            'text': 'See Results',
+        })
+
+        self.back_button.grid(
+            column=0,
+            row=0,
+            sticky=STICKY_EAST,
+            padx=50,
+        )
+
         self.display_area = Tkinter.Frame(self)
 
         self.display_area.config(
@@ -684,3 +699,46 @@ class ExecutionScreen(ScreenFrame):
 
     def ready(self):
         self.flow.execute()
+
+
+class ResultScreen(ScreenFrame):
+    def __init__(self, master=None, cnf={}, focus=False, **kw):
+        super(ResultScreen, self).__init__(master, cnf, focus, **kw)
+
+        self.plotbook = ttk.Notebook(self)
+
+        self.plots = []  # type: List[FigureCanvasTkAgg]
+
+        self.flow = None
+
+    def add_plot(self, plot_figure, plot_title):
+        # type: (MatplotFigure, str) -> None
+
+        self.plotbook.pack(fill=FILL_BOTH, expand=True, pady=100, padx=50, ipady=10, ipadx=10)
+
+        canvas = FigureCanvasTkAgg(plot_figure, self.plotbook)
+
+        canvas.get_tk_widget().pack()
+
+        canvas.draw()
+
+        self.plots.append(canvas)
+
+        self.plotbook.add(canvas.get_tk_widget(), text=plot_title)
+
+    def clear_plots(self):
+        for canvas in self.plots:
+            canvas.get_tk_widget().destroy()
+
+        self.plots = []
+
+    def reset(self):
+        self.clear_plots()
+
+    def prepare(self, flow):
+        # type: (ExecutionFlow) -> None
+        self.flow = flow
+
+        results = flow.get_results()
+
+        if 'matplot_figures' in results:
