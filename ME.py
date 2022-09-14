@@ -19,7 +19,6 @@ if __name__ == '__main__':
     a.plot(p, range(2 + max(x)), color='blue')
     a.invert_yaxis()
 
-    # a.set_title("Estimation Grid", fontsize=16)
     a.set_ylabel("Y", fontsize=14)
     a.set_xlabel("X", fontsize=14)
 

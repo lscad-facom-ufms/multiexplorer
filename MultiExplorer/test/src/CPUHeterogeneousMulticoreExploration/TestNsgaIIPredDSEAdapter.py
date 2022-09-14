@@ -34,6 +34,11 @@ class TestMcPATAdapter(unittest.TestCase):
     def test_execute(self):
         self.adapter.execute()
 
+    def test_register_results(self):
+        self.adapter.set_output_path('/home/ufms/projetos/multiexplorer/rundir/Multicore_CPU_Heterogeneous_DSDSE/07')
+
+        self.adapter.register_results()
+
 
 if __name__ == '__main__':
     unittest.main()

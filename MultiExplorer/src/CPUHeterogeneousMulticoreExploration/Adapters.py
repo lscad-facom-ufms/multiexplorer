@@ -1,4 +1,5 @@
 import json
+import math
 import os
 import sys
 import re
@@ -13,6 +14,7 @@ from MultiExplorer.src.CPUHeterogeneousMulticoreExploration.DSDSE.Nsga2Main impo
 from MultiExplorer.src.Infrastructure.ExecutionFlow import Adapter
 from MultiExplorer.src.Infrastructure.Inputs import Input, InputGroup, InputType
 from MultiExplorer.src.config import PATH_SNIPER, PATH_MCPAT
+
 sys.path.append(PATH_SNIPER + '/tools')
 import sniper_lib
 
@@ -1070,6 +1072,8 @@ class SniperSimulatorAdapter(Adapter):
 
         self.results = {}
 
+        self.presentable_results = None
+
         self.use_benchmarks = True
 
         self.benchmark_size = None
@@ -1641,7 +1645,8 @@ class SniperSimulatorAdapter(Adapter):
         if self.inputs['general_modeling']['network']['emesh_hop_by_hop']['link_bandwidth'] is not None:
             cfg_file.writelines([
                 "[network/emesh_hop_by_hop]\n",
-                "link_bandwidth=" + str(self.inputs['general_modeling']['network']['emesh_hop_by_hop']['link_bandwidth'])
+                "link_bandwidth=" + str(
+                    self.inputs['general_modeling']['network']['emesh_hop_by_hop']['link_bandwidth'])
                 + "\n",
                 "concentration=" + str(self.inputs['general_modeling']['network']['emesh_hop_by_hop']['concentration'])
                 + "\n",
@@ -1663,7 +1668,8 @@ class SniperSimulatorAdapter(Adapter):
         if self.inputs['general_modeling']['network']['emesh_hop_counter']['link_bandwidth'] is not None:
             cfg_file.writelines([
                 "[network/emesh_hop_counter]\n",
-                "link_bandwidth=" + str(self.inputs['general_modeling']['network']['emesh_hop_counter']['link_bandwidth'])
+                "link_bandwidth=" + str(
+                    self.inputs['general_modeling']['network']['emesh_hop_counter']['link_bandwidth'])
                 + "\n",
                 "hop_latency="
                 + str(self.inputs['general_modeling']['network']['emesh_hop_counter']['hop_latency'])
@@ -1733,6 +1739,8 @@ class SniperSimulatorAdapter(Adapter):
 
         dse_settings_json['frequency'] = self.get_global_frequency()
 
+        dse_settings_json['original_performance'] = self.presentable_results['performance']
+
         open(self.get_dse_settings_file_path(), 'w+').write(json.dumps(dse_settings_json, sort_keys=True, indent=4))
 
     def get_dse_settings_file_path(self):
@@ -1772,14 +1780,39 @@ class SniperSimulatorAdapter(Adapter):
 
         self.results = obj_result['results']
 
+        elapsed_time = self.results['performance_model.elapsed_time'][0]
+
+        self.presentable_results = {
+            # elapsed time is in femtoseconds (fs) (for Snipersim 7.4)
+            'elapsed_time': (elapsed_time, 'fs'),
+        }
+
+        total_ic = 0
+
+        for ic in self.results['performance_model.instruction_count']:
+            total_ic += ic
+
+        self.presentable_results['total_instruction_count'] = (total_ic, 'I')
+
+        self.presentable_results['total_cycle_count'] = (self.results['performance_model.cycle_count'][0], 'C')
+
+        total_ipc = 0
+
+        for ipc in self.results['ipc']:
+            total_ipc += ipc
+
+        self.presentable_results['ipc'] = (total_ipc, 'IPC')
+
+        self.presentable_results['performance'] = (10.0 ** 15 / elapsed_time, 's^-1')
+
         json_output_file_path = self.get_output_path() + "/sniper_config.json"
 
-        with open(json_output_file_path, 'w+') as json_output_file:
+        with open(json_output_file_path, 'w') as json_output_file:
             json.dump(self.config, json_output_file, indent=4)
 
         json_output_file_path = self.get_output_path() + "/sniper_results.json"
 
-        with open(json_output_file_path, 'w+') as json_output_file:
+        with open(json_output_file_path, 'w') as json_output_file:
             json.dump(self.results, json_output_file, indent=4)
 
     def get_original_nbr_of_cores(self):
@@ -1807,7 +1840,7 @@ class SniperSimulatorAdapter(Adapter):
         return self.cfg_path
 
     def get_results(self):
-        pass
+        return self.presentable_results
 
 
 class McPATAdapter(Adapter):
@@ -1906,6 +1939,8 @@ class McPATAdapter(Adapter):
 
         self.results = None
 
+        self.presentable_results = None
+
     def execute(self):
         self.prepare()
 
@@ -1970,6 +2005,9 @@ class McPATAdapter(Adapter):
             + " -print_level 5 > " + self.get_output_file_path()
         )
 
+    def get_results(self):
+        return self.presentable_results
+
     def register_results(self):
         output_file = open(self.get_output_file_path(), 'r')
 
@@ -2007,6 +2045,11 @@ class McPATAdapter(Adapter):
         results_file = open(self.get_results_file_path(), 'w+')
 
         results_file.write(json.dumps(self.results, indent=4, sort_keys=True))
+
+        self.presentable_results = {
+            'power_density': self.results['processor']['power_density'],
+            'area': self.results['core']['area'],
+        }
 
     @staticmethod
     def create_param_element(name, value):
@@ -2566,6 +2609,7 @@ class NsgaIIPredDSEAdapter(Adapter):
         This adapter uses a NSGA-II implementation as it's exploration engine, and a heterogeneous multicore CPU
         architecture performance predictor as it's evaluation engine, in order to perform a design space exploration.
     """
+
     def __init__(self):
         Adapter.__init__(self)
 
@@ -2584,6 +2628,10 @@ class NsgaIIPredDSEAdapter(Adapter):
         self.sniper_results = None
 
         self.inputs = {}  # type: Dict[str, Union[Input, InputGroup]]
+
+        self.results = None
+
+        self.presentable_results = None
 
         self.set_inputs([
             InputGroup({
@@ -2644,6 +2692,40 @@ class NsgaIIPredDSEAdapter(Adapter):
 
         self.register_results()
 
+    def register_results(self):
+        results = {}
+
+        try:
+            population_results = json.load(open(self.get_output_path() + "/population_results.json"))
+
+            results['population_results'] = population_results
+        except IOError:
+            results['population_results'] = None
+
+        self.results = results
+
+        self.presentable_results = {'solutions': {}}
+
+        nbr_of_solutions = len(results['population_results'])
+
+        nbr_of_zeroes = int(math.log10(nbr_of_solutions-1))+1
+        for s in results['population_results']:
+            title = ('s{:0' + str(nbr_of_zeroes) + 'd}').format(int(s))
+
+            solution = results['population_results'][s]
+
+            self.presentable_results['solutions'][title] = {
+                'nbr_ip_cores': solution['amount_ip_cores'],
+                'nbr_orig_cores': solution['amount_original_cores'],
+                'total_nbr_cores': solution['amount_ip_cores'] + solution['amount_original_cores'],
+                'total_area': solution['Results']['total_area'],
+                'performance': solution['Results']['performance_pred'],
+                'power_density': solution['Results']['total_power_density']
+            }
+
+    def get_results(self):
+        return self.results
+
     def prepare(self):
         self.dse_engine = Nsga2Main(self.get_settings())
 
@@ -2654,12 +2736,19 @@ class NsgaIIPredDSEAdapter(Adapter):
 
         self.read_sniper_results()
 
-        return {
+        settings = {
             'project_folder': self.get_project_folder(),
             'mcpat_results': self.mcpat_results,
             'sniper_results': self.sniper_results,
             'dse': self.dse_settings,
         }
+
+        json_dsdse_input_file_path = self.get_output_path() + "/dsdse_input.json"
+
+        with open(json_dsdse_input_file_path, 'w') as json_output_file:
+            json.dump(self.results, json_output_file, indent=4)
+
+        return settings
 
     def read_mcpat_results(self):
         self.mcpat_results = json.loads(open(self.get_mcpat_results_json_file_path()).read())

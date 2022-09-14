@@ -20,7 +20,7 @@ from MultiExplorer.src.Infrastructure.Events import Event
 from MultiExplorer.src.Infrastructure.Registries import ExecutionFlowRegistry
 from matplotlib.figure import Figure as MatplotFigure
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-from typing import List
+from typing import Dict
 
 
 class MainWindow(Tkinter.Tk, object):
@@ -707,7 +707,7 @@ class ResultScreen(ScreenFrame):
 
         self.plotbook = ttk.Notebook(self)
 
-        self.plots = []  # type: List[FigureCanvasTkAgg]
+        self.plots = {}  # type: Dict[str, FigureCanvasTkAgg]
 
         self.flow = None
 
@@ -722,15 +722,17 @@ class ResultScreen(ScreenFrame):
 
         canvas.draw()
 
-        self.plots.append(canvas)
+        self.plots[plot_title] = canvas
 
         self.plotbook.add(canvas.get_tk_widget(), text=plot_title)
 
     def clear_plots(self):
-        for canvas in self.plots:
+        for title in self.plots:
+            canvas = self.plots[title]
+
             canvas.get_tk_widget().destroy()
 
-        self.plots = []
+        self.plots = {}
 
     def reset(self):
         self.clear_plots()
@@ -742,3 +744,5 @@ class ResultScreen(ScreenFrame):
         results = flow.get_results()
 
         if 'matplot_figures' in results:
+            for title in results['matplot_figures']:
+                self.add_plot(results['matplot_figures'][title], title)

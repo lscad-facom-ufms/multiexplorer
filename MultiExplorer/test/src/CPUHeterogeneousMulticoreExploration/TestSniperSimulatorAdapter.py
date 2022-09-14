@@ -1,3 +1,4 @@
+import json
 import unittest
 from MultiExplorer.src.CPUHeterogeneousMulticoreExploration.Adapters import SniperSimulatorAdapter
 from MultiExplorer.src.CPUHeterogeneousMulticoreExploration.AllowedValues import PredictedCores
@@ -5,41 +6,30 @@ from MultiExplorer.src.config import PATH_RUNDIR
 
 
 class TestSniperSimulatorAdapter(unittest.TestCase):
-    def test_is_instantiable(self):
-        simulator_adapter = SniperSimulatorAdapter()
-
-        self.assertTrue(isinstance(simulator_adapter, SniperSimulatorAdapter))
-
-    def test_set_values_from_file(self):
-        simulator_adapter = SniperSimulatorAdapter()
-
-        simulator_adapter.set_values_from_file("/home/ufms/projetos/multiexplorer/input-examples/quark.json")
+    def setUp(self):
+        self.simulator_adapter = SniperSimulatorAdapter()
 
     def test_set_values_from_json(self):
-        simulator_adapter = SniperSimulatorAdapter()
+        self.simulator_adapter.set_values_from_json("/home/ufms/projetos/multiexplorer/input-examples/quark.json")
 
-        simulator_adapter.set_values_from_json("/home/ufms/projetos/multiexplorer/input-examples/quark.json")
+        self.simulator_adapter.output_path = "/rundir"
 
-        simulator_adapter.output_path = "/rundir"
+        self.simulator_adapter.generate_cfg_from_inputs()
 
-        simulator_adapter.generate_cfg_from_inputs()
-
-        expected_file_path = simulator_adapter.cfg_path
+        expected_file_path = self.simulator_adapter.cfg_path
 
         with open(expected_file_path, 'r') as fin:
             print(fin.read())
 
     def test_generate_cfg_from_inputs(self):
-        simulator_adapter = SniperSimulatorAdapter()
-
-        simulator_adapter.output_path = "/rundir"
+        self.simulator_adapter.set_output_path(PATH_RUNDIR)
 
         total_cores_value = 2
-        simulator_adapter.inputs['general_modeling']['total_cores'] = total_cores_value
+        self.simulator_adapter.inputs['general_modeling']['total_cores'] = total_cores_value
 
-        simulator_adapter.generate_cfg_from_inputs()
+        self.simulator_adapter.generate_cfg_from_inputs()
 
-        expected_file_path = simulator_adapter.cfg_path
+        expected_file_path = self.simulator_adapter.cfg_path
 
         with open(expected_file_path, 'r') as fin:
             print(fin.read())
@@ -53,23 +43,24 @@ class TestSniperSimulatorAdapter(unittest.TestCase):
         self.assertEqual("total_cores="+str(total_cores_value)+"\n", cfg_file.readline())
 
     def test_get_user_inputs(self):
-        simulator_adapter = SniperSimulatorAdapter()
-
-        user_inputs = simulator_adapter.get_user_inputs()
+        user_inputs = self.simulator_adapter.get_user_inputs()
 
         self.assertEquals(
             user_inputs['general_modeling']['model_name'],
-            simulator_adapter.inputs['general_modeling']['model_name']
+            self.simulator_adapter.inputs['general_modeling']['model_name']
         )
 
         user_inputs['general_modeling']['model_name'] = PredictedCores.Quark
 
-        self.assertEqual(simulator_adapter.inputs['general_modeling']['model_name'], PredictedCores.Quark)
+        self.assertEqual(self.simulator_adapter.inputs['general_modeling']['model_name'], PredictedCores.Quark)
 
-    def test_parse_results(self):
-        simulator_adapter = SniperSimulatorAdapter()
+    def test_register_results(self):
+        self.simulator_adapter.set_output_path('/home/ufms/projetos/multiexplorer/rundir/Multicore_CPU_Heterogeneous_DSDSE/07')
 
-        simulator_adapter.parse_results()
+        self.simulator_adapter.register_results()
+
+        print json.dumps(self.simulator_adapter.presentable_results, indent=4)
+
 
 if __name__ == '__main__':
     unittest.main()
