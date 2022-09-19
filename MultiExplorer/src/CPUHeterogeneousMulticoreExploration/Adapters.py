@@ -1718,6 +1718,18 @@ class SniperSimulatorAdapter(Adapter):
 
         self.register_dse_settings()
 
+    def get_processor(self):
+        try:
+            return PredictedCores.get_processor(self.inputs['general_modeling']['model_name'])
+        except ValueError:
+            return ""
+
+    def get_technology(self):
+        try:
+            return PredictedCores.get_technology(self.inputs['general_modeling']['model_name'])
+        except ValueError:
+            return ""
+
     # This method forwards settings to the DSE Step through a json file
     def register_dse_settings(self):
         try:
@@ -1733,9 +1745,9 @@ class SniperSimulatorAdapter(Adapter):
 
         dse_settings_json['application'] = application
 
-        dse_settings_json['processor'] = PredictedCores.get_processor(self.inputs['general_modeling']['model_name'])
+        dse_settings_json['processor'] = self.get_processor()
 
-        dse_settings_json['technology'] = PredictedCores.get_technology(self.inputs['general_modeling']['model_name'])
+        dse_settings_json['technology'] = self.get_technology()
 
         dse_settings_json['frequency'] = self.get_global_frequency()
 
@@ -1783,8 +1795,8 @@ class SniperSimulatorAdapter(Adapter):
         elapsed_time = self.results['performance_model.elapsed_time'][0]
 
         self.presentable_results = {
-            # elapsed time is in femtoseconds (fs) (for Snipersim 7.4)
-            'elapsed_time': (elapsed_time, 'fs'),
+            'orig_core': self.get_processor() + "_" + self.get_technology(),
+            'elapsed_time': (elapsed_time, 'fs'),  # elapsed time is in femtoseconds (fs) (for Snipersim 7.4)
         }
 
         total_ic = 0
@@ -2047,8 +2059,14 @@ class McPATAdapter(Adapter):
         results_file.write(json.dumps(self.results, indent=4, sort_keys=True))
 
         self.presentable_results = {
-            'power_density': self.results['processor']['power_density'],
-            'area': self.results['core']['area'],
+            'power_density': (
+                round(self.results['processor']['power_density'][0], 2),
+                'W/mm^2'
+            ),
+            'area': (
+                round(self.results['core']['area'][0], 2),
+                self.results['core']['area'][1]
+            ),
         }
 
     @staticmethod
@@ -2702,21 +2720,41 @@ class NsgaIIPredDSEAdapter(Adapter):
         except IOError:
             results['population_results'] = None
 
+        try:
+            dse_settings = json.load(open(self.get_output_path() + "/dse_settings.json"))
+
+            orig_core = dse_settings['processor'] + '_' + dse_settings['technology']
+        except IOError:
+            orig_core = None
+
         self.results = results
 
         self.presentable_results = {'solutions': {}}
 
-        nbr_of_solutions = len(results['population_results'])
+        solution_cores = []
 
-        nbr_of_zeroes = int(math.log10(nbr_of_solutions-1))+1
         for s in results['population_results']:
-            title = ('s{:0' + str(nbr_of_zeroes) + 'd}').format(int(s))
-
             solution = results['population_results'][s]
+
+            solution_core = (solution['amount_original_cores'], solution['amount_ip_cores'], solution['core_ip']['id'])
+
+            if solution_core in solution_cores:
+                continue
+
+            title = (
+                str(solution['amount_original_cores'])
+                + "x" + orig_core
+                + " & " + str(solution['amount_ip_cores'])
+                + "x" + solution['core_ip']['id']
+            )
+
+            solution_cores.append(solution_core)
 
             self.presentable_results['solutions'][title] = {
                 'nbr_ip_cores': solution['amount_ip_cores'],
                 'nbr_orig_cores': solution['amount_original_cores'],
+                'ip_core': solution['core_ip']['id'],
+                'orig_core': orig_core,
                 'total_nbr_cores': solution['amount_ip_cores'] + solution['amount_original_cores'],
                 'total_area': solution['Results']['total_area'],
                 'performance': solution['Results']['performance_pred'],

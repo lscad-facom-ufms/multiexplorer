@@ -47,12 +47,10 @@ class MainWindow(Tkinter.Tk, object):
 
         self.screens = {
             LoadScreen.__name__: LoadScreen(self),
-            # LaunchScreen.__name__: LaunchScreen(self, focus=True),
-            LaunchScreen.__name__: LaunchScreen(self,),
+            LaunchScreen.__name__: LaunchScreen(self, focus=True),
             InputScreen.__name__: InputScreen(self),
             ExecutionScreen.__name__: ExecutionScreen(self),
-            # ExecutionScreen.__name__: ExecutionScreen(self, focus=True),
-            ResultScreen.__name__: ResultScreen(self, focus=True),
+            ResultScreen.__name__: ResultScreen(self),
         }
 
     def get_screen(self, class_name):

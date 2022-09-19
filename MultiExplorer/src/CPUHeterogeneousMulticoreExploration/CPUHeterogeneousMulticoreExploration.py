@@ -1,5 +1,6 @@
 import os
 
+from MultiExplorer.src.CPUHeterogeneousMulticoreExploration.Presenters import DSDSEPresenter
 from MultiExplorer.src.Infrastructure.ExecutionFlow import ExecutionFlow
 from MultiExplorer.src.config import PATH_RUNDIR
 from Steps import CPUSimulationStep, PhysicalExplorationStep, DSEStep
@@ -79,3 +80,25 @@ class CPUHeterogeneousMulticoreExplorationExecutionFlow(ExecutionFlow):
 
         ExecutionFlow.execute(self)
 
+    def get_results(self):
+        performance_simulation_results = self.steps[0].get_results()
+
+        physical_simulation_results = self.steps[1].get_results()
+
+        dsdse_results = self.steps[2].get_results()
+
+        population_results = dsdse_results['solutions']
+
+        original_performance = performance_simulation_results['performance']
+
+        original_power_density = physical_simulation_results['power_density']
+
+        return {
+            'matplot_figures': {
+                'Performance & Power Density': DSDSEPresenter.plot_population(
+                    population_results,
+                    original_performance,
+                    original_power_density
+                )
+            }
+        }

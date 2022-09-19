@@ -1,3 +1,4 @@
+import json
 import unittest
 import os
 from MultiExplorer.src.CPUHeterogeneousMulticoreExploration.Adapters import NsgaIIPredDSEAdapter
@@ -42,6 +43,8 @@ class TestMcPATAdapter(unittest.TestCase):
 
     def test_register_results(self):
         self.adapter.register_results()
+
+        print json.dumps(self.adapter.presentable_results, indent=4, sort_keys=True)
 
 
 if __name__ == '__main__':

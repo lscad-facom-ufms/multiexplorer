@@ -1,209 +1,209 @@
 {
     "0": {
         "Results": {
-            "performance_pred": "983.841", 
-            "total_area": 220.17144, 
-            "total_performance": 14914.81, 
-            "total_power_density": 0.31595929971662085
+            "performance_pred": "133.072", 
+            "total_area": 113.49609999999998, 
+            "total_performance": 28694.95, 
+            "total_power_density": 0.5503374124749661
         }, 
-        "amount_ip_cores": 22, 
+        "amount_ip_cores": 7, 
         "amount_original_cores": 1, 
         "area_orig": 39.98, 
         "core_ip": {
-            "area": 8.19052, 
-            "id": "Atom_Silvermont_22nm", 
-            "perf": 648.47, 
-            "pow": 0.830237
+            "area": 10.5023, 
+            "id": "ARM_A57_22nm", 
+            "perf": 4006.64, 
+            "pow": 1.59445
         }, 
         "performance_orig": 648.47, 
         "power_orig": 51.3
     }, 
     "1": {
         "Results": {
-            "performance_pred": "983.841", 
-            "total_area": 220.17144, 
-            "total_performance": 14914.81, 
-            "total_power_density": 0.31595929971662085
+            "performance_pred": "233.941", 
+            "total_area": 103.4918, 
+            "total_performance": 19402.55, 
+            "total_power_density": 0.576345372290365
         }, 
-        "amount_ip_cores": 22, 
+        "amount_ip_cores": 6, 
         "amount_original_cores": 1, 
         "area_orig": 39.98, 
         "core_ip": {
-            "area": 8.19052, 
-            "id": "Atom_Silvermont_22nm", 
-            "perf": 648.47, 
-            "pow": 0.830237
+            "area": 10.5853, 
+            "id": "ARM_A53_22nm", 
+            "perf": 3125.68, 
+            "pow": 1.39117
         }, 
         "performance_orig": 648.47, 
         "power_orig": 51.3
     }, 
     "2": {
         "Results": {
-            "performance_pred": "983.841", 
-            "total_area": 220.17144, 
-            "total_performance": 14914.81, 
-            "total_power_density": 0.31595929971662085
+            "performance_pred": "23.511", 
+            "total_area": 114.0771, 
+            "total_performance": 22528.23, 
+            "total_power_density": 0.5350608491976041
         }, 
-        "amount_ip_cores": 22, 
+        "amount_ip_cores": 7, 
         "amount_original_cores": 1, 
         "area_orig": 39.98, 
         "core_ip": {
-            "area": 8.19052, 
-            "id": "Atom_Silvermont_22nm", 
-            "perf": 648.47, 
-            "pow": 0.830237
+            "area": 10.5853, 
+            "id": "ARM_A53_22nm", 
+            "perf": 3125.68, 
+            "pow": 1.39117
         }, 
         "performance_orig": 648.47, 
         "power_orig": 51.3
     }, 
     "3": {
         "Results": {
-            "performance_pred": "983.841", 
-            "total_area": 220.17144, 
-            "total_performance": 14914.81, 
-            "total_power_density": 0.31595929971662085
+            "performance_pred": "233.941", 
+            "total_area": 103.4918, 
+            "total_performance": 19402.55, 
+            "total_power_density": 0.576345372290365
         }, 
-        "amount_ip_cores": 22, 
+        "amount_ip_cores": 6, 
         "amount_original_cores": 1, 
         "area_orig": 39.98, 
         "core_ip": {
-            "area": 8.19052, 
-            "id": "Atom_Silvermont_22nm", 
-            "perf": 648.47, 
-            "pow": 0.830237
+            "area": 10.5853, 
+            "id": "ARM_A53_22nm", 
+            "perf": 3125.68, 
+            "pow": 1.39117
         }, 
         "performance_orig": 648.47, 
         "power_orig": 51.3
     }, 
     "4": {
         "Results": {
-            "performance_pred": "983.841", 
-            "total_area": 220.17144, 
-            "total_performance": 14914.81, 
-            "total_power_density": 0.31595929971662085
+            "performance_pred": "233.941", 
+            "total_area": 103.4918, 
+            "total_performance": 19402.55, 
+            "total_power_density": 0.576345372290365
         }, 
-        "amount_ip_cores": 22, 
+        "amount_ip_cores": 6, 
         "amount_original_cores": 1, 
         "area_orig": 39.98, 
         "core_ip": {
-            "area": 8.19052, 
-            "id": "Atom_Silvermont_22nm", 
-            "perf": 648.47, 
-            "pow": 0.830237
+            "area": 10.5853, 
+            "id": "ARM_A53_22nm", 
+            "perf": 3125.68, 
+            "pow": 1.39117
         }, 
         "performance_orig": 648.47, 
         "power_orig": 51.3
     }, 
     "5": {
         "Results": {
-            "performance_pred": "983.841", 
-            "total_area": 220.17144, 
-            "total_performance": 14914.81, 
-            "total_power_density": 0.31595929971662085
+            "performance_pred": "233.941", 
+            "total_area": 103.4918, 
+            "total_performance": 19402.55, 
+            "total_power_density": 0.576345372290365
         }, 
-        "amount_ip_cores": 22, 
+        "amount_ip_cores": 6, 
         "amount_original_cores": 1, 
         "area_orig": 39.98, 
         "core_ip": {
-            "area": 8.19052, 
-            "id": "Atom_Silvermont_22nm", 
-            "perf": 648.47, 
-            "pow": 0.830237
+            "area": 10.5853, 
+            "id": "ARM_A53_22nm", 
+            "perf": 3125.68, 
+            "pow": 1.39117
         }, 
         "performance_orig": 648.47, 
         "power_orig": 51.3
     }, 
     "6": {
         "Results": {
-            "performance_pred": "983.841", 
-            "total_area": 220.17144, 
-            "total_performance": 14914.81, 
-            "total_power_density": 0.31595929971662085
+            "performance_pred": "23.511", 
+            "total_area": 114.0771, 
+            "total_performance": 22528.23, 
+            "total_power_density": 0.5350608491976041
         }, 
-        "amount_ip_cores": 22, 
+        "amount_ip_cores": 7, 
         "amount_original_cores": 1, 
         "area_orig": 39.98, 
         "core_ip": {
-            "area": 8.19052, 
-            "id": "Atom_Silvermont_22nm", 
-            "perf": 648.47, 
-            "pow": 0.830237
+            "area": 10.5853, 
+            "id": "ARM_A53_22nm", 
+            "perf": 3125.68, 
+            "pow": 1.39117
         }, 
         "performance_orig": 648.47, 
         "power_orig": 51.3
     }, 
     "7": {
         "Results": {
-            "performance_pred": "983.841", 
-            "total_area": 220.17144, 
-            "total_performance": 14914.81, 
-            "total_power_density": 0.31595929971662085
+            "performance_pred": "23.511", 
+            "total_area": 114.0771, 
+            "total_performance": 22528.23, 
+            "total_power_density": 0.5350608491976041
         }, 
-        "amount_ip_cores": 22, 
+        "amount_ip_cores": 7, 
         "amount_original_cores": 1, 
         "area_orig": 39.98, 
         "core_ip": {
-            "area": 8.19052, 
-            "id": "Atom_Silvermont_22nm", 
-            "perf": 648.47, 
-            "pow": 0.830237
+            "area": 10.5853, 
+            "id": "ARM_A53_22nm", 
+            "perf": 3125.68, 
+            "pow": 1.39117
         }, 
         "performance_orig": 648.47, 
         "power_orig": 51.3
     }, 
     "8": {
         "Results": {
-            "performance_pred": "983.841", 
-            "total_area": 220.17144, 
-            "total_performance": 14914.81, 
-            "total_power_density": 0.31595929971662085
+            "performance_pred": "133.072", 
+            "total_area": 113.49609999999998, 
+            "total_performance": 28694.95, 
+            "total_power_density": 0.5503374124749661
         }, 
-        "amount_ip_cores": 22, 
+        "amount_ip_cores": 7, 
         "amount_original_cores": 1, 
         "area_orig": 39.98, 
         "core_ip": {
-            "area": 8.19052, 
-            "id": "Atom_Silvermont_22nm", 
-            "perf": 648.47, 
-            "pow": 0.830237
+            "area": 10.5023, 
+            "id": "ARM_A57_22nm", 
+            "perf": 4006.64, 
+            "pow": 1.59445
         }, 
         "performance_orig": 648.47, 
         "power_orig": 51.3
     }, 
     "9": {
         "Results": {
-            "performance_pred": "983.841", 
-            "total_area": 220.17144, 
-            "total_performance": 14914.81, 
-            "total_power_density": 0.31595929971662085
+            "performance_pred": "23.511", 
+            "total_area": 114.0771, 
+            "total_performance": 22528.23, 
+            "total_power_density": 0.5350608491976041
         }, 
-        "amount_ip_cores": 22, 
+        "amount_ip_cores": 7, 
         "amount_original_cores": 1, 
         "area_orig": 39.98, 
         "core_ip": {
-            "area": 8.19052, 
-            "id": "Atom_Silvermont_22nm", 
-            "perf": 648.47, 
-            "pow": 0.830237
+            "area": 10.5853, 
+            "id": "ARM_A53_22nm", 
+            "perf": 3125.68, 
+            "pow": 1.39117
         }, 
         "performance_orig": 648.47, 
         "power_orig": 51.3
     }, 
     "10": {
         "Results": {
-            "performance_pred": "983.841", 
-            "total_area": 220.17144, 
-            "total_performance": 14914.81, 
-            "total_power_density": 0.31595929971662085
+            "performance_pred": "23.511", 
+            "total_area": 114.0771, 
+            "total_performance": 22528.23, 
+            "total_power_density": 0.5350608491976041
         }, 
-        "amount_ip_cores": 22, 
+        "amount_ip_cores": 7, 
         "amount_original_cores": 1, 
         "area_orig": 39.98, 
         "core_ip": {
-            "area": 8.19052, 
-            "id": "Atom_Silvermont_22nm", 
-            "perf": 648.47, 
-            "pow": 0.830237
+            "area": 10.5853, 
+            "id": "ARM_A53_22nm", 
+            "perf": 3125.68, 
+            "pow": 1.39117
         }, 
         "performance_orig": 648.47, 
         "power_orig": 51.3

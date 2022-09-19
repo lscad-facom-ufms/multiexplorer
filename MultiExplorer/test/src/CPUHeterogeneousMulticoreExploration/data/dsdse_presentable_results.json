@@ -1,0 +1,34 @@
+{
+    "solutions": {
+        "1xAtom_Silvermont_22nm & 6xARM_A53_22nm": {
+            "ip_core": "ARM_A53_22nm",
+            "nbr_ip_cores": 6,
+            "nbr_orig_cores": 1,
+            "orig_core": "Atom_Silvermont_22nm",
+            "performance": "233.941",
+            "power_density": 0.576345372290365,
+            "total_area": 103.4918,
+            "total_nbr_cores": 7
+        },
+        "1xAtom_Silvermont_22nm & 7xARM_A53_22nm": {
+            "ip_core": "ARM_A53_22nm",
+            "nbr_ip_cores": 7,
+            "nbr_orig_cores": 1,
+            "orig_core": "Atom_Silvermont_22nm",
+            "performance": "23.511",
+            "power_density": 0.5350608491976041,
+            "total_area": 114.0771,
+            "total_nbr_cores": 8
+        },
+        "1xAtom_Silvermont_22nm & 7xARM_A57_22nm": {
+            "ip_core": "ARM_A57_22nm",
+            "nbr_ip_cores": 7,
+            "nbr_orig_cores": 1,
+            "orig_core": "Atom_Silvermont_22nm",
+            "performance": "133.072",
+            "power_density": 0.5503374124749661,
+            "total_area": 113.49609999999998,
+            "total_nbr_cores": 8
+        }
+    }
+}

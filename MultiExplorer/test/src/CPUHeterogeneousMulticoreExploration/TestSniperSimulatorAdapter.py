@@ -57,6 +57,8 @@ class TestSniperSimulatorAdapter(unittest.TestCase):
         self.assertEqual(self.simulator_adapter.inputs['general_modeling']['model_name'], PredictedCores.Quark)
 
     def test_register_results(self):
+        self.simulator_adapter.inputs['general_modeling']['model_name'] = PredictedCores.Quark.value
+
         self.simulator_adapter.register_results()
 
         print json.dumps(self.simulator_adapter.presentable_results, indent=4)

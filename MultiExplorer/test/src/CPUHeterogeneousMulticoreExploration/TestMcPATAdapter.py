@@ -25,7 +25,7 @@ class TestMcPATAdapter(unittest.TestCase):
     def test_register_results(self):
         self.adapter.register_results()
 
-        print json.dumps(self.adapter.results, indent=4, sort_keys=True)
+        # print json.dumps(self.adapter.results, indent=4, sort_keys=True)
 
         print json.dumps(self.adapter.presentable_results, indent=4, sort_keys=True)
 
