@@ -1,0 +1,7 @@
+{
+    "application": "cholesky", 
+    "benchmark": "splash2", 
+    "frequency": 0.4, 
+    "processor": "Atom_Silvermont", 
+    "technology": "22nm"
+}

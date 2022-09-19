@@ -1,0 +1,1066 @@
+{
+    "branch_predictor": {
+        "area": [
+            0.00424707, 
+            "mm^2"
+        ], 
+        "gate_leakage": [
+            2.68315e-06, 
+            "W"
+        ], 
+        "peak_dynamic": [
+            0.00105957, 
+            "W"
+        ], 
+        "runtime_dynamic": [
+            6.37492e-11, 
+            "W"
+        ], 
+        "subthreshold_leakage": [
+            0.00178225, 
+            "W"
+        ], 
+        "subthreshold_leakage_with_power_gating": [
+            0.000749976, 
+            "W"
+        ]
+    }, 
+    "branch_target_buffer": {
+        "area": [
+            0.00644234, 
+            "mm^2"
+        ], 
+        "gate_leakage": [
+            2.63893e-06, 
+            "W"
+        ], 
+        "peak_dynamic": [
+            0.0004479, 
+            "W"
+        ], 
+        "runtime_dynamic": [
+            5.55981e-11, 
+            "W"
+        ], 
+        "subthreshold_leakage": [
+            0.00197235, 
+            "W"
+        ], 
+        "subthreshold_leakage_with_power_gating": [
+            0.000870282, 
+            "W"
+        ]
+    }, 
+    "bus": {
+        "area": [
+            0.188287, 
+            "mm^2"
+        ], 
+        "gate_leakage": [
+            0.000269397, 
+            "W"
+        ], 
+        "subthreshold_leakage": [
+            0.11763, 
+            "W"
+        ], 
+        "subthreshold_leakage_with_power_gating": [
+            0.0352889, 
+            "W"
+        ]
+    }, 
+    "chooser": {
+        "area": [
+            0.000423938, 
+            "mm^2"
+        ], 
+        "gate_leakage": [
+            4.24079e-07, 
+            "W"
+        ], 
+        "peak_dynamic": [
+            7.46568e-05, 
+            "W"
+        ], 
+        "runtime_dynamic": [
+            5.22076e-12, 
+            "W"
+        ], 
+        "subthreshold_leakage": [
+            0.000195241, 
+            "W"
+        ], 
+        "subthreshold_leakage_with_power_gating": [
+            7.92881e-05, 
+            "W"
+        ]
+    }, 
+    "complex_alus_mul_div": {
+        "area": [
+            0.115363, 
+            "mm^2"
+        ], 
+        "gate_leakage": [
+            0.000287643, 
+            "W"
+        ], 
+        "peak_dynamic": [
+            0.268711, 
+            "W"
+        ], 
+        "runtime_dynamic": [
+            0.201069, 
+            "W"
+        ], 
+        "subthreshold_leakage": [
+            0.178287, 
+            "W"
+        ], 
+        "subthreshold_leakage_with_power_gating": [
+            0.0534862, 
+            "W"
+        ]
+    }, 
+    "core": {
+        "area": [
+            5.71122, 
+            "mm^2"
+        ], 
+        "gate_leakage": [
+            0.00542229, 
+            "W"
+        ], 
+        "peak_dynamic": [
+            3.01071, 
+            "W"
+        ], 
+        "runtime_dynamic": [
+            0.603206, 
+            "W"
+        ], 
+        "subthreshold_leakage": [
+            3.2782, 
+            "W"
+        ], 
+        "subthreshold_leakage_with_power_gating": [
+            1.01731, 
+            "W"
+        ]
+    }, 
+    "data_cache": {
+        "area": [
+            0.0189752, 
+            "mm^2"
+        ], 
+        "gate_leakage": [
+            2.72846e-05, 
+            "W"
+        ], 
+        "peak_dynamic": [
+            0.0210118, 
+            "W"
+        ], 
+        "runtime_dynamic": [
+            5.1154e-10, 
+            "W"
+        ], 
+        "subthreshold_leakage": [
+            0.0175201, 
+            "W"
+        ], 
+        "subthreshold_leakage_with_power_gating": [
+            0.00987252, 
+            "W"
+        ]
+    }, 
+    "dtlb": {
+        "area": [
+            0.00886888, 
+            "mm^2"
+        ], 
+        "gate_leakage": [
+            7.66134e-06, 
+            "W"
+        ], 
+        "peak_dynamic": [
+            0.00228117, 
+            "W"
+        ], 
+        "runtime_dynamic": [
+            1.1547e-10, 
+            "W"
+        ], 
+        "subthreshold_leakage": [
+            0.00469481, 
+            "W"
+        ], 
+        "subthreshold_leakage_with_power_gating": [
+            0.00267604, 
+            "W"
+        ]
+    }, 
+    "execution_unit": {
+        "area": [
+            2.00405, 
+            "mm^2"
+        ], 
+        "gate_leakage": [
+            0.00169943, 
+            "W"
+        ], 
+        "peak_dynamic": [
+            1.82712, 
+            "W"
+        ], 
+        "runtime_dynamic": [
+            0.603206, 
+            "W"
+        ], 
+        "subthreshold_leakage": [
+            1.02696, 
+            "W"
+        ], 
+        "subthreshold_leakage_with_power_gating": [
+            0.320229, 
+            "W"
+        ]
+    }, 
+    "floating_point_rf": {
+        "area": [
+            0.155952, 
+            "mm^2"
+        ], 
+        "gate_leakage": [
+            1.94899e-05, 
+            "W"
+        ], 
+        "peak_dynamic": [
+            0.0884946, 
+            "W"
+        ], 
+        "subthreshold_leakage": [
+            0.016572, 
+            "W"
+        ], 
+        "subthreshold_leakage_with_power_gating": [
+            0.00773751, 
+            "W"
+        ]
+    }, 
+    "floating_point_units_fpus": {
+        "area": [
+            1.11344, 
+            "mm^2"
+        ], 
+        "gate_leakage": [
+            0.000694053, 
+            "W"
+        ], 
+        "peak_dynamic": [
+            0.50453, 
+            "W"
+        ], 
+        "runtime_dynamic": [
+            0.301603, 
+            "W"
+        ], 
+        "subthreshold_leakage": [
+            0.430189, 
+            "W"
+        ], 
+        "subthreshold_leakage_with_power_gating": [
+            0.129057, 
+            "W"
+        ]
+    }, 
+    "fp_free_list": {
+        "area": [
+            0.0197198, 
+            "mm^2"
+        ], 
+        "gate_leakage": [
+            1.78385e-06, 
+            "W"
+        ], 
+        "peak_dynamic": [
+            0.0119549, 
+            "W"
+        ], 
+        "subthreshold_leakage": [
+            0.00160596, 
+            "W"
+        ]
+    }, 
+    "fp_front_end_rat": {
+        "area": [
+            0.00669228, 
+            "mm^2"
+        ], 
+        "gate_leakage": [
+            1.75845e-06, 
+            "W"
+        ], 
+        "peak_dynamic": [
+            0.102045, 
+            "W"
+        ], 
+        "subthreshold_leakage": [
+            0.00131323, 
+            "W"
+        ], 
+        "subthreshold_leakage_with_power_gating": [
+            0.000624997, 
+            "W"
+        ]
+    }, 
+    "fp_instruction_window": {
+        "area": [
+            0.0111529, 
+            "mm^2"
+        ], 
+        "gate_leakage": [
+            1.02505e-05, 
+            "W"
+        ], 
+        "peak_dynamic": [
+            0.0175833, 
+            "W"
+        ], 
+        "subthreshold_leakage": [
+            0.0057567, 
+            "W"
+        ], 
+        "subthreshold_leakage_with_power_gating": [
+            0.00311991, 
+            "W"
+        ]
+    }, 
+    "fp_retire_rat": {
+        "area": [
+            0.00115584, 
+            "mm^2"
+        ], 
+        "gate_leakage": [
+            5.55907e-07, 
+            "W"
+        ], 
+        "peak_dynamic": [
+            0.000592908, 
+            "W"
+        ], 
+        "subthreshold_leakage": [
+            0.000255493, 
+            "W"
+        ], 
+        "subthreshold_leakage_with_power_gating": [
+            0.000110206, 
+            "W"
+        ]
+    }, 
+    "free_list": {
+        "area": [
+            0.0837427, 
+            "mm^2"
+        ], 
+        "gate_leakage": [
+            3.44459e-06, 
+            "W"
+        ], 
+        "peak_dynamic": [
+            0.0214429, 
+            "W"
+        ], 
+        "subthreshold_leakage": [
+            0.00326198, 
+            "W"
+        ], 
+        "subthreshold_leakage_with_power_gating": [
+            0.00166555, 
+            "W"
+        ]
+    }, 
+    "global_predictor": {
+        "area": [
+            0.000423938, 
+            "mm^2"
+        ], 
+        "gate_leakage": [
+            4.24079e-07, 
+            "W"
+        ], 
+        "peak_dynamic": [
+            7.46568e-05, 
+            "W"
+        ], 
+        "runtime_dynamic": [
+            5.22076e-12, 
+            "W"
+        ], 
+        "subthreshold_leakage": [
+            0.000195241, 
+            "W"
+        ], 
+        "subthreshold_leakage_with_power_gating": [
+            7.92881e-05, 
+            "W"
+        ]
+    }, 
+    "instruction_buffer": {
+        "area": [
+            0.0133255, 
+            "mm^2"
+        ], 
+        "gate_leakage": [
+            4.17813e-06, 
+            "W"
+        ], 
+        "peak_dynamic": [
+            0.149674, 
+            "W"
+        ], 
+        "runtime_dynamic": [
+            5.46465e-10, 
+            "W"
+        ], 
+        "subthreshold_leakage": [
+            0.0030501, 
+            "W"
+        ], 
+        "subthreshold_leakage_with_power_gating": [
+            0.00102561, 
+            "W"
+        ]
+    }, 
+    "instruction_cache": {
+        "area": [
+            0.0151558, 
+            "mm^2"
+        ], 
+        "gate_leakage": [
+            2.12348e-05, 
+            "W"
+        ], 
+        "peak_dynamic": [
+            0.0158006, 
+            "W"
+        ], 
+        "runtime_dynamic": [
+            3.72204e-10, 
+            "W"
+        ], 
+        "subthreshold_leakage": [
+            0.0135772, 
+            "W"
+        ], 
+        "subthreshold_leakage_with_power_gating": [
+            0.00762507, 
+            "W"
+        ]
+    }, 
+    "instruction_decoder": {
+        "area": [
+            1.06826, 
+            "mm^2"
+        ], 
+        "gate_leakage": [
+            0.000482479, 
+            "W"
+        ], 
+        "peak_dynamic": [
+            0.160005, 
+            "W"
+        ], 
+        "runtime_dynamic": [
+            3.50512e-10, 
+            "W"
+        ], 
+        "subthreshold_leakage": [
+            0.393086, 
+            "W"
+        ], 
+        "subthreshold_leakage_with_power_gating": [
+            0.117926, 
+            "W"
+        ]
+    }, 
+    "instruction_fetch_unit": {
+        "area": [
+            1.12138, 
+            "mm^2"
+        ], 
+        "gate_leakage": [
+            0.000619043, 
+            "W"
+        ], 
+        "peak_dynamic": [
+            0.349536, 
+            "W"
+        ], 
+        "runtime_dynamic": [
+            1.88248e-09, 
+            "W"
+        ], 
+        "subthreshold_leakage": [
+            0.439533, 
+            "W"
+        ], 
+        "subthreshold_leakage_with_power_gating": [
+            0.136016, 
+            "W"
+        ]
+    }, 
+    "instruction_scheduler": {
+        "area": [
+            0.13487, 
+            "mm^2"
+        ], 
+        "gate_leakage": [
+            3.76054e-05, 
+            "W"
+        ], 
+        "peak_dynamic": [
+            0.127976, 
+            "W"
+        ], 
+        "runtime_dynamic": [
+            4.64897e-10, 
+            "W"
+        ], 
+        "subthreshold_leakage": [
+            0.0251865, 
+            "W"
+        ], 
+        "subthreshold_leakage_with_power_gating": [
+            0.0129913, 
+            "W"
+        ]
+    }, 
+    "instruction_window": {
+        "area": [
+            0.0341655, 
+            "mm^2"
+        ], 
+        "gate_leakage": [
+            1.64739e-05, 
+            "W"
+        ], 
+        "peak_dynamic": [
+            0.0342236, 
+            "W"
+        ], 
+        "runtime_dynamic": [
+            1.87428e-10, 
+            "W"
+        ], 
+        "subthreshold_leakage": [
+            0.00992269, 
+            "W"
+        ], 
+        "subthreshold_leakage_with_power_gating": [
+            0.00549453, 
+            "W"
+        ]
+    }, 
+    "int_front_end_rat": {
+        "area": [
+            0.171046, 
+            "mm^2"
+        ], 
+        "gate_leakage": [
+            8.06844e-06, 
+            "W"
+        ], 
+        "peak_dynamic": [
+            0.551991, 
+            "W"
+        ], 
+        "subthreshold_leakage": [
+            0.00743665, 
+            "W"
+        ], 
+        "subthreshold_leakage_with_power_gating": [
+            0.00390551, 
+            "W"
+        ]
+    }, 
+    "int_retire_rat": {
+        "area": [
+            0.0135753, 
+            "mm^2"
+        ], 
+        "gate_leakage": [
+            1.09749e-06, 
+            "W"
+        ], 
+        "peak_dynamic": [
+            0.00843639, 
+            "W"
+        ], 
+        "subthreshold_leakage": [
+            0.000813425, 
+            "W"
+        ], 
+        "subthreshold_leakage_with_power_gating": [
+            0.00037652, 
+            "W"
+        ]
+    }, 
+    "integer_alus": {
+        "%ds": [
+            44.4444, 
+            null
+        ], 
+        "area": [
+            0.153818, 
+            "mm^2"
+        ], 
+        "area_ds": [
+            23.9725, 
+            null
+        ], 
+        "gate_leakage": [
+            0.000383524, 
+            "W"
+        ], 
+        "peak_dynamic": [
+            0.235819, 
+            "W"
+        ], 
+        "runtime_dynamic": [
+            0.100534, 
+            "W"
+        ], 
+        "subthreshold_leakage": [
+            0.237717, 
+            "W"
+        ], 
+        "subthreshold_leakage_with_power_gating": [
+            0.071315, 
+            "W"
+        ]
+    }, 
+    "integer_rf": {
+        "area": [
+            0.306432, 
+            "mm^2"
+        ], 
+        "gate_leakage": [
+            2.39197e-05, 
+            "W"
+        ], 
+        "peak_dynamic": [
+            0.212128, 
+            "W"
+        ], 
+        "subthreshold_leakage": [
+            0.021608, 
+            "W"
+        ], 
+        "subthreshold_leakage_with_power_gating": [
+            0.0104211, 
+            "W"
+        ]
+    }, 
+    "itlb": {
+        "area": [
+            0.00886888, 
+            "mm^2"
+        ], 
+        "gate_leakage": [
+            7.66134e-06, 
+            "W"
+        ], 
+        "peak_dynamic": [
+            0.00228117, 
+            "W"
+        ], 
+        "runtime_dynamic": [
+            1.1547e-10, 
+            "W"
+        ], 
+        "subthreshold_leakage": [
+            0.00469481, 
+            "W"
+        ], 
+        "subthreshold_leakage_with_power_gating": [
+            0.00267604, 
+            "W"
+        ]
+    }, 
+    "load_store_unit": {
+        "area": [
+            0.0898409, 
+            "mm^2"
+        ], 
+        "gate_leakage": [
+            0.000174295, 
+            "W"
+        ], 
+        "peak_dynamic": [
+            0.0879305, 
+            "W"
+        ], 
+        "runtime_dynamic": [
+            4.03975e-09, 
+            "W"
+        ], 
+        "subthreshold_leakage": [
+            0.0707588, 
+            "W"
+        ], 
+        "subthreshold_leakage_with_power_gating": [
+            0.033181, 
+            "W"
+        ]
+    }, 
+    "loadq": {
+        "area": [
+            0.020813, 
+            "mm^2"
+        ], 
+        "gate_leakage": [
+            1.79805e-05, 
+            "W"
+        ], 
+        "peak_dynamic": [
+            0.0194847, 
+            "W"
+        ], 
+        "runtime_dynamic": [
+            8.53673e-10, 
+            "W"
+        ], 
+        "subthreshold_leakage": [
+            0.0115082, 
+            "W"
+        ], 
+        "subthreshold_leakage_with_power_gating": [
+            0.00655965, 
+            "W"
+        ]
+    }, 
+    "local_predictor": {
+        "area": [
+            0.000423938, 
+            "mm^2"
+        ], 
+        "gate_leakage": [
+            4.24079e-07, 
+            "W"
+        ], 
+        "peak_dynamic": [
+            7.46568e-05, 
+            "W"
+        ], 
+        "runtime_dynamic": [
+            5.22076e-12, 
+            "W"
+        ], 
+        "subthreshold_leakage": [
+            0.000195241, 
+            "W"
+        ], 
+        "subthreshold_leakage_with_power_gating": [
+            7.92881e-05, 
+            "W"
+        ]
+    }, 
+    "memory_management_unit": {
+        "area": [
+            0.0316891, 
+            "mm^2"
+        ], 
+        "gate_leakage": [
+            0.000121152, 
+            "W"
+        ], 
+        "peak_dynamic": [
+            0.027111, 
+            "W"
+        ], 
+        "runtime_dynamic": [
+            7.24897e-10, 
+            "W"
+        ], 
+        "subthreshold_leakage": [
+            0.0354548, 
+            "W"
+        ], 
+        "subthreshold_leakage_with_power_gating": [
+            0.0131716, 
+            "W"
+        ]
+    }, 
+    "processor": {
+        "area": [
+            39.9785, 
+            "mm^2"
+        ], 
+        "gate_leakage": [
+            0.037956, 
+            "W"
+        ], 
+        "peak_dinamic_optimal": [
+            -15.6775, 
+            null
+        ], 
+        "peak_dynamic": [
+            21.075, 
+            "W"
+        ], 
+        "peak_power": [
+            51.3027, 
+            "W"
+        ], 
+        "peak_power_optimal": [
+            14.5502, 
+            null
+        ], 
+        "power_density": [
+            0.951135, 
+            null
+        ], 
+        "runtime_dynamic": [
+            4.22244, 
+            "W"
+        ], 
+        "subthreshold_leakage": [
+            22.9474, 
+            "W"
+        ], 
+        "subthreshold_leakage_with_power_gating": [
+            7.1212, 
+            "W"
+        ], 
+        "surplus_power": [
+            36.7525, 
+            null
+        ], 
+        "surplus_power_density": [
+            0.681379, 
+            null
+        ], 
+        "total_leakage": [
+            30.2277, 
+            "W"
+        ]
+    }, 
+    "ras": {
+        "area": [
+            0.00255132, 
+            "mm^2"
+        ], 
+        "gate_leakage": [
+            1.41091e-06, 
+            "W"
+        ], 
+        "peak_dynamic": [
+            0.000835597, 
+            "W"
+        ], 
+        "runtime_dynamic": [
+            4.80869e-11, 
+            "W"
+        ], 
+        "subthreshold_leakage": [
+            0.00119653, 
+            "W"
+        ], 
+        "subthreshold_leakage_with_power_gating": [
+            0.000512111, 
+            "W"
+        ]
+    }, 
+    "register_files": {
+        "area": [
+            0.462384, 
+            "mm^2"
+        ], 
+        "gate_leakage": [
+            4.34096e-05, 
+            "W"
+        ], 
+        "peak_dynamic": [
+            0.300623, 
+            "W"
+        ], 
+        "subthreshold_leakage": [
+            0.03818, 
+            "W"
+        ], 
+        "subthreshold_leakage_with_power_gating": [
+            0.0181586, 
+            "W"
+        ]
+    }, 
+    "renaming_unit": {
+        "area": [
+            0.309883, 
+            "mm^2"
+        ], 
+        "gate_leakage": [
+            0.000122538, 
+            "W"
+        ], 
+        "peak_dynamic": [
+            0.719012, 
+            "W"
+        ], 
+        "runtime_dynamic": [
+            4.93957e-10, 
+            "W"
+        ], 
+        "subthreshold_leakage": [
+            0.0407519, 
+            "W"
+        ], 
+        "subthreshold_leakage_with_power_gating": [
+            0.0152956, 
+            "W"
+        ]
+    }, 
+    "results_broadcast_bus": {
+        "area": [
+            0.188287, 
+            "mm^2"
+        ], 
+        "area_overhead": [
+            0.0102226, 
+            "mm^2"
+        ], 
+        "gate_leakage": [
+            0.000269397, 
+            "W"
+        ], 
+        "peak_dynamic": [
+            0.366917, 
+            "W"
+        ], 
+        "runtime_dynamic": [
+            0.0001541, 
+            "W"
+        ], 
+        "subthreshold_leakage": [
+            0.11763, 
+            "W"
+        ], 
+        "subthreshold_leakage_with_power_gating": [
+            0.0352889, 
+            "W"
+        ]
+    }, 
+    "rob": {
+        "area": [
+            0.0895514, 
+            "mm^2"
+        ], 
+        "gate_leakage": [
+            1.08809e-05, 
+            "W"
+        ], 
+        "peak_dynamic": [
+            0.0761692, 
+            "W"
+        ], 
+        "runtime_dynamic": [
+            2.77469e-10, 
+            "W"
+        ], 
+        "subthreshold_leakage": [
+            0.00950714, 
+            "W"
+        ], 
+        "subthreshold_leakage_with_power_gating": [
+            0.00437688, 
+            "W"
+        ]
+    }, 
+    "storeq": {
+        "area": [
+            0.0248225, 
+            "mm^2"
+        ], 
+        "gate_leakage": [
+            2.32013e-05, 
+            "W"
+        ], 
+        "peak_dynamic": [
+            0.0248854, 
+            "W"
+        ], 
+        "runtime_dynamic": [
+            2.18058e-09, 
+            "W"
+        ], 
+        "subthreshold_leakage": [
+            0.0156653, 
+            "W"
+        ], 
+        "subthreshold_leakage_with_power_gating": [
+            0.00892922, 
+            "W"
+        ]
+    }, 
+    "total_l2s": {
+        "area": [
+            12.5156, 
+            "mm^2"
+        ], 
+        "gate_leakage": [
+            0.00236132, 
+            "W"
+        ], 
+        "runtime_dynamic": [
+            0.0020744, 
+            "W"
+        ], 
+        "subthreshold_leakage": [
+            6.57047, 
+            "W"
+        ], 
+        "subthreshold_leakage_with_power_gating": [
+            2.77248, 
+            "W"
+        ]
+    }, 
+    "total_l3s": {
+        "area": [
+            1.25589, 
+            "mm^2"
+        ], 
+        "gate_leakage": [
+            0.00102364, 
+            "W"
+        ], 
+        "runtime_dynamic": [
+            0.000918085, 
+            "W"
+        ], 
+        "subthreshold_leakage": [
+            0.55057, 
+            "W"
+        ], 
+        "subthreshold_leakage_with_power_gating": [
+            0.250577, 
+            "W"
+        ]
+    }, 
+    "total_nocs_network_bus": {
+        "area": [
+            0.188287, 
+            "mm^2"
+        ], 
+        "gate_leakage": [
+            0.000269397, 
+            "W"
+        ], 
+        "subthreshold_leakage": [
+            0.11763, 
+            "W"
+        ], 
+        "subthreshold_leakage_with_power_gating": [
+            0.0352889, 
+            "W"
+        ]
+    }
+}

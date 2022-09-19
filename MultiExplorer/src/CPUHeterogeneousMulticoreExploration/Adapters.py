@@ -1794,16 +1794,16 @@ class SniperSimulatorAdapter(Adapter):
 
         self.presentable_results['total_instruction_count'] = (total_ic, 'I')
 
-        self.presentable_results['total_cycle_count'] = (self.results['performance_model.cycle_count'][0], 'C')
+        self.presentable_results['total_cycle_count'] = (round(self.results['performance_model.cycle_count'][0], 2), 'C')
 
         total_ipc = 0
 
         for ipc in self.results['ipc']:
             total_ipc += ipc
 
-        self.presentable_results['ipc'] = (total_ipc, 'IPC')
+        self.presentable_results['ipc'] = (round(total_ipc, 2), 'IPC')
 
-        self.presentable_results['performance'] = (10.0 ** 15 / elapsed_time, 's^-1')
+        self.presentable_results['performance'] = (round(10.0 ** 15 / elapsed_time, 2), 's^-1')
 
         json_output_file_path = self.get_output_path() + "/sniper_config.json"
 

@@ -1,5 +1,9 @@
 import unittest
+import os
 from MultiExplorer.src.CPUHeterogeneousMulticoreExploration.Adapters import NsgaIIPredDSEAdapter
+
+
+DATA_PATH = os.path.dirname(os.path.abspath(__file__))+"/data"
 
 
 class TestMcPATAdapter(unittest.TestCase):
@@ -13,6 +17,8 @@ class TestMcPATAdapter(unittest.TestCase):
         self.adapter.inputs['constraints']['maximum_power_density'] = 0.4
 
         self.adapter.inputs['constraints']['maximum_area'] = 226
+
+        self.adapter.set_output_path(DATA_PATH)
 
     def test_set_dse_settings_from_inputs(self):
         self.adapter.set_dse_settings_from_inputs([
@@ -35,8 +41,6 @@ class TestMcPATAdapter(unittest.TestCase):
         self.adapter.execute()
 
     def test_register_results(self):
-        self.adapter.set_output_path('/home/ufms/projetos/multiexplorer/rundir/Multicore_CPU_Heterogeneous_DSDSE/07')
-
         self.adapter.register_results()
 
 

@@ -1,18 +1,21 @@
 import json
 import unittest
+import os
 from MultiExplorer.src.CPUHeterogeneousMulticoreExploration.Adapters import SniperSimulatorAdapter
 from MultiExplorer.src.CPUHeterogeneousMulticoreExploration.AllowedValues import PredictedCores
-from MultiExplorer.src.config import PATH_RUNDIR
+
+
+DATA_PATH = os.path.dirname(os.path.abspath(__file__))+"/data"
 
 
 class TestSniperSimulatorAdapter(unittest.TestCase):
     def setUp(self):
         self.simulator_adapter = SniperSimulatorAdapter()
 
-    def test_set_values_from_json(self):
-        self.simulator_adapter.set_values_from_json("/home/ufms/projetos/multiexplorer/input-examples/quark.json")
+        self.simulator_adapter.set_output_path(DATA_PATH)
 
-        self.simulator_adapter.output_path = "/rundir"
+    def test_set_values_from_json(self):
+        self.simulator_adapter.set_values_from_json(DATA_PATH+"/sniper_adapter_input.json")
 
         self.simulator_adapter.generate_cfg_from_inputs()
 
@@ -22,9 +25,8 @@ class TestSniperSimulatorAdapter(unittest.TestCase):
             print(fin.read())
 
     def test_generate_cfg_from_inputs(self):
-        self.simulator_adapter.set_output_path(PATH_RUNDIR)
-
         total_cores_value = 2
+
         self.simulator_adapter.inputs['general_modeling']['total_cores'] = total_cores_value
 
         self.simulator_adapter.generate_cfg_from_inputs()
@@ -55,8 +57,6 @@ class TestSniperSimulatorAdapter(unittest.TestCase):
         self.assertEqual(self.simulator_adapter.inputs['general_modeling']['model_name'], PredictedCores.Quark)
 
     def test_register_results(self):
-        self.simulator_adapter.set_output_path('/home/ufms/projetos/multiexplorer/rundir/Multicore_CPU_Heterogeneous_DSDSE/07')
-
         self.simulator_adapter.register_results()
 
         print json.dumps(self.simulator_adapter.presentable_results, indent=4)
