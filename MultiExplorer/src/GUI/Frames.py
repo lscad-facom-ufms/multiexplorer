@@ -651,13 +651,14 @@ class ExecutionScreen(ScreenFrame):
 
         self.results_button = NavigateButton(ResultScreen.__name__, self, self.button_area, {
             'text': 'See Results',
-        }, flow=self.flow)
+            'state': STATE_DISABLED,
+        })
 
         self.results_button.grid(
             column=1,
             row=0,
             sticky=STICKY_EAST,
-            padx=50,
+            padx=50
         )
 
         self.display_area = Tkinter.Frame(self)
@@ -691,9 +692,11 @@ class ExecutionScreen(ScreenFrame):
         result_screen.set_flow(self.flow)
 
     def show_results(self):
-        result_screen = self.master.get_screen(ResultScreen.__name__)
+        self.results_button.config(state=STATE_NORMAL)
 
-        self.navigate(result_screen)
+        # result_screen = self.master.get_screen(ResultScreen.__name__)
+        #
+        # self.navigate(result_screen)
 
     def prepare(self):
         input_screen = self.master.get_screen(InputScreen.__name__)
@@ -717,6 +720,29 @@ class ResultScreen(ScreenFrame):
         self.plots = {}  # type: Dict[str, FigureCanvasTkAgg]
 
         self.flow = None
+
+        self.button_area = Tkinter.Frame(self)
+
+        self.button_area.pack(
+            side=SIDE_BOTTOM,
+            fill='x',
+            expand=True,
+        )
+
+        self.button_area.columnconfigure(0, weight=1)
+        self.button_area.columnconfigure(1, weight=1)
+        self.button_area.rowconfigure(0, weight=1)
+
+        self.back_button = NavigateButton(ExecutionScreen.__name__, self, self.button_area, {
+            'text': 'Back',
+        })
+
+        self.back_button.grid(
+            column=0,
+            row=0,
+            sticky=STICKY_WEST,
+            padx=50,
+        )
 
     def add_plot(self, plot_figure, plot_title):
         # type: (MatplotFigure, str) -> None
