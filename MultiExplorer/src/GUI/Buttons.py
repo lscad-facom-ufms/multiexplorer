@@ -12,7 +12,7 @@ class NavigateButton(Tkinter.Button, object):
         self.screen = screen
 
         self.configure(
-            command=lambda: self.navigate(),
+            command=lambda: self.navigate(**kw),
             activebackground=DefaultStyle.button_active_bg_color,
             borderwidth="2",
         )

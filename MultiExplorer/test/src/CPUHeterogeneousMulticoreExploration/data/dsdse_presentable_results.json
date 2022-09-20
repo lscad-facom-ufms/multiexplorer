@@ -1,34 +1,44 @@
 {
     "solutions": {
-        "1xAtom_Silvermont_22nm & 6xARM_A53_22nm": {
-            "ip_core": "ARM_A53_22nm",
-            "nbr_ip_cores": 6,
+        "1xQuark_x1000_32nm & 2xQuark_x1000_32nm": {
+            "ip_core": "Quark_x1000_32nm",
+            "nbr_ip_cores": 2,
             "nbr_orig_cores": 1,
-            "orig_core": "Atom_Silvermont_22nm",
-            "performance": "233.941",
-            "power_density": 0.576345372290365,
-            "total_area": 103.4918,
-            "total_nbr_cores": 7
+            "orig_core": "Quark_x1000_32nm",
+            "performance": 193.281,
+            "power_density": 0.6069395647792576,
+            "total_area": 73.434,
+            "total_nbr_cores": 3
         },
-        "1xAtom_Silvermont_22nm & 7xARM_A53_22nm": {
-            "ip_core": "ARM_A53_22nm",
-            "nbr_ip_cores": 7,
+        "1xQuark_x1000_32nm & 3xQuark_x1000_32nm": {
+            "ip_core": "Quark_x1000_32nm",
+            "nbr_ip_cores": 3,
             "nbr_orig_cores": 1,
-            "orig_core": "Atom_Silvermont_22nm",
-            "performance": "23.511",
-            "power_density": 0.5350608491976041,
-            "total_area": 114.0771,
-            "total_nbr_cores": 8
+            "orig_core": "Quark_x1000_32nm",
+            "performance": 242.279,
+            "power_density": 0.5078203891120435,
+            "total_area": 89.126,
+            "total_nbr_cores": 4
         },
-        "1xAtom_Silvermont_22nm & 7xARM_A57_22nm": {
-            "ip_core": "ARM_A57_22nm",
-            "nbr_ip_cores": 7,
-            "nbr_orig_cores": 1,
-            "orig_core": "Atom_Silvermont_22nm",
-            "performance": "133.072",
-            "power_density": 0.5503374124749661,
-            "total_area": 113.49609999999998,
-            "total_nbr_cores": 8
+        "2xQuark_x1000_32nm & 2xQuark_x1000_32nm": {
+            "ip_core": "Quark_x1000_32nm",
+            "nbr_ip_cores": 2,
+            "nbr_orig_cores": 2,
+            "orig_core": "Quark_x1000_32nm",
+            "performance": 62.463,
+            "power_density": 0.7599321118076963,
+            "total_area": 115.484,
+            "total_nbr_cores": 4
+        },
+        "2xQuark_x1000_32nm & 3xQuark_x1000_32nm": {
+            "ip_core": "Quark_x1000_32nm",
+            "nbr_ip_cores": 3,
+            "nbr_orig_cores": 2,
+            "orig_core": "Quark_x1000_32nm",
+            "performance": 102.074,
+            "power_density": 0.674284930170153,
+            "total_area": 131.176,
+            "total_nbr_cores": 5
         }
     }
 }

@@ -1,7 +1,4 @@
-import threading
-import time
-
-from MultiExplorer.src.Infrastructure.Events import Event, EventFirer
+from MultiExplorer.src.Infrastructure.Events import Event
 from Adapters import SniperSimulatorAdapter, McPATAdapter, NsgaIIPredDSEAdapter
 from MultiExplorer.src.Infrastructure.ExecutionFlow import Step
 
@@ -12,6 +9,8 @@ class CPUSimulationStep(Step):
 
         The main role it plays is to communicate with a SimulatorAdapter, and manage its execution and results.
     """
+    def get_results(self):
+        return self.adapter.get_results()
 
     def __new__(cls):
         if not hasattr(cls, 'instance'):
@@ -61,6 +60,9 @@ class PhysicalExplorationStep(Step):
         The main role it plays is to communicate with a PhysicalExplorationAdapter, and manage its execution and
         results.
     """
+    def get_results(self):
+        return self.adapter.get_results()
+
     def __new__(cls):
         if not hasattr(cls, 'instance'):
             cls.instance = super(
@@ -100,6 +102,8 @@ class DSEStep(Step):
 
         The main role it plays is to communicate with a DSEAdapter, and manage its execution and results.
     """
+    def get_results(self):
+        return self.adapter.get_results()
 
     def __new__(cls):
         if not hasattr(cls, 'instance'):

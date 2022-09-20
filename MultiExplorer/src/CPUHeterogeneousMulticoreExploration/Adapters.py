@@ -1751,8 +1751,6 @@ class SniperSimulatorAdapter(Adapter):
 
         dse_settings_json['frequency'] = self.get_global_frequency()
 
-        dse_settings_json['original_performance'] = self.presentable_results['performance']
-
         open(self.get_dse_settings_file_path(), 'w+').write(json.dumps(dse_settings_json, sort_keys=True, indent=4))
 
     def get_dse_settings_file_path(self):
@@ -1826,6 +1824,14 @@ class SniperSimulatorAdapter(Adapter):
 
         with open(json_output_file_path, 'w') as json_output_file:
             json.dump(self.results, json_output_file, indent=4)
+
+        try:
+            dse_settings_json = json.loads(open(self.get_dse_settings_file_path(), 'r+').read())
+        except (OSError, ValueError, IOError):
+            dse_settings_json = {}
+        dse_settings_json['original_performance'] = self.presentable_results['performance']
+
+        open(self.get_dse_settings_file_path(), 'w+').write(json.dumps(dse_settings_json, sort_keys=True, indent=4))
 
     def get_original_nbr_of_cores(self):
         return self.inputs["general_modeling"].inputs["total_cores"].value
@@ -2757,12 +2763,12 @@ class NsgaIIPredDSEAdapter(Adapter):
                 'orig_core': orig_core,
                 'total_nbr_cores': solution['amount_ip_cores'] + solution['amount_original_cores'],
                 'total_area': solution['Results']['total_area'],
-                'performance': solution['Results']['performance_pred'],
+                'performance': abs(float(solution['Results']['performance_pred'])),
                 'power_density': solution['Results']['total_power_density']
             }
 
     def get_results(self):
-        return self.results
+        return self.presentable_results
 
     def prepare(self):
         self.dse_engine = Nsga2Main(self.get_settings())

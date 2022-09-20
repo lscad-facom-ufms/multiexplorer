@@ -60,4 +60,5 @@ class EventFirer(object):
         Fires an event, i.e., evokes it's handlers.
         """
         for callback_fn in self.events[event_name]:
-            callback_fn(*args)
+            if callback_fn is not None:
+                callback_fn(*args)

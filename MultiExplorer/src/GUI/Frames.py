@@ -85,10 +85,10 @@ class ScreenFrame(Tkinter.Frame, object):
             self.pack(fill=FILL_BOTH, expand=True)
 
     def navigate(self, to_screen, **kw):
-        self.master.navigate(self, to_screen)
+        self.master.navigate(self, to_screen, **kw)
 
     def navigate_by_class_name(self, to_screen_class_name, **kw):
-        self.navigate(self.master.get_screen(to_screen_class_name, **kw))
+        self.navigate(self.master.get_screen(to_screen_class_name), **kw)
 
     def reset(self):
         pass
@@ -467,7 +467,7 @@ class StepDisplay(object):
 
         self.shape_id = self.create_step_shape(x, y)
 
-    def start_execution_animation(self):
+    def start_execution_animation(self, *args):
         self.is_executing = True
 
         self.animation_job = self.canvas.after(500, self.blink, True)
@@ -478,7 +478,7 @@ class StepDisplay(object):
         if not self.step.is_finished():
             self.execution_job = self.canvas.after(500, self.check_step_execution)
 
-    def stop_execution_animation(self):
+    def stop_execution_animation(self, *args):
         if self.animation_job is not None:
             self.canvas.after_cancel(self.animation_job)
 
@@ -651,10 +651,10 @@ class ExecutionScreen(ScreenFrame):
 
         self.results_button = NavigateButton(ResultScreen.__name__, self, self.button_area, {
             'text': 'See Results',
-        })
+        }, flow=self.flow)
 
-        self.back_button.grid(
-            column=0,
+        self.results_button.grid(
+            column=1,
             row=0,
             sticky=STICKY_EAST,
             padx=50,
@@ -675,8 +675,6 @@ class ExecutionScreen(ScreenFrame):
 
         self.execution_display = ExecutionDisplay(self.display_area)
 
-        self.set_flow(CPUHeterogeneousMulticoreExplorationExecutionFlow.get_label())
-
     def set_flow(self, flow_label):
         self.flow_label = flow_label
 
@@ -685,6 +683,17 @@ class ExecutionScreen(ScreenFrame):
         self.execution_display.set_execution_flow(self.flow)
 
         self.title.configure(text=self.flow.get_label() + ''' Execution''')
+
+        self.flow.add_handler(Event.FLOW_EXECUTION_ENDED, self.show_results)
+
+        result_screen = self.master.get_screen(ResultScreen.__name__)
+
+        result_screen.set_flow(self.flow)
+
+    def show_results(self):
+        result_screen = self.master.get_screen(ResultScreen.__name__)
+
+        self.navigate(result_screen)
 
     def prepare(self):
         input_screen = self.master.get_screen(InputScreen.__name__)
@@ -735,11 +744,11 @@ class ResultScreen(ScreenFrame):
     def reset(self):
         self.clear_plots()
 
-    def prepare(self, flow):
-        # type: (ExecutionFlow) -> None
+    def set_flow(self, flow):
         self.flow = flow
 
-        results = flow.get_results()
+    def prepare(self):
+        results = self.flow.get_results()
 
         if 'matplot_figures' in results:
             for title in results['matplot_figures']:

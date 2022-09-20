@@ -1,6 +1,8 @@
 import os
+import tkMessageBox
 
 from MultiExplorer.src.CPUHeterogeneousMulticoreExploration.Presenters import DSDSEPresenter
+from MultiExplorer.src.Infrastructure.Events import Event
 from MultiExplorer.src.Infrastructure.ExecutionFlow import ExecutionFlow
 from MultiExplorer.src.config import PATH_RUNDIR
 from Steps import CPUSimulationStep, PhysicalExplorationStep, DSEStep
@@ -30,6 +32,7 @@ class CPUHeterogeneousMulticoreExplorationExecutionFlow(ExecutionFlow):
 
      The exploration is oriented towards max performance and minimal power density.
     """
+
     def __new__(cls):
         if not hasattr(cls, 'instance'):
             cls.instance = super(
@@ -49,12 +52,13 @@ class CPUHeterogeneousMulticoreExplorationExecutionFlow(ExecutionFlow):
         ]
 
     @staticmethod
-    def get_label(): return 'Multicore CPU Heterogeneous DSDSE'
+    def get_label():
+        return 'Multicore CPU Heterogeneous DSDSE'
 
     def get_output_path(self):
         return (
-            PATH_RUNDIR
-            + "/" + CPUHeterogeneousMulticoreExplorationExecutionFlow.get_label().replace(' ', '_')
+                PATH_RUNDIR
+                + "/" + CPUHeterogeneousMulticoreExplorationExecutionFlow.get_label().replace(' ', '_')
         )
 
     def setup_dirs(self):
@@ -71,7 +75,7 @@ class CPUHeterogeneousMulticoreExplorationExecutionFlow(ExecutionFlow):
 
         if not os.path.exists(output_path):
             os.makedirs(output_path)
-            
+
         for step in self.steps:
             step.set_output_path(output_path)
 
@@ -102,3 +106,14 @@ class CPUHeterogeneousMulticoreExplorationExecutionFlow(ExecutionFlow):
                 )
             }
         }
+
+    def handle_step_failure(self, step):
+        tkMessageBox.showerror(
+            "Execution Failure",
+            "The " + step.get_label() + " Step execution wasn't successful. " + str(step.execution_exception)
+        )
+
+        self.fire(Event.FLOW_EXECUTION_FAILED)
+
+    def finish(self):
+        self.fire(Event.FLOW_EXECUTION_ENDED)
