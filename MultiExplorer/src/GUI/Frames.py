@@ -2,12 +2,12 @@ import Tkinter
 import ttk
 
 from Tkconstants import DISABLED as STATE_DISABLED, NORMAL as STATE_NORMAL
-from Tkconstants import HORIZONTAL as HORIZONTAL_ORIENTATION
+from Tkconstants import HORIZONTAL as HORIZONTAL_ORIENTATION, VERTICAL as VERTICAL_ORIENTATION
 from Tkconstants import X as FILL_X, Y as FILL_Y, BOTH as FILL_BOTH
 from Tkconstants import W as STICKY_WEST, E as STICKY_EAST
-from Tkconstants import CENTER as ANCHOR_CENTER
+from Tkconstants import CENTER as ANCHOR_CENTER, NE as ANCHOR_NE, S as ANCHOR_SOUTH, W as ANCHOR_WEST
 from Tkconstants import S as ANCHOR_S, N as ANCHOR_N, NW as ANCHOR_NW, SW as ANCHOR_SW, SE as ANCHOR_SE
-from Tkconstants import BOTTOM as SIDE_BOTTOM, TOP as SIDE_TOP, LEFT as SIDE_LEFT
+from Tkconstants import BOTTOM as SIDE_BOTTOM, TOP as SIDE_TOP, LEFT as SIDE_LEFT, RIGHT as SIDE_RIGHT
 from MultiExplorer.src.Infrastructure.ExecutionFlow import ExecutionFlow
 from MultiExplorer.src.CPUHeterogeneousMulticoreExploration.CPUHeterogeneousMulticoreExploration import \
     CPUHeterogeneousMulticoreExplorationExecutionFlow
@@ -71,7 +71,7 @@ class MainWindow(Tkinter.Tk, object):
 
         to_screen.pack(fill=FILL_BOTH, expand=True)
 
-        to_screen.ready()
+        to_screen.ready(**kw)
 
 
 class ScreenFrame(Tkinter.Frame, object):
@@ -96,7 +96,7 @@ class ScreenFrame(Tkinter.Frame, object):
     def prepare(self, **kw):
         pass
 
-    def ready(self):
+    def ready(self, **kw):
         pass
 
     def close_gracefully(self):
@@ -361,7 +361,7 @@ class InputScreen(ScreenFrame):
 
             execution_screen.set_flow(self.flow_label)
 
-            self.navigate(execution_screen)
+            self.navigate(execution_screen, execute=True)
 
     def get_infra_inputs_per_step(self):
         return self.tabs_controller.get_infra_inputs_per_step()
@@ -377,7 +377,7 @@ class InputScreen(ScreenFrame):
         for step in steps:
             self.tabs_controller.add_step_tab(step)
 
-    def prepare(self):
+    def prepare(self, **kw):
         self.reset_tabs()
 
         self.set_tabs()
@@ -698,7 +698,7 @@ class ExecutionScreen(ScreenFrame):
         #
         # self.navigate(result_screen)
 
-    def prepare(self):
+    def prepare(self, **kw):
         input_screen = self.master.get_screen(InputScreen.__name__)
 
         infra_inputs_per_step = input_screen.get_infra_inputs_per_step()
@@ -707,15 +707,24 @@ class ExecutionScreen(ScreenFrame):
             if step.has_user_input():
                 step.copy_input_values(infra_inputs_per_step[step.get_label()])
 
-    def ready(self):
-        self.flow.execute()
+    def ready(self, execute=False):
+        if execute:
+            self.flow.execute()
 
 
 class ResultScreen(ScreenFrame):
+    PLOTBOOK_HEIGHT = 400
+
     def __init__(self, master=None, cnf={}, focus=False, **kw):
         super(ResultScreen, self).__init__(master, cnf, focus, **kw)
 
-        self.plotbook = ttk.Notebook(self)
+        self.plotbookframe = Tkinter.Frame(self)
+
+        self.plotbookframe.config(height=ResultScreen.PLOTBOOK_HEIGHT)
+
+        self.plotbook = ttk.Notebook(self.plotbookframe)
+
+        self.plotbook.config(height=ResultScreen.PLOTBOOK_HEIGHT-20)
 
         self.plots = {}  # type: Dict[str, FigureCanvasTkAgg]
 
@@ -746,24 +755,47 @@ class ResultScreen(ScreenFrame):
 
     def add_plot(self, plot_figure, plot_title):
         # type: (MatplotFigure, str) -> None
+        self.plotbookframe.pack(fill=FILL_X, expand=True, side=SIDE_TOP)
 
-        self.plotbook.pack(fill=FILL_BOTH, expand=True, pady=100, padx=50, ipady=10, ipadx=10)
+        self.plotbook.pack(
+            fill=FILL_X,
+            expand=True,
+            side=SIDE_TOP
+        )
 
-        canvas = FigureCanvasTkAgg(plot_figure, self.plotbook)
+        figure = FigureCanvasTkAgg(plot_figure, self.plotbook)
 
-        canvas.get_tk_widget().pack()
+        figure.get_tk_widget().config()
 
-        canvas.draw()
+        figure.get_tk_widget().pack()
 
-        self.plots[plot_title] = canvas
+        figure.draw()
 
-        self.plotbook.add(canvas.get_tk_widget(), text=plot_title)
+        x_scrollbar = Tkinter.Scrollbar(self.plotbookframe, orient=HORIZONTAL_ORIENTATION)
+
+        self.plotbookframe.x_scrollbar = x_scrollbar
+
+        x_scrollbar.pack(
+            fill=FILL_X,
+            expand=True,
+            side=SIDE_BOTTOM,
+        )
+
+        x_scrollbar.config(
+            command=figure.get_tk_widget().xview
+        )
+
+        figure.get_tk_widget()["xscrollcommand"] = x_scrollbar.set
+
+        self.plots[plot_title] = figure
+
+        self.plotbook.add(figure.get_tk_widget(), text=plot_title)
 
     def clear_plots(self):
         for title in self.plots:
-            canvas = self.plots[title]
+            plot_frame = self.plots[title]
 
-            canvas.get_tk_widget().destroy()
+            plot_frame.destroy()
 
         self.plots = {}
 
@@ -773,9 +805,12 @@ class ResultScreen(ScreenFrame):
     def set_flow(self, flow):
         self.flow = flow
 
-    def prepare(self):
+    def prepare(self, **kw):
         results = self.flow.get_results()
 
         if 'matplot_figures' in results:
             for title in results['matplot_figures']:
                 self.add_plot(results['matplot_figures'][title], title)
+
+    def close_gracefully(self):
+        self.reset()
