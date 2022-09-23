@@ -103,7 +103,12 @@ class CPUHeterogeneousMulticoreExplorationExecutionFlow(ExecutionFlow):
                     population_results,
                     original_performance,
                     original_power_density
-                )
+                ),
+                'Aproximated Pareto Front': DSDSEPresenter.plot_pareto_front(
+                    population_results,
+                    original_performance,
+                    original_power_density
+                ),
             }
         }
 

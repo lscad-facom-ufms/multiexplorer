@@ -2739,19 +2739,8 @@ class NsgaIIPredDSEAdapter(Adapter):
 
         solution_cores = []
 
-        nbr_of_solutions = len(results['population_results'])
-
-        nbr_of_distinct_solutions = 0
-
         for s in results['population_results']:
             solution = results['population_results'][s]
-
-            solution_core = (solution['amount_original_cores'], solution['amount_ip_cores'], solution['core_ip']['id'])
-
-            if solution_core in solution_cores:
-                continue
-
-            key = ('s{:0' + str(int(math.log10(nbr_of_solutions) + 1)) + 'd}').format(nbr_of_distinct_solutions)
 
             title = (
                 str(solution['amount_original_cores'])
@@ -2760,10 +2749,7 @@ class NsgaIIPredDSEAdapter(Adapter):
                 + "x " + solution['core_ip']['id']
             )
 
-            solution_cores.append(solution_core)
-
-            self.presentable_results['solutions'][key] = {
-                'title': title,
+            self.presentable_results['solutions'][title] = {
                 'nbr_ip_cores': solution['amount_ip_cores'],
                 'nbr_orig_cores': solution['amount_original_cores'],
                 'ip_core': solution['core_ip']['id'],

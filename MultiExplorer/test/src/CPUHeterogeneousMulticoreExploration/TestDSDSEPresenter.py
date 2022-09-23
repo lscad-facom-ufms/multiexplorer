@@ -26,6 +26,19 @@ class TestDSDSEPresenter(unittest.TestCase):
         fig.set_canvas(new_manager.canvas)
         fig.savefig('data/plot')
 
+    def testPlotParetoFront(self):
+        fig = self.presenter.plot_pareto_front(
+            json.load(open(DATA_PATH+"/dsdse_presentable_results.json"))['solutions'],
+            (76.70, 's^-1'),
+            (0.97, 'W/mm^2')
+        )
+
+        dummy = pyplot.figure()
+        new_manager = dummy.canvas.manager
+        new_manager.canvas.figure = fig
+        fig.set_canvas(new_manager.canvas)
+        fig.savefig('data/plot')
+
 
 if __name__ == '__main__':
     unittest.main()
