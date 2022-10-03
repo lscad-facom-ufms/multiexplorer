@@ -33,7 +33,7 @@ class DSDSEPresenter(object):
             points.append((
                 round(solution['power_density'], 2),
                 round(float(solution['performance']), 2),
-                key
+                solution['title']
             ))
 
         return points
