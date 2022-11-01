@@ -2749,7 +2749,7 @@ class NsgaIIPredDSEAdapter(Adapter):
                 + "x " + solution['core_ip']['id']
             )
 
-            self.presentable_results['solutions'][s] = {
+            self.presentable_results['solutions'][title] = {
                 'title': title,
                 'nbr_ip_cores': solution['amount_ip_cores'],
                 'nbr_orig_cores': solution['amount_original_cores'],

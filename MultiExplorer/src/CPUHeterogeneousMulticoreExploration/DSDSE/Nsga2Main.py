@@ -33,7 +33,7 @@ class Nsga2Main(object):
 
         problem = DSDSE(dse_definitions, self.settings)
 
-        evolution = Evolution(problem, 100, 20, self.settings)
+        evolution = Evolution(problem, 100, 10, self.settings)
 
         evolution.register_on_new_generation(self.print_generation)
 

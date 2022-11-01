@@ -78,9 +78,6 @@ class MainWindow(Tkinter.Tk, object):
 
 class ScreenFrame(Tkinter.Frame, object):
     def __init__(self, master=None, cnf={}, focus=False, **kw):
-        """This class configures and populates the toplevel window.
-           top is the toplevel containing window."""
-
         super(ScreenFrame, self).__init__(master, cnf, **kw)
 
         if focus is True:
@@ -107,20 +104,15 @@ class ScreenFrame(Tkinter.Frame, object):
 
 class LoadScreen(ScreenFrame):
     def __init__(self, master=None, cnf={}, focus=False, **kw):
-        """This class configures and populates the toplevel window.
-           top is the toplevel containing window."""
-
         super(LoadScreen, self).__init__(master, cnf, focus, **kw)
 
 
 class LaunchScreen(ScreenFrame):
     def __init__(self, master=None, cnf={}, focus=False, **kw):
-        """This class configures and populates the toplevel window.
-           top is the toplevel containing window."""
-
         super(LaunchScreen, self).__init__(master, cnf, focus, **kw)
 
         self.selected_flow_label = None
+        # todo We still lack a LOGO IMAGE
         # self.me_logo_image = Tkinter.Label(self)
         # self.me_logo_image.place(relx=0.5, anchor="n", height=150, width=250)
         # self.me_logo_image.configure(activebackground=DefaultStyleSettings.bg_color)
@@ -131,19 +123,27 @@ class LaunchScreen(ScreenFrame):
         self.execution_flow_label_frame.place(
             relx=0.5,
             rely=0.5,
+            width=500,
             anchor=ANCHOR_CENTER
         )
 
         self.execution_flow_label_frame.configure(
             relief='groove',
             labelanchor='n',
-            text='''Execution Flow''',
+            text='''Start an Execution Flow''',
         )
 
         self.execution_flow_label_frame.rowconfigure(0, weight=1)
         self.execution_flow_label_frame.columnconfigure(0, weight=1)
+        self.execution_flow_label_frame.columnconfigure(1, weight=1)
 
         self.select_execution_flow_combobox = ttk.Combobox(self.execution_flow_label_frame)
+
+        self.select_execution_flow_combobox.configure(
+            values=ExecutionFlowRegistry().get_flows_list(),
+            takefocus="",
+            width=40,
+        )
 
         self.select_execution_flow_combobox.grid(
             column=0,
@@ -152,26 +152,21 @@ class LaunchScreen(ScreenFrame):
 
         self.select_execution_flow_combobox.bind('<<ComboboxSelected>>', self.enable_execution)
 
-        self.select_execution_flow_combobox.configure(
-            values=ExecutionFlowRegistry().get_flows_list(),
-            takefocus="",
-        )
-
         self.execute_button = Tkinter.Button(
             self.execution_flow_label_frame,
             command=lambda: self.execute_flow(),
             state=STATE_DISABLED,
         )
 
-        self.execute_button.grid(
-            column=1,
-            row=0,
-        )
-
         self.execute_button.configure(
             activebackground=DefaultStyle.button_active_bg_color,
             borderwidth=DefaultStyle.button_border_width,
             text='''Start'''
+        )
+
+        self.execute_button.grid(
+            column=1,
+            row=0,
         )
 
     def enable_execution(self, event):

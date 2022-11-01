@@ -18,6 +18,8 @@ sim.info
 sim.stats.sqlite3
 /MultiExplorer/support/mcpat/density90.out
 
+.out
+
 out.json
 /MultiExplorer/src/PerformanceExploration/Sniper/Sniper.py~
 /MultiExplorer/src/PerformanceExploration/Sniper/out.json~
