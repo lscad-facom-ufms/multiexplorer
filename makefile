@@ -1,4 +1,4 @@
-all: check config test
+all: install check config test
 
 install:
 ifneq ($(shell id -u), 0)
@@ -26,13 +26,13 @@ else
 	@echo "MultiExplorer/src/config.py already found, make sure it's properly set."
 endif
 ifeq (,$(shell ls | grep .env))
-	touch .env
+	cp example.env .env
 else
 	@echo ".env already found, make sure it's properly set."
 endif
 
 test:
-	python MultiExplorer/src/MultiExplorer.py input-examples/quark.json
+	python ME.py
 
 python2-check:
 ifeq (,$(shell which python2))
