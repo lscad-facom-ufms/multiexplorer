@@ -97,20 +97,24 @@ class CPUHeterogeneousMulticoreExplorationExecutionFlow(ExecutionFlow):
 
         original_power_density = physical_simulation_results['power_density']
 
-        return {
-            'matplot_figures': {
-                'Performance & Power Density': DSDSEPresenter.plot_population(
+        results = {
+            'matplot_figures': {},
+        }
+
+        results['matplot_figures']['Performance & Power Density'] = DSDSEPresenter.plot_population(
                     population_results,
                     original_performance,
                     original_power_density
-                ),
-                # 'Aproximated Pareto Front': DSDSEPresenter.plot_pareto_front(
-                #     population_results,
-                #     original_performance,
-                #     original_power_density
-                # ),
-            }
-        }
+                )
+
+        # if len(population_results) > 1:
+        #     results['matplot_figures']['Aproximated Pareto Front'] = DSDSEPresenter.plot_pareto_front(
+        #             population_results,
+        #             original_performance,
+        #             original_power_density
+        #         )
+
+        return results
 
     def handle_step_failure(self, step):
         tkMessageBox.showerror(

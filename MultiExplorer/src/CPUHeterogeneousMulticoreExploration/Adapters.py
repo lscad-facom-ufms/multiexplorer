@@ -1095,11 +1095,11 @@ class SniperSimulatorAdapter(Adapter):
         global_frequency = int(input_json['General_Modeling']['core']['global_frequency'])
         self.inputs['general_modeling']['core']['global_frequency'] = global_frequency
 
-        try:
-            self.inputs['general_modeling']['core']['frequency'] = \
-                tuple(input_json['General_Modeling']['core']['frequency'])
-        except TypeError:
-            self.inputs['general_modeling']['core']['frequency'] = global_frequency
+        # try:
+        #     self.inputs['general_modeling']['core']['frequency'] = \
+        #         tuple(input_json['General_Modeling']['core']['frequency'])
+        # except TypeError:
+        self.inputs['general_modeling']['core']['frequency'] = global_frequency
 
         self.inputs['general_modeling']['core']['logical_cpus'] = \
             int(input_json['General_Modeling']['core']['logical_cpus'])
@@ -1406,15 +1406,15 @@ class SniperSimulatorAdapter(Adapter):
 
         global_frequency = str(self.get_global_frequency())
 
-        try:
-            frequencies = []
-
-            for value in self.inputs['general_modeling']['core']['frequency']:
-                frequencies.append(float(value) / 1000.0)
-
-            frequencies = ','.join(map(str, frequencies))
-        except TypeError:
-            frequencies = global_frequency
+        # try:
+        #     frequencies = []
+        #
+        #     for value in self.inputs['general_modeling']['core']['frequency']:
+        #         frequencies.append(float(value) / 1000.0)
+        #
+        #     frequencies = ','.join(map(str, frequencies))
+        # except TypeError:
+        frequencies = global_frequency
 
         cfg_file.writelines([
             "[perf_model/core]\n",
@@ -1794,6 +1794,7 @@ class SniperSimulatorAdapter(Adapter):
 
         self.presentable_results = {
             'orig_core': self.get_processor() + "_" + self.get_technology(),
+            'total_cores': int(self.config["general/total_cores"]),
             'elapsed_time': (elapsed_time, 'fs'),  # elapsed time is in femtoseconds (fs) (for Snipersim 7.4)
         }
 
@@ -1824,6 +1825,11 @@ class SniperSimulatorAdapter(Adapter):
 
         with open(json_output_file_path, 'w') as json_output_file:
             json.dump(self.results, json_output_file, indent=4)
+
+        json_output_file_path = self.get_output_path() + "/sniper_presentable_results.json"
+
+        with open(json_output_file_path, 'w') as json_output_file:
+            json.dump(self.presentable_results, json_output_file, indent=4)
 
         try:
             dse_settings_json = json.loads(open(self.get_dse_settings_file_path(), 'r+').read())
@@ -2070,10 +2076,15 @@ class McPATAdapter(Adapter):
                 'W/mm^2'
             ),
             'area': (
-                round(self.results['core']['area'][0], 2),
-                self.results['core']['area'][1]
+                round(self.results['processor']['area'][0], 2),
+                self.results['processor']['area'][1]
             ),
         }
+
+        json_output_file_path = self.get_output_path() + "/mcpat_presentable_results.json"
+
+        with open(json_output_file_path, 'w') as json_output_file:
+            json.dump(self.presentable_results, json_output_file, indent=4)
 
     @staticmethod
     def create_param_element(name, value):
@@ -2784,7 +2795,7 @@ class NsgaIIPredDSEAdapter(Adapter):
         json_dsdse_input_file_path = self.get_output_path() + "/dsdse_input.json"
 
         with open(json_dsdse_input_file_path, 'w') as json_output_file:
-            json.dump(self.results, json_output_file, indent=4)
+            json.dump(settings, json_output_file, indent=4)
 
         return settings
 

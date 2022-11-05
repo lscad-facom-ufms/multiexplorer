@@ -115,6 +115,58 @@ class PredictedCores(Enum):
 
         raise ValueError("Can't find default input json file for unknown/unpredicted cores.")
 
+    @staticmethod
+    def get_original_frequency(value):
+        if value == PredictedCores.Quark.value:
+            return 0.4
+        elif value == PredictedCores.Arm53.value:
+            return 1.6
+        elif value == PredictedCores.Arm57.value:
+            return 2.0
+        elif value == PredictedCores.Atom.value:
+            return 0.5
+        elif value == PredictedCores.Smithfield.value:
+            return 2.8
+
+    @staticmethod
+    def get_power(value):
+        if value == PredictedCores.Quark.value:
+            return 0.690
+        elif value == PredictedCores.Arm53.value:
+            return 1.39117
+        elif value == PredictedCores.Arm57.value:
+            return 1.59445
+        elif value == PredictedCores.Atom.value:
+            return 0.830237
+        elif value == PredictedCores.Smithfield.value:
+            return 0.439832
+
+    @staticmethod
+    def get_area(value):
+        if value == PredictedCores.Quark.value:
+            return 15.692
+        elif value == PredictedCores.Arm53.value:
+            return 10.5853
+        elif value == PredictedCores.Arm57.value:
+            return 10.5023
+        elif value == PredictedCores.Atom.value:
+            return 8.19052
+        elif value == PredictedCores.Smithfield.value:
+            return 111.117
+
+    @staticmethod
+    def get_original_performance(value):
+        if value == PredictedCores.Quark.value:
+            return 502.53
+        elif value == PredictedCores.Arm53.value:
+            return 3125.68
+        elif value == PredictedCores.Arm57.value:
+            return 4006.64
+        elif value == PredictedCores.Atom.value:
+            return 648.47
+        elif value == PredictedCores.Smithfield.value:
+            return 6428
+
 
 class SniperCorePipelineKinds(Enum):
     Shared = "Shared"
