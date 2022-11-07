@@ -2820,6 +2820,14 @@ class NsgaIIPredDSEAdapter(Adapter):
     def read_dse_settings(self):
         self.dse_settings = json.loads(open(self.get_dse_settings_file_path()).read())
 
+        self.dse_settings['num_of_generations'] = 500
+
+        self.dse_settings['num_of_individuals'] = 10
+
+        self.dse_settings['mutation_strength'] = 0.5
+
+        self.dse_settings['mutation_rate'] = 0.1
+
         self.set_dse_settings_from_inputs([
             'exploration_space',
             'constraints',

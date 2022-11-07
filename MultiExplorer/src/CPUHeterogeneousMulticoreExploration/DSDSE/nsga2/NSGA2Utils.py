@@ -37,11 +37,7 @@ class NSGA2Utils(object):
 
         self.num_of_tour_particips = num_of_tour_particips
 
-        self.bd = json.loads(open(DbSelector.select_db(
-            bench=settings['dse']['benchmark'],
-            app=settings['dse']['application'],
-            tech=settings['dse']['technology'],
-        )).read())
+        self.bd = json.loads(open(DbSelector.all_cores_path()).read())
 
         input_nsga = InOut(settings)
 

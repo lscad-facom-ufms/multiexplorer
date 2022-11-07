@@ -38,3 +38,7 @@ class DbSelector(object):
         database_path = os.path.dirname(os.path.realpath(__file__)) + '/db/Experimentos/all/' + tech + '.json'
 
         return database_path
+
+    @staticmethod
+    def all_cores_path():
+        return os.path.dirname(os.path.realpath(__file__)) + '/db/Experimentos/all/all.json'

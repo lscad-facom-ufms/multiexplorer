@@ -17,11 +17,16 @@ class Definitions:
     # objective
     @staticmethod
     def power_density(individual):
-        total_power =\
-            individual.features[0] * individual.features[2] + individual.features[4] * individual.features[5]["pow"]
+        total_power = (
+            individual.features[0] * individual.features[2]
+            + individual.features[4] * individual.features[5]["pow"]
+        )
 
-        total_area =\
-            individual.features[0] * individual.features[1] + individual.features[4] * individual.features[5]["area"]
+        total_area = (
+            individual.features[0] * individual.features[1]
+            + individual.features[4] * individual.features[5]["area"]
+        )
+
         try:
             return total_power / total_area
         except ZeroDivisionError:

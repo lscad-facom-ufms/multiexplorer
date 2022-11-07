@@ -24,16 +24,17 @@ class Nsga2Main(object):
         dse_definitions = Definitions(performance_predictor)
 
         self.settings.update({
-            'bd_path': DbSelector.DbSelector.select_db(
-                bench=self.settings['dse']['benchmark'],
-                app=self.settings['dse']['application'],
-                tech=self.settings['dse']['technology'],
-            )
+            'bd_path': DbSelector.DbSelector.all_cores_path()
         })
 
         problem = DSDSE(dse_definitions, self.settings)
 
-        evolution = Evolution(problem, 100, 10, self.settings)
+        evolution = Evolution(
+            problem,
+            self.settings['dse']['num_of_generations'],
+            self.settings['dse']['num_of_individuals'],
+            self.settings
+        )
 
         evolution.register_on_new_generation(self.print_generation)
 

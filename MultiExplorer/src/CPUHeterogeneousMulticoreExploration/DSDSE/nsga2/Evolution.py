@@ -13,7 +13,13 @@ class Evolution(object):
 
     def __init__(self, problem, num_of_generations, num_of_individuals, settings):
         # type: (DSDSE, int, int, Dict) -> None
-        self.utils = NSGA2Utils(problem, num_of_individuals, settings)
+        self.utils = NSGA2Utils(
+            problem,
+            num_of_individuals,
+            settings,
+            mutation_rate=settings['dse']['mutation_rate'],
+            mutation_strength=settings['dse']['mutation_strength']
+        )
 
         self.population = None
 

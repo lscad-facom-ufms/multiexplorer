@@ -149,12 +149,14 @@ class InOut(object):
             self.mcpat_results['processor']['peak_power'][0]
         ]
 
-        performance = DbSelector.get_performance_in_db(
-            model_name=self.dse_settings['processor'],
-            bench=self.dse_settings['benchmark'],
-            app=self.dse_settings['application'],
-            tech=self.dse_settings['technology'],
-        )
+        # performance = DbSelector.get_performance_in_db(
+        #     model_name=self.dse_settings['processor'],
+        #     bench=self.dse_settings['benchmark'],
+        #     app=self.dse_settings['application'],
+        #     tech=self.dse_settings['technology'],
+        # )
+
+        performance = self.dse_settings['original_performance'][0]
 
         parameters["performance_orig"] = [performance, performance]
 
