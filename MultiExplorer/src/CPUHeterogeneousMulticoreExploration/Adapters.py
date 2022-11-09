@@ -2820,7 +2820,7 @@ class NsgaIIPredDSEAdapter(Adapter):
     def read_dse_settings(self):
         self.dse_settings = json.loads(open(self.get_dse_settings_file_path()).read())
 
-        self.dse_settings['num_of_generations'] = 500
+        self.dse_settings['num_of_generations'] = 150
 
         self.dse_settings['num_of_individuals'] = 10
 
