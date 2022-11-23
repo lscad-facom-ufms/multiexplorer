@@ -143,3 +143,17 @@ class IntegerRangeValidator:
                 return False
 
         return True
+
+    def entry_is_valid(self, idx, value):
+        try:
+            value = int(value)
+        except ValueError:
+            return False
+
+        if idx == 0 and self.min_val is not None:
+            return value >= self.min_val
+
+        if idx == 1 and self.max_val is not None:
+            return value <= self.max_val
+
+        return True

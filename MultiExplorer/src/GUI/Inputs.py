@@ -1,3 +1,4 @@
+import Tkconstants
 import Tkinter
 import ttk
 
@@ -50,6 +51,20 @@ class InputGroupFrame(Tkinter.LabelFrame, object):
 
         self.infra_group = infra_group
 
+        self.subtitle_frame = None
+
+        if infra_group.subtitle:
+            self.subtitle_frame = Tkinter.Frame(self)
+
+            self.subtitle_frame.subtitle = Tkinter.Label(self.subtitle_frame, {
+                'text': infra_group.subtitle,
+                'wraplength': 500,
+            })
+
+            self.subtitle_frame.subtitle.pack()
+
+            self.subtitle_frame.pack()
+
         self.inputs = {}
 
         for key in infra_group.inputs:
@@ -96,12 +111,23 @@ class InputGroupFrame(Tkinter.LabelFrame, object):
     def get_infra_input(self):
         return self.infra_group
 
+    def show_additional_info(self, additional_info):
+        self.master.show_additional_info(additional_info)
+
+    def hide_additional_info(self):
+        self.master.hide_additional_info()
+
 
 class InputFrame(Tkinter.Frame, object):
     def __init__(self, infra_input, master=None, cnf={}, **kw):
         super(InputFrame, self).__init__(master, cnf, **kw)
 
         self.label = InputLabel(infra_input.get_label(), self)
+
+        unit = infra_input.get_unit()
+
+        if unit:
+            self.unit = UnitLabel(unit, self)
 
         self.entry = None
 
@@ -136,6 +162,12 @@ class InputFrame(Tkinter.Frame, object):
     def get_infra_input(self):
         return self.infra_input
 
+    def show_additional_info(self, additional_info):
+        self.master.show_additional_info(additional_info)
+
+    def hide_additional_info(self):
+        self.master.hide_additional_info()
+
 
 class MultipleInputFrame(Tkinter.Frame, object):
     def __init__(self, conf, master=None, cnf={}, **kw):
@@ -158,6 +190,15 @@ class MultipleInputFrame(Tkinter.Frame, object):
 
         nbr_of_columns = self.number_of_entries + len(conf['labels']) + 2
 
+        self.unit = None
+
+        unit = self.infra_input.get_unit()
+
+        if unit:
+            nbr_of_columns = nbr_of_columns + 1
+
+            self.unit = UnitLabel(unit, self, (0, nbr_of_columns-2))
+
         self.columnconfigure(0, weight=nbr_of_columns)
         self.rowconfigure(0, weight=1)
 
@@ -170,15 +211,9 @@ class MultipleInputFrame(Tkinter.Frame, object):
 
         self.pack()
 
-    def entry_is_valid(self, indx, value):
+    def entry_is_valid(self, idx, value):
         # type: (int, str) -> bool
-        new_values = self.values
-
-        new_values[indx] = value
-
-        self.infra_input.is_valid(tuple(new_values))
-
-        return True
+        return self.infra_input.entry_is_valid(idx, value)
 
     def is_valid(self):
         # type: () -> bool
@@ -226,6 +261,26 @@ class InputLabel(Tkinter.Label, object):
         )
 
 
+class UnitLabel(Tkinter.Label, object):
+    def __init__(self, unit_text, master=None, pos=None, cnf={}, **kw):
+        super(UnitLabel, self).__init__(master, cnf, **kw)
+
+        self.configure(
+            activebackground=DefaultStyle.bg_color,
+            text="(" + unit_text + ")"
+        )
+
+        if pos is None:
+            pos = (0, 2)
+
+        self.grid(
+            column=pos[1],
+            columnspan=1,
+            row=pos[0],
+            rowspan=1,
+        )
+
+
 class ValidationLabel(Tkinter.Label, object):
     def __init__(self, master=None, pos=None, cnf={}, **kw):
         super(ValidationLabel, self).__init__(master, cnf, **kw)
@@ -233,7 +288,7 @@ class ValidationLabel(Tkinter.Label, object):
         self.img = None
 
         if pos is None:
-            pos = (0, 2)
+            pos = (0, 3)
 
         self.configure(
             activebackground=DefaultStyle.bg_color,
@@ -275,7 +330,7 @@ class SelectEntry(ttk.Combobox, object):
 
         self.infra_input = infra_input
 
-        self.bind("<<ComboboxSelected>>", self.set_input_value)
+        self.bind("<<ComboboxSelected>>", self.on_select)
 
         # %d = Type of action (1=insert, 0=delete, -1 for others)
         # %i = index of char string to be inserted/deleted, or -1
@@ -304,11 +359,24 @@ class SelectEntry(ttk.Combobox, object):
 
         return False
 
-    def set_input_value(self, event=None):
+    def on_select(self, event=None):
+        self.set_input_value()
+
+        self.show_additional_info()
+
+    def set_input_value(self):
         try:
             self.infra_input.set_value_from_gui(self.get())
         except ValueError:
             pass
+
+    def show_additional_info(self):
+        add_info = self.infra_input.get_additional_info()
+
+        if add_info:
+            self.master.show_additional_info(add_info)
+        else:
+            self.master.hide_additional_info()
 
 
 class Select(InputFrame):
@@ -316,6 +384,12 @@ class Select(InputFrame):
         super(Select, self).__init__(infra_input, master, cnf, **kw)
 
         self.entry = SelectEntry(infra_input, self)
+
+    def show_additional_info(self, additional_info):
+        self.master.show_additional_info(additional_info)
+
+    def hide_additional_info(self):
+        self.master.hide_additional_info()
 
 
 class TypeInEntry(Tkinter.Entry, object):

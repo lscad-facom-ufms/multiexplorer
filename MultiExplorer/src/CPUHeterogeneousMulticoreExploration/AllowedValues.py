@@ -54,6 +54,16 @@ class PredictedCores(Enum):
         }
 
     @staticmethod
+    def get_info_dict():
+        return {
+            PredictedCores.Quark.value: "Quark Info",
+            PredictedCores.Arm53.value: "Arm53 Info",
+            PredictedCores.Arm57.value: "Arm57 Info",
+            PredictedCores.Atom.value: "Atom Info",
+            PredictedCores.Smithfield.value: "Smithfield Info",
+        }
+
+    @staticmethod
     def get_processor(value):
         # type: (int) -> str
         if value == PredictedCores.Quark.value:

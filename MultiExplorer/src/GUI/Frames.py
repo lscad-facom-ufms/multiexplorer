@@ -10,7 +10,7 @@ from Tkconstants import S as ANCHOR_S, N as ANCHOR_N, NW as ANCHOR_NW, SW as ANC
 from Tkconstants import BOTTOM as SIDE_BOTTOM, TOP as SIDE_TOP, LEFT as SIDE_LEFT, RIGHT as SIDE_RIGHT
 
 from MultiExplorer.src.CPUHeterogeneousMulticoreExploration.Presenters import DSDSEPresenter
-from MultiExplorer.src.Infrastructure.ExecutionFlow import ExecutionFlow
+from MultiExplorer.src.Infrastructure.ExecutionFlow import ExecutionFlow, Step
 from MultiExplorer.src.CPUHeterogeneousMulticoreExploration.CPUHeterogeneousMulticoreExploration import \
     CPUHeterogeneousMulticoreExplorationExecutionFlow
 from MultiExplorer.src.GUI.Buttons import NavigateButton
@@ -107,6 +107,96 @@ class LoadScreen(ScreenFrame):
         super(LoadScreen, self).__init__(master, cnf, focus, **kw)
 
 
+class FlowPreview(Tkinter.Frame, object):
+    HEIGHT = 200
+
+    WIDTH = 500
+
+    STEP_WIDTH = 150
+
+    def __init__(self, master=None, cnf={}, **kw):
+        super(FlowPreview, self).__init__(master, cnf, **kw)
+
+        self.canvas = None
+
+        self.x_scroll = None
+
+    def draw_flow(self, flow):
+        # type: (ExecutionFlow) -> None
+        steps = flow.get_steps()
+
+        nbr_of_steps = len(steps)
+
+        canvas_width = nbr_of_steps * FlowPreview.STEP_WIDTH
+
+        if self.canvas:
+            self.canvas.destroy()
+
+            self.canvas = None
+
+        if self.x_scroll:
+            self.x_scroll.destroy()
+
+            self.x_scroll = None
+
+        self.canvas = Tkinter.Canvas(self, {
+            'width': canvas_width,
+        })
+
+        self.canvas.pack(
+            fill=FILL_BOTH,
+            expand=True,
+            side=SIDE_TOP,
+        )
+
+        self.x_scroll = Tkinter.Scrollbar(self, orient=HORIZONTAL_ORIENTATION)
+
+        self.x_scroll.config(
+            command=self.canvas.xview
+        )
+
+        self.x_scroll.pack(
+            fill=FILL_X,
+            expand=True,
+            side=SIDE_BOTTOM,
+        )
+
+        self.canvas.config(
+            bg=DefaultStyle.bg_color,
+            xscrollcommand=self.x_scroll.set,
+        )
+
+        pad_x = (FlowPreview.WIDTH - canvas_width) / (nbr_of_steps + 1)
+
+        x = pad_x
+
+        y = FlowPreview.HEIGHT / 2
+
+        for step in steps:
+            self.draw_step(step, x, y)
+
+            x = x + FlowPreview.STEP_WIDTH + pad_x
+
+    def draw_step(self, step, x, y):
+        # type: (Step, int, int) -> None
+        self.canvas.create_polygon(
+            [
+                x + 0, y + 0,
+                x + 12, y + 25,
+                x, y + 50,
+                x + 100, y + 50,
+                x + 112, y + 25,
+                x + 100, y,
+                x, y
+            ],
+            fill=DefaultStyle.bg_color,
+            outline=DefaultStyle.fg_color,
+        )
+
+        self.canvas.create_text(x + 56, y + 25, text=step.get_label(), anchor=ANCHOR_CENTER, font=('Helvetica', '7'),
+                                width=80)
+
+
 class LaunchScreen(ScreenFrame):
     def __init__(self, master=None, cnf={}, focus=False, **kw):
         super(LaunchScreen, self).__init__(master, cnf, focus, **kw)
@@ -118,13 +208,17 @@ class LaunchScreen(ScreenFrame):
         # self.me_logo_image.configure(activebackground=DefaultStyleSettings.bg_color)
         # self.me_logo_image.configure(text='''MultiExplorer.png''')
 
+        self.columnconfigure(0, weight=1)
+
+        self.rowconfigure(0, weight=1)
+
+        self.rowconfigure(1, weight=2)
+
         self.execution_flow_label_frame = Tkinter.LabelFrame(self)
 
-        self.execution_flow_label_frame.place(
-            relx=0.5,
-            rely=0.5,
-            width=500,
-            anchor=ANCHOR_CENTER
+        self.execution_flow_label_frame.grid(
+            column=0,
+            row=1
         )
 
         self.execution_flow_label_frame.configure(
@@ -134,6 +228,8 @@ class LaunchScreen(ScreenFrame):
         )
 
         self.execution_flow_label_frame.rowconfigure(0, weight=1)
+        self.execution_flow_label_frame.rowconfigure(1, weight=1)
+        self.execution_flow_label_frame.rowconfigure(2, weight=1)
         self.execution_flow_label_frame.columnconfigure(0, weight=1)
         self.execution_flow_label_frame.columnconfigure(1, weight=1)
 
@@ -152,6 +248,10 @@ class LaunchScreen(ScreenFrame):
 
         self.select_execution_flow_combobox.bind('<<ComboboxSelected>>', self.enable_execution)
 
+        self.flow_info_area = Tkinter.Label(self.execution_flow_label_frame, {
+            'wraplength': 500
+        })
+
         self.execute_button = Tkinter.Button(
             self.execution_flow_label_frame,
             command=lambda: self.execute_flow(),
@@ -169,10 +269,40 @@ class LaunchScreen(ScreenFrame):
             row=0,
         )
 
+        self.flow_preview = FlowPreview(self.execution_flow_label_frame)
+
+        self.flow_preview.grid(
+            column=0,
+            row=2,
+        )
+
     def enable_execution(self, event):
         self.execute_button.config(state=STATE_NORMAL)
 
         self.selected_flow_label = self.select_execution_flow_combobox.get()
+
+        self.display_flow_info()
+
+    def display_flow_info(self):
+        selected_flow_label = self.select_execution_flow_combobox.get()
+
+        flow = ExecutionFlowRegistry().get_flow(selected_flow_label)
+
+        flow_info = flow.get_info()
+
+        if flow_info:
+            self.flow_info_area.config(text=flow_info)
+
+            self.flow_info_area.grid(
+                column=0,
+                row=1,
+            )
+        else:
+            self.flow_info_area.config(text="")
+
+            self.flow_info_area.grid_forget()
+
+        self.flow_preview.draw_flow(flow)
 
     def execute_flow(self):
         input_screen = self.master.get_screen(InputScreen.__name__)
@@ -251,6 +381,14 @@ class InputTab(Tkinter.Frame, object):
             image=self.img,
             compound=Tkinter.LEFT,
         )
+
+        self.master.select(self.master.index(self))
+
+    # todo
+    def show_additional_info(self): pass
+
+    # todo
+    def hide_additional_info(self): pass
 
 
 class InputTabsController(ttk.Notebook, object):
@@ -500,10 +638,6 @@ class StepDisplay(object):
             fill=DefaultStyle.bg_color,
             outline=DefaultStyle.fg_color,
         )
-
-        # self.canvas.create_line(0, y + 50, x + 25, y + 50, fill="black", width=1)
-
-        # self.canvas.create_line(x + 225, y + 50, x + 225 + 225, y + 50, fill="black", width=1)
 
         self.label_id = self.canvas.create_text(x + 112, y + 50, text=self.step.get_label(), anchor=ANCHOR_CENTER)
 

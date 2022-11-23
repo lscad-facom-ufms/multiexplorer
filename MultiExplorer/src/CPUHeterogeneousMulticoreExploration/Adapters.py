@@ -1,5 +1,5 @@
+﻿# -*- coding: utf-8 -*-
 import json
-import math
 import os
 import sys
 import re
@@ -33,11 +33,14 @@ class SniperSimulatorAdapter(Adapter):
                 'label': 'Application',
                 'key': 'application',
                 'allowed_values': Applications.get_dict(),
-                "required": True,
-                "is_user_input": True,
+                'value': Applications.SPLASH_II_CHOLESKY.value,
             }),
             InputGroup({
-                "label": "General Modeling",
+                "label": "Original Platform",
+                "subtitle": (
+                    "This platform will be the starting point for the automatic DSE."
+                    + " It will be evaluated through simulation by Sniper and McPAT."
+                ),
                 "key": "general_modeling",
                 "inputs": [
                     Input({
@@ -46,6 +49,7 @@ class SniperSimulatorAdapter(Adapter):
                         "is_user_input": True,
                         "required": True,
                         "allowed_values": PredictedCores.get_dict(),
+                        "additional_info": PredictedCores.get_info_dict()
                     }),
                     Input({
                         "label": "Number of Cores",
@@ -60,6 +64,7 @@ class SniperSimulatorAdapter(Adapter):
                         "inputs": [
                             Input({
                                 "label": "Global Frequency",
+                                "unit": 'MHz',
                                 "key": "global_frequency",
                                 "is_user_input": True,
                                 "required": True,
@@ -2671,21 +2676,28 @@ class NsgaIIPredDSEAdapter(Adapter):
         self.set_inputs([
             InputGroup({
                 'label': "Exploration Space",
+                'subtitle': (
+                    "Define the limitations for core heterogeneity."
+                    + " The platforms produced by the automatic DSE will often contain two different core models."
+                    + " You are able to restrict the number of cores used of both models."
+                ),
                 'key': 'exploration_space',
                 'inputs': [
                     Input({
-                        'label': 'Number of Original Cores for Design',
+                        'label': 'Minimal number of cores from the original model',
                         'key': 'original_cores_for_design',
                         "is_user_input": True,
                         "required": True,
                         'type': InputType.IntegerRange,
+                        'min_val': 1,
                     }),
                     Input({
-                        'label': 'Number of IP Cores for Design',
+                        'label': 'Number of cores that may be from another model',
                         'key': 'ip_cores_for_design',
                         "is_user_input": True,
                         "required": True,
                         'type': InputType.IntegerRange,
+                        'mina_val': 1,
                     }),
                 ],
             }),
@@ -2695,6 +2707,7 @@ class NsgaIIPredDSEAdapter(Adapter):
                 'inputs': [
                     Input({
                         'label': 'Maximum Power Density',
+                        'unit': 'V/mm²',
                         'key': 'maximum_power_density',
                         'type': InputType.Float,
                         "is_user_input": True,
@@ -2702,6 +2715,7 @@ class NsgaIIPredDSEAdapter(Adapter):
                     }),
                     Input({
                         'label': 'Maximum Area',
+                        'unit': 'mm²',
                         'key': 'maximum_area',
                         'type': InputType.Float,
                         "is_user_input": True,

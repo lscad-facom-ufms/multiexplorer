@@ -213,6 +213,9 @@ class ExecutionFlow(EventFirer):
     @staticmethod
     def get_label(): raise NotImplementedError
 
+    @staticmethod
+    def get_info(): raise NotImplementedError
+
     def get_output_path(self): raise NotImplementedError
 
     def get_steps(self):

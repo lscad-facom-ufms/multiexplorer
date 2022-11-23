@@ -18,16 +18,19 @@ class InputType(Enum):
         return value in set(item.value for item in InputType)
 
     @staticmethod
-    def get_default_validator(input_type):
+    def get_default_validator(input_type, rules=None):
+        if rules is None:
+            rules = {}
+
         # type: (InputType) -> Optional[Validator]
         if input_type == InputType.Integer:
-            return IntegerValidator()
+            return IntegerValidator(rules)
 
         if input_type == InputType.Float:
-            return FloatValidator()
+            return FloatValidator(rules)
 
         if input_type == InputType.IntegerRange:
-            return IntegerRangeValidator()
+            return IntegerRangeValidator(rules)
 
         return None
 
@@ -36,17 +39,22 @@ class Input:
     def __init__(self, options):
         """
         options = Dict {
-            "label" : str,
-            "key": str,
-            "type": InputType,
-            "value": Any,
-            "is_user_input": bool,
-            "validator: Validator,
-            "allowed_values": Dict,
-            "required": bool,
+            "label" : str, Text to use as label for the input
+            "unit": str, Unit of measurement to use as a hint for the input
+            "key": str, Dictionary key to use when loading/storing data
+            "type": InputType, Input type. Serve the purpose of defining standard validation behavior, for instance
+            "value": Any, A pre-set value for the input. It must be valid
+            "is_user_input": bool, Marks whether this input should be show in the GUI for the user to set
+            "validator: Validator, Optional custom Validator. For more on validation rules, check Validators.py
+            "allowed_values": Dict, Dict of value -> label pairs to use on combobox inputs
+            "aditional_info": Dict, Dicto of value -> info pairs when you need to display further information
+                when an option is selected in a combobox,
+            "required": bool, Marks whether setting this input is mandatory or an empty/null value is also acceptable
         }
         """
         self.label = 'Input Label'  # type: str
+
+        self.unit = None  # type: Optional[str]
 
         self.key = 'input_key'  # type: str
 
@@ -60,6 +68,8 @@ class Input:
 
         self.allowed_values = None  # type: Optional[Dict]
 
+        self.aditional_info = None  # type: Optional[Dict]
+
         self.required = False  # type: bool
 
         if 'key' in options:
@@ -70,6 +80,9 @@ class Input:
         if 'label' in options:
             self.label = str(options['label'])
 
+        if 'unit' in options:
+            self.unit = str(options['unit'])
+
         if 'type' in options:
             if not isinstance(options['type'], InputType):
                 raise ValueError("The value of the parameter 'type' must belong to the InputType enumeration.")
@@ -77,10 +90,13 @@ class Input:
             self.type = options['type']
 
             if 'validator' not in options:
-                self.validator = InputType.get_default_validator(self.type)
+                self.validator = InputType.get_default_validator(self.type, options)
 
         if 'allowed_values' in options:
             self.allowed_values = options['allowed_values']
+
+        if 'aditional_info' in options:
+            self.aditional_info = options['aditional_info']
 
         if 'validator' in options:
             if not isinstance(options['validator'], Validator):
@@ -102,6 +118,9 @@ class Input:
 
     def get_label(self):
         return self.label
+
+    def get_unit(self):
+        return self.unit
 
     def is_valid(self, value=None):
         # type: (Optional[Any]) -> bool
@@ -128,6 +147,9 @@ class Input:
             return True
 
         return self.validator.is_valid(value)
+
+    def entry_is_valid(self, idx, value):
+        return self.validator.entry_is_valid(idx, value)
 
     def values_are_loose(self):
         if self.allowed_values is None:
@@ -177,9 +199,23 @@ class Input:
         except TypeError:
             return str(self.value)
 
+    def get_additional_info(self):
+        if self.value is None:
+            return None
+
+        if self.aditional_info is None:
+            return None
+
+        if self.value not in self.aditional_info:
+            return None
+
+        return self.aditional_info[self.value]
+
 
 class InputGroup:
     label = 'Group Label'  # type: str
+
+    subtitle = None  # type: Optional[str]
 
     key = 'group_key'  # type: str
 
@@ -195,6 +231,9 @@ class InputGroup:
         """
         if 'label' in options:
             self.label = options['label']
+
+        if 'subtitle' in options:
+            self.subtitle = options['subtitle']
 
         if 'key' in options:
             self.key = options['key']
