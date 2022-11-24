@@ -371,10 +371,10 @@ class SelectEntry(ttk.Combobox, object):
             pass
 
     def show_additional_info(self):
-        add_info = self.infra_input.get_additional_info()
+        add_info = self.infra_input.get_additional_info(self.get())
 
         if add_info:
-            self.master.show_additional_info(add_info)
+            self.master.show_additional_info(self.infra_input.get_label() + ":\n" + add_info)
         else:
             self.master.hide_additional_info()
 

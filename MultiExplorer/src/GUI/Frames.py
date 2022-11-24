@@ -332,6 +332,10 @@ class InputTab(Tkinter.Frame, object):
         for input_key in step_user_inputs:
             self.inputs[input_key] = InputGUI.create_input(step_user_inputs[input_key], self)
 
+        self.info_display = Tkinter.Frame(self)
+
+        self.info_display.label = Tkinter.Label(self.info_display)
+
         self.pack(fill=FILL_BOTH, expand=True)
 
     def get_infra_inputs(self):
@@ -384,8 +388,12 @@ class InputTab(Tkinter.Frame, object):
 
         self.master.select(self.master.index(self))
 
-    # todo
-    def show_additional_info(self): pass
+    def show_additional_info(self, additional_info):
+        self.info_display.label.config(text=additional_info)
+
+        self.info_display.label.pack()
+
+        self.info_display.pack(fill=FILL_X, expand=True)
 
     # todo
     def hide_additional_info(self): pass

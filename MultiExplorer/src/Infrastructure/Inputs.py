@@ -68,7 +68,7 @@ class Input:
 
         self.allowed_values = None  # type: Optional[Dict]
 
-        self.aditional_info = None  # type: Optional[Dict]
+        self.additional_info = None  # type: Optional[Dict]
 
         self.required = False  # type: bool
 
@@ -95,8 +95,8 @@ class Input:
         if 'allowed_values' in options:
             self.allowed_values = options['allowed_values']
 
-        if 'aditional_info' in options:
-            self.aditional_info = options['aditional_info']
+        if 'additional_info' in options:
+            self.additional_info = options['additional_info']
 
         if 'validator' in options:
             if not isinstance(options['validator'], Validator):
@@ -199,17 +199,20 @@ class Input:
         except TypeError:
             return str(self.value)
 
-    def get_additional_info(self):
-        if self.value is None:
+    def get_additional_info(self, value=None):
+        if value is None:
+            value = self.value
+
+        if value is None:
             return None
 
-        if self.aditional_info is None:
+        if self.additional_info is None:
             return None
 
-        if self.value not in self.aditional_info:
+        if self.value not in self.additional_info:
             return None
 
-        return self.aditional_info[self.value]
+        return self.additional_info[self.value]
 
 
 class InputGroup:
