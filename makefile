@@ -7,7 +7,7 @@ ifneq ($(shell id -u), 0)
 endif
 	apt update
 	apt install -y python2.7
-ifeq (,$(shell ls /usr/bin/ | grep python$))
+ifeq (,$(shell ls /usr/bin/ | grep -w "python"$))
 	ln -s /usr/bin/python2.7 /usr/bin/python
 endif
 	apt install -y wget

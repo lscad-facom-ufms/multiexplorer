@@ -11,4 +11,28 @@ services:
         volumes:
             - .:/multiexplorer
             - /tmp/.X11-unix:/tmp/.X11-unix
-        network_mode: host
+        links:
+            - sniper:sniper
+        restart: always
+        expose:
+            - 22
+        networks:
+            - multiexplorernet
+    sniper:
+        stdin_open: true
+        tty: true
+        restart: always
+        image: snipersim/snipersim
+        hostname: sniper
+        volumes:
+            - ./rundir:/root/rundir
+        expose:
+            - 22
+        environment:
+            - DISPLAY=${DISPLAY}
+        networks:
+            - multiexplorernet
+
+networks:
+  multiexplorernet:
+    driver: bridge
