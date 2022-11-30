@@ -334,7 +334,7 @@ class InputTab(Tkinter.Frame, object):
 
         self.info_display = Tkinter.Frame(self)
 
-        self.info_display.label = Tkinter.Label(self.info_display)
+        self.info_display.label = Tkinter.Label(self.info_display, {'wraplength': 500})
 
         self.pack(fill=FILL_BOTH, expand=True)
 
