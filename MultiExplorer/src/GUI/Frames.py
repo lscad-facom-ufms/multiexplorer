@@ -17,7 +17,7 @@ from MultiExplorer.src.GUI.Buttons import NavigateButton
 from MultiExplorer.src.GUI.Inputs import InputGUI
 from MultiExplorer.src.GUI.Menus import DefaultMenu
 from MultiExplorer.src.GUI.Styles import DefaultStyle
-from MultiExplorer.src.GUI.Widgets import ScreenTitle
+from MultiExplorer.src.GUI.Widgets import ScreenTitle, ScrollableCanvasFrame, WrappingLabel, CanvasTable
 from MultiExplorer.src.Infrastructure.Events import Event
 from MultiExplorer.src.Infrastructure.Registries import ExecutionFlowRegistry
 from matplotlib.figure import Figure as MatplotFigure
@@ -316,9 +316,6 @@ class LaunchScreen(ScreenFrame):
 
 class InputTab(Tkinter.Frame, object):
     def __init__(self, step, master=None, cnf={}, **kw):
-        """This class configures and populates the toplevel window.
-           top is the toplevel containing window."""
-
         super(InputTab, self).__init__(master, cnf, **kw)
 
         self.img = None
@@ -334,9 +331,13 @@ class InputTab(Tkinter.Frame, object):
 
         self.info_display = Tkinter.Frame(self)
 
-        self.info_display.label = Tkinter.Label(self.info_display, {'wraplength': 500})
-
         self.pack(fill=FILL_BOTH, expand=True)
+
+        self.info_display.input_label = WrappingLabel(self.info_display)
+
+        self.info_display.text = WrappingLabel(self.info_display)
+
+        self.info_display.canvas_frame = ScrollableCanvasFrame(self.info_display)
 
     def get_infra_inputs(self):
         infra_inputs = {}
@@ -388,15 +389,26 @@ class InputTab(Tkinter.Frame, object):
 
         self.master.select(self.master.index(self))
 
-    def show_additional_info(self, additional_info):
-        self.info_display.label.config(text=additional_info)
-
-        self.info_display.label.pack()
-
+    def show_additional_info(self, label, additional_info):
         self.info_display.pack(fill=FILL_X, expand=True)
 
+        if 'text' in additional_info:
+            self.info_display.text.config(text=additional_info['text'])
+
+            self.info_display.text.pack()
+        else:
+            self.info_display.text.pack_forget()
+
+        if 'table_data' in additional_info:
+            self.info_display.canvas_frame.pack(fill=FILL_BOTH, expand=True)
+
+            table = CanvasTable(self.info_display.canvas_frame.canvas)
+        else:
+            self.info_display.canvas_frame.pack_forget()
+
     # todo
-    def hide_additional_info(self): pass
+    def hide_additional_info(self):
+        self.info_display.pack_forget()
 
 
 class InputTabsController(ttk.Notebook, object):

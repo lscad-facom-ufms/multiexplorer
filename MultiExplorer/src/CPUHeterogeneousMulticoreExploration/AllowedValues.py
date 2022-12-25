@@ -55,11 +55,17 @@ class PredictedCores(Enum):
 
     @staticmethod
     def get_info_dict():
+        # todo
         return {
-            PredictedCores.Quark.value: (
-                "Intel Quark (400 Mhz) is a line of 32-bit x86 SoCs and microcontrollers by Intel, designed for small"
-                + " size and low power consumption, and targeted at new markets including wearable devices.\n"
-            ),
+            PredictedCores.Quark.value: {
+                'text': (
+                    "Intel Quark (400 Mhz) is a line of 32-bit x86 SoCs and microcontrollers by Intel, designed for small"
+                    + " size and low power consumption, and targeted at new markets including wearable devices.\n"
+                ),
+                'table_data': {
+
+                }
+            },
             PredictedCores.Arm53.value: "Arm53 Info",
             PredictedCores.Arm57.value: "Arm57 Info",
             PredictedCores.Atom.value: "Atom Info",

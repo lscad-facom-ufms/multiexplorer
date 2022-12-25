@@ -1,9 +1,9 @@
-import Tkconstants
 import Tkinter
 import ttk
 
-from Tkconstants import LEFT as SIDE_LEFT, TOP as SIDE_TOP
+from Tkconstants import N as ANCHOR_N, X as FILL_X
 from MultiExplorer.src.GUI.Styles import DefaultStyle
+from MultiExplorer.src.GUI.Widgets import WrappingLabel
 from MultiExplorer.src.Infrastructure.Inputs import InputType, InputGroup, Input
 from MultiExplorer.src.Infrastructure.Validators import FloatValidator
 
@@ -49,6 +49,8 @@ class InputGroupFrame(Tkinter.LabelFrame, object):
             text=infra_group.label,
         )
 
+        self.pack(fill=FILL_X, padx=10, pady=10)
+
         self.infra_group = infra_group
 
         self.subtitle_frame = None
@@ -56,14 +58,13 @@ class InputGroupFrame(Tkinter.LabelFrame, object):
         if infra_group.subtitle:
             self.subtitle_frame = Tkinter.Frame(self)
 
-            self.subtitle_frame.subtitle = Tkinter.Label(self.subtitle_frame, {
+            self.subtitle_frame.pack(fill=FILL_X, expand=True)
+
+            self.subtitle_frame.subtitle = WrappingLabel(self.subtitle_frame, {
                 'text': infra_group.subtitle,
-                'wraplength': 500,
             })
 
-            self.subtitle_frame.subtitle.pack()
-
-            self.subtitle_frame.pack()
+            self.subtitle_frame.subtitle.pack(fill=FILL_X, expand=True)
 
         self.inputs = {}
 
@@ -75,8 +76,6 @@ class InputGroupFrame(Tkinter.LabelFrame, object):
 
             if isinstance(cur_input, InputGroup) and cur_input.has_user_input():
                 self.inputs[key] = InputGUI.create_input_group(cur_input, self)
-
-        self.pack()
 
     def is_valid(self):
         """
@@ -111,8 +110,8 @@ class InputGroupFrame(Tkinter.LabelFrame, object):
     def get_infra_input(self):
         return self.infra_group
 
-    def show_additional_info(self, additional_info):
-        self.master.show_additional_info(additional_info)
+    def show_additional_info(self, label, additional_info):
+        self.master.show_additional_info(label, additional_info)
 
     def hide_additional_info(self):
         self.master.hide_additional_info()
@@ -135,7 +134,7 @@ class InputFrame(Tkinter.Frame, object):
 
         self.infra_input = infra_input
 
-        self.columnconfigure(0, weight=3)
+        self.columnconfigure(0, weight=1)
         self.rowconfigure(0, weight=1)
 
         self.pack()
@@ -162,8 +161,8 @@ class InputFrame(Tkinter.Frame, object):
     def get_infra_input(self):
         return self.infra_input
 
-    def show_additional_info(self, additional_info):
-        self.master.show_additional_info(additional_info)
+    def show_additional_info(self, label, additional_info):
+        self.master.show_additional_info(label, additional_info)
 
     def hide_additional_info(self):
         self.master.hide_additional_info()
@@ -199,7 +198,7 @@ class MultipleInputFrame(Tkinter.Frame, object):
 
             self.unit = UnitLabel(unit, self, (0, nbr_of_columns-2))
 
-        self.columnconfigure(0, weight=nbr_of_columns)
+        self.columnconfigure(tuple(range(nbr_of_columns)), weight=1)
         self.rowconfigure(0, weight=1)
 
         self.label = InputLabel(self.infra_input.get_label() + " - ", self)
@@ -244,7 +243,7 @@ class MultipleInputFrame(Tkinter.Frame, object):
         self.infra_input.set_value_from_gui(tuple(self.values))
 
 
-class InputLabel(Tkinter.Label, object):
+class InputLabel(WrappingLabel, object):
     def __init__(self, label_text, master=None, cnf={}, **kw):
         super(InputLabel, self).__init__(master, cnf, **kw)
 
@@ -258,10 +257,11 @@ class InputLabel(Tkinter.Label, object):
             columnspan=1,
             row=0,
             rowspan=1,
+            sticky="news",
         )
 
 
-class UnitLabel(Tkinter.Label, object):
+class UnitLabel(WrappingLabel, object):
     def __init__(self, unit_text, master=None, pos=None, cnf={}, **kw):
         super(UnitLabel, self).__init__(master, cnf, **kw)
 
@@ -278,10 +278,11 @@ class UnitLabel(Tkinter.Label, object):
             columnspan=1,
             row=pos[0],
             rowspan=1,
+            sticky="news",
         )
 
 
-class ValidationLabel(Tkinter.Label, object):
+class ValidationLabel(WrappingLabel, object):
     def __init__(self, master=None, pos=None, cnf={}, **kw):
         super(ValidationLabel, self).__init__(master, cnf, **kw)
 
@@ -300,6 +301,7 @@ class ValidationLabel(Tkinter.Label, object):
             column=pos[1],
             columnspan=1,
             rowspan=1,
+            sticky="news",
         )
 
     def display_as_valid(self):
@@ -326,6 +328,7 @@ class SelectEntry(ttk.Combobox, object):
             columnspan=1,
             row=0,
             rowspan=1,
+            sticky="news",
         )
 
         self.infra_input = infra_input
@@ -374,7 +377,7 @@ class SelectEntry(ttk.Combobox, object):
         add_info = self.infra_input.get_additional_info(self.get())
 
         if add_info:
-            self.master.show_additional_info(self.infra_input.get_label() + ":\n" + add_info)
+            self.master.show_additional_info(self.infra_input.get_label(), add_info)
         else:
             self.master.hide_additional_info()
 
@@ -385,8 +388,8 @@ class Select(InputFrame):
 
         self.entry = SelectEntry(infra_input, self)
 
-    def show_additional_info(self, additional_info):
-        self.master.show_additional_info(additional_info)
+    def show_additional_info(self, label, additional_info):
+        self.master.show_additional_info(label, additional_info)
 
     def hide_additional_info(self):
         self.master.hide_additional_info()
@@ -429,6 +432,7 @@ class TypeInEntry(Tkinter.Entry, object):
             columnspan=1,
             row=0,
             rowspan=1,
+            sticky="news",
         )
 
     def on_validate(self, d, i, P, s, S, v, V, W):
@@ -472,6 +476,7 @@ class SubTypeInEntry(Tkinter.Entry, object):
             columnspan=1,
             row=0,
             rowspan=1,
+            sticky='news',
         )
 
         self.configure(
@@ -505,6 +510,7 @@ class SubTypeInEntry(Tkinter.Entry, object):
             columnspan=1,
             row=0,
             rowspan=1,
+            sticky="news",
         )
 
     def on_validate(self, d, i, P, s, S, v, V, W):

@@ -1,13 +1,5 @@
 all: reqsniper reqbenchmarks getsniper
 
-#getsniper:
-#ifeq (,$(shell ls | grep sniper-latest.tgz))
-#	wget http://snipersim.org/download/3a763c96bd6ca36a/packages/sniper-latest.tgz
-#endif
-#ifeq (,$(shell ls -d */ | grep sniper))
-#	tar -zxvf sniper-latest.tgz
-#endif
-
 reqsniper:
 	apt install -y gcc-multilib
 	apt install -y g++-multilib
@@ -35,12 +27,3 @@ endif
 ifeq (,$(shell ls -d */ | grep sniper))
 	tar xfz pre-compiled-sniper-8.0.tar.gz
 endif
-
-#makesniper:
-#	make -C sniper-7.4
-
-#getbenchmarks:
-#ifeq (,$(shell ls `ls -dt */ | grep sniper | head -1` | grep benchmarks))
-#	gdown https://drive.google.com/u/1/uc?id=1GiQGrqf2AhLcd1fX9bfhGLvXP78YsnD3
-#	tar -xvzf built_sniper_benchmarks.tar.gz
-#endif
