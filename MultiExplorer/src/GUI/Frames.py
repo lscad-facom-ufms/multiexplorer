@@ -17,7 +17,7 @@ from MultiExplorer.src.GUI.Buttons import NavigateButton
 from MultiExplorer.src.GUI.Inputs import InputGUI
 from MultiExplorer.src.GUI.Menus import DefaultMenu
 from MultiExplorer.src.GUI.Styles import DefaultStyle
-from MultiExplorer.src.GUI.Widgets import ScreenTitle, ScrollableCanvasFrame, WrappingLabel, CanvasTable
+from MultiExplorer.src.GUI.Widgets import ScreenTitle, CanvasFrame, WrappingLabel, CanvasTable
 from MultiExplorer.src.Infrastructure.Events import Event
 from MultiExplorer.src.Infrastructure.Registries import ExecutionFlowRegistry
 from matplotlib.figure import Figure as MatplotFigure
@@ -337,7 +337,7 @@ class InputTab(Tkinter.Frame, object):
 
         self.info_display.text = WrappingLabel(self.info_display)
 
-        self.info_display.canvas_frame = ScrollableCanvasFrame(self.info_display)
+        self.info_display.canvas_frame = CanvasFrame(self.info_display)
 
     def get_infra_inputs(self):
         infra_inputs = {}
@@ -402,7 +402,7 @@ class InputTab(Tkinter.Frame, object):
         if 'table_data' in additional_info:
             self.info_display.canvas_frame.pack(fill=FILL_BOTH, expand=True)
 
-            table = CanvasTable(self.info_display.canvas_frame.canvas)
+            table = CanvasTable(self.info_display.canvas_frame.canvas, additional_info.table_data)
         else:
             self.info_display.canvas_frame.pack_forget()
 

@@ -59,8 +59,8 @@ class PredictedCores(Enum):
         return {
             PredictedCores.Quark.value: {
                 'text': (
-                    "Intel Quark (400 Mhz) is a line of 32-bit x86 SoCs and microcontrollers by Intel, designed for small"
-                    + " size and low power consumption, and targeted at new markets including wearable devices.\n"
+                    "Intel Quark (400 Mhz) is a line of 32-bit x86 SoCs and microcontrollers by Intel, designed for "
+                    + "small size and low power consumption, and targeted at new markets including wearable devices.\n"
                 ),
                 'table_data': {
 
