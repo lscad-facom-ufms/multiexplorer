@@ -11,6 +11,4 @@ services:
         volumes:
             - .:/multiexplorer
             - /tmp/.X11-unix:/tmp/.X11-unix
-        links:
-            - sniper:sniper
         restart: always
