@@ -2084,6 +2084,14 @@ class McPATAdapter(Adapter):
                 round(self.results['processor']['area'][0], 2),
                 self.results['processor']['area'][1]
             ),
+            'ds_area': (
+                round(self.results['integer_alus']['area_ds'][0], 2),
+                self.results['integer_alus']['area_ds'][1]
+            ),
+            'ds_percentage':  (
+                round(self.results['integer_alus']['%ds'][0], 2),
+                '%'
+            ),
         }
 
         json_output_file_path = self.get_output_path() + "/mcpat_presentable_results.json"
