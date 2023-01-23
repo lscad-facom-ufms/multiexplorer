@@ -22,7 +22,7 @@ reqbenchmarks:
 
 getsniper:
 ifeq (,$(shell ls | grep pre-compiled-sniper-8.0.tar.gz))
-	gdown https://drive.google.com/u/1/uc?id=1aXNxy6OZ7NjP1XUgnhOGuTFAUePtwZkW
+	gdown https://drive.google.com/u/1/uc?id=1GiQGrqf2AhLcd1fX9bfhGLvXP78YsnD3
 endif
 ifeq (,$(shell ls -d */ | grep sniper))
 	tar xfz pre-compiled-sniper-8.0.tar.gz

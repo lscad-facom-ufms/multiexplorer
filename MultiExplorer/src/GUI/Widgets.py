@@ -35,12 +35,6 @@ class ScreenTitle(Tkinter.Label, object):
 
 
 class CanvasFrame(Tkinter.Frame, object):
-    """
-    This class represents a frame containing a canvas with scrollbars.
-    Scrollbars are optional and must be enabled through the boolean parameters "scroll_x" and "scroll_y".
-    An existing canvas can be passed through the parameter "canvas", otherwise a new canvas will be created.
-    """
-
     def __init__(self, master=None, cnf={}, **kw):
         super(CanvasFrame, self).__init__(master, cnf, **kw)
 
@@ -86,8 +80,6 @@ class CanvasTable(object):
         self.height = cell_height * rows
 
         self.width = cell_width * columns
-
-        self.canvas.bind('<Configure>', lambda e: self.adjust_position())
 
         self.adjust_position()
 

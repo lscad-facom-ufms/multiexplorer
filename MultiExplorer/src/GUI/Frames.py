@@ -402,9 +402,9 @@ class InputTab(Tkinter.Frame, object):
         if 'table_data' in additional_info:
             self.info_display.canvas_frame.pack(fill=FILL_BOTH, expand=True)
 
-            self.canvas_frame.table = CanvasTable(self.info_display.canvas_frame.canvas, additional_info['table_data'])
+            CanvasTable(self.info_display.canvas_frame.canvas, additional_info['table_data'])
         else:
-            self.calvas_frame.table = None
+            self.info_display.canvas_frame.canvas.delete("all")
 
             self.info_display.canvas_frame.pack_forget()
 
