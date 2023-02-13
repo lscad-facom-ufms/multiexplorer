@@ -3,7 +3,7 @@ import json
 import os
 import sys
 import re
-from typing import Dict, Union, Any
+from typing import Dict, Union, Any, Optional
 from xml.dom import minidom
 from xml.etree import ElementTree
 from MultiExplorer.src.CPUHeterogeneousMulticoreExploration.AllowedValues import PredictedCores, \
@@ -11,6 +11,7 @@ from MultiExplorer.src.CPUHeterogeneousMulticoreExploration.AllowedValues import
     CachePolicies, HashTypes, PerformanceModelTypes, Domains, Prefetchers, DramDirectoryTypes, MemoryModels, \
     Technologies, Applications
 from MultiExplorer.src.CPUHeterogeneousMulticoreExploration.DSDSE.Nsga2Main import Nsga2Main
+from MultiExplorer.src.CPUHeterogeneousMulticoreExploration.Presenters import SniperPresenter
 from MultiExplorer.src.Infrastructure.ExecutionFlow import Adapter
 from MultiExplorer.src.Infrastructure.Inputs import Input, InputGroup, InputType
 from MultiExplorer.src.config import PATH_SNIPER, PATH_MCPAT
@@ -27,6 +28,8 @@ class SniperSimulatorAdapter(Adapter):
 
     def __init__(self):
         Adapter.__init__(self)
+
+        self.presenter = None  # type: Optional[SniperPresenter]
 
         self.set_inputs([
             Input({
@@ -1820,6 +1823,8 @@ class SniperSimulatorAdapter(Adapter):
         self.presentable_results['ipc'] = (round(total_ipc, 2), 'IPC')
 
         self.presentable_results['performance'] = (round(10.0 ** 15 / elapsed_time, 2), 's^-1')
+
+        self.presenter = SniperPresenter()
 
         json_output_file_path = self.get_output_path() + "/sniper_config.json"
 

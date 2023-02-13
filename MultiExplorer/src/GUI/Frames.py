@@ -567,6 +567,25 @@ class StepButtons(Tkinter.Frame, object):
         pass
 
 
+class StepResults(Tkinter.Frame, object):
+    def __init__(self, step, master=None, cnf={}, **kw):
+        super(StepResults, self).__init__(master, cnf, **kw)
+
+        self.step = step
+
+        self.step.add_handler(Event.STEP_EXECUTION_ENDED, self.display_results())
+
+    def display_results(self):
+        presenter = self.step.get_presenter()
+
+        results = self.step.get_results()
+
+        if presenter is not None and results is not None:
+            presenter.partial_presentation(self, results)
+
+            self.pack()
+
+
 class StepFrame(Tkinter.Frame, object):
     HEIGHT = 400
 
@@ -605,6 +624,8 @@ class StepFrame(Tkinter.Frame, object):
         )
 
         self.step_buttons = StepButtons(step, self)
+
+        self.step_results = StepResults(step, self)
 
 
 class StepDisplay(object):

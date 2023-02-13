@@ -1,10 +1,18 @@
 import numpy as np
 from typing import Dict, Tuple
 from matplotlib.figure import Figure
-from scipy.interpolate import make_interp_spline, interp1d
+from scipy.interpolate import interp1d
+from MultiExplorer.src.GUI.Presenters import Presenter
+from MultiExplorer.src.GUI.Widgets import CanvasFrame, CanvasTable
 
 
-class DSDSEPresenter(object):
+class DSDSEPresenter(Presenter):
+    def partial_presentation(self, frame, results):
+        pass
+
+    def final_presentation(self, frame, results):
+        pass
+
     figsize = (12, 4)
 
     dpi = 100
@@ -174,3 +182,30 @@ class DSDSEPresenter(object):
         ax.set_ylabel("Performance (1/s)")
 
         return fig
+
+
+class SniperPresenter(Presenter):
+    def __init__(self):
+        super(SniperPresenter, self).__init__()
+
+        self.table = None
+
+        self.canvas_frame = None
+
+    def final_presentation(self, frame, results):
+        pass
+
+    def partial_presentation(self, frame, results):
+        self.canvas_frame = CanvasFrame(frame)
+
+        self.table = CanvasTable(self.canvas_frame.canvas, {
+            'cell_height': 25,
+            'cell_width': 100,
+            'nbr_of_columns': 1,
+            'nbr_of_rows': 1,
+            'pos': (1, 1),  # type: Tuple[float, float],
+            'data': [
+                ['Performance', results['performance'][0] + results['performance'][1]],
+            ],
+        })
+

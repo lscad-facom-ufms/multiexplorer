@@ -7,11 +7,11 @@ from Tkconstants import DISABLED as STATE_DISABLED, NORMAL as STATE_NORMAL
 from Tkconstants import HORIZONTAL as HORIZONTAL_ORIENTATION, VERTICAL as VERTICAL_ORIENTATION
 from Tkconstants import X as FILL_X, Y as FILL_Y, BOTH as FILL_BOTH
 from Tkconstants import W as STICKY_WEST, E as STICKY_EAST
-from Tkconstants import CENTER as ANCHOR_CENTER, NE as ANCHOR_NE, S as ANCHOR_SOUTH, W as ANCHOR_WEST
+from Tkconstants import CENTER as ANCHOR_CENTER, NE as ANCHOR_NE, S as ANCHOR_SOUTH, W as ANCHOR_WEST, E as ANCHOR_EAST
 from Tkconstants import S as ANCHOR_S, N as ANCHOR_N, NW as ANCHOR_NW, SW as ANCHOR_SW, SE as ANCHOR_SE
 from Tkconstants import BOTTOM as SIDE_BOTTOM, TOP as SIDE_TOP, LEFT as SIDE_LEFT, RIGHT as SIDE_RIGHT
 
-from typing import Optional, Dict, Tuple
+from typing import Optional, Dict, Tuple, List, Any
 
 
 class WrappingLabel(Tkinter.Label, object):
@@ -48,7 +48,7 @@ class CanvasFrame(Tkinter.Frame, object):
     def __init__(self, master=None, cnf={}, **kw):
         super(CanvasFrame, self).__init__(master, cnf, **kw)
 
-        self.canvas = Tkinter.Canvas(self)
+        self.canvas = Tkinter.Canvas(self)  # type: Tkinter.Canvas
 
         self.canvas.pack(
             fill=FILL_BOTH,
@@ -62,7 +62,8 @@ class CanvasTable(object):
         'cell_width': 100,
         'nbr_of_columns': 6,
         'nbr_of_rows': 6,
-        'pos': (1, 1),  # type: Tuple[float, float]
+        'pos': (1, 1),  # type: Tuple[float, float],
+        'data': None  # type: Optional[List[List[Any]]]
     }
 
     def __init__(self, canvas, options=None):
@@ -94,6 +95,8 @@ class CanvasTable(object):
         self.adjust_position()
 
         self.draw()
+
+        self.write_data()
 
     def adjust_position(self):
         canvas = self.canvas
@@ -160,6 +163,54 @@ class CanvasTable(object):
 
             for c in range(0, columns):
                 self.cells[r].append(canvas.create_rectangle(x, y, x + cell_width, y + cell_height, tags="cells"))
+
+                x = x + cell_width
+
+            x = self.settings['pos'][0]
+
+            y = y + cell_height
+
+    def write_data(self):
+        data = self.settings['data']  # type: Optional[List[List[Any]]]
+
+        if data is None:
+            return
+
+        canvas = self.canvas
+
+        x = self.settings['pos'][0]
+
+        y = self.settings['pos'][1]
+
+        rows = self.settings['nbr_of_rows']
+
+        columns = self.settings['nbr_of_columns']
+
+        cell_width = self.settings['cell_width']
+
+        cell_height = self.settings['cell_height']
+
+        for r in range(0, rows):
+            for c in range(0, columns):
+                text = data[r][c]
+
+                anchor = ANCHOR_WEST
+
+                try:
+                    float(text)
+
+                    anchor = ANCHOR_EAST
+                except ValueError:
+                    pass
+
+                try:
+                    int(text)
+
+                    anchor = ANCHOR_EAST
+                except ValueError:
+                    pass
+
+                canvas.create_text(x, y, text=text, anchor=anchor, font=('Helvetica', '7'), width=cell_width)
 
                 x = x + cell_width
 

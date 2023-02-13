@@ -6,6 +6,7 @@ from typing import List, Optional, Dict, Union
 from MultiExplorer.src.Infrastructure.Events import EventFirer, Event
 from MultiExplorer.src.Infrastructure.Inputs import Input, InputGroup
 from MultiExplorer.src.config import PATH_RUNDIR
+from MultiExplorer.src.GUI.Presenters import Presenter
 
 
 class Step(EventFirer):
@@ -21,6 +22,8 @@ class Step(EventFirer):
         self.output_path = None  # type: Optional[str]
 
         self.adapter = None  # type: Optional[Adapter]
+
+        self.presenter = None  # type: Optional[Presenter]
 
         self.events = {
             Event.STEP_EXECUTION_STARTED: [],
@@ -113,6 +116,9 @@ class Step(EventFirer):
     def get_results(self):
         # type: () -> Dict
         raise NotImplementedError
+
+    def get_presenter(self):
+        return self.presenter
 
 
 class Adapter(object):
