@@ -14,6 +14,53 @@ to our paper:
 SANTOS, R.;DUENHA, L.; SILVA, A. C. S.; BIGNARDI, T.; SOUSA, M.; TEDESCO, L.; MELGAREJO JUNIOR, J.; AZEVEDO, R.; ORDONEZ, E. D. M.. 
 Dark-Silicon Aware Design Space Exploration. JOURNAL OF PARALLEL AND DISTRIBUTED COMPUTING, v. 120, 2018, pp 295-306, ISSN 0743-7315.
 
+How to Install ?
+================
+The first step is to acquire a stable version of MultiExplorer from a release in the
+[repository](https://github.com/lscad-facom-ufms/MultiExplorer.git)
+
+Important setting files are:
+- *.env*: you must set the DISPLAY variable if you want to use the GUI (only required for **Docker** environments)
+- *MultiExplorer/src/config.py*: you will need proper path settings
+
+Then you can use our **GNU Make** script for the basic setup.
+
+`$ make`
+
+Using a **Docker** container is advised.
+
+Using the Docker Container
+============================
+As long as **Docker** is installed and running, you can use **MultiExplorer** in a Docker container.
+
+We have a pre-compiled version of Sniper and benchmarks, that will work in the
+container: [pre-compiled sniper-8.0](https://drive.google.com/file/d/1GiQGrqf2AhLcd1fX9bfhGLvXP78YsnD3/view?usp=share_link).
+Download it and extract it in this folder.
+
+Our docker environment requires a ".env" file, including information about what
+DISPLAY to connect to when running the GUI. A "example.env" is included, so you can just copy it
+or run:
+
+`$ make config`
+
+After the ".env" file is ready, you can start the container and ssh into it using the following commands:
+
+`$ docker-compose up -d`
+
+`$ docker exec -it <<container_name>> bash`
+
+When the container is built, there's still requirements to be installed, so you should run `$ make`.
+
+After all requirements are installed and ready (including Sniper) you can start the GUI application by running:
+
+`$ python ME.py`
+
+If you are using **Docker** in a Windows environment, remember to run [Xming](http://www.straightrunning.com/XmingNotes/),
+and disable authentication.
+
+Even if you are running the container in a Linux environment, you still need to disable authentication on xhost
+by running `$ xhost +`
+
 Dependencies
 ============
 Currently **MultiExplorer** has native support only for **Linux** distributions. **Ubuntu 18.04** is recommended.
@@ -27,33 +74,14 @@ If you are using the container on a Windows environment, you will need to use
 [Xming](http://www.straightrunning.com/XmingNotes/), so **Docker** can access the graphic display.
 
 Other software requirements are:
-- [Sniper 7.4](http://snipersim.org)
+- [Sniper 8.0](http://snipersim.org)
   - [Sniper's Benchmarks](https://snipersim.org/w/Download_Benchmarks) 
 - [Python 2.7](https://www.python.org/download/releases/2.7/)
 
 It's advisable you use the same versions for **python** libs as listed in our **pip** requirements file 
 (*requirements.txt*).
 
-Using the Docker Environment
-============================
-As long as **Docker** is installed and running in your platform, you can use **MultiExplorer** in a container.
-
-`$ docker-compose up -d`
-
-`$ docker exec -it <<container_name>> bash`
-
-How to Install ?
-================
-The first step is to acquire a stable version of MultiExplorer from a release in the
-[repository](https://github.com/lscad-facom-ufms/MultiExplorer.git)
-
-Then you can use our **GNU Make** script for the basic setup.
-
-`$ make`
-
-Important setting files are:
-- *.env*: you must set the DISPLAY variable if you want to use the GUI (only required for **Docker** environments)
-- *MultiExplorer/src/config.py*: you will need proper path settings (much easier in the **Docker** environments)
+In case you want to take a shortcut from compiling Sniper and it's benchmarks, you can get a pre-compiled version
 
 Using the GUI (Graphic User Interface)
 ======================================
@@ -79,7 +107,7 @@ Just wait the simulation steps finish. All the output files will be in the rundi
 for your design and simulation,5n the *rundir* folder, following the order: PerformanceSimulatorJSONInputApplicationDate_Time. 
 Example: SniperSimQuarkCholesky20210205_104802
 
-Output files
+Command Line Output Files
 =========================
 These files will be in the *rundir* folder after running MultiExplorer from the command line:
 
@@ -114,6 +142,12 @@ If you have issues when running MultiExplorer, report them at our github
 
 Please notice that we will be focusing on code issues. Set up difficulties can be almost always avoided using
 **Docker**, so if you are having difficulties with a native set up, try that first.
+
+Disclaimer About Python 2.7
+=========================
+Some tools and libs used by MultiExplorer still use Python 2.7, so there's no fixed schedule on the upgrade to Python 3.
+
+We very much would like to advance to Python 3, but moving away from these resources or upgrading them to Python 3 ourselves proved not feasible right now. But this upgrade is still a long term objective of the MultiExplorer project.
 
 Contact us
 =========================

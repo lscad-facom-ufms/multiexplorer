@@ -25,7 +25,7 @@ ifeq (,$(shell ls MultiExplorer/src/ | grep config.py))
 else
 	@echo "MultiExplorer/src/config.py already found, make sure it's properly set."
 endif
-ifeq (,$(shell ls | grep .env))
+ifeq (,$(shell ls | grep -w "\.env"))
 	cp example.env .env
 else
 	@echo ".env already found, make sure it's properly set."

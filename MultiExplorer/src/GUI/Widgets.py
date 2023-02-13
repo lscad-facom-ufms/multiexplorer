@@ -24,15 +24,15 @@ class WrappingLabel(Tkinter.Label, object):
 
         self.adjusted = False
 
-        self.bind('<Configure>', lambda e: self.adjust)
+        self.bind('<Configure>', self.adjust)
 
-    def adjust(self):
+    def adjust(self, event):
         if not self.adjusted:
             self.config(wraplength=self.winfo_width())
 
             self.adjusted = True
 
-        self.unbind('<Configure>', lambda e: self.adjust)
+        self.unbind('<Configure>')
 
 
 class ScreenTitle(Tkinter.Label, object):

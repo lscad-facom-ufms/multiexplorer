@@ -534,10 +534,15 @@ class InputScreen(ScreenFrame):
         for step in steps:
             self.tabs_controller.add_step_tab(step)
 
+    def update_tabs(self):
+        print self
+
     def prepare(self, **kw):
         self.reset_tabs()
 
         self.set_tabs()
+
+        self.update()
 
 
 class InputInfo(Tkinter.Frame, object):
