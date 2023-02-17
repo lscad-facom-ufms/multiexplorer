@@ -3,7 +3,6 @@
 from nsga2.Evolution import Evolution
 from nsga2.problems.model_dse import DS_DSE
 from nsga2.problems.model_dse.Definitions import Definitions
-from Plotter import Plotter
 from DbSelector import DbSelector
 import sys, json, os
 
@@ -19,7 +18,6 @@ class Nsga2Main(object):
         selector= DbSelector(inputName=sys.argv[1])
         self.bd=json.loads(open(selector.select_db()).read())
         dse_definitions = Definitions()
-        plotter = Plotter(dse_definitions)
 
 
         problem = DS_DSE(dse_definitions, projectFolder)
