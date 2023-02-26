@@ -134,7 +134,7 @@ class InOut(object):
             num = num+1
         self.writeResults()
         JsonToCSV(self.projectFolder).convertJSONToCSV()
-	var2 = "/home/danillo/MultiExplorer/multiexplorer-develop/rundir/RESULTADOSSIMULACAO.csv"
+	var2 = "/home/danillo/MultiExplorer/multiexplorer-MultiExplorer-VM/rundir/Resultados_menorTempo_menorCusto.csv"
         csv_data = open(var2, 'a')
         csvWriter = csv.writer(csv_data)
 	result = str(self.menorTempo)
@@ -178,10 +178,10 @@ class InOut(object):
         self.objDict[num]["Results"]={}
         #inserction of power_density and total_area
 	time = self.totalTime(individual)
-        self.objDict[num]["Results"]["total_time"]= time
+        self.objDict[num]["Results"]["total_time"]= "-"
 
 	cost = self.totalCost(individual)
-        self.objDict[num]["Results"]["total_cost"]= cost
+        self.objDict[num]["Results"]["total_cost"]= "-"
 
 
 	if self.menorTempo == 0:
@@ -229,9 +229,9 @@ class InOut(object):
 
 
         #PerformancePredictor(individual.features[5]["id"], individual.features[4], individual.features[0])
-        self.objDict[num]["Results"]["time_pred"] = 444
+        self.objDict[num]["Results"]["time_pred"] = time
 	#PerformancePredictor(processor, individual.features[4], individual.features[0]).getResults()
-        self.objDict[num]["Results"]["cost_pred"] = 444
+        self.objDict[num]["Results"]["cost_pred"] = cost
 
 
     def writeResults(self):
