@@ -1,5 +1,6 @@
 import Tkinter
 import ttk
+import tkMessageBox
 
 from Tkconstants import DISABLED as STATE_DISABLED, NORMAL as STATE_NORMAL
 from Tkconstants import HORIZONTAL as HORIZONTAL_ORIENTATION, VERTICAL as VERTICAL_ORIENTATION
@@ -26,8 +27,6 @@ from typing import Dict
 
 
 class MainWindow(Tkinter.Tk, object):
-    frames = {}
-
     def __init__(self, screenName=None, baseName=None, className='Tk', useTk=1, sync=0, use=None):
         super(MainWindow, self).__init__(screenName, baseName, className, useTk, sync, use)
 
@@ -550,21 +549,25 @@ class InputInfo(Tkinter.Frame, object):
         super(InputInfo, self).__init__(master, cnf, **kw)
 
 
-class StepLabel(Tkinter.Label, object):
-    def __init__(self, step, master=None, cnf={}, **kw):
-        super(StepLabel, self).__init__(master, cnf, **kw)
-
-
 class StepButtons(Tkinter.Frame, object):
     def __init__(self, step, master=None, cnf={}, **kw):
         super(StepButtons, self).__init__(master, cnf, **kw)
 
         self.step = step
 
-        self.step.add_handler(Event.STEP_EXECUTION_ENDED, self.show_result_buttons())
+        self.step.add_handler(Event.STEP_EXECUTION_ENDED, self.show_result_buttons)
+
+        self.see_results = Tkinter.Button(
+            self,
+            text="Preview Results",
+            command=self.preview_results,
+        )
 
     def show_result_buttons(self):
-        pass
+        self.see_results.pack()
+
+    def preview_results(self):
+        self.master.preview_results()
 
 
 class StepResults(Tkinter.Frame, object):
@@ -573,17 +576,21 @@ class StepResults(Tkinter.Frame, object):
 
         self.step = step
 
-        self.step.add_handler(Event.STEP_EXECUTION_ENDED, self.display_results())
-
-    def display_results(self):
+    def preview_results(self):
         presenter = self.step.get_presenter()
 
         results = self.step.get_results()
 
         if presenter is not None and results is not None:
-            presenter.partial_presentation(self, results)
-
-            self.pack()
+            tkMessageBox.showinfo(
+                "Preview " + self.step.get_label() + " Results",
+                presenter.get_info(results),
+            )
+        else:
+            tkMessageBox.showinfo(
+                "Preview " + self.step.get_label() + " Results",
+                "Unavailable",
+            )
 
 
 class StepFrame(Tkinter.Frame, object):
@@ -602,8 +609,6 @@ class StepFrame(Tkinter.Frame, object):
         self.pack(
             side=SIDE_LEFT,
         )
-
-        self.label = StepLabel(step, self)
 
         self.canvas = Tkinter.Canvas(self)
 
@@ -625,7 +630,19 @@ class StepFrame(Tkinter.Frame, object):
 
         self.step_buttons = StepButtons(step, self)
 
+        self.step_buttons.config(
+            height=50,
+            width=StepFrame.WIDTH,
+        )
+
+        self.step_buttons.pack(
+            side=SIDE_BOTTOM,
+        )
+
         self.step_results = StepResults(step, self)
+
+    def preview_results(self):
+        self.step_results.preview_results()
 
 
 class StepDisplay(object):
@@ -905,7 +922,7 @@ class ResultScreen(ScreenFrame):
 
         self.plotbook = ttk.Notebook(self.plotbookframe)
 
-        self.plotbook.config(height=ResultScreen.PLOTBOOK_HEIGHT-20)
+        self.plotbook.config(height=ResultScreen.PLOTBOOK_HEIGHT - 20)
 
         self.plots = {}  # type: Dict[str, FigureCanvasTkAgg]
 

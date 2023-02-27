@@ -203,9 +203,18 @@ class SniperPresenter(Presenter):
             'cell_width': 100,
             'nbr_of_columns': 1,
             'nbr_of_rows': 1,
-            'pos': (1, 1),  # type: Tuple[float, float],
+            'pos': (1, 2),  # type: Tuple[float, float],
             'data': [
-                ['Performance', results['performance'][0] + results['performance'][1]],
+                [
+                    'Performance', str(results['performance'][0]) + " " + str(results['performance'][1])
+                ],
             ],
         })
+
+        self.canvas_frame.pack()
+
+        self.table.canvas.pack()
+
+    def get_info(self, results):
+        return "Performance: " + str(results['performance'][0]) + " " + str(results['performance'][1])
 

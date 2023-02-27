@@ -1,3 +1,4 @@
+from MultiExplorer.src.CPUHeterogeneousMulticoreExploration.Presenters import SniperPresenter
 from MultiExplorer.src.Infrastructure.Events import Event
 from Adapters import SniperSimulatorAdapter, McPATAdapter, NsgaIIPredDSEAdapter
 from MultiExplorer.src.Infrastructure.ExecutionFlow import Step
@@ -50,6 +51,9 @@ class CPUSimulationStep(Step):
             self.fire(Event.STEP_EXECUTION_ENDED)
         else:
             self.fire(Event.STEP_EXECUTION_FAILED, self)
+
+    def get_presenter(self):
+        return SniperPresenter()
 
 
 class PhysicalExplorationStep(Step):
