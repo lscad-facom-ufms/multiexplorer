@@ -1,4 +1,4 @@
-from MultiExplorer.src.CPUHeterogeneousMulticoreExploration.Presenters import SniperPresenter
+from MultiExplorer.src.CPUHeterogeneousMulticoreExploration.Presenters import *
 from MultiExplorer.src.Infrastructure.Events import Event
 from Adapters import SniperSimulatorAdapter, McPATAdapter, NsgaIIPredDSEAdapter
 from MultiExplorer.src.Infrastructure.ExecutionFlow import Step
@@ -67,6 +67,9 @@ class PhysicalExplorationStep(Step):
     def get_results(self):
         return self.adapter.get_results()
 
+    def get_presenter(self):
+        return McPATPresenter()
+
     def __new__(cls):
         if not hasattr(cls, 'instance'):
             cls.instance = super(
@@ -108,6 +111,9 @@ class DSEStep(Step):
     """
     def get_results(self):
         return self.adapter.get_results()
+
+    def get_presenter(self):
+        return NSGAPresenter()
 
     def __new__(cls):
         if not hasattr(cls, 'instance'):

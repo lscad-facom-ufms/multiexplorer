@@ -65,8 +65,8 @@ class DSDSEPresenter(Presenter):
         ax.set_yticks(range(0, int(nbr_of_solutions) * 2, 2))
 
         ax.set_yticklabels(titles, wrap=True, fontdict={'fontsize': DSDSEPresenter.ticks_font_size,
-                                                           'verticalalignment': 'center',
-                                                           'horizontalalignment': 'right'})
+                                                        'verticalalignment': 'center',
+                                                        'horizontalalignment': 'right'})
 
         ax2 = ax.twiny()
 
@@ -164,12 +164,12 @@ class DSDSEPresenter(Presenter):
 
         ax.scatter([original_x], [original_y], color=DSDSEPresenter.density_color)
 
-        ax.annotate('Original', (original_x+.002, original_y))
+        ax.annotate('Original', (original_x + .002, original_y))
 
         if nbr_of_solutions > 1:
             cubic_interploation_model = interp1d(x, y, kind="cubic")
 
-            splined_x = np.linspace(x.min(), x.max(), 2*nbr_of_solutions)
+            splined_x = np.linspace(x.min(), x.max(), 2 * nbr_of_solutions)
 
             splined_y = cubic_interploation_model(splined_x)
 
@@ -193,7 +193,7 @@ class SniperPresenter(Presenter):
         self.canvas_frame = None
 
     def final_presentation(self, frame, results):
-        pass
+        raise NotImplementedError
 
     def partial_presentation(self, frame, results):
         self.canvas_frame = CanvasFrame(frame)
@@ -218,3 +218,39 @@ class SniperPresenter(Presenter):
     def get_info(self, results):
         return "Performance: " + str(results['performance'][0]) + " " + str(results['performance'][1])
 
+
+class McPATPresenter(Presenter):
+    def final_presentation(self, frame, results):
+        raise NotImplementedError
+
+    def partial_presentation(self, frame, results):
+        raise NotImplementedError
+
+    def get_info(self, results):
+        DS_info = "The dark silicon estimate was negligible."
+        if results['ds_percentage'] > 0.01:
+            DS_info = (
+                "Dark Silicon (area): " + str(results['ds_area'][0]) + " mm^2 \n"
+                + "Dark Silicon (percentage): " + str(results['ds_percentage'][0] + "%")
+            )
+
+        return (
+                "Power density: " + str(results['power_density'][0]) + " " + str(results['power_density'][1]) + "\n"
+                + "Area: " + str(results['area'][0]) + " " + str(results['area'][1]) + "\n"
+                + DS_info
+        )
+
+
+class NSGAPresenter(Presenter):
+    def final_presentation(self, frame, results):
+        raise NotImplementedError
+
+    def partial_presentation(self, frame, results):
+        raise NotImplementedError
+
+    def get_info(self, results):
+        return (
+            "The algorithm generated a paretto frontier aproximation containing "
+            + str(len(results['solutions']))
+            + " distinct points."
+        )
