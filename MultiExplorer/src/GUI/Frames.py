@@ -44,14 +44,18 @@ class MainWindow(Tkinter.Tk, object):
 
         self.style = DefaultStyle()
 
+        self.update()
+
         # self.menu = DefaultMenu(self)
 
         self.screens = {
             LoadScreen.__name__: LoadScreen(self),
-            LaunchScreen.__name__: LaunchScreen(self, focus=True),
+            # LaunchScreen.__name__: LaunchScreen(self, focus=True),
+            LaunchScreen.__name__: LaunchScreen(self),
             InputScreen.__name__: InputScreen(self),
             ExecutionScreen.__name__: ExecutionScreen(self),
-            ResultScreen.__name__: ResultScreen(self),
+            # ResultScreen.__name__: ResultScreen(self),
+            ResultScreen.__name__: ResultScreen(self, focus=True),
         }
 
     def get_screen(self, class_name):
@@ -914,6 +918,79 @@ class ResultScreen(ScreenFrame):
     def __init__(self, master=None, cnf={}, focus=False, **kw):
         super(ResultScreen, self).__init__(master, cnf, focus, **kw)
 
+        self.configure(
+            padx=50,
+            pady=50,
+        )
+
+        self.update()
+
+        total_height = master.winfo_height()
+
+        total_width = master.winfo_width()
+
+        self.container = Tkinter.Frame(self)
+
+        self.container.pack(
+            side=SIDE_TOP,
+        )
+
+        self.scroll_area = Tkinter.Canvas(
+            self.container,
+            background='green',
+            width=total_width - 116,
+            height=total_height - 200,
+            bd=1,
+            relief=Tkinter.GROOVE
+        )
+
+        self.scroll_area.pack(
+            side=SIDE_LEFT,
+        )
+
+        self.y_scroll = Tkinter.Scrollbar(self.container, orient=Tkinter.VERTICAL)
+
+        self.y_scroll.pack(
+            side=SIDE_RIGHT,
+            fill='y',
+            expand=True,
+        )
+
+        self.y_scroll.config(
+            command=self.scroll_area.yview
+        )
+
+        self.scroll_area.config(
+            yscrollcommand=self.y_scroll.set,
+        )
+
+        self.presentation_frame = Tkinter.Frame(self.scroll_area, height=1200, width=total_width - 116)
+
+        self.presentation_id = self.scroll_area.create_window(
+            0,
+            0,
+            window=self.presentation_frame,
+            anchor=ANCHOR_NW,
+        )
+
+        self.presentation_frame_2 = Tkinter.Frame(self.presentation_frame, height=600, width=total_width - 116,
+                                                  background='orange')
+
+        self.presentation_frame_3 = Tkinter.Frame(self.presentation_frame, height=600, width=total_width - 116,
+                                                  background='blue')
+        self.presentation_frame_2.pack(
+            side=SIDE_TOP,
+        )
+        self.presentation_frame_3.pack(
+            side=SIDE_TOP,
+        )
+
+        self.scroll_area.config(
+            scrollregion=(0, 0, total_width - 116, 600 + 600)
+        )
+
+        self.scroll_area.yview('moveto', '0.0')
+
         self.plotbookframe_prepared = False
 
         self.plotbookframe = Tkinter.Frame(self)
@@ -928,12 +1005,10 @@ class ResultScreen(ScreenFrame):
 
         self.flow = None
 
-        self.button_area = Tkinter.Frame(self)
+        self.button_area = Tkinter.Frame(self, width=total_width - 100)
 
         self.button_area.pack(
-            side=SIDE_BOTTOM,
-            fill='x',
-            expand=True,
+            side=SIDE_TOP,
         )
 
         self.button_area.columnconfigure(0, weight=1)
@@ -948,7 +1023,6 @@ class ResultScreen(ScreenFrame):
             column=0,
             row=0,
             sticky=STICKY_WEST,
-            padx=50,
         )
 
     def prepare_plotbookframe(self):
