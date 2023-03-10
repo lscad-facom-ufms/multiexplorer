@@ -410,6 +410,8 @@ class TypeInEntry(Tkinter.Entry, object):
 
         self.bind("<Leave>", self.set_input_value)
 
+        self.bind("<FocusOut>", self.set_input_value)
+
         # %d = Type of action (1=insert, 0=delete, -1 for others)
         # %i = index of char string to be inserted/deleted, or -1
         # %P = value of the entry if the edit is allowed
@@ -487,6 +489,8 @@ class SubTypeInEntry(Tkinter.Entry, object):
         )
 
         self.bind("<Leave>", self.set_input_value)
+
+        self.bind("<FocusOut>", self.set_input_value)
 
         # %d = Type of action (1=insert, 0=delete, -1 for others)
         # %i = index of char string to be inserted/deleted, or -1

@@ -50,12 +50,10 @@ class MainWindow(Tkinter.Tk, object):
 
         self.screens = {
             LoadScreen.__name__: LoadScreen(self),
-            # LaunchScreen.__name__: LaunchScreen(self, focus=True),
-            LaunchScreen.__name__: LaunchScreen(self),
+            LaunchScreen.__name__: LaunchScreen(self, focus=True),
             InputScreen.__name__: InputScreen(self),
             ExecutionScreen.__name__: ExecutionScreen(self),
-            # ResultScreen.__name__: ResultScreen(self),
-            ResultScreen.__name__: ResultScreen(self, focus=True),
+            ResultScreen.__name__: ResultScreen(self),
         }
 
     def get_screen(self, class_name):
@@ -402,13 +400,13 @@ class InputTab(Tkinter.Frame, object):
         else:
             self.info_display.text.pack_forget()
 
+        self.info_display.canvas_frame.canvas.delete("all")
+
         if 'table_data' in additional_info:
             self.info_display.canvas_frame.pack(fill=FILL_BOTH, expand=True)
 
             CanvasTable(self.info_display.canvas_frame.canvas, additional_info['table_data'])
         else:
-            self.info_display.canvas_frame.canvas.delete("all")
-
             self.info_display.canvas_frame.pack_forget()
 
     # todo
@@ -937,11 +935,8 @@ class ResultScreen(ScreenFrame):
 
         self.scroll_area = Tkinter.Canvas(
             self.container,
-            background='green',
             width=total_width - 116,
             height=total_height - 200,
-            bd=1,
-            relief=Tkinter.GROOVE
         )
 
         self.scroll_area.pack(
@@ -964,27 +959,7 @@ class ResultScreen(ScreenFrame):
             yscrollcommand=self.y_scroll.set,
         )
 
-        self.presentation_frame = Tkinter.Frame(self.scroll_area, height=1200, width=total_width - 116)
-
-        self.presentation_id = self.scroll_area.create_window(
-            0,
-            0,
-            window=self.presentation_frame,
-            anchor=ANCHOR_NW,
-        )
-
-        self.presentation_frame_2 = Tkinter.Frame(self.presentation_frame, height=600, width=total_width - 116,
-                                                  background='orange')
-
-        self.presentation_frame_3 = Tkinter.Frame(self.presentation_frame, height=600, width=total_width - 116,
-                                                  background='blue')
-        self.presentation_frame_2.pack(
-            side=SIDE_TOP,
-        )
-        self.presentation_frame_3.pack(
-            side=SIDE_TOP,
-        )
-
+        #  todo  properly set presentation (presenter must inform presentation height, for scrolling)
         self.scroll_area.config(
             scrollregion=(0, 0, total_width - 116, 600 + 600)
         )
@@ -993,7 +968,7 @@ class ResultScreen(ScreenFrame):
 
         self.plotbookframe_prepared = False
 
-        self.plotbookframe = Tkinter.Frame(self)
+        self.plotbookframe = Tkinter.Frame(self.scroll_area)
 
         self.plotbookframe.config(height=ResultScreen.PLOTBOOK_HEIGHT)
 
@@ -1027,6 +1002,13 @@ class ResultScreen(ScreenFrame):
 
     def prepare_plotbookframe(self):
         if not self.plotbookframe_prepared:
+            self.presentation_id = self.scroll_area.create_window(
+                0,
+                0,
+                window=self.plotbookframe,
+                anchor=ANCHOR_NW,
+            )
+
             self.plotbook.pack(
                 fill=FILL_X,
                 expand=True,

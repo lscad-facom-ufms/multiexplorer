@@ -59,17 +59,79 @@ class PredictedCores(Enum):
         return {
             PredictedCores.Quark.value: {
                 'text': (
-                    "Intel Quark (400 Mhz) is a line of 32-bit x86 SoCs and microcontrollers by Intel, designed for "
-                    + "small size and low power consumption, and targeted at new markets including wearable devices.\n"
+                    "Intel Quark (400 Mhz) is a line of 32-bit x86 SoCs and microcontrollers by Intel, "
+                    "designed for"
+                    + "small size and low power consumption, and targeted at new markets including wearable devices ("
+                      "process 32 nm).\n"
                 ),
                 'table_data': {
-
+                    'nbr_of_columns': 6,
+                    'nbr_of_rows': 2,
+                    'data': [
+                        ['# Cores', 'Frequency', 'Power Density', 'Performance', 'DS Area', 'DS%'],
+                        ['4', '1000 Mhz', '42.05 mm^2', '1.05 W/mm^2', '83.68 s^-1', '21.78 mm^2', '36.77%'],
+                    ]
                 }
             },
-            PredictedCores.Arm53.value: "Arm53 Info",
-            PredictedCores.Arm57.value: "Arm57 Info",
-            PredictedCores.Atom.value: "Atom Info",
-            PredictedCores.Smithfield.value: "Smithfield Info",
+            PredictedCores.Arm53.value: {
+                'text': (
+                    "The ARM Cortex-A53 is one of the first two central processing units implementing the ARMv8-A "
+                    "64-bit instruction set designed by ARM Holdings' Cambridge design centre. The Cortex-A53 is a "
+                    "2-wide decode superscalar processor, capable of dual-issuing some instructions (process 22 nm)."
+                ),
+                'table_data': {
+                    'nbr_of_columns': 6,
+                    'nbr_of_rows': 2,
+                    'data': [
+                        ['# Cores', 'Frequency', 'Power Density', 'Performance', 'DS Area', 'DS%'],
+                        ['8', '2500 Mhz', '45.69 mm^2', '1.89 W/mm^2', '706.98 s^-1', '-', '-'],
+                    ]
+                }
+            },
+            PredictedCores.Arm57.value: {
+                'text': (
+                    "The ARM Cortex-A57 is a central processing unit implementing the ARMv8-A 64-bit instruction set "
+                    "designed by ARM Holdings. The Cortex-A57 is an out-of-order superscalar pipeline (process 22 nm)."
+                ),
+                'table_data': {
+                    'nbr_of_columns': 6,
+                    'nbr_of_rows': 2,
+                    'data': [
+                        ['# Cores', 'Frequency', 'Power Density', 'Performance', 'DS Area', 'DS%'],
+                        ['16', '3500 Mhz', '91 mm^2', '2.40 W/mm^2', '1241.01 s^-1', '-', '-'],
+                    ]
+                }
+            },
+            PredictedCores.Atom.value: {
+                'text': (
+                    "Silvermont is a microarchitecture for low-power Atom, Celeron and Pentium branded processors "
+                    "used in systems on a chip made by Intel (process 22 nm)."
+                ),
+                'table_data': {
+                    'nbr_of_columns': 6,
+                    'nbr_of_rows': 2,
+                    'data': [
+                        ['# Cores', 'Frequency', 'Power Density', 'Performance', 'DS Area', 'DS%'],
+                        ['32', '5000 Mhz', '182.76 mm^2', '3.75 W/mm^2', '254.15 s^-1', '-', '-'],
+                    ]
+                }
+            },
+            PredictedCores.Smithfield.value: {
+                'text': (
+                    "Pentium D[2] is a range of desktop 64-bit x86-64 processors based on the NetBurst "
+                    "microarchitecture, which is the dual-core variant of the Pentium 4 manufactured by Intel. Each "
+                    "CPU comprised two dies, each containing a single core, residing next to each other on a "
+                    "multi-chip module package (process 65 nm)."
+                ),
+                'table_data': {
+                    'nbr_of_columns': 6,
+                    'nbr_of_rows': 2,
+                    'data': [
+                        ['# Cores', 'Frequency', 'Power Density', 'Performance', 'DS Area', 'DS%'],
+                        ['4', '1000 Mhz', '42.05 mm^2', '1.05 W/mm^2', '83.68 s^-1', '21.78 mm^2', '36.77%'],
+                    ]
+                }
+            },
         }
 
     @staticmethod

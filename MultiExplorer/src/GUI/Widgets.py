@@ -58,6 +58,9 @@ class CanvasFrame(Tkinter.Frame, object):
 
 class CanvasTable(object):
     default_settings = {
+        'padding': 2,
+        'font_family': 'Helvetica',
+        'font_height': 12,
         'cell_height': 25,
         'cell_width': 100,
         'nbr_of_columns': 6,
@@ -177,11 +180,6 @@ class CanvasTable(object):
             return
 
         canvas = self.canvas
-
-        x = self.settings['pos'][0]
-
-        y = self.settings['pos'][1]
-
         rows = self.settings['nbr_of_rows']
 
         columns = self.settings['nbr_of_columns']
@@ -190,30 +188,24 @@ class CanvasTable(object):
 
         cell_height = self.settings['cell_height']
 
+        font_height = self.settings['font_height']
+
+        font_family = self.settings['font_family']
+
+        padding = self.settings['padding']
+
+        x = self.settings['pos'][0] + padding
+
+        y = self.settings['pos'][1] + cell_height - font_height - padding
+
         for r in range(0, rows):
             for c in range(0, columns):
-                text = data[r][c]
+                text = str(data[r][c])
 
-                anchor = ANCHOR_WEST
-
-                try:
-                    float(text)
-
-                    anchor = ANCHOR_EAST
-                except ValueError:
-                    pass
-
-                try:
-                    int(text)
-
-                    anchor = ANCHOR_EAST
-                except ValueError:
-                    pass
-
-                canvas.create_text(x, y, text=text, anchor=anchor, font=('Helvetica', '7'), width=cell_width)
+                canvas.create_text(x, y, text=text, anchor=Tkinter.NW, font=(font_family, -font_height), width=cell_width-2*padding)
 
                 x = x + cell_width
 
-            x = self.settings['pos'][0]
+            x = self.settings['pos'][0] + padding
 
             y = y + cell_height
