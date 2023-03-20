@@ -6,7 +6,6 @@ from typing import List, Optional, Dict, Union
 from MultiExplorer.src.Infrastructure.Events import EventFirer, Event
 from MultiExplorer.src.Infrastructure.Inputs import Input, InputGroup
 from MultiExplorer.src.config import PATH_RUNDIR
-from MultiExplorer.src.GUI.Presenters import Presenter
 
 
 class Step(EventFirer):
@@ -45,6 +44,7 @@ class Step(EventFirer):
     """
     You should implement this method as static, returning the desired label for the Step.
     """
+
     @staticmethod
     def get_label():
         raise NotImplementedError
@@ -52,8 +52,10 @@ class Step(EventFirer):
     """
         You should implement this method as static, returning True if the Step allows for user input.
     """
+
     @staticmethod
-    def has_user_input(): return False
+    def has_user_input():
+        return False
 
     def set_output_path(self, abs_path):
         self.output_path = abs_path
@@ -61,7 +63,8 @@ class Step(EventFirer):
         if self.adapter is not None:
             self.adapter.set_output_path(abs_path)
 
-    def get_user_inputs(self): return {}
+    def get_user_inputs(self):
+        return {}
 
     def copy_input_values(self, inputs):
         # type: (List[Input]) -> None
@@ -95,6 +98,7 @@ class Step(EventFirer):
     
     You may throw any additional events or perform additional setup required before execution.
     """
+
     @abstractmethod
     def __execute__(self):
         raise NotImplementedError
@@ -107,12 +111,14 @@ class Step(EventFirer):
     In this method you should verify if the execution was successful, firing the appropriate events to notify
     other objects.
     """
+
     def __finish__(self):
         self.fire(Event.STEP_EXECUTION_ENDED)
 
     """
     Should return a dictionary with all presentable results.
     """
+
     def get_results(self):
         # type: () -> Dict
         raise NotImplementedError
@@ -217,12 +223,15 @@ class ExecutionFlow(EventFirer):
                 callable(subclass.get_title))
 
     @staticmethod
-    def get_label(): raise NotImplementedError
+    def get_label():
+        raise NotImplementedError
 
     @staticmethod
-    def get_info(): raise NotImplementedError
+    def get_info():
+        raise NotImplementedError
 
-    def get_output_path(self): raise NotImplementedError
+    def get_output_path(self):
+        raise NotImplementedError
 
     def get_steps(self):
         # type: () -> List[Step]
@@ -258,25 +267,24 @@ class ExecutionFlow(EventFirer):
     
     By default, execution will halt.
     """
-    def handle_step_failure(self, step): self.finish()
 
-    def finish(self): pass
+    def handle_step_failure(self, step):
+        self.finish()
+
+    def finish(self):
+        pass
 
     """
-    todo
-    
     Returns a dict with all the presentable results
     """
+
     def get_results(self):
         # type: () -> Dict
-        results = {
-            'matplot_figures': {},
-        }
+        raise NotImplementedError
 
-        for step in self.steps:
-            step_results = step.get_results()
-
-            if 'matplot_figures' in step_results:
-                    results['matplot_figures'].update(step_results['matplot_figures'])
-
-        return results
+    """
+    Returns a list with all the result presenters
+    """
+    def get_presenters(self):
+        # type: () -> List
+        raise NotImplementedError

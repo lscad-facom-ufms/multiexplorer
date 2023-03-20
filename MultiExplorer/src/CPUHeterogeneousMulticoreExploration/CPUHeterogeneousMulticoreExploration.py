@@ -1,7 +1,8 @@
 import os
 import tkMessageBox
 
-from MultiExplorer.src.CPUHeterogeneousMulticoreExploration.Presenters import DSDSEPresenter
+from MultiExplorer.src.CPUHeterogeneousMulticoreExploration.Presenters import SniperPresenter, McPATPresenter, \
+    NSGAPresenter
 from MultiExplorer.src.Infrastructure.Events import Event
 from MultiExplorer.src.Infrastructure.ExecutionFlow import ExecutionFlow
 from MultiExplorer.src.config import PATH_RUNDIR
@@ -100,36 +101,18 @@ class CPUHeterogeneousMulticoreExplorationExecutionFlow(ExecutionFlow):
         ExecutionFlow.execute(self)
 
     def get_results(self):
-        performance_simulation_results = self.steps[0].get_results()
-
-        physical_simulation_results = self.steps[1].get_results()
-
-        dsdse_results = self.steps[2].get_results()
-
-        population_results = dsdse_results['solutions']
-
-        original_performance = performance_simulation_results['performance']
-
-        original_power_density = physical_simulation_results['power_density']
-
-        results = {
-            'matplot_figures': {},
+        return {
+            "performance_simulation": self.steps[0].get_results(),
+            "physical_simulation": self.steps[1].get_results(),
+            "dsdse": self.steps[2].get_results(),
         }
 
-        results['matplot_figures']['Performance & Power Density'] = DSDSEPresenter.plot_population(
-                    population_results,
-                    original_performance,
-                    original_power_density
-                )
-
-        # if len(population_results) > 1:
-        #     results['matplot_figures']['Aproximated Pareto Front'] = DSDSEPresenter.plot_pareto_front(
-        #             population_results,
-        #             original_performance,
-        #             original_power_density
-        #         )
-
-        return results
+    def get_presenters(self):
+        return [
+            SniperPresenter(),
+            McPATPresenter(),
+            NSGAPresenter(),
+        ]
 
     def handle_step_failure(self, step):
         tkMessageBox.showerror(

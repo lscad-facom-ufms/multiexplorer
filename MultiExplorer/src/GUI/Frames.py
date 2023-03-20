@@ -10,7 +10,6 @@ from Tkconstants import CENTER as ANCHOR_CENTER, NE as ANCHOR_NE, S as ANCHOR_SO
 from Tkconstants import S as ANCHOR_S, N as ANCHOR_N, NW as ANCHOR_NW, SW as ANCHOR_SW, SE as ANCHOR_SE
 from Tkconstants import BOTTOM as SIDE_BOTTOM, TOP as SIDE_TOP, LEFT as SIDE_LEFT, RIGHT as SIDE_RIGHT
 
-from MultiExplorer.src.CPUHeterogeneousMulticoreExploration.Presenters import DSDSEPresenter
 from MultiExplorer.src.Infrastructure.ExecutionFlow import ExecutionFlow, Step
 from MultiExplorer.src.CPUHeterogeneousMulticoreExploration.CPUHeterogeneousMulticoreExploration import \
     CPUHeterogeneousMulticoreExplorationExecutionFlow
@@ -23,7 +22,7 @@ from MultiExplorer.src.Infrastructure.Events import Event
 from MultiExplorer.src.Infrastructure.Registries import ExecutionFlowRegistry
 from matplotlib.figure import Figure as MatplotFigure
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-from typing import Dict
+from typing import Dict, Optional, List
 
 
 class MainWindow(Tkinter.Tk, object):
@@ -911,10 +910,12 @@ class ExecutionScreen(ScreenFrame):
 
 
 class ResultScreen(ScreenFrame):
-    PLOTBOOK_HEIGHT = 400
-
     def __init__(self, master=None, cnf={}, focus=False, **kw):
         super(ResultScreen, self).__init__(master, cnf, focus, **kw)
+
+        self.flow = None  # type: Optional[ExecutionFlow]
+
+        self.presentation_frames = None  # type: Optional[List[Tkinter.Frame]]
 
         self.configure(
             padx=50,
@@ -959,24 +960,13 @@ class ResultScreen(ScreenFrame):
             yscrollcommand=self.y_scroll.set,
         )
 
-        #  todo  properly set presentation (presenter must inform presentation height, for scrolling)
+        self.scroll_width = total_width - 116
+
         self.scroll_area.config(
-            scrollregion=(0, 0, total_width - 116, 600 + 600)
+            scrollregion=(0, 0, self.scroll_width, 0)
         )
 
         self.scroll_area.yview('moveto', '0.0')
-
-        self.plotbookframe_prepared = False
-
-        self.plotbookframe = Tkinter.Frame(self.scroll_area)
-
-        self.plotbookframe.config(height=ResultScreen.PLOTBOOK_HEIGHT)
-
-        self.plotbook = ttk.Notebook(self.plotbookframe)
-
-        self.plotbook.config(height=ResultScreen.PLOTBOOK_HEIGHT - 20)
-
-        self.plots = {}  # type: Dict[str, FigureCanvasTkAgg]
 
         self.flow = None
 
@@ -1000,86 +990,43 @@ class ResultScreen(ScreenFrame):
             sticky=STICKY_WEST,
         )
 
-    def prepare_plotbookframe(self):
-        if not self.plotbookframe_prepared:
-            self.presentation_id = self.scroll_area.create_window(
-                0,
-                0,
-                window=self.plotbookframe,
-                anchor=ANCHOR_NW,
-            )
-
-            self.plotbook.pack(
-                fill=FILL_X,
-                expand=True,
-                side=SIDE_TOP,
-                padx=50,
-            )
-
-            x_scrollbar = Tkinter.Scrollbar(self.plotbookframe, orient=HORIZONTAL_ORIENTATION)
-
-            self.plotbookframe.x_scrollbar = x_scrollbar
-
-            self.plotbookframe_prepared = True
-
-            self.plotbookframe.x_scrollbar.pack(
-                fill=FILL_X,
-                expand=True,
-                side=SIDE_BOTTOM,
-                padx=50,
-            )
-
-        self.plotbookframe.pack(fill=FILL_X, expand=True, side=SIDE_TOP)
-
-    def add_plot(self, plot_figure, plot_title):
-        # type: (MatplotFigure, str) -> None
-        self.prepare_plotbookframe()
-
-        figure = FigureCanvasTkAgg(plot_figure, self.plotbook)
-
-        figure_tk = figure.get_tk_widget()
-
-        figure_tk.config(
-            height=figure.get_width_height()[1],
-            width=figure.get_width_height()[0],
-        )
-
-        figure_tk.pack()
-
-        figure.draw()
-
-        self.plotbookframe.x_scrollbar.config(
-            command=figure_tk.xview
-        )
-
-        figure_tk["xscrollcommand"] = self.plotbookframe.x_scrollbar.set
-
-        self.plots[plot_title] = figure
-
-        self.plotbook.add(figure_tk, text=plot_title)
-
-    def clear_plots(self):
-        for title in self.plots:
-            plot_frame = self.plots[title]
-
-            plot_frame.get_tk_widget().destroy()
-
-        self.plots = {}
-
-        self.plotbookframe.pack_forget()
-
     def reset(self):
-        self.clear_plots()
+        self.scroll_area.delete('presentation')
 
     def set_flow(self, flow):
+        # type: (ExecutionFlow) -> None
         self.flow = flow
 
     def prepare(self, **kw):
+        self.present_results()
+
+    def present_results(self):
+        self.presentation_frames = []
+
+        total_height = 0
+
         results = self.flow.get_results()
 
-        if 'matplot_figures' in results:
-            for title in results['matplot_figures']:
-                self.add_plot(results['matplot_figures'][title], title)
+        for presenter in self.flow.get_presenters():
+            presentation_frame = Tkinter.Frame(self.scroll_area, width=self.scroll_width-20, padx=10)
+
+            presentation_frame.pack(side=SIDE_TOP)
+
+            self.presentation_frames.append(presentation_frame)
+
+            self.scroll_area.create_window(
+                0, total_height, window=presentation_frame, anchor=ANCHOR_NW, tags='presentation'
+            )
+
+            total_height = total_height + presenter.present_results(presentation_frame, results, {
+                'width': self.scroll_width-20,
+            })
+
+        self.scroll_area.config(
+            scrollregion=(0, 0, self.scroll_width, total_height)
+        )
+
+        self.scroll_area.yview('moveto', '0.0')
 
     def close_gracefully(self):
         self.reset()
