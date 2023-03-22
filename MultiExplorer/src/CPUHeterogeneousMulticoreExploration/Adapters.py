@@ -1720,6 +1720,9 @@ class SniperSimulatorAdapter(Adapter):
         except ValueError:
             return ""
 
+    def get_input_technology(self):
+        return str(self.inputs['general_modeling']['power']['technology_node']) + "nm"
+
     def get_technology(self):
         try:
             return PredictedCores.get_technology(self.inputs['general_modeling']['model_name'])
@@ -1743,7 +1746,7 @@ class SniperSimulatorAdapter(Adapter):
 
         dse_settings_json['processor'] = self.get_processor()
 
-        dse_settings_json['technology'] = self.get_technology()
+        dse_settings_json['technology'] = self.get_input_technology()
 
         dse_settings_json['frequency'] = self.get_global_frequency()
 
