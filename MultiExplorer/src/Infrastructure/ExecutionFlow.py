@@ -217,6 +217,12 @@ class ExecutionFlow(EventFirer):
 
         self.cur_step = -1  # type: int
 
+        self.events = {
+            Event.FLOW_EXECUTION_STARTED: [],
+            Event.FLOW_EXECUTION_ENDED: [],
+            Event.FLOW_EXECUTION_FAILED: [],
+        }
+
     @classmethod
     def __subclasshook__(cls, subclass):
         return (hasattr(subclass, 'get_label') and

@@ -61,8 +61,8 @@ class PredictedCores(Enum):
                 'text': (
                     "Intel Quark (400 Mhz) is a line of 32-bit x86 SoCs and microcontrollers by Intel, "
                     "designed for"
-                    + "small size and low power consumption, and targeted at new markets including wearable devices ("
-                      "process 32 nm).\n"
+                    "small size and low power consumption, and targeted at new markets including wearable devices.\n"
+                    "The model used here is a 32nm process core."
                 ),
                 'table_data': {
                     'nbr_of_columns': 6,
@@ -77,7 +77,8 @@ class PredictedCores(Enum):
                 'text': (
                     "The ARM Cortex-A53 is one of the first two central processing units implementing the ARMv8-A "
                     "64-bit instruction set designed by ARM Holdings' Cambridge design centre. The Cortex-A53 is a "
-                    "2-wide decode superscalar processor, capable of dual-issuing some instructions (process 22 nm)."
+                    "2-wide decode superscalar processor, capable of dual-issuing some instructions.\n"
+                    "The model used here is a 22nm process core."
                 ),
                 'table_data': {
                     'nbr_of_columns': 6,
@@ -91,7 +92,8 @@ class PredictedCores(Enum):
             PredictedCores.Arm57.value: {
                 'text': (
                     "The ARM Cortex-A57 is a central processing unit implementing the ARMv8-A 64-bit instruction set "
-                    "designed by ARM Holdings. The Cortex-A57 is an out-of-order superscalar pipeline (process 22 nm)."
+                    "designed by ARM Holdings. The Cortex-A57 is an out-of-order superscalar pipeline.\n"
+                    "The model used here is a 22nm process core."
                 ),
                 'table_data': {
                     'nbr_of_columns': 6,
@@ -105,7 +107,8 @@ class PredictedCores(Enum):
             PredictedCores.Atom.value: {
                 'text': (
                     "Silvermont is a microarchitecture for low-power Atom, Celeron and Pentium branded processors "
-                    "used in systems on a chip made by Intel (process 22 nm)."
+                    "used in systems on a chip made by Intel.\n"
+                    "The model used here is a 22nm process core."
                 ),
                 'table_data': {
                     'nbr_of_columns': 6,
@@ -121,7 +124,8 @@ class PredictedCores(Enum):
                     "Pentium D[2] is a range of desktop 64-bit x86-64 processors based on the NetBurst "
                     "microarchitecture, which is the dual-core variant of the Pentium 4 manufactured by Intel. Each "
                     "CPU comprised two dies, each containing a single core, residing next to each other on a "
-                    "multi-chip module package (process 65 nm)."
+                    "multi-chip module package.\n"
+                    "The model used here is a 90nm process core."
                 ),
                 'table_data': {
                     'nbr_of_columns': 6,
@@ -271,7 +275,8 @@ class CachePolicies(Enum):
     LRU = "LRU"
 
     @staticmethod
-    def belongs(value): return value in set(item.value for item in CachePolicies)
+    def belongs(value):
+        return value in set(item.value for item in CachePolicies)
 
     @staticmethod
     def get_label(value):
@@ -296,7 +301,8 @@ class PerformanceModelTypes(Enum):
     Parallel = "parallel"
 
     @staticmethod
-    def belongs(value): return value in set(item.value for item in PerformanceModelTypes)
+    def belongs(value):
+        return value in set(item.value for item in PerformanceModelTypes)
 
     @staticmethod
     def get_label(value):
@@ -327,7 +333,8 @@ class HashTypes(Enum):
     Mask = "mask"
 
     @staticmethod
-    def belongs(value): return value in set(item.value for item in HashTypes)
+    def belongs(value):
+        return value in set(item.value for item in HashTypes)
 
     @staticmethod
     def get_label(value):
@@ -353,11 +360,13 @@ class HashTypes(Enum):
         if self.value == "mask":
             return "mask"
 
+
 class Domains(Enum):
     Core = "core"
 
     @staticmethod
-    def belongs(value): return value in set(item.value for item in Domains)
+    def belongs(value):
+        return value in set(item.value for item in Domains)
 
     @staticmethod
     def get_label(value):
@@ -388,7 +397,8 @@ class Prefetchers(Enum):
     NA = "none"
 
     @staticmethod
-    def belongs(value): return value in set(item.value for item in Prefetchers)
+    def belongs(value):
+        return value in set(item.value for item in Prefetchers)
 
     @staticmethod
     def get_label(value):
@@ -419,7 +429,8 @@ class DramDirectoryTypes(Enum):
     FULL_MAP = "full_map"
 
     @staticmethod
-    def belongs(value): return value in set(item.value for item in DramDirectoryTypes)
+    def belongs(value):
+        return value in set(item.value for item in DramDirectoryTypes)
 
     @staticmethod
     def get_label(value):
@@ -450,7 +461,8 @@ class MemoryModels(Enum):
     BUS = "bus"
 
     @staticmethod
-    def belongs(value): return value in set(item.value for item in DramDirectoryTypes)
+    def belongs(value):
+        return value in set(item.value for item in DramDirectoryTypes)
 
     @staticmethod
     def get_label(value):
@@ -501,7 +513,8 @@ class Applications(Enum):
     SPLASH_II_CHOLESKY = "splash2-cholesky"
 
     @staticmethod
-    def belongs(value): return value in set(item.value for item in Applications)
+    def belongs(value):
+        return value in set(item.value for item in Applications)
 
     @staticmethod
     def get_label(value):
@@ -519,4 +532,3 @@ class Applications(Enum):
     def to_cfg(self):
         if self.value == "splash2-cholesky":
             return "splash2-cholesky"
-    

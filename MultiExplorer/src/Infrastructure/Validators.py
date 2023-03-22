@@ -113,7 +113,7 @@ class FloatValidator(Validator):
         return re.match('\d+|\.|\.\d+|\d+\.|\d+\.\d+', text) is not None
 
 
-class IntegerRangeValidator:
+class IntegerRangeValidator(Validator):
     min_val = None  # type: int
 
     max_val = None  # type: int

@@ -60,6 +60,7 @@ class SniperSimulatorAdapter(Adapter):
                         "is_user_input": True,
                         "required": True,
                         "type": InputType.Integer,
+                        "max_val": 32,
                     }),
                     InputGroup({
                         "label": "Core Specifications",
@@ -69,7 +70,6 @@ class SniperSimulatorAdapter(Adapter):
                                 "label": "Global Frequency",
                                 "unit": 'MHz',
                                 "key": "global_frequency",
-                                "is_user_input": True,
                                 "required": True,
                                 "type": InputType.Integer,
                             }),
@@ -1103,10 +1103,6 @@ class SniperSimulatorAdapter(Adapter):
         global_frequency = int(input_json['General_Modeling']['core']['global_frequency'])
         self.inputs['general_modeling']['core']['global_frequency'] = global_frequency
 
-        # try:
-        #     self.inputs['general_modeling']['core']['frequency'] = \
-        #         tuple(input_json['General_Modeling']['core']['frequency'])
-        # except TypeError:
         self.inputs['general_modeling']['core']['frequency'] = global_frequency
 
         self.inputs['general_modeling']['core']['logical_cpus'] = \
@@ -1414,14 +1410,6 @@ class SniperSimulatorAdapter(Adapter):
 
         global_frequency = str(self.get_global_frequency())
 
-        # try:
-        #     frequencies = []
-        #
-        #     for value in self.inputs['general_modeling']['core']['frequency']:
-        #         frequencies.append(float(value) / 1000.0)
-        #
-        #     frequencies = ','.join(map(str, frequencies))
-        # except TypeError:
         frequencies = global_frequency
 
         cfg_file.writelines([
@@ -2089,9 +2077,13 @@ class McPATAdapter(Adapter):
                 round(self.results['processor']['area'][0], 2),
                 self.results['processor']['area'][1]
             ),
+            'core_area': (
+                round(self.results['core']['area'][0], 2),
+                self.results['core']['area'][1]
+            ),
             'ds_area': (
                 round(self.results['integer_alus']['area_ds'][0], 2),
-                self.results['integer_alus']['area_ds'][1]
+                'mm^2'
             ),
             'ds_percentage':  (
                 round(self.results['integer_alus']['%ds'][0], 2),
@@ -2703,6 +2695,7 @@ class NsgaIIPredDSEAdapter(Adapter):
                         "required": True,
                         'type': InputType.IntegerRange,
                         'min_val': 1,
+                        'max_val': 31,
                     }),
                     Input({
                         'label': 'Number of cores that may be from another model',
@@ -2710,7 +2703,8 @@ class NsgaIIPredDSEAdapter(Adapter):
                         "is_user_input": True,
                         "required": True,
                         'type': InputType.IntegerRange,
-                        'mina_val': 1,
+                        'min_val': 1,
+                        'max_val': 31,
                     }),
                 ],
             }),
@@ -2803,7 +2797,39 @@ class NsgaIIPredDSEAdapter(Adapter):
         return self.presentable_results
 
     def prepare(self):
-        self.dse_engine = Nsga2Main(self.get_settings())
+        settings = self.get_settings()
+
+        self.register_profile(settings)
+
+        self.dse_engine = Nsga2Main(settings)
+
+    def register_profile(self, settings):
+        profile = {
+            'model': settings['dse']['processor'],
+            'process': settings['dse']['technology'],
+            'frequency': settings['dse']['frequency'],
+            'core_area': settings['mcpat_results']['core']['area'],
+            'core_number': settings['sniper_results']['ncores'],
+            'chip_area': settings['mcpat_results']['processor']['area'],
+            'power_density': (
+                round(float(settings['mcpat_results']['processor']['power_density'][0]), 2),
+                'V/mm^2'
+            ),
+            'performance': settings['dse']['original_performance'],
+            'ds_area': (
+                round(float(settings['mcpat_results']['integer_alus']['area_ds'][0]), 2),
+                'mm^2'
+            ),
+            'ds_percentage': (
+                round(float(settings['mcpat_results']['integer_alus']['%ds'][0]), 2),
+                '%'
+            ),
+        }
+
+        file_path = self.get_output_path() + "/profile.json"
+
+        with open(file_path, 'w') as profile_json:
+            json.dump(profile, profile_json, indent=4)
 
     def get_settings(self):
         self.read_dse_settings()

@@ -19,10 +19,10 @@ class InputType(Enum):
 
     @staticmethod
     def get_default_validator(input_type, rules=None):
+        # type: (InputType, Optional[Dict]) -> Optional[Validator]
         if rules is None:
             rules = {}
 
-        # type: (InputType) -> Optional[Validator]
         if input_type == InputType.Integer:
             return IntegerValidator(rules)
 
