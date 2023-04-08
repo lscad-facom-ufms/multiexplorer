@@ -1,55 +1,115 @@
 MultiExplorer Tool
 ===================
-Muliexplorer is a framework that provides a processor chip design by putting together performance simulation, physical estimation, and 
-design space exploration steps. MultiExplorer uses Sniper as the performance simulator and McPAT as the physical estimator. The design space exploration (DSE) is performed by a NSGA2-based algorithm. In this current version, Muliexplorer also adopts a brute-force (bf) algorithm to explore all viable alternatives to the design. The bf has been used as a validation step to our DSE approach. MultiExplorer assumes that all processor designs are dar silicon aware so that it uses the power density as a constraint in the DSE step.To know more about MultiExplorer and its Dark-Silicon aware - DSE approach please refers to our paper:
+Muliexplorer is a framework that provides a processor chip design by putting together performance simulation, 
+physical estimation, and design space exploration steps.
+
+MultiExplorer uses Sniper as a performance simulator and McPAT as physical estimator. 
+
+The design space exploration (DSE) is performed by a NSGA2-based algorithm.
+
+MultiExplorer assumes that all processor designs are dark silicon aware so that it uses the power density as a
+constraint in the DSE step.To know more about MultiExplorer and its Dark-Silicon aware - DSE approach please refer
+to our paper:
 
 SANTOS, R.;DUENHA, L.; SILVA, A. C. S.; BIGNARDI, T.; SOUSA, M.; TEDESCO, L.; MELGAREJO JUNIOR, J.; AZEVEDO, R.; ORDONEZ, E. D. M.. 
 Dark-Silicon Aware Design Space Exploration. JOURNAL OF PARALLEL AND DISTRIBUTED COMPUTING, v. 120, 2018, pp 295-306, ISSN 0743-7315.
 
+How to Install ?
+================
+The first step is to acquire a stable version of MultiExplorer from a release in the
+[repository](https://github.com/lscad-facom-ufms/MultiExplorer.git)
+
+Important setting files are:
+- *.env*: you must set the DISPLAY variable if you want to use the GUI (only required for **Docker** environments)
+- *MultiExplorer/src/config.py*: you will need proper path settings
+
+Then you can use our **GNU Make** script for the basic setup.
+
+`$ make`
+
+Using a **Docker** container is advised.
+
+Using the Docker Container
+============================
+As long as **Docker** is installed and running, you can use **MultiExplorer** in a Docker container.
+
+We have a pre-compiled version of Sniper and benchmarks, that will work in the
+container: [pre-compiled sniper-8.0](https://drive.google.com/file/d/1GiQGrqf2AhLcd1fX9bfhGLvXP78YsnD3/view?usp=share_link).
+Download it and extract it in this folder.
+
+Our docker environment requires a ".env" file, including information about what
+DISPLAY to connect to when running the GUI. A "example.env" is included, so you can just copy it
+or run:
+
+`$ make config`
+
+After the ".env" file is ready, you can start the container and ssh into it using the following commands:
+
+`$ docker-compose up -d`
+
+`$ docker exec -it <<container_name>> bash`
+
+When the container is built, there's still requirements to be installed, so you should run `$ make`.
+
+After all requirements are installed and ready (including Sniper) you can start the GUI application by running:
+
+`$ python ME.py`
+
+If you are using **Docker** in a Windows environment, remember to run [Xming](http://www.straightrunning.com/XmingNotes/),
+and disable authentication.
+
+Even if you are running the container in a Linux environment, you still need to disable authentication on xhost
+by running `$ xhost +`
 
 Dependencies
 ============
-To properly execute MultiExplorer, be sure to have all these softwares:
-- [gcc multilib](https://howtoinstall.co/pt/gcc-multilib) (required to compile Sniper)
-- [g++ multilib](https://howtoinstall.co/pt/g++-multilib) (required to compile Sniper)
-- [Sniper 7.4](http://snipersim.org)
+Currently **MultiExplorer** has native support only for **Linux** distributions. **Ubuntu 18.04** is recommended.
+
+But you can use **MultiExplorer** in any platform that supports [Docker](https://www.docker.com/), by running it in
+a container.
+
+This is highly advisable even when using Linux distros, as our **Docker** environment will be easier to set up and maintain.
+
+If you are using the container on a Windows environment, you will need to use
+[Xming](http://www.straightrunning.com/XmingNotes/), so **Docker** can access the graphic display.
+
+Other software requirements are:
+- [Sniper 8.0](http://snipersim.org)
   - [Sniper's Benchmarks](https://snipersim.org/w/Download_Benchmarks) 
 - [Python 2.7](https://www.python.org/download/releases/2.7/)
-  - [lxml](https://lxml.de/installation.html)
-  - [python-configparser](https://docs.python.org/2/library/configparser.html)
-  - [scikit-learn 0.19.1](https://scikit-learn.org/stable/install.html)
 
-It's advisable you use the same versions for python libs as listed in our requirements.txt
+It's advisable you use the same versions for **python** libs as listed in our **pip** requirements file 
+(*requirements.txt*).
 
-How to Install ?
-================
-The first step is to acquire a stable version of MultiExplorer from a release in the [repository](https://github.com/lscad-facom-ufms/MultiExplorer.git)
+In case you want to take a shortcut from compiling Sniper and it's benchmarks, you can get a pre-compiled version
 
-If you don't want to install every dependency yourself, you may run "make install" as root. It will simply run a couple of "apt-get install" and "pip2 install" for you.
+Using the GUI (Graphic User Interface)
+======================================
+**MultiExplorer** now has a graphic user interface.
 
-Sniper installation you will have to handle by yourself, since it's not readily available, and it's simple not possible to simply wget it and run it's installation through scripting.
+Run `$ python ME.py` to use it.
 
-You will also have to set the SNIPER_PATH in your "MultiExplorer/src/config.py" file. If you are not sure how to create this file, run "make config". It will create the file and all you have to do is open it and fill with your real PATH values.
+If you are using **Docker** in a Windows environment, remember to run [Xming](http://www.straightrunning.com/XmingNotes/),
+and disable authentication.
 
-MultiExplorer also requires [McPAT](https://github.com/HewlettPackard/mcpat), but it's already bundled into MultiExplorer, since it's license allows it, and you don't have to worry about installing it.
+If you are using **Docker** in a Linux environment, running `$ xhost +` will likewise disable authentication, allowing
+the use of the display by software in the container.
 
-
-Run your first simulation
+Using the command line
 =========================
 There are many input examples available in the "input-examples" folder.
 You should run one of the .json files in that folder.
 For example:
 
-$ python MultiExplorer/src/MultiExplorer.py input-examples/quark.json
+`$ python MultiExplorer/src/MultiExplorer.py input-examples/quark.json`
 
 Just wait the simulation steps finish. All the output files will be in the rundir folder. Note that MultiExplorer will create a folder 
-for your design and simulation,5n the rundir folder, following the order: PerformanceSimulatorJSONInputApplicationDate_Time. 
+for your design and simulation,5n the *rundir* folder, following the order: PerformanceSimulatorJSONInputApplicationDate_Time. 
 Example: SniperSimQuarkCholesky20210205_104802
 
-
-Output files
+Command Line Output Files
 =========================
-These files will be in the rundir folder after running MultiExplorer:
+These files will be in the *rundir* folder after running MultiExplorer from the command line:
 
 ArchComparison.csv:  a csv file with physical and performance results from the original and the proposed design.          
 
@@ -71,12 +131,32 @@ SniperSimQuarkCholesky_mcpatInput.xml: input file for the Physical estimator (Mc
 
 **There may be additional files, reserved for future use in MultiExplorer.
 
+If you are using the GUI, results are presented directly through it, but input and output files can still be found
+in the *rundir* folder for each run, in the folder corresponding to the selected execution flow
+(e.g.: */rundir/Multicore_CPU_Heterogeneous_DSDSE*).
 
 Issues
 =========================
-If you have issues when running MultiExplorer
+If you have issues when running MultiExplorer, report them at our github
+[issues](https://github.com/lscad-facom-ufms/multiexplorer/issues).
 
+Please notice that we will be focusing on code issues. Set up difficulties can be almost always avoided using
+**Docker**, so if you are having difficulties with a native set up, try that first.
+
+Disclaimer About Python 2.7
+=========================
+Some tools and libs used by MultiExplorer still use Python 2.7, so there's no fixed schedule on the upgrade to Python 3.
+
+We very much would like to advance to Python 3, but moving away from these resources or upgrading them to Python 3 ourselves proved not feasible right now. But this upgrade is still a long term objective of the MultiExplorer project.
 
 Contact us
 =========================
 Please send us any doubt or comments to lscad.facom.ufms@gmail.com
+
+Attributions
+==========================
+Icons used in our GUI were obtained through [Flaticon](https://www.flaticon.com/).
+
+<a href="https://www.flaticon.com/free-icons/close" title="close icons">Close icons created by Alfredo Hernandez - Flaticon</a>
+
+<a href="https://www.flaticon.com/free-icons/tick" title="tick icons">Tick icons created by Alfredo Hernandez - Flaticon</a>

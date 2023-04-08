@@ -1,0 +1,9 @@
+{
+  "ipcores":[
+    {"id":"ARM_A53_22nm", "pow": 1.39117, "area": 10.5853, "perf": 3125.68},
+    {"id":"ARM_A57_22nm", "pow": 1.59445, "area": 10.5023, "perf":4006.64},
+    {"id":"Atom_Silvermont_22nm", "pow": 0.830237, "area":8.19052, "perf":648.47},
+    {"id":"Quark_x1000_32nm", "pow": 0.690, "area":15.692, "perf":502.53},
+    {"id":"Smithfield_90nm", "pow":0.439832, "area":111.117, "perf":6428}
+  ]
+}

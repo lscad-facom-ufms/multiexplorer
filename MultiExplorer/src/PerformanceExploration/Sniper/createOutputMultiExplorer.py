@@ -144,12 +144,12 @@ def get_number_of_caches(level):
         else:
             return 1
     return 0
-def outputConvert():
+def outputConvert(resultsdir=os.getcwd()):
     global obj_result
     global results
     global config
     global total_cores
-    obj_result = sniper_lib.get_results(resultsdir = os.getcwd())
+    obj_result = sniper_lib.get_results(resultsdir=resultsdir)
     #extract performanceResults
     results= obj_result["results"]
     #extract descriptionProcessor

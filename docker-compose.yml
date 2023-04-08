@@ -1,9 +1,14 @@
-#version: "3.9"
+version: "3.3"
+
 services:
-  multiexplorer:
-    image: multiexplorer
-    stdin_open: true
-    tty: true
-    build: .
-    volumes:
-      - .:/multiexplorer
+    dev:
+        stdin_open: true
+        tty: true
+        build: .
+        env_file: .env
+        environment:
+            - DISPLAY=${DISPLAY}
+        volumes:
+            - .:/multiexplorer
+            - /tmp/.X11-unix:/tmp/.X11-unix
+        restart: always

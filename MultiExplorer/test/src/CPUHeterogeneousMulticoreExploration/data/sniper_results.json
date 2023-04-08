@@ -1,0 +1,6747 @@
+{
+    "L1-I.access-mru-0": [
+        2141990, 
+        924550, 
+        3743968, 
+        3750916, 
+        3897670, 
+        2740393, 
+        2227791
+    ], 
+    "L1-I.access-mru-1": [
+        1822, 
+        2274, 
+        3175, 
+        1822, 
+        1677, 
+        1579, 
+        2142
+    ], 
+    "L1-I.next_read.num-requests": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-D.invalidate-prefetch": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-I.load-misses-S": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L2.coherency-upgrades": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "interval_timer.cpiDataCachedram": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-I.load-misses-I": [
+        42091, 
+        54790, 
+        27657, 
+        26489, 
+        22620, 
+        35602, 
+        39620
+    ], 
+    "L1-I.load-misses-M": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-I.load-misses-O": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L3.load-misses": [
+        165287, 
+        228177, 
+        97240, 
+        101114, 
+        90180, 
+        142721, 
+        149532
+    ], 
+    "L1-I.load-misses-E": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-I.stores-where-L1I": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-I.loads-where-dram": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-D.stores-where-dram-local": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-I.load-misses-u": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "interval_timer.uop_branch": [
+        1660418, 
+        226837, 
+        3493561, 
+        3479116, 
+        3605399, 
+        2374949, 
+        1782827
+    ], 
+    "performance_model.cpiSyncUnscheduled": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "bus-queue.num-requests": [
+        2798045, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L3.uncore-time-noc-base": [
+        1834721875000, 
+        2415278125000, 
+        1041281250000, 
+        1075896250000, 
+        973165625000, 
+        1607732500000, 
+        1651036250000
+    ], 
+    "futex.futex_requeue_count": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "futex.futex_cmp_requeue_count": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-I.loads": [
+        2185903, 
+        981614, 
+        3774800, 
+        3779227, 
+        3921967, 
+        2777574, 
+        2269553
+    ], 
+    "performance_model.dyninsn_zero_count": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-I.load-overlapping-misses": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "thread.time_by_core[6]": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        12829210000000
+    ], 
+    "interval_timer.cpiLongLatency": [
+        108000000, 
+        192000000, 
+        136000000, 
+        100000000, 
+        104000000, 
+        100000000, 
+        108000000
+    ], 
+    "futex.futex_wake_op_delay": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-I.stores": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-D.next_read.requests-out-of-order": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "bus-queue.requests-simultaneous": [
+        12515, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L2.coherency-writebacks": [
+        63, 
+        52, 
+        74, 
+        99, 
+        74, 
+        54, 
+        72
+    ], 
+    "interval_timer.detailed-cpiBase-WindowEmpty+DispatchWidth+ICacheMiss+BranchMispredict": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "interval_timer.detailed-cpiBase-DispatchWidth": [
+        1444, 
+        1602, 
+        956, 
+        774, 
+        759, 
+        1118, 
+        1524
+    ], 
+    "L3.total-latency": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L3.stores": [
+        56617, 
+        65163, 
+        30383, 
+        32393, 
+        29795, 
+        54126, 
+        54218
+    ], 
+    "core.spin_instructions": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-D.loads-where-predicate-false": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L3.uncore-time-nuca-data": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "global.time": 13042592387500, 
+    "vmem": 1191415808, 
+    "interval_timer.uop_fp_muldiv": [
+        738455, 
+        1069747, 
+        375888, 
+        412440, 
+        447567, 
+        556574, 
+        667612
+    ], 
+    "L3.coherency-upgrades": [
+        254, 
+        262, 
+        220, 
+        197, 
+        200, 
+        185, 
+        275
+    ], 
+    "fastforward_timer.cpiDataCacheL1I": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-I.backinval-O": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-D.loads-where-L3": [
+        304, 
+        301, 
+        225, 
+        235, 
+        242, 
+        221, 
+        317
+    ], 
+    "L1-D.loads-where-L2": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-D.loads-where-L4": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-I.backinval-I": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-I.backinval-E": [
+        9979, 
+        20487, 
+        4338, 
+        3751, 
+        2762, 
+        7561, 
+        9003
+    ], 
+    "interval_timer.totalHiddenLongerDCacheLatency": [
+        163889, 
+        195828, 
+        99256, 
+        108516, 
+        92250, 
+        148652, 
+        153054
+    ], 
+    "L1-D.load-misses-S": [
+        76, 
+        56, 
+        45, 
+        26, 
+        53, 
+        39, 
+        51
+    ], 
+    "stlb_cache.access-mru-15": [
+        4, 
+        3, 
+        4, 
+        1, 
+        4, 
+        5, 
+        5
+    ], 
+    "L1-D.load-misses-M": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-D.load-misses-O": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "stlb_cache.access-mru-11": [
+        7, 
+        3, 
+        3, 
+        6, 
+        5, 
+        8, 
+        4
+    ], 
+    "L1-D.load-misses-I": [
+        123030, 
+        173141, 
+        69415, 
+        74539, 
+        67458, 
+        106960, 
+        109728
+    ], 
+    "stlb_cache.access-mru-13": [
+        4, 
+        4, 
+        3, 
+        2, 
+        2, 
+        0, 
+        5
+    ], 
+    "stlb_cache.access-mru-12": [
+        7, 
+        7, 
+        4, 
+        1, 
+        1, 
+        6, 
+        6
+    ], 
+    "L1-D.load-misses-E": [
+        90, 
+        190, 
+        123, 
+        60, 
+        49, 
+        120, 
+        133
+    ], 
+    "L1-I.backinval-S": [
+        32002, 
+        34205, 
+        23217, 
+        22639, 
+        19757, 
+        27936, 
+        30517
+    ], 
+    "L1-I.evict-I": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "performance_model.elapsed_time_end": [
+        170577506025000, 
+        170554764025000, 
+        170553866025000, 
+        170554160025000, 
+        170552368025000, 
+        170552284025000, 
+        170554056025000
+    ], 
+    "L1-I.evict-M": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-I.evict-O": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-D.hits-warmup": [
+        9, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-D.load-misses-u": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-I.evict-E": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-I.mshr-latency": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "futex.futex_wait_requeue_pi_count": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "futex.futex_wait_bitset_count": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-I.loads-where-predicate-false": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-I.backinval-u": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "pthread.pthread_mutex_unlock_contended": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "dram-queue.total-time-used": [
+        1248321375000, 
+        1244614950000, 
+        1267116412500, 
+        1252617750000, 
+        1235707987500, 
+        1220112787500, 
+        1247295375000
+    ], 
+    "L2.loads-O": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L3.loads-M": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L2.loads-M": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L3.loads-I": [
+        165121, 
+        227931, 
+        97072, 
+        101028, 
+        90078, 
+        142562, 
+        149348
+    ], 
+    "L2.loads-I": [
+        165121, 
+        227931, 
+        97072, 
+        101028, 
+        90078, 
+        142562, 
+        149348
+    ], 
+    "L3.loads-E": [
+        90, 
+        190, 
+        123, 
+        60, 
+        49, 
+        120, 
+        133
+    ], 
+    "L2.loads-E": [
+        90, 
+        190, 
+        123, 
+        60, 
+        49, 
+        120, 
+        133
+    ], 
+    "interval_timer.detailed-cpiBase-WindowEmpty+DispatchWidth+DispatchRate+ICacheMiss": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "interval_timer.cpiDataCachedram-local": [
+        599580000000, 
+        690304000000, 
+        350194000000, 
+        377712000000, 
+        315118000000, 
+        435998000000, 
+        536602000000
+    ], 
+    "L2.mshr-latency": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "fastforward_timer.cpiDataCacheL2_S": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L3.uncore-requests": [
+        185515, 
+        245489, 
+        104141, 
+        107622, 
+        97093, 
+        161701, 
+        166935
+    ], 
+    "futex.futex_unlock_pi_delay": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L2.prefetches": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L3.loads-S": [
+        76, 
+        56, 
+        45, 
+        26, 
+        53, 
+        39, 
+        51
+    ], 
+    "L2.loads-S": [
+        76, 
+        56, 
+        45, 
+        26, 
+        53, 
+        39, 
+        51
+    ], 
+    "stlb_cache.access-mru-9": [
+        5, 
+        4, 
+        3, 
+        3, 
+        3, 
+        2, 
+        8
+    ], 
+    "stlb_cache.access-mru-8": [
+        5, 
+        4, 
+        3, 
+        2, 
+        2, 
+        3, 
+        4
+    ], 
+    "L1-I.stores-where-prefetch-no-mapping": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-D.load-overlapping-misses": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "stlb_cache.access-mru-1": [
+        8, 
+        6, 
+        3, 
+        7, 
+        3, 
+        5, 
+        10
+    ], 
+    "L1-D.total-latency": [
+        20722813225000, 
+        27610862312500, 
+        11104548500000, 
+        11748289837500, 
+        10796906000000, 
+        18290482725000, 
+        18465168575000
+    ], 
+    "stlb_cache.access-mru-3": [
+        6, 
+        11, 
+        4, 
+        1, 
+        1, 
+        10, 
+        4
+    ], 
+    "stlb_cache.access-mru-2": [
+        17, 
+        11, 
+        3, 
+        1, 
+        3, 
+        11, 
+        10
+    ], 
+    "stlb_cache.access-mru-5": [
+        5, 
+        7, 
+        7, 
+        7, 
+        0, 
+        3, 
+        10
+    ], 
+    "stlb_cache.access-mru-4": [
+        7, 
+        2, 
+        7, 
+        6, 
+        4, 
+        3, 
+        5
+    ], 
+    "stlb_cache.access-mru-7": [
+        10, 
+        5, 
+        7, 
+        8, 
+        3, 
+        3, 
+        5
+    ], 
+    "stlb_cache.access-mru-6": [
+        12, 
+        5, 
+        3, 
+        2, 
+        5, 
+        8, 
+        10
+    ], 
+    "L1-I.next_read.no-free-slots": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-D.loads-where-dram": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L3.loads-u": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L2.loads-u": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "ipc": [
+        1.3893650481147493, 
+        0.9351939888645087, 
+        1.9381550269275407, 
+        1.939226899725881, 
+        2.012600963069084, 
+        1.5955406242660974, 
+        1.3986081492113946
+    ], 
+    "thread.instructions_by_core[6]": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        9120670
+    ], 
+    "fastforward_timer.cpiDataCachedram-cache": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L2.load-misses-E": [
+        90, 
+        190, 
+        123, 
+        60, 
+        49, 
+        120, 
+        133
+    ], 
+    "performance_model.cpiSyncPthreadMutex": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "core.spin_elapsed_time": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L2.load-misses-I": [
+        165121, 
+        227931, 
+        97072, 
+        101028, 
+        90078, 
+        142562, 
+        149348
+    ], 
+    "L2.load-misses-O": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "interval_timer.detailed-cpiBase-WindowEmpty+DispatchRate": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L2.load-misses-M": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "roi.ipscore": 173725.97680273344, 
+    "L2.load-misses-S": [
+        76, 
+        56, 
+        45, 
+        26, 
+        53, 
+        39, 
+        51
+    ], 
+    "L3.evict-u": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "interval_timer.loadstore_contention.total-barrier-delay": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-D.coherency-writebacks": [
+        63, 
+        52, 
+        74, 
+        99, 
+        74, 
+        54, 
+        72
+    ], 
+    "futex.futex_lock_pi_delay": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L2.hits-prefetch": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "futex.futex_wake_count": [
+        12, 
+        12, 
+        10, 
+        9, 
+        10, 
+        12, 
+        9
+    ], 
+    "L1-D.stores-prefetch": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "futex.futex_wake_op_count": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L3.evict-E": [
+        89545, 
+        141074, 
+        43709, 
+        46695, 
+        41783, 
+        73378, 
+        75084
+    ], 
+    "L3.hits-prefetch": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "interval_timer.detailed-cpiBase-WindowEmpty+DispatchWidth+BranchMispredict": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "fastforward_timer.cpiDataCacheL1_S": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L3.evict-O": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-I.stores-where-L1_S": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L3.evict-M": [
+        56454, 
+        65098, 
+        30180, 
+        32229, 
+        29496, 
+        53977, 
+        54109
+    ], 
+    "L3.evict-I": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "interval_timer.cpiInstructionCacheL3_S": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "interval_timer.detailed-cpiBase-ICacheMiss+BranchMispredict": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L2.stores-prefetch": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "interval_timer.detailed-cpiBase-WindowEmpty+BranchMispredict": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L2.load-misses-u": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-I.loads-where-dram-remote": [
+        33579, 
+        44572, 
+        21248, 
+        20383, 
+        17942, 
+        28985, 
+        31596
+    ], 
+    "thread.bottle_contrib_time": [
+        1951099839867, 
+        1873436219035, 
+        1833373085702, 
+        1830409219036, 
+        1832396052370, 
+        1876625552368, 
+        1845252419035
+    ], 
+    "L1-D.stores-where-nuca-cache": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-I.stores-where-predicate-false": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "interval_timer.detailed-cpiBase-DispatchRate": [
+        3520289, 
+        2480329, 
+        4434418, 
+        4455159, 
+        4577751, 
+        3963865, 
+        3504529
+    ], 
+    "L1-I.stores-E": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "interval_timer.cpiInstructionCacheL1_S": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "performance_model.cpiSyncPthreadBarrier": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-I.stores-O": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-I.snoop-latency": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-I.stores-M": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-I.stores-I": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-I.stores-S": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L3.uncore-time-dram-cache-bus": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "thread.instructions_by_core[1]": [
+        0, 
+        6098609, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "pthread.pthread_mutex_unlock_count": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "interval_timer.numDCacheOverlapped": [
+        655377, 
+        891271, 
+        385828, 
+        402897, 
+        379332, 
+        541888, 
+        615551
+    ], 
+    "interval_timer.cpiDataCacheL1": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "interval_timer.cpiDataCacheL2": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "interval_timer.cpiDataCacheL3": [
+        3554000000, 
+        3440000000, 
+        3218000000, 
+        10484000000, 
+        9852000000, 
+        4150000000, 
+        4848000000
+    ], 
+    "interval_timer.cpiDataCacheL4": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L3.uncore-time-dram-queue": [
+        258678675000, 
+        304951587500, 
+        217751525000, 
+        198111200000, 
+        180072712500, 
+        251026175000, 
+        267807925000
+    ], 
+    "pthread.pthread_cond_signal_delay_sync": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L2.qbs-query-latency": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-I.stores-u": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "pthread.pthread_cond_broadcast_count": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-I.stores-where-L4": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L3.store-overlapping-misses": [
+        25115, 
+        32903, 
+        16752, 
+        18849, 
+        16317, 
+        25832, 
+        26268
+    ], 
+    "interval_timer.detailed-cpiBase-WindowEmpty+DispatchRate+ICacheMiss": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-D.next_read.no-free-slots": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-I.stores-where-L1": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-I.stores-where-L2": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-I.stores-where-L3": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "bus-queue.total-barrier-delay": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-I.coherency-writebacks": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "interval_timer.cpiInstructionCachedram-remote": [
+        875744000000, 
+        1197958000000, 
+        640370000000, 
+        609002000000, 
+        526808000000, 
+        718058000000, 
+        907906000000
+    ], 
+    "itlb_cache.access-mru-12": [
+        5, 
+        1, 
+        0, 
+        0, 
+        0, 
+        1, 
+        1
+    ], 
+    "interval_timer.cpContr_port015": [
+        86499951430, 
+        128599151366, 
+        48290616873, 
+        39354769397, 
+        52660550250, 
+        55489779226, 
+        76388564580
+    ], 
+    "branch_predictor.num-incorrect": [
+        2453, 
+        2916, 
+        2570, 
+        2204, 
+        2111, 
+        2155, 
+        2814
+    ], 
+    "L2.next_read.num-requests": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "core.bbv-14": [
+        265931403394, 
+        224241091085, 
+        320649701228, 
+        318091958257, 
+        326477359015, 
+        291292859838, 
+        262569905455
+    ], 
+    "core.bbv-15": [
+        343110201005, 
+        145245733570, 
+        562566548287, 
+        564219477490, 
+        583877938854, 
+        429983518911, 
+        353136290977
+    ], 
+    "core.bbv-12": [
+        370411910188, 
+        265899770019, 
+        492443262918, 
+        493814238191, 
+        516955036073, 
+        415931647932, 
+        368440446539
+    ], 
+    "core.bbv-13": [
+        286406357591, 
+        181808660824, 
+        417815921561, 
+        420530696688, 
+        436725809320, 
+        331226008253, 
+        292714343869
+    ], 
+    "core.bbv-10": [
+        411891609971, 
+        207591949208, 
+        680081245565, 
+        679096710160, 
+        703498922472, 
+        514682901489, 
+        424184675665
+    ], 
+    "core.bbv-11": [
+        298564954474, 
+        146867419649, 
+        506778095804, 
+        504261133685, 
+        519177632131, 
+        379222857302, 
+        313566731083
+    ], 
+    "interval_timer.detailed-cpiBase-DispatchRate+ICacheMiss+BranchMispredict": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-D.loads-where-L1_S": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "thread.instructions_by_core[5]": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        10404925, 
+        0
+    ], 
+    "L3.stores-I": [
+        20163, 
+        17327, 
+        6852, 
+        6400, 
+        6814, 
+        18953, 
+        17323
+    ], 
+    "L1-I.stores-where-dram-remote": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "network.shmem-1.bus.num-packets": [
+        2798045, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L3.stores-M": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "interval_timer.cpiInstructionCachemiss": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L3.stores-O": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "dram-queue.num-requests": [
+        194670, 
+        194092, 
+        197601, 
+        195340, 
+        192703, 
+        190271, 
+        194510
+    ], 
+    "L3.stores-E": [
+        36276, 
+        47625, 
+        23351, 
+        25820, 
+        22830, 
+        35024, 
+        36667
+    ], 
+    "L2.invalidate-prefetch": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "interval_timer.uops_x87": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-D.store-misses-u": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L3.stores-S": [
+        178, 
+        211, 
+        180, 
+        173, 
+        151, 
+        149, 
+        228
+    ], 
+    "L1-I.stores-where-cache-remote": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "interval_timer.totalMfenceLatency": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "performance_model.dyninsn_cost": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "thread.time_by_core[3]": [
+        0, 
+        0, 
+        0, 
+        12773680000000, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-D.store-misses-M": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-D.store-misses-O": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-D.store-misses-I": [
+        20163, 
+        17326, 
+        6852, 
+        6399, 
+        6814, 
+        18953, 
+        17323
+    ], 
+    "L1-D.store-misses-E": [
+        36276, 
+        47625, 
+        23351, 
+        25820, 
+        22830, 
+        35024, 
+        36667
+    ], 
+    "pthread.pthread_mutex_lock_count": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L3.loads-prefetch": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L3.evict-warmup": [
+        256, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L3.stores-u": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-D.store-misses-S": [
+        178, 
+        212, 
+        180, 
+        174, 
+        151, 
+        149, 
+        228
+    ], 
+    "L1-D.loads-where-unknown": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "fastforward_timer.cpiBranchPredictor": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "interval_timer.detailed-cpiBase-WindowEmpty": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-I.evict-prefetch": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "thread.instructions_by_core[2]": [
+        0, 
+        0, 
+        12639215, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L3.access-mru-0": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L2.load-overlapping-misses": [
+        0, 
+        7, 
+        1, 
+        8, 
+        6, 
+        12, 
+        10
+    ], 
+    "dram.writes": [
+        46057, 
+        45318, 
+        46268, 
+        46363, 
+        45757, 
+        46280, 
+        45499
+    ], 
+    "pthread.pthread_mutex_trylock_delay_sync": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "barrier.global_time": [
+        13042592387500, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "interval_timer.detailed-cpiBase-WindowEmpty+ICacheMiss+BranchMispredict": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "thread.nonidle_cycle_count": [
+        6478172, 
+        6409363, 
+        6394711, 
+        6386840, 
+        6395097, 
+        6444304, 
+        6414605
+    ], 
+    "global.time_begin": 157534839637500, 
+    "L1-I.store-misses-S": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-D.coherency-invalidates": [
+        204, 
+        209, 
+        318, 
+        427, 
+        381, 
+        296, 
+        222
+    ], 
+    "L1-D.loads-where-L3_S": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-I.loads-where-cache-remote": [
+        3091, 
+        3036, 
+        2426, 
+        2274, 
+        1998, 
+        2301, 
+        2766
+    ], 
+    "pthread.pthread_cond_wait_delay_mem": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "futex.futex_wait_delay": [
+        80430000000, 
+        151408000000, 
+        178270000000, 
+        191148000000, 
+        170272000000, 
+        65800000000, 
+        126198000000
+    ], 
+    "L1-I.prefetches": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "performance_model.cpiStartTime": [
+        0, 
+        157578580025000, 
+        157583124025000, 
+        157586282025000, 
+        157588852025000, 
+        157591826025000, 
+        157594598025000
+    ], 
+    "L1-I.stores-where-L4_S": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-I.store-misses-E": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-D.invalidate-warmup": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-I.store-misses-O": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-I.store-misses-M": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "interval_timer.cpiDataCacheL3_S": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "thread.instruction_count": [
+        9060461, 
+        6098609, 
+        12639215, 
+        12646205, 
+        13124699, 
+        10404925, 
+        9120670
+    ], 
+    "L1-I.store-misses-u": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "global.time_end": 170577432025000, 
+    "L1-I.hits-warmup": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L3.next_read.num-barriers": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "fastforward_timer.cpiDataCachedram": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L2.stores-u": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-D.stores-where-dram-cache": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "pthread.pthread_mutex_trylock_delay_mem": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "futex.futex_cmp_requeue_pi_delay": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L3.next_read.requests-out-of-order": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-D.store-overlapping-misses": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L3.access-mru-1": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-D.evict-warmup": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "interval_timer.cpiInstructionCachecache-remote": [
+        73544000000, 
+        55958000000, 
+        62408000000, 
+        50896000000, 
+        51606000000, 
+        41698000000, 
+        66356000000
+    ], 
+    "interval_timer.detailed-cpiBase-NoReason": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "interval_timer.uop_store": [
+        762582, 
+        727665, 
+        298503, 
+        286993, 
+        294919, 
+        719455, 
+        690777
+    ], 
+    "L1-I.stores-where-L2_S": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L3.qbs-query-latency": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-I.loads-where-dram-local": [
+        5421, 
+        7182, 
+        3983, 
+        3832, 
+        2680, 
+        4316, 
+        5258
+    ], 
+    "core.spin_loops": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L3.uncore-time-dram-cache-queue": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L3.uncore-time-remote-cache-fwd": [
+        239992375000, 
+        175198250000, 
+        190438250000, 
+        202214125000, 
+        158396000000, 
+        161328875000, 
+        193597500000
+    ], 
+    "branch_predictor.num-correct": [
+        1647645, 
+        213942, 
+        3479850, 
+        3468607, 
+        3595694, 
+        2364368, 
+        1770662
+    ], 
+    "L3.next_read.requests-simultaneous": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-D.next_read.total-barrier-delay": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "dtlb.miss": [
+        608, 
+        567, 
+        390, 
+        343, 
+        299, 
+        481, 
+        560
+    ], 
+    "L3.uncore-time-nuca-tags": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L3.uncore-time-td-access": [
+        3821000000000, 
+        4992710750000, 
+        2171100000000, 
+        2245480000000, 
+        2016690750000, 
+        3309472250000, 
+        3430210750000
+    ], 
+    "L1-D.stores-where-dram-remote": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-D.loads-where-L4_S": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "interval_timer.detailed-cpiBase-DispatchWidth+BranchMispredict": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-D.qbs-query-latency": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-I.stores-where-nuca-cache": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "core.instructions": [
+        9060731, 
+        6098789, 
+        12639395, 
+        12646385, 
+        13124879, 
+        10405105, 
+        9120850
+    ], 
+    "L2.evict-I": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L3.uncore-time-inv-imbalance": [
+        35000000, 
+        43750000, 
+        72037500, 
+        119162500, 
+        26250000, 
+        26250000, 
+        43750000
+    ], 
+    "itlb_cache.access-mru-19": [
+        1, 
+        2, 
+        1, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "itlb_cache.access-mru-18": [
+        0, 
+        0, 
+        2, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "itlb_cache.access-mru-17": [
+        0, 
+        2, 
+        0, 
+        1, 
+        1, 
+        1, 
+        1
+    ], 
+    "itlb_cache.access-mru-16": [
+        2, 
+        0, 
+        1, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "itlb_cache.access-mru-15": [
+        2, 
+        1, 
+        1, 
+        1, 
+        1, 
+        1, 
+        1
+    ], 
+    "itlb_cache.access-mru-14": [
+        2, 
+        1, 
+        0, 
+        0, 
+        0, 
+        1, 
+        1
+    ], 
+    "itlb_cache.access-mru-13": [
+        1, 
+        1, 
+        0, 
+        0, 
+        0, 
+        1, 
+        1
+    ], 
+    "L1-D.load-misses": [
+        123196, 
+        173387, 
+        69583, 
+        74625, 
+        67560, 
+        107119, 
+        109912
+    ], 
+    "itlb_cache.access-mru-11": [
+        1, 
+        2, 
+        0, 
+        0, 
+        0, 
+        2, 
+        2
+    ], 
+    "itlb_cache.access-mru-10": [
+        9, 
+        2, 
+        2, 
+        2, 
+        2, 
+        2, 
+        2
+    ], 
+    "interval_timer.detailed-cpiBase-BranchMispredict": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-I.qbs-query-latency": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-I.stores-where-dram": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-D.loads-where-L1": [
+        2437665, 
+        1316702, 
+        3928372, 
+        3924478, 
+        4057893, 
+        2997323, 
+        2520178
+    ], 
+    "pthread.pthread_mutex_lock_delay_sync": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-D.snoop-latency": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "directory.evict-S": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-I.backinval-M": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L3.load-overlapping-misses": [
+        502, 
+        977, 
+        324, 
+        215, 
+        265, 
+        556, 
+        592
+    ], 
+    "interval_timer.detailed-cpiBase-WindowEmpty+DispatchRate+BranchMispredict": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "directory.evict-O": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "directory.evict-M": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "directory.evict-E": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "interval_timer.uops_total": [
+        9719388, 
+        6692251, 
+        12864163, 
+        12855489, 
+        13354095, 
+        11018955, 
+        9708467
+    ], 
+    "interval_timer.cpiDataCacheL1I": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-I.loads-where-L4_S": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-D.stores-where-L4_S": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "performance_model.cpiDTLBMiss": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-I.loads-where-L2_S": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "interval_timer.cpContr_store": [
+        646738702268, 
+        575583223818, 
+        213482030600, 
+        209507015493, 
+        226453389294, 
+        618628432557, 
+        576306228478
+    ], 
+    "L3.mshr-latency": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "futex.futex_trylock_pi_delay": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "thread.waiting_cost": [
+        74054000000, 
+        169502000000, 
+        197330000000, 
+        210708000000, 
+        193524000000, 
+        87028000000, 
+        146440000000
+    ], 
+    "core.bbv-8": [
+        255081136517, 
+        162649233094, 
+        339401486079, 
+        343590555974, 
+        355563408050, 
+        287287299879, 
+        252512780637
+    ], 
+    "core.bbv-9": [
+        223051299196, 
+        250388516143, 
+        180064320062, 
+        181072601771, 
+        193023662669, 
+        200212812172, 
+        209353465687
+    ], 
+    "time.walltime": [
+        60107907, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "core.bbv-4": [
+        284511596385, 
+        264500701238, 
+        304408526659, 
+        304935349078, 
+        323680820610, 
+        286948941851, 
+        277362834081
+    ], 
+    "core.bbv-5": [
+        306233743572, 
+        277497424547, 
+        336077675550, 
+        336838281007, 
+        357057971881, 
+        311959720180, 
+        298990263363
+    ], 
+    "core.bbv-6": [
+        323721806407, 
+        284442553616, 
+        366045116665, 
+        366243504904, 
+        389219168208, 
+        332673237453, 
+        317283417573
+    ], 
+    "core.bbv-7": [
+        272990956474, 
+        158118391677, 
+        386363364820, 
+        388189683425, 
+        402731505911, 
+        314849030822, 
+        273814331271
+    ], 
+    "core.bbv-0": [
+        225063911666, 
+        177069877953, 
+        267101931188, 
+        268723061109, 
+        273705033411, 
+        246133603630, 
+        221899841955
+    ], 
+    "core.bbv-1": [
+        174939317329, 
+        147524499138, 
+        193521674779, 
+        193035933970, 
+        194433990694, 
+        187945983435, 
+        171274038413
+    ], 
+    "core.bbv-2": [
+        271557756848, 
+        119009739459, 
+        449674333570, 
+        446837207215, 
+        457648054665, 
+        346307067496, 
+        279605016439
+    ], 
+    "core.bbv-3": [
+        296928471823, 
+        233316470468, 
+        385096102121, 
+        380816181324, 
+        397611172588, 
+        333062528773, 
+        297292890721
+    ], 
+    "L3.uncore-time-unknown": [
+        0, 
+        0, 
+        0, 
+        0, 
+        95325000, 
+        0, 
+        0
+    ], 
+    "L1-D.evict-prefetch": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L3.snoop-latency": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "performance_model.instruction_count": [
+        9060461, 
+        6098677, 
+        12639283, 
+        12646273, 
+        13124767, 
+        10404993, 
+        9120738
+    ], 
+    "pthread.pthread_barrier_wait_delay_mem": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L2.coherency-invalidates": [
+        204, 
+        209, 
+        318, 
+        427, 
+        381, 
+        296, 
+        222
+    ], 
+    "interval_timer.detailed-cpiBase-DispatchWidth+DispatchRate+ICacheMiss": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "interval_timer.uop_generic": [
+        3303857, 
+        2170197, 
+        4345980, 
+        4296645, 
+        4454016, 
+        3758039, 
+        3305611
+    ], 
+    "fastforward_timer.cpiDataCachecache-remote": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L3.uncore-time-nuca-bus": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "interval_timer.cpiDataCachedram-remote": [
+        3521148000000, 
+        4836598000000, 
+        2279212000000, 
+        2236436000000, 
+        2177530000000, 
+        3063744000000, 
+        3420696000000
+    ], 
+    "stlb_cache.access-mru-14": [
+        5, 
+        2, 
+        2, 
+        7, 
+        1, 
+        3, 
+        7
+    ], 
+    "bus-queue.total-delay": [
+        850565637500, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L3.next_read.num-requests": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-I.loads-where-prefetch-no-mapping": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "pthread.pthread_mutex_lock_delay_mem": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-D.stores-where-L1": [
+        723000, 
+        683669, 
+        280548, 
+        268694, 
+        276103, 
+        688568, 
+        651213
+    ], 
+    "L3.uncore-time-pending-hit": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-D.stores-where-L3": [
+        56617, 
+        65163, 
+        30383, 
+        32393, 
+        29795, 
+        54126, 
+        54218
+    ], 
+    "L1-D.stores-where-L2": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-D.stores-where-L4": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "stlb_cache.access-mru-10": [
+        4, 
+        5, 
+        1, 
+        3, 
+        3, 
+        6, 
+        10
+    ], 
+    "L2.store-misses-S": [
+        178, 
+        211, 
+        180, 
+        173, 
+        151, 
+        149, 
+        228
+    ], 
+    "dram.total-access-latency": [
+        20979816550000, 
+        20919819162500, 
+        21280698962500, 
+        21046368150000, 
+        20756698200000, 
+        20485002725000, 
+        20958336425000
+    ], 
+    "fastforward_timer.cpiDataCachemiss": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "interval_timer.cpiDataCacheL4_S": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-D.loads-u": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L2.store-misses-I": [
+        20163, 
+        17327, 
+        6852, 
+        6400, 
+        6814, 
+        18953, 
+        17323
+    ], 
+    "L2.store-misses-O": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L2.store-misses-M": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L2.next_read.requests-out-of-order": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L2.store-misses-E": [
+        36276, 
+        47625, 
+        23351, 
+        25820, 
+        22830, 
+        35024, 
+        36667
+    ], 
+    "L1-D.loads-E": [
+        442748, 
+        642278, 
+        771932, 
+        610476, 
+        749453, 
+        951255, 
+        707535
+    ], 
+    "performance_model.cpiUnknown": [
+        326000000, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "thread.time_by_core[0]": [
+        12956344000000, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-I.evict-u": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-D.next_read.num-barriers": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-D.loads-O": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "fs_to_cycles_cores": [
+        5e-07, 
+        5e-07, 
+        5e-07, 
+        5e-07, 
+        5e-07, 
+        5e-07, 
+        5e-07
+    ], 
+    "L1-D.loads-I": [
+        123030, 
+        173141, 
+        69415, 
+        74539, 
+        67458, 
+        106960, 
+        109728
+    ], 
+    "L2.backinval-S": [
+        39019, 
+        38572, 
+        29391, 
+        27726, 
+        24909, 
+        33560, 
+        36934
+    ], 
+    "L2.backinval-M": [
+        56454, 
+        65098, 
+        30180, 
+        32229, 
+        29496, 
+        53977, 
+        54109
+    ], 
+    "interval_timer.detailed-cpiBase-DispatchWidth+DispatchRate+ICacheMiss+BranchMispredict": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L2.backinval-O": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L2.backinval-I": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-D.loads-S": [
+        1228145, 
+        16952, 
+        2384122, 
+        3003262, 
+        2775794, 
+        1113501, 
+        1240832
+    ], 
+    "L2.backinval-E": [
+        89545, 
+        141074, 
+        43709, 
+        46695, 
+        41783, 
+        73378, 
+        75084
+    ], 
+    "L1-D.stores-where-L3_S": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-D.next_read.total-delay": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L2.stores": [
+        56617, 
+        65163, 
+        30383, 
+        32393, 
+        29795, 
+        54126, 
+        54218
+    ], 
+    "fastforward_timer.cpiDataCachedram-remote": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-I.loads-where-miss": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-D.hits-prefetch": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-D.loads-where-L2_S": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L3.hits-warmup": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "interval_timer.loadstore_contention.num-requests": [
+        1847078, 
+        521064, 
+        3578076, 
+        3556276, 
+        3716143, 
+        2497700, 
+        1960936
+    ], 
+    "itlb.miss": [
+        50, 
+        52, 
+        51, 
+        51, 
+        51, 
+        51, 
+        51
+    ], 
+    "interval_timer.cpiDataCachenuca-cache": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L2.coherency-downgrades": [
+        4794, 
+        4216, 
+        3571, 
+        3885, 
+        3788, 
+        4000, 
+        4502
+    ], 
+    "ncores": 7, 
+    "interval_timer.uop_fp_addsub": [
+        751579, 
+        1085440, 
+        386297, 
+        421092, 
+        456689, 
+        570320, 
+        685123
+    ], 
+    "L1-I.stores-where-L3_S": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "interval_timer.detailed-cpiBase-WindowEmpty+DispatchWidth+DispatchRate+ICacheMiss+BranchMispredict": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-D.stores-where-predicate-false": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "interval_timer.numMfenceInsns": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "interval_timer.cpiDataCacheL2_S": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L2.total-latency": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "fastforward_timer.cpiDataCacheL4": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "fastforward_timer.cpiDataCacheL3": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "fastforward_timer.cpiDataCacheL2": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "fastforward_timer.cpiDataCacheL1": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "dtlb.access": [
+        3340478, 
+        2238921, 
+        4308886, 
+        4300190, 
+        4431351, 
+        3847136, 
+        3335521
+    ], 
+    "interval_timer.cpiInstructionCacheL4": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "performance_model.cpiSyncMemAccess": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "interval_timer.cpiInstructionCacheL2": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "interval_timer.cpiInstructionCacheL1": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L3.uncore-time-remote-cache-inv": [
+        486000000, 
+        482000000, 
+        384000000, 
+        322000000, 
+        400000000, 
+        366000000, 
+        546000000
+    ], 
+    "interval_timer.detailed-cpiBase-DispatchWidth+ICacheMiss": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "interval_timer.cpiInstructionCachepredicate-false": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-I.loads-where-L3": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "futex.futex_wait_bitset_delay": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L3.next_read.total-delay": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L3.uncore-totaltime": [
+        25370964887500, 
+        33656209962500, 
+        14259160475000, 
+        14706033225000, 
+        13290942650000, 
+        22188006087500, 
+        22877478625000
+    ], 
+    "interval_timer.numLongLatencyLoads": [
+        28190, 
+        37458, 
+        18133, 
+        18315, 
+        17279, 
+        23996, 
+        27022
+    ], 
+    "L1-D.stores-where-dram": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "directory.forward-failed": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "pthread.pthread_cond_signal_delay_mem": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "interval_timer.cpiInstructionCacheprefetch-no-mapping": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-D.loads-where-L1I": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "interval_timer.cpiInstructionCachedram": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "interval_timer.cpiDataCacheprefetch-no-mapping": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-I.stores-where-dram-local": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L3.uncore-time-dram-cache-tags": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L3.next_read.total-barrier-delay": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-D.stores-u": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-D.next_read.num-requests": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "pthread.pthread_mutex_unlock_delay_sync": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L2.evict-u": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L3.uncore-time-dram": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-D.next_read.requests-simultaneous": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-D.stores-where-L1_S": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-I.evict-S": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "interval_timer.cpContr_load_other": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L2.evict-S": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L2.next_read.requests-simultaneous": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L2.hits-warmup": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-I.evict-warmup": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-D.stores-S": [
+        178, 
+        212, 
+        180, 
+        174, 
+        151, 
+        149, 
+        228
+    ], 
+    "L3.store-misses": [
+        56617, 
+        65163, 
+        30383, 
+        32393, 
+        29795, 
+        54126, 
+        54218
+    ], 
+    "L3.uncore-time-dram-cache": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "performance_model.cpiSyncFutex": [
+        84430000000, 
+        157408000000, 
+        181270000000, 
+        194148000000, 
+        173272000000, 
+        71800000000, 
+        130198000000
+    ], 
+    "L1-D.stores-E": [
+        36276, 
+        47625, 
+        23351, 
+        25820, 
+        22830, 
+        35024, 
+        36667
+    ], 
+    "L3.prefetches": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "interval_timer.cpiSerialization": [
+        40000000, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L3.uncore-time-remote-cache-wb": [
+        3384000000, 
+        3992375000, 
+        3521875000, 
+        3811875000, 
+        4073125000, 
+        3397875000, 
+        4067000000
+    ], 
+    "performance_model.nonidle_elapsed_time": [
+        12956344000000, 
+        12818776000000, 
+        12789472000000, 
+        12773730000000, 
+        12790244000000, 
+        12888658000000, 
+        12829260000000
+    ], 
+    "L2.evict-E": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "futex.futex_cmp_requeue_pi_count": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-D.stores-M": [
+        723000, 
+        683669, 
+        280548, 
+        268694, 
+        276103, 
+        688568, 
+        651213
+    ], 
+    "L1-D.stores-O": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "performance_model.cycle_count": [
+        6521296.19375, 
+        6521296.19375, 
+        6521296.19375, 
+        6521296.19375, 
+        6521296.19375, 
+        6521296.19375, 
+        6521296.19375
+    ], 
+    "L1-D.stores-I": [
+        20163, 
+        17326, 
+        6852, 
+        6399, 
+        6814, 
+        18953, 
+        17323
+    ], 
+    "L2.evict-M": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L3.loads-O": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "interval_timer.cpiDataCachemiss": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L2.snoop-latency": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "interval_timer.cpiInstructionCacheunknown": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L3.next_read.no-free-slots": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "performance_model.cpiRecv": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "fastforward_timer.cpiDataCacheL4_S": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L2.evict-O": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-D.coherency-downgrades": [
+        1526, 
+        1243, 
+        1524, 
+        1546, 
+        1805, 
+        1641, 
+        1579
+    ], 
+    "interval_timer.cpiInstructionCachedram-local": [
+        118618000000, 
+        143374000000, 
+        99904000000, 
+        98192000000, 
+        72064000000, 
+        104364000000, 
+        197534000000
+    ], 
+    "interval_timer.numBPredOverlapped": [
+        127427, 
+        156167, 
+        93644, 
+        90573, 
+        79400, 
+        116956, 
+        128149
+    ], 
+    "L2.next_read.total-delay": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "fastforward_performance_model.fastforwarded_time": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "pthread.pthread_cond_wait_delay_sync": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "pthread_locks_contended": 0.0, 
+    "L1-I.loads-where-dram-cache": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-I.coherency-invalidates": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "thread.time_by_core[4]": [
+        0, 
+        0, 
+        0, 
+        0, 
+        12790194000000, 
+        0, 
+        0
+    ], 
+    "L3.loads": [
+        165287, 
+        228177, 
+        97240, 
+        101114, 
+        90180, 
+        142721, 
+        149532
+    ], 
+    "performance_model.cpiFastforwardTime": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-I.loads-where-L3_S": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "futex.futex_cmp_requeue_delay": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-D.backinval-S": [
+        7017, 
+        4367, 
+        6174, 
+        5087, 
+        5152, 
+        5624, 
+        6417
+    ], 
+    "dram.total-queueing-delay": [
+        264495175000, 
+        266004212500, 
+        253482550000, 
+        259750400000, 
+        250690212500, 
+        237789937500, 
+        260041050000
+    ], 
+    "L3.store-misses-S": [
+        178, 
+        211, 
+        180, 
+        173, 
+        151, 
+        149, 
+        228
+    ], 
+    "interval_timer.loadstore_contention.requests-simultaneous": [
+        1333383, 
+        221848, 
+        2752102, 
+        2749056, 
+        2848390, 
+        1886360, 
+        1397084
+    ], 
+    "thread.instructions_by_core[3]": [
+        0, 
+        0, 
+        0, 
+        12646205, 
+        0, 
+        0, 
+        0
+    ], 
+    "L3.store-misses-I": [
+        20163, 
+        17327, 
+        6852, 
+        6400, 
+        6814, 
+        18953, 
+        17323
+    ], 
+    "performance_model.elapsed_time_begin": [
+        157536732025000, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "pthread.pthread_mutex_trylock_count": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-D.backinval-E": [
+        79566, 
+        120587, 
+        39371, 
+        42944, 
+        39021, 
+        65817, 
+        66081
+    ], 
+    "L3.store-misses-M": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L3.stores-prefetch": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L3.store-misses-O": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "pthread.pthread_cond_broadcast_delay_sync": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-D.backinval-O": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-D.backinval-M": [
+        56454, 
+        65098, 
+        30180, 
+        32229, 
+        29496, 
+        53977, 
+        54109
+    ], 
+    "L2.invalidate-warmup": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-D.backinval-I": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "interval_timer.cpContr_load_l2": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "interval_timer.cpContr_load_l3": [
+        130676376, 
+        116700068, 
+        111989519, 
+        78214313, 
+        100376541, 
+        102106310, 
+        112218039
+    ], 
+    "L1-D.backinval-u": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-I.store-overlapping-misses": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-I.invalidate-warmup": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L3.store-misses-u": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L3.uncore-time-dram-bus": [
+        1154127150000, 
+        1547541450000, 
+        639232875000, 
+        659921612500, 
+        598501950000, 
+        1012662000000, 
+        1041075787500
+    ], 
+    "fastforward_timer.cpiDataCachepredicate-false": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "roi.walltime": 60.107907, 
+    "L1-D.loads-where-dram-remote": [
+        102762, 
+        148476, 
+        57849, 
+        61662, 
+        56512, 
+        91177, 
+        92313
+    ], 
+    "interval_timer.cpiDataCachepredicate-false": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "futex.futex_wait_requeue_pi_delay": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-I.stores-prefetch": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "itlb.access": [
+        2185903, 
+        981614, 
+        3774800, 
+        3779227, 
+        3921967, 
+        2777574, 
+        2269553
+    ], 
+    "interval_timer.loadstore_contention.total-delay": [
+        34450932000000, 
+        914854000000, 
+        76935802000000, 
+        76824348000000, 
+        80023898000000, 
+        51189358000000, 
+        37299788000000
+    ], 
+    "thread.instructions_by_core[0]": [
+        9060461, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "pthread.pthread_mutex_unlock_delay_mem": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-I.next_read.total-delay": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-I.loads-where-nuca-cache": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "interval_timer.detailed-cpiBase-DispatchRate+ICacheMiss": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L3.load-misses-u": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-D.stores-where-L1I": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "itlb_cache.access-mru-22": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-D.stores": [
+        779617, 
+        748832, 
+        310931, 
+        301087, 
+        305898, 
+        742694, 
+        705431
+    ], 
+    "itlb_cache.access-mru-20": [
+        2, 
+        1, 
+        5, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "itlb_cache.access-mru-21": [
+        2, 
+        4, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "itlb_cache.access-mru-26": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "itlb_cache.access-mru-27": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "itlb_cache.access-mru-24": [
+        0, 
+        1, 
+        1, 
+        1, 
+        1, 
+        0, 
+        0
+    ], 
+    "itlb_cache.access-mru-25": [
+        3, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L3.store-misses-E": [
+        36276, 
+        47625, 
+        23351, 
+        25820, 
+        22830, 
+        35024, 
+        36667
+    ], 
+    "itlb_cache.access-mru-28": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "itlb_cache.access-mru-29": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L3.load-misses-O": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "pthread.pthread_cond_signal_count": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L3.load-misses-M": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "interval_timer.cpiDataCachedram-cache": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L3.load-misses-S": [
+        76, 
+        56, 
+        45, 
+        26, 
+        53, 
+        39, 
+        51
+    ], 
+    "L1-D.stores-where-L2_S": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "futex.futex_wait_count": [
+        6, 
+        6, 
+        15, 
+        10, 
+        11, 
+        11, 
+        10
+    ], 
+    "L2.backinval-u": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "interval_timer.detailed-cpiBase-DispatchWidth+DispatchRate+BranchMispredict": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "interval_timer.detailed-cpiBase-ICacheMiss": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-D.loads-where-dram-cache": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "interval_timer.outstandingLongLatencyInsns": [
+        9081132, 
+        12821549, 
+        5130536, 
+        5510281, 
+        4985633, 
+        7940159, 
+        8114866
+    ], 
+    "thread.elapsed_time": [
+        13042592387500, 
+        12975052000000, 
+        12970608000000, 
+        12967750000000, 
+        12963380000000, 
+        12960406000000, 
+        12959334000000
+    ], 
+    "L3.invalidate-prefetch": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-I.loads-where-L1_S": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "interval_timer.cpContr_fp_muldiv": [
+        353600928877, 
+        478790657309, 
+        203472411100, 
+        222735211589, 
+        210218236075, 
+        286297132297, 
+        324851998611
+    ], 
+    "L3.evict-S": [
+        39019, 
+        38572, 
+        29391, 
+        27726, 
+        24909, 
+        33560, 
+        36934
+    ], 
+    "interval_timer.cpContr_load_l1": [
+        415848317741, 
+        163443633892, 
+        737343660270, 
+        724611910665, 
+        735870791123, 
+        550743587069, 
+        419035001458
+    ], 
+    "pthread.pthread_cond_wait_count": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "futex.futex_requeue_delay": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "fastforward_timer.cpiDataCachedram-local": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-I.stores-where-miss": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-D.loads-where-prefetch-no-mapping": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "network.shmem-1.bus.num-packets-delayed": [
+        201995, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-D.loads-where-cache-remote": [
+        2127, 
+        781, 
+        1716, 
+        2132, 
+        1453, 
+        1211, 
+        1444
+    ], 
+    "futex.futex_lock_pi_count": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "stlb_cache.access-mru-0": [
+        17, 
+        12, 
+        8, 
+        2, 
+        5, 
+        18, 
+        7
+    ], 
+    "L3.backinval-M": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "thread.unscheduled_time": [
+        80430000000, 
+        151408000000, 
+        178270000000, 
+        191148000000, 
+        170272000000, 
+        65800000000, 
+        126198000000
+    ], 
+    "interval_timer.cpiBranchPredictor": [
+        97512000000, 
+        112166000000, 
+        97676000000, 
+        78138000000, 
+        76920000000, 
+        89222000000, 
+        107506000000
+    ], 
+    "thread.instructions_by_core[4]": [
+        0, 
+        0, 
+        0, 
+        0, 
+        13124699, 
+        0, 
+        0
+    ], 
+    "L1-I.invalidate-prefetch": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L3.coherency-writebacks": [
+        63, 
+        52, 
+        74, 
+        99, 
+        74, 
+        54, 
+        72
+    ], 
+    "fs_to_cycles": 5e-07, 
+    "performance_model.cpiSyncPause": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-I.next_read.requests-simultaneous": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "performance_model.cpiSyncJoin": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "interval_timer.cpiBase": [
+        7608336000000, 
+        5741854000000, 
+        9195614000000, 
+        9224472000000, 
+        9501752000000, 
+        8366160000000, 
+        7538096000000
+    ], 
+    "performance_model.idle_elapsed_time": [
+        86248387500, 
+        223816387500, 
+        253120387500, 
+        268862387500, 
+        252348387500, 
+        153934387500, 
+        213332387500
+    ], 
+    "L3.uncore-time-dram-device": [
+        17999058925000, 
+        24135056250000, 
+        9970460962500, 
+        10293525712500, 
+        9335080225000, 
+        15792777712500, 
+        16237045287500
+    ], 
+    "futex.futex_wake_bitset_delay": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "interval_timer.detailed-cpiBase-WindowEmpty+DispatchWidth+DispatchRate+BranchMispredict": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-I.total-latency": [
+        5983465000000, 
+        7811699525000, 
+        3921842250000, 
+        3759694050000, 
+        3214399650000, 
+        5078995525000, 
+        5637453900000
+    ], 
+    "thread.bottle_runtime_time": [
+        12962162387500, 
+        12825154000000, 
+        12793382000000, 
+        12777416000000, 
+        12793282000000, 
+        12894742000000, 
+        12834576000000
+    ], 
+    "performance_model.dyninsn_count": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L2.load-misses": [
+        165287, 
+        228177, 
+        97240, 
+        101114, 
+        90180, 
+        142721, 
+        149532
+    ], 
+    "L2.loads-prefetch": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "performance_model.cpiSyncPthreadCond": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "interval_timer.cpContr_port34": [
+        7364754941, 
+        7071501227, 
+        6033202826, 
+        5455115389, 
+        5107216843, 
+        5799663573, 
+        6305228187
+    ], 
+    "syscall.stdout-bytes": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "interval_timer.uops_pause": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "interval_timer.numICacheOverlapped": [
+        3549521, 
+        4717507, 
+        2283020, 
+        2306429, 
+        2175662, 
+        3022806, 
+        3403848
+    ], 
+    "dtlb_cache.access-mru-6": [
+        768, 
+        497, 
+        419, 
+        461, 
+        455, 
+        512, 
+        545
+    ], 
+    "dtlb_cache.access-mru-7": [
+        380, 
+        348, 
+        274, 
+        286, 
+        453, 
+        382, 
+        319
+    ], 
+    "dtlb_cache.access-mru-4": [
+        1405, 
+        1557, 
+        1829, 
+        1269, 
+        768, 
+        1452, 
+        1265
+    ], 
+    "dtlb_cache.access-mru-5": [
+        836, 
+        930, 
+        1053, 
+        739, 
+        769, 
+        1093, 
+        688
+    ], 
+    "dtlb_cache.access-mru-2": [
+        20715, 
+        20830, 
+        17126, 
+        15492, 
+        11083, 
+        15268, 
+        13032
+    ], 
+    "dtlb_cache.access-mru-3": [
+        2039, 
+        2294, 
+        2914, 
+        2151, 
+        1795, 
+        2535, 
+        1922
+    ], 
+    "dtlb_cache.access-mru-0": [
+        3150830, 
+        1957924, 
+        4166578, 
+        4154174, 
+        4297337, 
+        3671787, 
+        3126228
+    ], 
+    "dtlb_cache.access-mru-1": [
+        162131, 
+        253281, 
+        117507, 
+        124753, 
+        117676, 
+        152818, 
+        190259
+    ], 
+    "L1-D.stores-where-unknown": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "fastforward_timer.cpiDataCacheprefetch-no-mapping": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-I.stores-where-dram-cache": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "dtlb_cache.access-mru-8": [
+        225, 
+        253, 
+        259, 
+        208, 
+        273, 
+        281, 
+        241
+    ], 
+    "dtlb_cache.access-mru-9": [
+        202, 
+        109, 
+        193, 
+        91, 
+        190, 
+        204, 
+        133
+    ], 
+    "performance_model.cpiSyncSleep": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "interval_timer.cpiInstructionCachedram-cache": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-D.loads-M": [
+        766938, 
+        657718, 
+        772486, 
+        310826, 
+        532748, 
+        932726, 
+        571995
+    ], 
+    "dtlb_cache.access-mru-10": [
+        105, 
+        74, 
+        146, 
+        74, 
+        74, 
+        116, 
+        99
+    ], 
+    "dtlb_cache.access-mru-11": [
+        69, 
+        69, 
+        76, 
+        59, 
+        62, 
+        88, 
+        91
+    ], 
+    "dtlb_cache.access-mru-12": [
+        51, 
+        53, 
+        52, 
+        30, 
+        52, 
+        52, 
+        46
+    ], 
+    "dtlb_cache.access-mru-13": [
+        48, 
+        58, 
+        36, 
+        23, 
+        32, 
+        25, 
+        42
+    ], 
+    "dtlb_cache.access-mru-14": [
+        33, 
+        49, 
+        21, 
+        20, 
+        18, 
+        24, 
+        25
+    ], 
+    "dtlb_cache.access-mru-15": [
+        33, 
+        28, 
+        13, 
+        17, 
+        15, 
+        18, 
+        26
+    ], 
+    "L1-I.loads-where-L2": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-I.next_read.num-barriers": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-I.loads-where-L1": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-I.next_read.total-barrier-delay": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-I.loads-where-L4": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L3.backinval-u": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-D.loads": [
+        2560861, 
+        1490089, 
+        3997955, 
+        3999103, 
+        4125453, 
+        3104442, 
+        2630090
+    ], 
+    "interval_timer.totalSerializationLatency": [
+        20, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "futex.futex_wake_bitset_count": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "interval_timer.detailed-cpiBase-WindowEmpty+DispatchWidth+ICacheMiss": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-D.loads-prefetch": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "bus-queue.no-free-slots": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "fastforward_timer.cpiDataCacheunknown": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L2.store-misses-u": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-I.store-misses-I": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "pthread.pthread_barrier_wait_count": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "interval_timer.cpiDataCacheunknown": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "interval_timer.cpiInstructionCachenuca-cache": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L2.evict-prefetch": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "interval_timer.loadstore_contention.requests-out-of-order": [
+        45944, 
+        61325, 
+        41379, 
+        34158, 
+        32929, 
+        38200, 
+        48022
+    ], 
+    "interval_timer.cpContr_generic": [
+        246539293521, 
+        136845849768, 
+        414463028756, 
+        416721205155, 
+        402631389968, 
+        306788983918, 
+        263840975310
+    ], 
+    "L2.store-overlapping-misses": [
+        0, 
+        0, 
+        0, 
+        1, 
+        1, 
+        1, 
+        0
+    ], 
+    "syscall.stderr-bytes": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "interval_timer.cpiDataCacheL1_S": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "interval_timer.cpiInstructionCacheL1I": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "performance_model.elapsed_time": [
+        13042592387500, 
+        13042592387500, 
+        13042592387500, 
+        13042592387500, 
+        13042592387500, 
+        13042592387500, 
+        13042592387500
+    ], 
+    "L1-D.mshr-latency": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "interval_timer.detailed-cpiBase-DispatchWidth+DispatchRate": [
+        282435, 
+        388996, 
+        162433, 
+        156303, 
+        172366, 
+        218097, 
+        262995
+    ], 
+    "L1-I.loads-where-L1I": [
+        2143812, 
+        926824, 
+        3747143, 
+        3752738, 
+        3899347, 
+        2741972, 
+        2229933
+    ], 
+    "L1-D.access-mru-1": [
+        29011, 
+        39642, 
+        15820, 
+        16960, 
+        15749, 
+        24140, 
+        29242
+    ], 
+    "L1-D.access-mru-0": [
+        3131654, 
+        1960729, 
+        4193100, 
+        4176212, 
+        4318247, 
+        3661751, 
+        3142149
+    ], 
+    "L1-D.access-mru-3": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-D.access-mru-2": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "thread.time_by_core[1]": [
+        0, 
+        12818726000000, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-D.evict-S": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L3.uncore-time-noc-queue": [
+        59480887500, 
+        80955425000, 
+        24917700000, 
+        26631287500, 
+        24440687500, 
+        49216450000, 
+        52048375000
+    ], 
+    "interval_timer.detailed-cpiBase-WindowEmpty+DispatchRate+ICacheMiss+BranchMispredict": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-D.evict-E": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-D.evict-I": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-D.stores-where-prefetch-no-mapping": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-D.evict-M": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-D.evict-O": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-D.evict-u": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "performance_model.cpiITLBMiss": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-I.loads-prefetch": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "interval_timer.cpiInstructionCacheL2_S": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L2.access-mru-7": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L2.access-mru-6": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L2.access-mru-5": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L2.access-mru-4": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L2.access-mru-3": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L2.access-mru-2": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L2.access-mru-1": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L2.access-mru-0": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "interval_timer.numSerializationInsns": [
+        2, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "itlb_cache.access-mru-23": [
+        3, 
+        0, 
+        0, 
+        0, 
+        0, 
+        1, 
+        1
+    ], 
+    "L1-D.stores-where-cache-remote": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "interval_timer.cpContr_fp_addsub": [
+        824486006471, 
+        1158371823935, 
+        444214211005, 
+        486650681748, 
+        495862678503, 
+        642719713481, 
+        749029833973
+    ], 
+    "roi.ipstotal": 1216081.837619134, 
+    "L2.next_read.no-free-slots": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "performance_model.cpiSyncSyscall": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "l1misslat": 113292316.47579329, 
+    "L1-I.hits-prefetch": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-D.loads-where-dram-local": [
+        18003, 
+        23829, 
+        9793, 
+        10596, 
+        9353, 
+        14510, 
+        15838
+    ], 
+    "L1-I.store-misses": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "walltime": 76.59533905982971, 
+    "L3.uncore-time-nuca-queue": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "interval_timer.uop_load": [
+        2502497, 
+        1412365, 
+        3963934, 
+        3959203, 
+        4095505, 
+        3039618, 
+        2576517
+    ], 
+    "L3.load-misses-E": [
+        90, 
+        190, 
+        123, 
+        60, 
+        49, 
+        120, 
+        133
+    ], 
+    "interval_timer.detailed-cpiBase-WindowEmpty+DispatchWidth": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "interval_timer.detailed-cpiBase-DispatchWidth+ICacheMiss+BranchMispredict": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L2.store-misses": [
+        56617, 
+        65163, 
+        30383, 
+        32393, 
+        29795, 
+        54126, 
+        54218
+    ], 
+    "barrier.global_time_begin": [
+        157534839637500, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L3.load-misses-I": [
+        165121, 
+        227931, 
+        97072, 
+        101028, 
+        90078, 
+        142562, 
+        149348
+    ], 
+    "pthread.pthread_cond_broadcast_delay_mem": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "interval_timer.loadstore_contention.no-free-slots": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L3.uncore-time-dram-cache-data": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "interval_timer.cpContr_port5": [
+        304134862248, 
+        3485997188, 
+        684506931539, 
+        684664225618, 
+        710539524593, 
+        453650948754, 
+        329196553273
+    ], 
+    "L1-D.loads-where-miss": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "interval_timer.cpContr_port0": [
+        4001360934, 
+        6589799899, 
+        1499367926, 
+        1255902553, 
+        2266477447, 
+        2251321138, 
+        3374903796
+    ], 
+    "interval_timer.cpContr_port1": [
+        1952968537, 
+        2702051954, 
+        1821183113, 
+        1402275818, 
+        1536890475, 
+        1413370501, 
+        2704901991
+    ], 
+    "interval_timer.cpContr_port2": [
+        734310341875, 
+        174907914541, 
+        1446025410822, 
+        1436568118716, 
+        1484680491733, 
+        1011745517810, 
+        792380112261
+    ], 
+    "directory.forward": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "fastforward_timer.cpiDataCachenuca-cache": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L2.stores-E": [
+        36276, 
+        47625, 
+        23351, 
+        25820, 
+        22830, 
+        35024, 
+        36667
+    ], 
+    "L2.stores-O": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L2.stores-M": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L2.stores-I": [
+        20163, 
+        17327, 
+        6852, 
+        6400, 
+        6814, 
+        18953, 
+        17323
+    ], 
+    "interval_timer.cpContr_port05": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "itlb_cache.access-mru-9": [
+        7, 
+        1, 
+        2, 
+        3, 
+        2, 
+        1, 
+        1
+    ], 
+    "itlb_cache.access-mru-8": [
+        8, 
+        4, 
+        2, 
+        2, 
+        2, 
+        5, 
+        4
+    ], 
+    "L2.stores-S": [
+        178, 
+        211, 
+        180, 
+        173, 
+        151, 
+        149, 
+        228
+    ], 
+    "L3.evict-prefetch": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "itlb_cache.access-mru-3": [
+        772, 
+        690, 
+        905, 
+        575, 
+        557, 
+        722, 
+        667
+    ], 
+    "itlb_cache.access-mru-2": [
+        2393, 
+        2294, 
+        2862, 
+        1938, 
+        1870, 
+        2297, 
+        2225
+    ], 
+    "itlb_cache.access-mru-1": [
+        2821, 
+        2761, 
+        2817, 
+        2225, 
+        1940, 
+        2064, 
+        2281
+    ], 
+    "itlb_cache.access-mru-0": [
+        2179143, 
+        975362, 
+        3767566, 
+        3774135, 
+        3917244, 
+        2772000, 
+        2263863
+    ], 
+    "itlb_cache.access-mru-7": [
+        27, 
+        42, 
+        20, 
+        21, 
+        24, 
+        25, 
+        26
+    ], 
+    "itlb_cache.access-mru-6": [
+        103, 
+        50, 
+        63, 
+        40, 
+        31, 
+        48, 
+        60
+    ], 
+    "itlb_cache.access-mru-5": [
+        105, 
+        72, 
+        75, 
+        46, 
+        51, 
+        68, 
+        78
+    ], 
+    "itlb_cache.access-mru-4": [
+        441, 
+        268, 
+        424, 
+        186, 
+        190, 
+        283, 
+        287
+    ], 
+    "L2.next_read.total-barrier-delay": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-D.coherency-upgrades": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "futex.futex_wake_delay": [
+        4000000000, 
+        6000000000, 
+        3000000000, 
+        3000000000, 
+        3000000000, 
+        6000000000, 
+        4000000000
+    ], 
+    "directory.entries-allocated": [
+        80528, 
+        80848, 
+        80832, 
+        80752, 
+        80832, 
+        80720, 
+        80576
+    ], 
+    "interval_timer.detailed-cpiBase-DispatchRate+BranchMispredict": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-I.next_read.requests-out-of-order": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L2.next_read.num-barriers": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-I.coherency-upgrades": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "interval_timer.totalHiddenDCacheLatency": [
+        10227435, 
+        14410128, 
+        5667535, 
+        6154223, 
+        5599843, 
+        8829791, 
+        9162626
+    ], 
+    "stlb.access": [
+        658, 
+        619, 
+        441, 
+        394, 
+        350, 
+        532, 
+        611
+    ], 
+    "L2.evict-warmup": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "fastforward_timer.cpiDataCacheL3_S": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "thread.time_by_core[2]": [
+        0, 
+        0, 
+        12789422000000, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L2.loads": [
+        165287, 
+        228177, 
+        97240, 
+        101114, 
+        90180, 
+        142721, 
+        149532
+    ], 
+    "itlb_cache.access-mru-31": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "itlb_cache.access-mru-30": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "bus-queue.requests-out-of-order": [
+        2075227, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "interval_timer.numHiddenLongerDCacheLatency": [
+        28717, 
+        40142, 
+        16311, 
+        17898, 
+        15417, 
+        26469, 
+        25859
+    ], 
+    "L1-I.load-misses": [
+        42091, 
+        54790, 
+        27657, 
+        26489, 
+        22620, 
+        35602, 
+        39620
+    ], 
+    "thread.time_by_core[5]": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        12888608000000, 
+        0
+    ], 
+    "L1-D.stores-where-miss": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "interval_timer.detailed-cpiBase-WindowEmpty+ICacheMiss": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "futex.futex_fd_count": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "barrier.global_time_end": [
+        170577432025000, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-D.prefetches": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "pthread.pthread_barrier_wait_delay_sync": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L3.backinval-S": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L3.invalidate-warmup": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L3.backinval-I": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-I.loads-u": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L3.backinval-O": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "roi.instrs": 73096134, 
+    "L3.backinval-E": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-I.loads-where-unknown": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-I.loads-E": [
+        130844, 
+        368377, 
+        76935, 
+        63506, 
+        91034, 
+        111863, 
+        114932
+    ], 
+    "L1-I.loads-I": [
+        42091, 
+        54790, 
+        27657, 
+        26489, 
+        22620, 
+        35602, 
+        39620
+    ], 
+    "futex.futex_fd_delay": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-I.loads-M": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-I.loads-O": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "network.shmem-1.bus.num-bytes": [
+        78089686, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-I.coherency-downgrades": [
+        3268, 
+        2973, 
+        2047, 
+        2339, 
+        1983, 
+        2359, 
+        2923
+    ], 
+    "L1-I.loads-S": [
+        2012968, 
+        558447, 
+        3670208, 
+        3689232, 
+        3808313, 
+        2630109, 
+        2115001
+    ], 
+    "thread.nonidle_elapsed_time": [
+        12956344000000, 
+        12818726000000, 
+        12789422000000, 
+        12773680000000, 
+        12790194000000, 
+        12888608000000, 
+        12829210000000
+    ], 
+    "interval_timer.outstandingLongLatencyCycles": [
+        2612350, 
+        3464260, 
+        1666343, 
+        1693578, 
+        1619248, 
+        2211780, 
+        2474188
+    ], 
+    "L1-D.store-misses": [
+        56617, 
+        65163, 
+        30383, 
+        32393, 
+        29795, 
+        54126, 
+        54218
+    ], 
+    "performance_model.cpiSyncDvfsTransition": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "network.shmem-1.bus.time-used": [
+        15281841875000, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "dram-queue.num-requests-analytical": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "corefreq": [
+        500000000.0, 
+        500000000.0, 
+        500000000.0, 
+        500000000.0, 
+        500000000.0, 
+        500000000.0, 
+        500000000.0
+    ], 
+    "futex.futex_unlock_pi_count": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "bus-queue.num-barriers": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "L1-D.loads-where-nuca-cache": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "interval_timer.detailed-cpiBase-WindowEmpty+DispatchWidth+DispatchRate": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "interval_timer.loadstore_contention.num-barriers": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "network.shmem-1.bus.total-delay": [
+        850565637500, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "fastforward_timer.cpiBase": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "interval_timer.cpiDataCachecache-remote": [
+        57834000000, 
+        36932000000, 
+        60740000000, 
+        88298000000, 
+        58490000000, 
+        65164000000, 
+        49608000000
+    ], 
+    "dram-queue.total-queue-delay": [
+        264495175000, 
+        266004212500, 
+        253482550000, 
+        259750400000, 
+        250690212500, 
+        237789937500, 
+        260041050000
+    ], 
+    "L3.coherency-downgrades": [
+        4794, 
+        4216, 
+        3571, 
+        3885, 
+        3788, 
+        4000, 
+        4502
+    ], 
+    "interval_timer.cpiInstructionCacheL3": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "stlb.miss": [
+        535, 
+        528, 
+        376, 
+        335, 
+        305, 
+        438, 
+        501
+    ], 
+    "L1-I.stores-where-unknown": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "dram.reads": [
+        148613, 
+        148774, 
+        151333, 
+        148977, 
+        146946, 
+        143991, 
+        149011
+    ], 
+    "futex.futex_trylock_pi_count": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "interval_timer.cpiInstructionCacheL4_S": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ], 
+    "interval_timer.cpContr_branch": [
+        177111672065, 
+        32814314995, 
+        395580310761, 
+        382450753097, 
+        422182240238, 
+        246326309620, 
+        223993212519
+    ], 
+    "interval_timer.numTotalLongLatencyLoadLatency": [
+        2091058, 
+        2783637, 
+        1346682, 
+        1356465, 
+        1280495, 
+        1784528, 
+        2005877
+    ], 
+    "L3.coherency-invalidates": [
+        204, 
+        214, 
+        323, 
+        429, 
+        385, 
+        299, 
+        226
+    ], 
+    "pthread.pthread_mutex_lock_contended": [
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    ]
+}

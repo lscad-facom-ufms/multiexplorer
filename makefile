@@ -1,4 +1,4 @@
-all: check config test
+all: install check config test
 
 install:
 ifneq ($(shell id -u), 0)
@@ -6,13 +6,18 @@ ifneq ($(shell id -u), 0)
 	exit 1
 endif
 	apt update
-	apt install -y python2
-	ln -s /usr/bin/python2 /usr/bin/python
+	apt install -y python2.7
+ifeq (,$(shell ls /usr/bin/ | grep -w "python"$))
+	ln -s /usr/bin/python2.7 /usr/bin/python
+endif
 	apt install -y wget
+ifeq (,$(shell ls | grep get-pip))
 	wget https://bootstrap.pypa.io/pip/2.7/get-pip.py
-	python2 get-pip.py
+endif
+	python get-pip.py
 	pip2 install -r requirements.txt
 	apt install -y python-tk
+	make -f MakeSniper
 
 config:
 ifeq (,$(shell ls MultiExplorer/src/ | grep config.py))
@@ -20,9 +25,14 @@ ifeq (,$(shell ls MultiExplorer/src/ | grep config.py))
 else
 	@echo "MultiExplorer/src/config.py already found, make sure it's properly set."
 endif
+ifeq (,$(shell ls -a | grep -w "\.env"))
+	cp example.env .env
+else
+	@echo ".env already found, make sure it's properly set."
+endif
 
 test:
-	python MultiExplorer/src/MultiExplorer.py input-examples/quark.json
+	python ME.py
 
 python2-check:
 ifeq (,$(shell which python2))
@@ -60,6 +70,3 @@ else
 endif
 
 check:python2-check pip2-check lxml-check configparser-check scikit-check
-
-test:
-	python2 MultiExplorer/src/MultiExplorer.py input-examples/quark.json
