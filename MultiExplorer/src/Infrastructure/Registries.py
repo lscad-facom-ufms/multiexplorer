@@ -2,6 +2,8 @@ from typing import Dict, ClassVar
 from ExecutionFlow import ExecutionFlow
 from MultiExplorer.src.CPUHeterogeneousMulticoreExploration.CPUHeterogeneousMulticoreExploration import \
     CPUHeterogeneousMulticoreExplorationExecutionFlow
+from MultiExplorer.src.MultiExplorerVM.MultiExplorerVM import \
+    MultiExplorerVMExecutionFlow
 
 
 class ExecutionFlowRegistry(object):
@@ -20,6 +22,11 @@ class ExecutionFlowRegistry(object):
         self.register_flow_class(
             CPUHeterogeneousMulticoreExplorationExecutionFlow,
             CPUHeterogeneousMulticoreExplorationExecutionFlow.get_label()
+        )
+
+        self.register_flow_class(
+            MultiExplorerVMExecutionFlow,
+            MultiExplorerVMExecutionFlow.get_label()
         )
 
     def register_flow_class(self, flow_class, label):
