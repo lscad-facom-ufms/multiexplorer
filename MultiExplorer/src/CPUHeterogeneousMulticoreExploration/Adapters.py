@@ -2740,6 +2740,46 @@ class NsgaIIPredDSEAdapter(Adapter):
                     }),
                 ],
             }),
+            InputGroup({
+                'label': "NSGA-II Parameters",
+                'key': 'nsga_parameters',
+                'inputs': [
+                    Input({
+                        'label': 'Crossing Rate',
+                        'unit': '%',
+                        'key': 'mutation_strength',
+                        'type': InputType.Float,
+                        "is_user_input": True,
+                        "required": True,
+                        "default_value": 50.0,
+                    }),
+                    Input({
+                        'label': 'Mutation Rate',
+                        'unit': '%',
+                        'key': 'mutation_rate',
+                        'type': InputType.Float,
+                        "is_user_input": True,
+                        "required": True,
+                        "default_value": 10.0,
+                    }),
+                    Input({
+                        'label': 'Population Size',
+                        'key': 'num_of_individuals',
+                        'type': InputType.Integer,
+                        "is_user_input": True,
+                        "required": True,
+                        "default_value": 10,
+                    }),
+                    Input({
+                        'label': 'Number of Generations',
+                        'key': 'num_of_generations',
+                        'type': InputType.Integer,
+                        "is_user_input": True,
+                        "required": True,
+                        "default_value": 150,
+                    }),
+                ],
+            }),
         ])
 
         self.dse_engine = None
@@ -2876,15 +2916,11 @@ class NsgaIIPredDSEAdapter(Adapter):
     def read_dse_settings(self):
         self.dse_settings = json.loads(open(self.get_dse_settings_file_path()).read())
 
-        self.dse_settings['num_of_generations'] = 150
-
-        self.dse_settings['num_of_individuals'] = 10
-
-        self.dse_settings['mutation_strength'] = 0.5
-
-        self.dse_settings['mutation_rate'] = 0.1
-
         self.set_dse_settings_from_inputs([
+            'num_of_generations',
+            'num_of_individuals',
+            'mutation_strength',
+            'mutation_rate',
             'exploration_space',
             'constraints',
             'original_cores_for_design',
@@ -2897,6 +2933,11 @@ class NsgaIIPredDSEAdapter(Adapter):
         # type: (Optional[List[str]]) -> None
         if self.dse_settings is None:
             self.dse_settings = {}
+
+        self.dse_settings['num_of_generations'] = int(self.inputs['nsga_parameters']['num_of_generations'])
+        self.dse_settings['num_of_individuals'] = int(self.inputs['nsga_parameters']['num_of_individuals'])
+        self.dse_settings['mutation_strength'] = float(self.inputs['nsga_parameters']['mutation_strength'])
+        self.dse_settings['mutation_rate'] = float(self.inputs['nsga_parameters']['mutation_rate'])
 
         for key in self.inputs:
             if (keys is not None) and (key not in keys):

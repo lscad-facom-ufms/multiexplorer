@@ -17,8 +17,8 @@ class Evolution(object):
             problem,
             num_of_individuals,
             settings,
-            mutation_rate=settings['dse']['mutation_rate'],
-            mutation_strength=settings['dse']['mutation_strength']
+            mutation_rate=settings['dse']['mutation_rate']/100.0,
+            mutation_strength=settings['dse']['mutation_strength']/100.0
         )
 
         self.population = None

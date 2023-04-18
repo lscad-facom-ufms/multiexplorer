@@ -50,6 +50,7 @@ class Input:
             "aditional_info": Dict, Dicto of value -> info pairs when you need to display further information
                 when an option is selected in a combobox,
             "required": bool, Marks whether setting this input is mandatory or an empty/null value is also acceptable
+            "default_value": Any -> the input will begin with this value in it
         }
         """
         self.label = 'Input Label'  # type: str
@@ -71,6 +72,8 @@ class Input:
         self.additional_info = None  # type: Optional[Dict]
 
         self.required = False  # type: bool
+
+        self.default_value =  None  # type: Optional[Any]
 
         if 'key' in options:
             self.key = str(options['key'])
@@ -115,6 +118,11 @@ class Input:
 
         if 'required' in options:
             self.required = options['required']
+
+        if 'default_value' in options:
+            self.default_value = options['default_value']
+
+            self.value = options['default_value']
 
     def get_label(self):
         return self.label

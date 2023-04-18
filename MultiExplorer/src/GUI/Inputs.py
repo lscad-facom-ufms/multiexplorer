@@ -437,6 +437,9 @@ class TypeInEntry(Tkinter.Entry, object):
             sticky="news",
         )
 
+        if infra_input.default_value:
+            self.insert(0, str(infra_input.default_value))
+
     def on_validate(self, d, i, P, s, S, v, V, W):
         if self.infra_input.is_valid(S) is True:
             return True
