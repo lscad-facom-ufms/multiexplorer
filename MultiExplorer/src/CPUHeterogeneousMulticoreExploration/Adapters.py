@@ -2038,7 +2038,7 @@ class McPATAdapter(Adapter):
 
         self.results = {}
 
-        scope_regex = re.compile('([a-zA-Z \d(/)]+)( \(Count: *\d *\))?: *\n')
+        scope_regex = re.compile('([a-zA-Z \d(/)]+)( \(Count: *\d *\))?:( \d+ cores)? *\n')
 
         key_value_regex = re.compile('([a-zA-Z *%]*[a-zA-Z]) = ([+-]?\d+\.\d+(e[+-]\d+)?)( ([a-zA-Z\d^]+))?')
 
@@ -2065,7 +2065,10 @@ class McPATAdapter(Adapter):
 
             key, value, measurement_unit = key_value_match.group(1, 2, 5)
 
-            self.results[scope][key.strip("\t *:").replace(" ", "_").lower()] = float(value), measurement_unit
+            pretty_key = key.strip("\t *:").replace(" ", "_").lower()
+
+            if pretty_key not in self.results[scope]:
+                self.results[scope][pretty_key] = float(value), measurement_unit
 
         results_file = open(self.get_results_file_path(), 'w+')
 
@@ -2081,7 +2084,7 @@ class McPATAdapter(Adapter):
                 self.results['processor']['area'][1]
             ),
             'core_area': (
-                round(self.results['core']['area'][0], 2),
+                round(self.results['total_cores']['area'][0], 2),
                 self.results['core']['area'][1]
             ),
             'ds_area': (
@@ -2665,7 +2668,7 @@ class NsgaIIPredDSEAdapter(Adapter):
 
         self.dse_settings_file_name = None
 
-        self.dse_settings = None  # type: Dict[str, Any]
+        self.dse_settings = None  # type: Optional[Dict[str, Any]]
 
         self.mcpat_results_json_file_name = None
 
@@ -2676,6 +2679,8 @@ class NsgaIIPredDSEAdapter(Adapter):
         self.sniper_results = None
 
         self.inputs = {}  # type: Dict[str, Union[Input, InputGroup]]
+
+        self.profile = None
 
         self.results = None
 
@@ -2752,6 +2757,8 @@ class NsgaIIPredDSEAdapter(Adapter):
                         "is_user_input": True,
                         "required": True,
                         "default_value": 50.0,
+                        "min_val": 0.01,
+                        "max_val": 100.0,
                     }),
                     Input({
                         'label': 'Mutation Rate',
@@ -2761,6 +2768,8 @@ class NsgaIIPredDSEAdapter(Adapter):
                         "is_user_input": True,
                         "required": True,
                         "default_value": 10.0,
+                        "min_val": 0.01,
+                        "max_val": 100.0,
                     }),
                     Input({
                         'label': 'Population Size',
@@ -2769,6 +2778,8 @@ class NsgaIIPredDSEAdapter(Adapter):
                         "is_user_input": True,
                         "required": True,
                         "default_value": 10,
+                        "min_val": 1,
+                        "max_val": 100,
                     }),
                     Input({
                         'label': 'Number of Generations',
@@ -2777,6 +2788,8 @@ class NsgaIIPredDSEAdapter(Adapter):
                         "is_user_input": True,
                         "required": True,
                         "default_value": 150,
+                        "min_val": 1,
+                        "max_val": 50000,
                     }),
                 ],
             }),
@@ -2810,7 +2823,10 @@ class NsgaIIPredDSEAdapter(Adapter):
 
         self.results = results
 
-        self.presentable_results = {'solutions': {}}
+        self.presentable_results = {
+            'profile': self.profile,
+            'solutions': {},
+        }
 
         solution_cores = []
 
@@ -2847,12 +2863,13 @@ class NsgaIIPredDSEAdapter(Adapter):
         self.dse_engine = Nsga2Main(settings)
 
     def register_profile(self, settings):
-        profile = {
+        self.profile = {
             'model': settings['dse']['processor'],
             'process': settings['dse']['technology'],
             'frequency': settings['dse']['frequency'],
-            'core_area': settings['mcpat_results']['core']['area'],
+            'core_area': settings['mcpat_results']['total_cores']['area'],
             'core_number': settings['sniper_results']['ncores'],
+            'power': settings['mcpat_results']['processor']['peak_power'],
             'chip_area': settings['mcpat_results']['processor']['area'],
             'power_density': (
                 round(float(settings['mcpat_results']['processor']['power_density'][0]), 2),
@@ -2872,7 +2889,7 @@ class NsgaIIPredDSEAdapter(Adapter):
         file_path = self.get_output_path() + "/profile.json"
 
         with open(file_path, 'w') as profile_json:
-            json.dump(profile, profile_json, indent=4)
+            json.dump(self.profile, profile_json, indent=4)
 
     def get_settings(self):
         self.read_dse_settings()

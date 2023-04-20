@@ -67,7 +67,6 @@ class PlotbookPresenter(Presenter):
         This method should be implemented according to each step implementation.
         Should return a dict where each element is a MatplotFigure. The keys are the figures' titles.
     """
-
     def get_figures(self, results):
         # type: (Dict) -> Dict[str, MatplotFigure]
         raise NotImplementedError

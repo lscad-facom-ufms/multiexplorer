@@ -29,6 +29,8 @@ class TestMcPATAdapter(unittest.TestCase):
 
         print json.dumps(self.adapter.presentable_results, indent=4, sort_keys=True)
 
+        print json.dumps(self.adapter.results, indent=4, sort_keys=True)
+
 
 if __name__ == '__main__':
     unittest.main()

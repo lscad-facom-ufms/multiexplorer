@@ -1,8 +1,11 @@
+import Tkinter
+
 import numpy as np
 from typing import Dict, Tuple
 from matplotlib.figure import Figure
 from scipy.interpolate import interp1d
 from MultiExplorer.src.GUI.Presenters import Presenter, PlotbookPresenter
+from MultiExplorer.src.GUI.Widgets import CanvasTable
 
 
 class NSGAPresenter(PlotbookPresenter):
@@ -222,12 +225,64 @@ class SniperPresenter(Presenter):
 
 
 class McPATPresenter(Presenter):
+    def __init__(self):
+        super(McPATPresenter, self).__init__()
+
+        self.canvas = None
+
+        self.table = None
+
     def present_partials(self, frame, step_results, options=None):
         raise NotImplementedError
 
     def present_results(self, frame, results, options=None):
-        # todo
-        return 0
+        profile = results['dsdse']['profile']
+
+        table_data = [
+            [
+                'Architecture',
+                'Technology',
+                'Frequency',
+                'Core Area',
+                'Number of Cores',
+                'Power',
+                'Area',
+                'Power Density',
+                'Performance',
+                'DS Area',
+                'DS%',
+            ],
+            [
+                profile['core_number'] + "x " + profile['model'] + " " + profile['process'],
+                profile['frequency'] + "Ghz",
+                profile['core_area'][0],
+                profile['power'][0],
+                profile['chip_area'][0],
+                profile['power_density'][0],
+                profile['performance'][0],
+                profile['ds_area'][0],
+                profile['ds_percentage'][0],
+            ],
+        ]
+
+        table_options = {
+            'nbr_of_columns': 11,
+            'nbr_of_rows': 2,
+            'data': table_data,
+        }
+
+        self.canvas = Tkinter.Canvas(frame)
+
+        self.canvas.config(width=options['width'])
+
+        self.canvas.pack(
+            fill=Tkinter.BOTH,
+            expand=True
+        )
+
+        self.table = CanvasTable(self.canvas, table_options)
+
+        return 200
 
     def get_info(self, step_results, options=None):
         ds_info = "The dark silicon estimate was negligible."

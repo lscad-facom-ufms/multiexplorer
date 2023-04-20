@@ -793,11 +793,11 @@
     }, 
     "processor": {
         "area": [
-            39.9785, 
+            53.9383, 
             "mm^2"
         ], 
         "gate_leakage": [
-            0.037956, 
+            0.0416103, 
             "W"
         ], 
         "peak_dinamic_optimal": [
@@ -821,15 +821,15 @@
             null
         ], 
         "runtime_dynamic": [
-            4.22244, 
+            4.22544, 
             "W"
         ], 
         "subthreshold_leakage": [
-            22.9474, 
+            30.1861, 
             "W"
         ], 
         "subthreshold_leakage_with_power_gating": [
-            7.1212, 
+            10.6806, 
             "W"
         ], 
         "surplus_power": [
@@ -921,7 +921,7 @@
     }, 
     "results_broadcast_bus": {
         "area": [
-            0.188287, 
+            1.78795, 
             "mm^2"
         ], 
         "area_overhead": [
@@ -929,7 +929,7 @@
             "mm^2"
         ], 
         "gate_leakage": [
-            0.000269397, 
+            0.000147362, 
             "W"
         ], 
         "peak_dynamic": [
@@ -937,15 +937,15 @@
             "W"
         ], 
         "runtime_dynamic": [
-            0.0001541, 
+            3.39384e-09, 
             "W"
         ], 
         "subthreshold_leakage": [
-            0.11763, 
+            0.0913383, 
             "W"
         ], 
         "subthreshold_leakage_with_power_gating": [
-            0.0352889, 
+            0.0274015, 
             "W"
         ]
     }, 
@@ -998,6 +998,32 @@
         ], 
         "subthreshold_leakage_with_power_gating": [
             0.00892922, 
+            "W"
+        ]
+    }, 
+    "total_cores": {
+        "area": [
+            39.9785, 
+            "mm^2"
+        ], 
+        "gate_leakage": [
+            0.037956, 
+            "W"
+        ], 
+        "peak_dynamic": [
+            21.075, 
+            "W"
+        ], 
+        "runtime_dynamic": [
+            4.22244, 
+            "W"
+        ], 
+        "subthreshold_leakage": [
+            22.9474, 
+            "W"
+        ], 
+        "subthreshold_leakage_with_power_gating": [
+            7.1212, 
             "W"
         ]
     }, 
