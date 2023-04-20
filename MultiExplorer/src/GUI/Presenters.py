@@ -125,4 +125,4 @@ class PlotbookPresenter(Presenter):
         for title in figures:
             self.add_plot(title, figures[title])
 
-        return PlotbookPresenter.PLOTBOOK_HEIGHT
+        return PlotbookPresenter.PLOTBOOK_HEIGHT + 20

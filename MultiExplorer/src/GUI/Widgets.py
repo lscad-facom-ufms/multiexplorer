@@ -66,7 +66,8 @@ class CanvasTable(object):
         'nbr_of_columns': 6,
         'nbr_of_rows': 6,
         'pos': (1, 1),  # type: Tuple[float, float],
-        'data': None  # type: Optional[List[List[Any]]]
+        'data': None,  # type: Optional[List[List[Any]]]
+        'center': True,
     }
 
     def __init__(self, canvas, options=None):
@@ -87,19 +88,31 @@ class CanvasTable(object):
 
         columns = self.settings['nbr_of_columns']
 
-        cell_width = self.settings['cell_width']
+        if 'cells_width' not in self.settings:
+            cells_width = []
+
+            for c in range(0, columns):
+                cells_width.append(self.settings['cell_width'])
+
+            self.settings['cells_width'] = cells_width
+
+            self.width = self.settings['cell_width'] * columns
+        else:
+            self.width = 0
+
+            for val in self.settings['cells_width']:
+                self.width = self.width + val
 
         cell_height = self.settings['cell_height']
 
         self.height = cell_height * rows
 
-        self.width = cell_width * columns
-
-        self.adjust_position()
-
         self.draw()
 
         self.write_data()
+
+        if self.settings['center']:
+            self.adjust_position()
 
     def adjust_position(self):
         canvas = self.canvas
@@ -139,6 +152,8 @@ class CanvasTable(object):
 
             canvas.move('cells', mx, my)
 
+            canvas.move('contents', mx, my)
+
     def draw(self):
         canvas = self.canvas
 
@@ -155,7 +170,7 @@ class CanvasTable(object):
 
         columns = self.settings['nbr_of_columns']
 
-        cell_width = self.settings['cell_width']
+        cells_width = self.settings['cells_width']
 
         cell_height = self.settings['cell_height']
 
@@ -165,9 +180,9 @@ class CanvasTable(object):
             self.cells.append([])
 
             for c in range(0, columns):
-                self.cells[r].append(canvas.create_rectangle(x, y, x + cell_width, y + cell_height, tags="cells"))
+                self.cells[r].append(canvas.create_rectangle(x, y, x + cells_width[c], y + cell_height, tags="cells"))
 
-                x = x + cell_width
+                x = x + cells_width[c]
 
             x = self.settings['pos'][0]
 
@@ -180,11 +195,12 @@ class CanvasTable(object):
             return
 
         canvas = self.canvas
+
         rows = self.settings['nbr_of_rows']
 
         columns = self.settings['nbr_of_columns']
 
-        cell_width = self.settings['cell_width']
+        cells_width = self.settings['cells_width']
 
         cell_height = self.settings['cell_height']
 
@@ -202,9 +218,10 @@ class CanvasTable(object):
             for c in range(0, columns):
                 text = str(data[r][c])
 
-                canvas.create_text(x, y, text=text, anchor=Tkinter.NW, font=(font_family, -font_height), width=cell_width-2*padding)
+                canvas.create_text(x, y, text=text, anchor=Tkinter.NW, font=(font_family, -font_height),
+                                   width=cells_width[c]-2*padding, tag='contents')
 
-                x = x + cell_width
+                x = x + cells_width[c]
 
             x = self.settings['pos'][0] + padding
 

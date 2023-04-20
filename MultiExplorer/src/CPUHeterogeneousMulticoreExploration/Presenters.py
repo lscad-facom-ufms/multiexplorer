@@ -230,7 +230,9 @@ class McPATPresenter(Presenter):
 
         self.canvas = None
 
-        self.table = None
+        self.og_table = None
+
+        self.sol_table = None
 
     def present_partials(self, frame, step_results, options=None):
         raise NotImplementedError
@@ -239,50 +241,81 @@ class McPATPresenter(Presenter):
         profile = results['dsdse']['profile']
 
         table_data = [
+            ['Architecture', 'Frequency', ''],
             [
-                'Architecture',
-                'Technology',
-                'Frequency',
-                'Core Area',
-                'Number of Cores',
-                'Power',
-                'Area',
-                'Power Density',
-                'Performance',
-                'DS Area',
-                'DS%',
+                str(profile['core_number']) + "x " + profile['model'] + " " + profile['process'],
+                str(profile['frequency']) + " Ghz",
+                '',
             ],
+            ['Power', 'Area', 'Power Density'],
             [
-                profile['core_number'] + "x " + profile['model'] + " " + profile['process'],
-                profile['frequency'] + "Ghz",
-                profile['core_area'][0],
-                profile['power'][0],
-                profile['chip_area'][0],
-                profile['power_density'][0],
-                profile['performance'][0],
-                profile['ds_area'][0],
-                profile['ds_percentage'][0],
+                str(round(profile['power'][0], 2)) + " W",
+                str(round(profile['chip_area'][0], 2)) + " mm^2",
+                str(round(profile['power_density'][0], 2)) + " W/mm^2",
+            ],
+            ['Performance', 'DS Area (%)', ''],
+            [
+                str(round(profile['performance'][0], 2)) + "s^-1",
+                str(round(profile['ds_area'][0], 2)) + " mm^2 (" + str(round(profile['ds_percentage'][0], 2)) + "%)",
+                '',
             ],
         ]
 
         table_options = {
-            'nbr_of_columns': 11,
-            'nbr_of_rows': 2,
+            'pos': (2, 27),
+            'cells_width': [250, 250, 250],
+            'font_height': 12,
+            'cell_height': 25,
+            'nbr_of_columns': 3,
+            'nbr_of_rows': 6,
             'data': table_data,
+            'center': False,
         }
 
         self.canvas = Tkinter.Canvas(frame)
 
-        self.canvas.config(width=options['width'])
+        solutions = results['dsdse']['solutions']
+
+        nbr_of_solutions = len(solutions)
+
+        height = table_options['cell_height'] * (6 + nbr_of_solutions + 6)
+
+        self.canvas.config(width=options['width'], height=height)
 
         self.canvas.pack(
             fill=Tkinter.BOTH,
             expand=True
         )
 
-        self.table = CanvasTable(self.canvas, table_options)
+        self.canvas.create_text(2, 2, text="Initial Profile", anchor=Tkinter.NW)
 
-        return 200
+        self.og_table = CanvasTable(self.canvas, table_options)
+
+        self.canvas.create_text(2, table_options['cell_height'] * (6 + 3), text="NSGA-II Generated Architectures",
+                                anchor=Tkinter.NW)
+
+        table_options['pos'] = (2, table_options['cell_height'] * (6 + 4))
+
+        table_options['cells_width'] = [450, 150, 150]
+
+        table_options['nbr_of_rows'] = nbr_of_solutions + 1
+
+        solutions_data = [
+            ['Architecture', 'Performance', 'Power Density'],
+        ]
+
+        for s in solutions:
+            solutions_data.append([
+                s,
+                str(round(solutions[s]['performance'], 2)) + " s^-1",
+                str(round(solutions[s]['power_density'], 2)) + " W/mm^2",
+            ])
+
+        table_options['data'] = solutions_data
+
+        self.sol_table = CanvasTable(self.canvas, table_options)
+
+        return height
 
     def get_info(self, step_results, options=None):
         ds_info = "The dark silicon estimate was negligible."

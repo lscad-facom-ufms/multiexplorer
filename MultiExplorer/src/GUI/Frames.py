@@ -1020,7 +1020,7 @@ class ResultScreen(ScreenFrame):
 
             total_height = total_height + presenter.present_results(presentation_frame, results, {
                 'width': self.scroll_width-20,
-            })
+            }) + 10
 
         self.scroll_area.config(
             scrollregion=(0, 0, self.scroll_width, total_height)
