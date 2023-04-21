@@ -73,17 +73,18 @@ a container.
 This is highly advisable even when using Linux distros, as our **Docker** environment will be easier to set up and maintain.
 
 If you are using the container on a Windows environment, you will need to use
-[Xming](http://www.straightrunning.com/XmingNotes/), so **Docker** can access the graphic display.
+[Xming]https://sourceforge.net/projects/vcxsrv/), so **Docker** can access the graphic display.
 
 Other software requirements are:
 - [Sniper 8.0](http://snipersim.org)
-  - [Sniper's Benchmarks](https://snipersim.org/w/Download_Benchmarks) 
+  - [Sniper's Benchmarks](https://snipersim.org/w/Download_Benchmarks)  
 - [Python 2.7](https://www.python.org/download/releases/2.7/)
+
+In case you want to take a shortcut from compiling Sniper and it's benchmarks, you can get a pre-compiled version . We have a pre-compiled version of Sniper with benchmarks, if you use the Docker environment.
+- [Pre-Compiled Sniper with Benchmarks for the Docker Environment](https://drive.google.com/file/d/1aXNxy6OZ7NjP1XUgnhOGuTFAUePtwZkW/view)
 
 It's advisable you use the same versions for **python** libs as listed in our **pip** requirements file 
 (*requirements.txt*).
-
-In case you want to take a shortcut from compiling Sniper and it's benchmarks, you can get a pre-compiled version
 
 Using the GUI (Graphic User Interface)
 ======================================
