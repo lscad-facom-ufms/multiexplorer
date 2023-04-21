@@ -1,4 +1,4 @@
-all: reqsniper reqbenchmarks
+all: reqsniper reqbenchmarks getsniper
 
 reqsniper:
 	apt install -y gcc-multilib
@@ -23,7 +23,6 @@ reqbenchmarks:
 getsniper:
 ifeq (,$(shell ls | grep pre-compiled-sniper-8.0.tar.gz))
 	gdown https://drive.google.com/u/1/uc?id=1aXNxy6OZ7NjP1XUgnhOGuTFAUePtwZkW
-	https://drive.google.com/file/d/1aXNxy6OZ7NjP1XUgnhOGuTFAUePtwZkW/view?usp=share_link
 endif
 ifeq (,$(shell ls -d */ | grep sniper))
 	tar xfz pre-compiled-sniper-8.0.tar.gz

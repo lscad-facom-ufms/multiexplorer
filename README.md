@@ -28,6 +28,8 @@ Then you can use our **GNU Make** script for the basic setup.
 `$ make`
 
 Using a **Docker** container is advised.
+We maintain a pre-compiled version of Sniper-8.0 for use in the Docker environment
+[precompiled_sniper](https://drive.google.com/file/d/1aXNxy6OZ7NjP1XUgnhOGuTFAUePtwZkW/view)
 
 Using the Docker Container
 ============================
