@@ -12,7 +12,7 @@
 		"total_cores": 1,
 		"core": 
 		{
-			"global_frequency": 2500,
+			"global_frequency": 2800,
 			"frequency":[2800], 
 			"threads":32, 
 			"logical_cpus":1,

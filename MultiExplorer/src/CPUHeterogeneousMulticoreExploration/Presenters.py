@@ -291,7 +291,7 @@ class McPATPresenter(Presenter):
 
         self.og_table = CanvasTable(self.canvas, table_options)
 
-        self.canvas.create_text(2, table_options['cell_height'] * (6 + 3), text="NSGA-II Generated Architectures",
+        self.canvas.create_text(2, table_options['cell_height'] * (6 + 3), text="Automatic DSE Generated Architectures",
                                 anchor=Tkinter.NW)
 
         table_options['pos'] = (2, table_options['cell_height'] * (6 + 4))
