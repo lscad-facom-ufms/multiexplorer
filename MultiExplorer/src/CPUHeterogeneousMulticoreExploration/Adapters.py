@@ -1746,7 +1746,7 @@ class SniperSimulatorAdapter(Adapter):
 
         dse_settings_json['processor'] = self.get_processor()
 
-        dse_settings_json['technology'] = self.get_input_technology()
+        dse_settings_json['technology'] = self.get_technology()
 
         dse_settings_json['frequency'] = self.get_global_frequency()
 
@@ -2757,8 +2757,6 @@ class NsgaIIPredDSEAdapter(Adapter):
                         "is_user_input": True,
                         "required": True,
                         "default_value": 50.0,
-                        "min_val": 0.01,
-                        "max_val": 100.0,
                     }),
                     Input({
                         'label': 'Mutation Rate',
@@ -2768,8 +2766,6 @@ class NsgaIIPredDSEAdapter(Adapter):
                         "is_user_input": True,
                         "required": True,
                         "default_value": 10.0,
-                        "min_val": 0.01,
-                        "max_val": 100.0,
                     }),
                     Input({
                         'label': 'Population Size',
@@ -2777,9 +2773,7 @@ class NsgaIIPredDSEAdapter(Adapter):
                         'type': InputType.Integer,
                         "is_user_input": True,
                         "required": True,
-                        "default_value": 10,
-                        "min_val": 1,
-                        "max_val": 100,
+                        "default_value": 10
                     }),
                     Input({
                         'label': 'Number of Generations',
@@ -2787,9 +2781,7 @@ class NsgaIIPredDSEAdapter(Adapter):
                         'type': InputType.Integer,
                         "is_user_input": True,
                         "required": True,
-                        "default_value": 150,
-                        "min_val": 1,
-                        "max_val": 50000,
+                        "default_value": 150
                     }),
                 ],
             }),

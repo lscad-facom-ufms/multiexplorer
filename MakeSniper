@@ -1,4 +1,4 @@
-all: reqsniper reqbenchmarks getsniper
+all: reqsniper reqbenchmarks
 
 reqsniper:
 	apt install -y gcc-multilib
