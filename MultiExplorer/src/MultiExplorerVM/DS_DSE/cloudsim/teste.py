@@ -31,7 +31,7 @@ i=0
 for line in fileExample:
     
     if i == 82:
-	fileInput.write(vmMIPSLine)
+        fileInput.write(vmMIPSLine)
     elif i == 83:
         fileInput.write(vmSizeLine)
     elif i == 84:

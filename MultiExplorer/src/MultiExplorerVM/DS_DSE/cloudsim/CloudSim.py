@@ -54,8 +54,8 @@ class CloudSim(object):
             
 
         os.chdir(cwd)
-	f.close()
-	
+        f.close()
+    
         if data == 0:
             return "0,0"
             
