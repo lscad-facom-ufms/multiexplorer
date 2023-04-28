@@ -11,3 +11,5 @@ PATH_INPUTS = PATH_REPO + '/input-examples'
 PATH_MCPAT = PATH_ME + '/support/mcpat'
 PATH_RES = PATH_ME + '/res'
 PATH_IMG = PATH_RES + '/img'
+
+PATH_PRED_VM = PATH_ME + "/src/DS_DSE/predictors/"

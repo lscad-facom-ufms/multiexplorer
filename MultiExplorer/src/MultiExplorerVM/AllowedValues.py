@@ -15,7 +15,7 @@ instructions for design(aplicação),
 cores cloudlet for design
 
 Depois de executar o cloudlet calcula o tempo e devolve
-o custo é o tempo que o cladsim devolveu vezes o preço 
+o custo é o tempo que o cloudsim devolveu vezes o preço 
 que vem no modelo
 
 Inicialmente, colocar apenas a VM c5 
@@ -41,10 +41,11 @@ class Simulators(Enum):
 
         raise ValueError("Value does not corresponds to a known simulator.")
 
+
 class PredictedModels(Enum):
     c5 = 1
     c5x = 2
-    c52x = 3
+    c5x2 = 3
 
     @staticmethod
     def belongs(value):
@@ -56,7 +57,7 @@ class PredictedModels(Enum):
             return "c5.large"
         if value == PredictedModels.c5x:
             return "c5.xlarge"
-        if value == PredictedModels.c52x:
+        if value == PredictedModels.c5x2:
             return "c5.2xlarge"
 
         raise ValueError("Value does not corresponds to a known predicted core.")
@@ -66,7 +67,7 @@ class PredictedModels(Enum):
         return {
             PredictedModels.c5.value: PredictedModels.get_label(PredictedModels.c5),
             PredictedModels.c5x.value: PredictedModels.get_label(PredictedModels.c5x),
-            PredictedModels.c52x.value: PredictedModels.get_label(PredictedModels.c52x),
+            PredictedModels.c5x2.value: PredictedModels.get_label(PredictedModels.c5x2),
         }
     
     @staticmethod
@@ -76,10 +77,37 @@ class PredictedModels(Enum):
             return "c5.large"
         elif value == PredictedModels.c5x.value:
             return "c5.xlarge"
-        elif value == PredictedModels.c52x.value:
+        elif value == PredictedModels.c5x2.value:
             return "c5.2xlarge"
 
         raise ValueError("Value does not corresponds to a known predicted core.")
+
+    def get_mips(value):
+        return 72
+    
+    def get_coresVM(value):
+        if value == PredictedModels.c5.value:
+            return 2
+        elif value == PredictedModels.c5x.value:
+            return 4
+        elif value == PredictedModels.c5x2.value:
+            return 8
+    
+    def get_price(value):
+        if value == PredictedModels.c5.value:
+            return 0.085
+        elif value == PredictedModels.c5x.value:
+            return 0.17
+        elif value == PredictedModels.c5x2.value:
+            return 0.34
+    
+    def get_memory(value):
+        if value == PredictedModels.c5.value:
+            return 4000
+        elif value == PredictedModels.c5x.value:
+            return 8000
+        elif value == PredictedModels.c5x2.value:
+            return 16000
 
 class PredictedApplications(Enum):
     EPS = 1

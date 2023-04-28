@@ -34,8 +34,8 @@ class Nsga2Main(object):
         
 	
     def print_generation(self,population, generation_num):
-	if(generation_num%100 == 0):        
-		print("Generation: {}".format(generation_num))
+        if generation_num%100 == 0:        
+            print("Generation: {}".format(generation_num))
 
     def print_metrics(self,population, generation_num):
         pareto_front = population.fronts[0]
