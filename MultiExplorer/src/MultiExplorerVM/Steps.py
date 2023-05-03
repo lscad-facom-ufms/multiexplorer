@@ -1,5 +1,6 @@
 from MultiExplorer.src.Infrastructure.Events import Event
 from MultiExplorer.src.Infrastructure.ExecutionFlow import Step
+from Adapters import CloudsimAdapter
 
 class CloudSimStep(Step):
 
@@ -18,7 +19,7 @@ class CloudSimStep(Step):
     def __init__(self):
         super(CloudSimStep, self).__init__()
 
-        self.adapter = CloudSimAdapter() #mudar para o adapter do cloudsim (nsga2main)
+        self.adapter = CloudsimAdapter() #mudar para o adapter do cloudsim (nsga2main)
 
     @staticmethod
     def get_label():
@@ -46,4 +47,4 @@ class CloudSimStep(Step):
             self.fire(Event.STEP_EXECUTION_FAILED, self)
 
     def get_presenter(self):
-        return SniperPresenter() # Mudar para o CloudSim
+        return CloudsimPresenter() # Mudar para o CloudSim
