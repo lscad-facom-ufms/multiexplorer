@@ -1,0 +1,43 @@
+{
+"ipcores":[
+	{"id":"m5n.large", "mips": 62, "coresVM": 2, "memory": 8000, "price": 0.119, "network": 25000},
+    	{"id":"m5n.xlarge", "mips": 62, "coresVM": 4, "memory": 16000, "price": 0.238, "network": 25000},
+	{"id":"m5n.2xlarge", "mips": 62, "coresVM": 8, "memory": 32000, "price": 0.476, "network": 25000},
+	{"id":"m5n.4xlarge", "mips": 62, "coresVM": 16, "memory": 64000, "price": 0.952, "network": 25000},
+	{"id":"m5n.8xlarge", "mips": 62, "coresVM": 32, "memory": 128000, "price": 1.904, "network": 25000},
+	{"id":"m5n.12xlarge", "mips": 62, "coresVM": 48, "memory": 192000, "price": 2.856, "network": 50000},
+	{"id":"m5n.24xlarge", "mips": 62, "coresVM": 96, "memory": 384000, "price": 5.712, "network": 100000},
+	
+	{"id":"m5dn.large", "mips": 62, "coresVM": 2, "memory": 8000, "price": 0.136, "network": 25000},
+    	{"id":"m5dn.xlarge", "mips": 62, "coresVM": 4, "memory": 16000, "price": 0.272, "network": 25000},
+	{"id":"m5dn.2xlarge", "mips": 62, "coresVM": 8, "memory": 32000, "price": 0.544, "network": 25000},
+	{"id":"m5dn.24xlarge", "mips": 62, "coresVM": 96, "memory": 384000, "price": 6.528, "network": 100000},
+	
+	{"id":"c5.large", "mips": 72, "coresVM": 2, "memory": 4000, "price": 0.085, "network": 10000},
+    	{"id":"c5.xlarge", "mips": 72, "coresVM": 4, "memory": 8000, "price": 0.17, "network": 10000},
+	{"id":"c5.2xlarge", "mips": 72, "coresVM": 8, "memory": 16000, "price": 0.34, "network": 10000},
+	{"id":"c5.4xlarge", "mips": 72, "coresVM": 16, "memory": 32000, "price": 0.68, "network": 10000},
+	{"id":"c5.9xlarge", "mips": 72, "coresVM": 36, "memory": 72000, "price": 1.53, "network": 10000},
+	{"id":"c5.12xlarge", "mips": 72, "coresVM": 48, "memory": 96000, "price": 2.04, "network": 12000},
+	{"id":"c5.18xlarge", "mips": 72, "coresVM": 72, "memory": 144000, "price": 3.06, "network": 25000},
+	{"id":"c5.24xlarge", "mips": 72, "coresVM": 96, "memory": 192000, "price": 4.08, "network": 25000},
+	
+	{"id":"c5n.large", "mips": 60, "coresVM": 2, "memory": 5250, "price": 0.108, "network": 25000},
+    	{"id":"c5n.xlarge", "mips": 60, "coresVM": 4, "memory": 10500, "price": 0.216, "network": 25000},
+	{"id":"c5n.2xlarge", "mips": 60, "coresVM": 8, "memory": 21000, "price": 0.432, "network": 25000},
+	{"id":"c5n.4xlarge", "mips": 60, "coresVM": 16, "memory": 42000, "price": 0.864, "network": 25000},
+	{"id":"c5n.9xlarge", "mips": 60, "coresVM": 36, "memory": 96000, "price": 1.944, "network": 50000},
+	{"id":"c5n.18xlarge", "mips": 60, "coresVM": 72, "memory": 192000, "price": 3.888, "network": 100000},
+	
+	{"id":"r5.large", "mips": 62, "coresVM": 2, "memory": 16000, "price": 0.126, "network": 10000},
+    	{"id":"r5.xlarge", "mips": 62, "coresVM": 4, "memory": 32000, "price": 0.252, "network": 10000},
+	{"id":"r5.2xlarge", "mips": 62, "coresVM": 8, "memory": 64000, "price": 0.504, "network": 10000},
+	{"id":"r5.4xlarge", "mips": 62, "coresVM": 16, "memory": 128000, "price": 1.008, "network": 10000},
+	{"id":"r5.8xlarge", "mips": 62, "coresVM": 32, "memory": 256000, "price": 2.016, "network": 10000},
+	{"id":"r5.12xlarge", "mips": 62, "coresVM": 48, "memory": 384000, "price": 3.024, "network": 10000},
+	{"id":"r5.24xlarge", "mips": 62, "coresVM": 96, "memory": 768000, "price": 6.048, "network": 25000}
+
+
+
+] 
+}
