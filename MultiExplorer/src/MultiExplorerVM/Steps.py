@@ -45,6 +45,3 @@ class CloudSimStep(Step):
             self.fire(Event.STEP_EXECUTION_ENDED)
         else:
             self.fire(Event.STEP_EXECUTION_FAILED, self)
-
-    def get_presenter(self):
-        return CloudsimPresenter() # Mudar para o CloudSim

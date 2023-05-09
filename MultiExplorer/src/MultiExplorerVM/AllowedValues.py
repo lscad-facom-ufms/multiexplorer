@@ -29,7 +29,7 @@ interface gráfica?
 
 """
 class Simulators(Enum):
-    Cloudsim = 2
+    Cloudsim = 1
 
     @staticmethod
     def belongs(value): return value in set(item.value for item in Simulators)
