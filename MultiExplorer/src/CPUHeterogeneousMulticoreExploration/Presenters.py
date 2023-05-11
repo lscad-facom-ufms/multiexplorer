@@ -296,18 +296,21 @@ class McPATPresenter(Presenter):
 
         table_options['pos'] = (2, table_options['cell_height'] * (6 + 4))
 
-        table_options['cells_width'] = [450, 150, 150]
+        table_options['cells_width'] = [445, 145, 140, 140]
 
         table_options['nbr_of_rows'] = nbr_of_solutions + 1
 
+        table_options['nbr_of_columns'] = 4
+
         solutions_data = [
-            ['Architecture', 'Performance', 'Power Density'],
+            ['Architecture', 'Performance', 'Area', 'Power Density'],
         ]
 
         for s in solutions:
             solutions_data.append([
                 s,
                 str(round(solutions[s]['performance'], 2)) + " s^-1",
+                str(round(solutions[s]['total_area'], 2)) + " mm^2",
                 str(round(solutions[s]['power_density'], 2)) + " W/mm^2",
             ])
 
