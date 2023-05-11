@@ -1,11 +1,14 @@
 # -*- coding: UTF-8 -*-
 """Module with definition of DS_DSE problem interface"""
-import sys, os, json, math
+import json
+import os
+import sys
+
 sys.path.append(os.path.dirname(os.path.realpath(__file__))+'/../../../../')
-from nsga2.Individual import Individual
-from nsga2.problems import Problem
-from InOut import InOut
-from DbSelector import DbSelector
+from ...Individual import Individual
+from ...problems import Problem
+from ....InOut import InOut
+from ....DbSelector import DbSelector
 import random
 import functools
 

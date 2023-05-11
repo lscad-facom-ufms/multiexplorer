@@ -1,0 +1,29 @@
+all: reqsniper reqbenchmarks
+
+reqsniper:
+	apt install -y gcc-multilib
+	apt install -y g++-multilib
+	apt install -y zlib1g-dev
+	apt install -y libbz2-dev
+	apt install -y libboost-dev
+	apt install -y libsqlite3-dev
+
+reqbenchmarks:
+	apt install -y gfortran
+	apt install -y m4
+	apt install -y xsltproc
+	apt install -y pkg-config
+	apt install -y gettext
+	apt install -y libx11-dev
+	apt install -y libxext-dev
+	apt install -y libxt-dev
+	apt install -y libxmu-dev
+	apt install -y libxi-dev
+
+getsniper:
+ifeq (,$(shell ls | grep pre-compiled-sniper-8.0.tar.gz))
+	gdown https://drive.google.com/u/1/uc?id=1aXNxy6OZ7NjP1XUgnhOGuTFAUePtwZkW
+endif
+ifeq (,$(shell ls -d */ | grep sniper))
+	tar xfz pre-compiled-sniper-8.0.tar.gz
+endif

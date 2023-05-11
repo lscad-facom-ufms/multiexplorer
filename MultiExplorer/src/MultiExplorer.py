@@ -1,66 +1,65 @@
-import sys
-import json
 import os
+import sys
+
+# # Import from any relative path
+# importPath = os.path.dirname(os.path.realpath(
+#     __file__)) + '/PerformanceExploration/Multi2Sim'
+# sys.path.insert(0, importPath)
+# importPath = os.path.dirname(os.path.realpath(
+#     __file__)) + '/PerformanceExploration/Sniper'
+# sys.path.insert(0, importPath)
+# importPath = os.path.dirname(os.path.realpath(
+#     __file__)) + '/PhysicalExploration/McPAT'
+# sys.path.insert(0, importPath)
+# importPath = os.path.dirname(os.path.realpath(
+#     __file__)) + '/PerformanceExploration/MPSoCBench'
+# sys.path.insert(0, importPath)
+# importPath = os.path.dirname(os.path.realpath(
+#     __file__)) + '/DS_DSE/nsga2/'
+# sys.path.insert(0, importPath)
+# importPath = os.path.dirname(os.path.realpath(
+#     __file__)) + '/DS_DSE/'
+# sys.path.insert(0, importPath)
+# importPath = os.path.dirname(os.path.realpath(
+#     __file__)) + '/DS_DSE/brute_force/'
+# sys.path.insert(0, importPath)
+
+
+import json
 import csv
 import re
-from glob import glob
-from datetime import datetime
-from pprint import pprint
 import shutil
 
-# Import from any relative path
-importPath = os.path.dirname(os.path.realpath(
-    __file__)) + '/PerformanceExploration/Multi2Sim'
-sys.path.insert(0, importPath)
-importPath = os.path.dirname(os.path.realpath(
-    __file__)) + '/PerformanceExploration/Sniper'
-sys.path.insert(0, importPath)
-importPath = os.path.dirname(os.path.realpath(
-    __file__)) + '/PhysicalExploration/McPAT'
-sys.path.insert(0, importPath)
-importPath = os.path.dirname(os.path.realpath(
-    __file__)) + '/PerformanceExploration/MPSoCBench'
-sys.path.insert(0, importPath)
-importPath = os.path.dirname(os.path.realpath(
-    __file__)) + '/DS_DSE/nsga2/'
-sys.path.insert(0, importPath)
-importPath = os.path.dirname(os.path.realpath(
-    __file__)) + '/DS_DSE/'
-sys.path.insert(0, importPath)
-importPath = os.path.dirname(os.path.realpath(
-    __file__)) + '/DS_DSE/brute_force/'
-sys.path.insert(0, importPath)
-
-from Multi2Sim import Multi2Sim
-from Sniper import Sniper
-from McPAT import McPAT
-from MPSoCBench import MPSoCBench
-
-import InOut
-from Nsga2Main import Nsga2Main
-
-from DsDseBruteForce import DsDseBruteForce
+from glob import glob
+from datetime import datetime
+from PerformanceExploration.Multi2Sim.Multi2Sim import Multi2Sim
+from PerformanceExploration.Sniper.Sniper import Sniper
+from PhysicalExploration.McPAT.McPAT import McPAT
+from PerformanceExploration.MPSoCBench.MPSoCBench import MPSoCBench
+from DS_DSE.Nsga2Main import Nsga2Main
+from DS_DSE.brute_force.DsDseBruteForce import DsDseBruteForce
 
 
 class MultiExplorer(object):
     """ Main Class for MultiExplorer Software"""
 
-    def __init__(self, inFile):
-        self.inFile = inFile
+    def __init__(self, in_file):
+        self.inFile = in_file
         self.simTool = None
         # Opens the jSON file
-        with open(inFile) as data_file:
+        with open(in_file) as data_file:
             self.inJson = json.load(data_file)
 
         self.dirListB4 = os.listdir(os.getcwd())
-        
+
         # pprint.pprint(self.inJson)
         self.folderOldSimul = None
+
     pass
 
     def controller(self):
         self.findOldSimul()
-        if self.folderOldSimul == None:
+        if self.folderOldSimul is None:
             self.callPerformanceSim()
             self.stepByStep()
             self.physicalSim()
@@ -68,24 +67,25 @@ class MultiExplorer(object):
         self.putIntoDir()
         self.dseBruteForce()
         self.dse()
-        self.performanceReport()        
+        self.performanceReport()
         if self.inJson['Preferences']['DSE']:
             self.suggestedArchitecture()
-        
 
     def findOldSimul(self):
-        root = os.getcwd() + "/rundir/" 
+        root = os.getcwd() + "/rundir/"
         findFolderOldSimul = False
         for pasta in os.listdir(root):
-            if pasta == '.gitignore':
+            if not os.path.isdir(root + pasta):
                 continue
-            for file in os.listdir(root+ "/" +pasta):
+            for file in os.listdir(root + pasta):
                 if file.lower().endswith(".json"):
-                    with open(root+pasta+"/"+file) as data_file:
+                    with open(root + pasta + "/" + file) as data_file:
                         fileJson = json.load(data_file)
                     auxFileJsonInput = self.inJson
-                    if ("Preferences" in fileJson) and (fileJson["Preferences"] == auxFileJsonInput["Preferences"]) and (fileJson["General_Modeling"] == auxFileJsonInput["General_Modeling"]):
-                        self.folderOldSimul = root+pasta
+                    if ("Preferences" in fileJson) and (
+                            fileJson["Preferences"] == auxFileJsonInput["Preferences"]) and (
+                            fileJson["General_Modeling"] == auxFileJsonInput["General_Modeling"]):
+                        self.folderOldSimul = root + pasta
                         print self.folderOldSimul
                         findFolderOldSimul = True
                         break
@@ -94,13 +94,12 @@ class MultiExplorer(object):
 
     def callPerformanceSim(self):
         def multi2sim():
-            path = importPath + '/PerformanceExploration/Multi2Sim/'
             self.simTool = Multi2Sim(
                 self.inFile, "paramMap.json", "PerformanceMap_new.json")
             pass
 
         def sniper():
-            #print self.inJson['Preferences']['application']
+            # print self.inJson['Preferences']['application']
             self.simTool = Sniper(self.inFile, self.inJson['Preferences']['application'])
             pass
 
@@ -115,12 +114,11 @@ class MultiExplorer(object):
         else:
             print "Calling Platform Selector!"
 
-
     def stepByStep(self):
         self.simTool.parse()
         self.simTool.execute()
         self.simTool.convertResults()
-        #pprint(self.simTool.getOutputJson())
+        # pprint(self.simTool.getOutputJson())
         pass
 
     def physicalSim(self):
@@ -129,15 +127,16 @@ class MultiExplorer(object):
         mcpat.createXmlInput()
         mcpat.execute()
         pass
+
     # Get all the files generated by the simulations and put into a directory
     def putIntoDir(self):
         global projectFolder
         projectFolder = "rundir/" + self.inJson['Preferences']['project_name']
         # Add Date & Time to the name format: yyyymmdd_hhmmss
-        projectFolder += ''.join(str(datetime.now().date()).split('-')) + '_' + str(datetime.now().time()).replace(':', '').split('.')[0]
-        
-       
-        #print "Directory name:", projectFolder
+        projectFolder += ''.join(str(datetime.now().date()).split('-')) + '_' + \
+                         str(datetime.now().time()).replace(':', '').split('.')[0]
+
+        # print "Directory name:", projectFolder
         os.system('mkdir ' + projectFolder)
 
         if self.folderOldSimul == None:
@@ -146,10 +145,11 @@ class MultiExplorer(object):
                 if not c.split('/')[-1] in self.dirListB4 and c.split('/')[-1] != projectFolder:
                     os.rename(c, os.getcwd() + '/' + projectFolder + '/' + c.split('/')[-1])
         else:
-            listFilesAllowed = ['MCPATPhysicalResults.txt', 'simplePerformanceValue', 'sim.out','performanceReport.txt', 'SniperSmithfieldBarnes5_mcpatInput.xml']
+            listFilesAllowed = ['MCPATPhysicalResults.txt', 'simplePerformanceValue', 'sim.out',
+                                'performanceReport.txt', 'SniperSmithfieldBarnes5_mcpatInput.xml']
             for file in os.listdir(self.folderOldSimul):
                 if file in listFilesAllowed:
-                    shutil.copy(self.folderOldSimul+"/"+file, os.getcwd() + '/' + projectFolder)
+                    shutil.copy(self.folderOldSimul + "/" + file, os.getcwd() + '/' + projectFolder)
 
         shutil.copy(self.inFile, os.getcwd() + '/' + projectFolder)
 
@@ -165,41 +165,40 @@ class MultiExplorer(object):
             print "DSE Brute Force: OK"
 
     def suggestedArchitecture(self):
-        with open(projectFolder+"/"+'populationResults.csv','r') as csvFile:
+        with open(projectFolder + "/" + 'populationResults.csv', 'r') as csvFile:
             readCSV = csv.reader(csvFile)
             cont = 0
             for row in readCSV:
-                #print row
+                # print row
                 if cont == 0:
                     cont += 1
                 elif cont == 1:
-                    #MultiExplorer.makeOutput(row)
+                    # MultiExplorer.makeOutput(row)
                     self.makeOutput(row)
-                    self.suggestedArchitectureForInput(sys.argv[1],row)
+                    self.suggestedArchitectureForInput(sys.argv[1], row)
                     cont += 1
                 else:
-                    csvFile.close
+                    csvFile.close()
                     break
 
-
     def makeOutput(self, row):
-        inputPathForMCPATFile = str(projectFolder)+"/MCPATPhysicalResults.txt"
-        performanceFile = str(projectFolder)+"/simplePerformanceValue"
-        csvResultFile = open(projectFolder+"/ArchComparison.csv", 'w')
+        inputPathForMCPATFile = str(projectFolder) + "/MCPATPhysicalResults.txt"
+        performanceFile = str(projectFolder) + "/simplePerformanceValue"
+        csvResultFile = open(projectFolder + "/ArchComparison.csv", 'w')
         csvResultFileWriter = csv.writer(csvResultFile)
-        line = 'X','Original', 'Proposto'
+        line = 'X', 'Original', 'Proposto'
         csvResultFileWriter.writerow(line)
-        line = 'NumberCores',row[8],row[4]
+        line = 'NumberCores', row[8], row[4]
         csvResultFileWriter.writerow(line)
-        line = 'Area_Cores',row[11],row[7]
+        line = 'Area_Cores', row[11], row[7]
         csvResultFileWriter.writerow(line)
-        line = 'Performance_Core',row[9],row[5]
+        line = 'Performance_Core', row[9], row[5]
         csvResultFileWriter.writerow(line)
-        line = 'Power_Core',row[10],row[6]
+        line = 'Power_Core', row[10], row[6]
         csvResultFileWriter.writerow(line)
         performanceLinecont = 0
         contArea = 0
-        with open(performanceFile) as inFile:    
+        with open(performanceFile) as inFile:
             for line in inFile:
                 if performanceLinecont == 0:
                     performanceProjetoOriginalValor = line
@@ -217,18 +216,18 @@ class MultiExplorer(object):
                     aux = line.split()
                     power_density_orig = aux[3]
 
-        line = 'Design_Area', str(area_orig) , str(row[0])
+        line = 'Design_Area', str(area_orig), str(row[0])
         csvResultFileWriter.writerow(line)
-        line = 'Design_Performance',   str(performanceProjetoOriginalValor.split('\n')[0]),    str(row[1])
+        line = 'Design_Performance', str(performanceProjetoOriginalValor.split('\n')[0]), str(row[1])
         csvResultFileWriter.writerow(line)
-        line = 'Design_PowerDensity', str(power_density_orig),    str(row[2])
+        line = 'Design_PowerDensity', str(power_density_orig), str(row[2])
         csvResultFileWriter.writerow(line)
         csvResultFile.close()
 
     def performanceReport(self):
         lista = []
         # lendo todas as linhas de sim.out e colocando em texto
-        arq = open(projectFolder+'/sim.out', 'r')
+        arq = open(projectFolder + '/sim.out', 'r')
         textoCompleto = arq.read()
         texto = textoCompleto.split('\n')
 
@@ -261,7 +260,7 @@ class MultiExplorer(object):
             instructionExec += int(listAux[i])
 
         resultString += '\t' + 'TotalInstructions= ' + str(instructionExec) + '\n'
-        
+
         # extraindo informacoes do total de ciclos
         linha = texto[2]
         listAux = re.split('\W+', linha)
@@ -270,15 +269,14 @@ class MultiExplorer(object):
             cycles += int(listAux[i])
         resultString += '\t' + 'TotalCycles= ' + str(cycles) + '\n'
 
-
         # extraindo informacoes do IPC Medio
         linha = texto[3]
         listAux = re.split('\W+', linha)
         IPC = 0
-        for i in range(2, 2 + 2*numberOfCores):
+        for i in range(2, 2 + 2 * numberOfCores):
             IPC += int(listAux[i])
-        IPC = IPC/float(100)
-        resultString += '\t' + 'AverageIPC= ' + str(IPC/float(numberOfCores)) + '\n'
+        IPC = IPC / float(100)
+        resultString += '\t' + 'AverageIPC= ' + str(IPC / float(numberOfCores)) + '\n'
 
         # Uma lista de Strings cada indice da lista tem uma string que
         # representa os parametros daquele core
@@ -290,25 +288,25 @@ class MultiExplorer(object):
 
             ipcLine = texto[3]
             listAux = re.split('\W+', ipcLine)
-            #print listAux
+            # print listAux
             if i == 0:
                 StringCores[i] += "\t\tIPC = " + \
-                str(listAux[i+3]) + "\n"
+                                  str(listAux[i + 3]) + "\n"
             elif i == 1:
                 StringCores[i] += "\t\tIPC = " + \
-                str(listAux[i+4]) + "\n"
+                                  str(listAux[i + 4]) + "\n"
             elif i == 2:
                 StringCores[i] += "\t\tIPC = " + \
-                str(listAux[i+5]) + "\n"
+                                  str(listAux[i + 5]) + "\n"
             elif i == 3:
                 StringCores[i] += "\t\tIPC = " + \
-                str(listAux[i+6]) + "\n"
+                                  str(listAux[i + 6]) + "\n"
 
             timeLine = texto[4]
             listAux = re.split('\W+', timeLine)
-            #print listAux
+            # print listAux
             StringCores[i] += "\t\tTime = " + \
-            str(listAux[i+3]) + "\n"
+                              str(listAux[i + 3]) + "\n"
 
             # predictionAccuracyRate
             linha = texto[10]
@@ -316,16 +314,16 @@ class MultiExplorer(object):
             # print listAux
             accuracy = 100.0 - float(listAux[2 + i])
             StringCores[i] += "\t\tPredictionAccuracyRate= " + \
-                str(accuracy) + "\n"
+                              str(accuracy) + "\n"
             StringCores[i] += "\t\tMisPredictionRate= " + \
-                str(listAux[2 + i]) + "\n"
+                              str(listAux[2 + i]) + "\n"
 
             linha = texto[8]
             linha1 = texto[9]
             listAux = re.split('\W{3,}', linha)
             listAux1 = re.split('\W{3,}', linha1)
             StringCores[i] += "\t\tNumBranches= " + \
-                str(int(listAux[1 + i]) + int(listAux1[1 + i])) + '\n'
+                              str(int(listAux[1 + i]) + int(listAux1[1 + i])) + '\n'
 
             # Caches
             # analisa a expressao regular sobre todo o texto
@@ -337,7 +335,7 @@ class MultiExplorer(object):
                     listWords = re.split('\W{5,}|%', linha)
                     if len(listWords) == 2:
                         StringCores[i] += '\t\t' + \
-                            str(listWords[0]) + str(listWords[1]) + '\n'
+                                          str(listWords[0]) + str(listWords[1]) + '\n'
                     else:
                         # case it doesn't has type list ['']
                         if len(listWords) != 1:
@@ -364,7 +362,7 @@ class MultiExplorer(object):
         arq.close()
 
     def suggestedArchitectureForInput(self, inFile, row):
-        newInput = str(projectFolder)+"/newInput.json"
+        newInput = str(projectFolder) + "/newInput.json"
         jsonFile = open(newInput, "w")
         with open(inFile) as data_file:
             InJson = json.load(data_file)
@@ -376,23 +374,30 @@ class MultiExplorer(object):
             newInputDict['Preferences']['DSE'] = 'false'
 
             newInputDict['General_Modeling'] = {}
-            newInputDict['General_Modeling']['total_cores'] = int(row[9]) + int(row[5]) # ORIG + IP
-            for i in range(0,int(row[9])):
-                newInputDict['General_Modeling']['core'+str(i)] = {}
-                newInputDict['General_Modeling']['core'+str(i)]['global_frequency'] = 'DaOndeVem'
-                newInputDict['General_Modeling']['core'+str(i)]['frequency'] = 'DaOndeVem'
-                newInputDict['General_Modeling']['core'+str(i)]['threads'] = InJson['General_Modeling']['core']['threads']
-                newInputDict['General_Modeling']['core'+str(i)]['logical_cpus'] = InJson['General_Modeling']['core']['logical_cpus']
-                newInputDict['General_Modeling']['core'+str(i)]['pipeline'] = {}
-                newInputDict['General_Modeling']['core'+str(i)]['pipeline'] = InJson['General_Modeling']['core']['pipeline']
-            for i in range(0,int(row[5])):
-                newInputDict['General_Modeling']['core'+str(i)] = {}
-                newInputDict['General_Modeling']['core'+str(i)]['global_frequency'] = 'DaOndeVem'
-                newInputDict['General_Modeling']['core'+str(i)]['frequency'] = 'DaOndeVem'
-                newInputDict['General_Modeling']['core'+str(i)]['threads'] = InJson['General_Modeling']['core']['threads']
-                newInputDict['General_Modeling']['core'+str(i)]['logical_cpus'] = InJson['General_Modeling']['core']['logical_cpus']
-                newInputDict['General_Modeling']['core'+str(i)]['pipeline'] = {}
-                newInputDict['General_Modeling']['core'+str(i)]['pipeline'] = InJson['General_Modeling']['core']['pipeline']
+
+            newInputDict['General_Modeling']['total_cores'] = int(row[8]) + int(row[4])  # ORIG + IP
+            for i in range(0, int(row[8])):
+                newInputDict['General_Modeling']['core' + str(i)] = {}
+                newInputDict['General_Modeling']['core' + str(i)]['global_frequency'] = 'DaOndeVem'
+                newInputDict['General_Modeling']['core' + str(i)]['frequency'] = 'DaOndeVem'
+                newInputDict['General_Modeling']['core' + str(i)]['threads'] = InJson['General_Modeling']['core'][
+                    'threads']
+                newInputDict['General_Modeling']['core' + str(i)]['logical_cpus'] = InJson['General_Modeling']['core'][
+                    'logical_cpus']
+                newInputDict['General_Modeling']['core' + str(i)]['pipeline'] = {}
+                newInputDict['General_Modeling']['core' + str(i)]['pipeline'] = InJson['General_Modeling']['core'][
+                    'pipeline']
+            for i in range(0, int(row[4])):
+                newInputDict['General_Modeling']['core' + str(i)] = {}
+                newInputDict['General_Modeling']['core' + str(i)]['global_frequency'] = 'DaOndeVem'
+                newInputDict['General_Modeling']['core' + str(i)]['frequency'] = 'DaOndeVem'
+                newInputDict['General_Modeling']['core' + str(i)]['threads'] = InJson['General_Modeling']['core'][
+                    'threads']
+                newInputDict['General_Modeling']['core' + str(i)]['logical_cpus'] = InJson['General_Modeling']['core'][
+                    'logical_cpus']
+                newInputDict['General_Modeling']['core' + str(i)]['pipeline'] = {}
+                newInputDict['General_Modeling']['core' + str(i)]['pipeline'] = InJson['General_Modeling']['core'][
+                    'pipeline']
             newInputDict['General_Modeling']['memory'] = {}
             newInputDict['General_Modeling']['memory'] = InJson['General_Modeling']['memory']
             newInputDict['General_Modeling']['network'] = {}
@@ -402,18 +407,19 @@ class MultiExplorer(object):
             newInputDict['DSE'] = {}
             newInputDict['DSE'] = InJson['DSE']
 
-        jsonFile.write(json.dumps(newInputDict, indent= 4, sort_keys=True))
+        jsonFile.write(json.dumps(newInputDict, indent=4, sort_keys=True))
         jsonFile.close()
-            
+
+
 if __name__ == "__main__":
     multiexplorer = MultiExplorer(sys.argv[1])
-    
-    multiexplorer.controller()
-    #multiexplorer.callPerformanceSim()
-    #multiexplorer.stepByStep()
-    #multiexplorer.physicalSim()
 
-    #multiexplorer.putIntoDir()
-    #multiexplorer.dse()
-    #multiexplorer.performanceReport()
-    #multiexplorer.suggestedArchitecture()
+    multiexplorer.controller()
+    # multiexplorer.callPerformanceSim()
+    # multiexplorer.stepByStep()
+    # multiexplorer.physicalSim()
+
+    # multiexplorer.putIntoDir()
+    # multiexplorer.dse()
+    # multiexplorer.performanceReport()
+    # multiexplorer.suggestedArchitecture()

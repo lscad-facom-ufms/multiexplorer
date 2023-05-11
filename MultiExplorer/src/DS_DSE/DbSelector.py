@@ -1,5 +1,8 @@
 # -*- coding= UTF-8 -*-
-import os, sys, json
+import json
+import os
+import sys
+
 
 class DbSelector(object):
     ''' This class makes the selection of json file 

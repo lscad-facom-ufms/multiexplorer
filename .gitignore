@@ -4,8 +4,8 @@
 
 *.log
 *.pyc
-*.png
 *.csv
+.env
 *~
 
 MultiExplorer/src/config.py
@@ -18,6 +18,8 @@ sim.info
 sim.stats.sqlite3
 /MultiExplorer/support/mcpat/density90.out
 
+*.out
+
 out.json
 /MultiExplorer/src/PerformanceExploration/Sniper/Sniper.py~
 /MultiExplorer/src/PerformanceExploration/Sniper/out.json~
@@ -26,4 +28,18 @@ out.json
 /MultiExplorer/src/PerformanceExploration/Multi2Sim/.vscode/launch.json
 MultiExplorer/support/sniper/benchmarks/parsec/parsec-2.1/log/
 
+/sniper-7.4-pin2/
+/sniper-7.4/
+/snipersim-8.0/
+sniper-benchmarks.tbz
+pre_compiled_sniper.tar
+sniper-latest.tgz
+built_sniper_benchmarks.tar.gz
+pre-compiled-sniper-8.0.tar.gz
+
+get-pip.py
+
 \.idea/
+
+page-6.2.tgz
+page/

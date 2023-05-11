@@ -138,7 +138,6 @@ export PATH=/home/gpgpu-sim/MPSoCBench/compilers/sparc-newlib-elf/bin:$PATH"
 
         
 
-        # TODO fcm
         os.system(commandLine+ ' -b')
 
         #print ret 

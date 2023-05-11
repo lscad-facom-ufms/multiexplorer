@@ -88,6 +88,9 @@ class Sniper(SimulationTool):
     # this method execute the comand line to sniper.
     def execute(self):
         print "*** Sniper Simulator ***"
+        print (self.path + "./run-sniper -p " + self.benchmark + " -n " + str(self.processor) + " -i " +
+                  self.size_benchmark + " -c " + PATH_SNIPER + "/config/" + self.file_config + " -d " +
+                  self.dir_out + self.tool + "> "+self.dir_out+ "/SniperPerformanceResults.txt")
         #if (self.processor>1):
         os.system(self.path + "./run-sniper -p " + self.benchmark + " -n " + str(self.processor) + " -i " +
                   self.size_benchmark + " -c " + PATH_SNIPER + "/config/" + self.file_config + " -d " + 
