@@ -1063,7 +1063,10 @@ class SniperSimulatorAdapter(Adapter):
                             Input({
                                 "label": "Technology Node",
                                 "key": "technology_node",
-                                "type": InputType.Integer,
+                                "allowed_values": Technologies.get_dict(),
+                                "required" : True,
+                                "is_user_input": True,
+                                'unit': 'nm',
                             }),
                             Input({
                                 "label": "Temperature",
@@ -1724,10 +1727,7 @@ class SniperSimulatorAdapter(Adapter):
         return str(self.inputs['general_modeling']['power']['technology_node']) + "nm"
 
     def get_technology(self):
-        try:
-            return PredictedCores.get_technology(self.inputs['general_modeling']['model_name'])
-        except ValueError:
-            return ""
+        return str(self.inputs['general_modeling']['power']['technology_node']) + "nm"
 
     # This method forwards settings to the DSE Step through a json file
     def register_dse_settings(self):
@@ -1804,7 +1804,9 @@ class SniperSimulatorAdapter(Adapter):
 
         self.presentable_results['total_instruction_count'] = (total_ic, 'I')
 
-        self.presentable_results['total_cycle_count'] = (round(self.results['performance_model.cycle_count'][0], 2), 'C')
+        self.presentable_results['total_cycle_count'] = (
+            round(self.results['performance_model.cycle_count'][0], 2), 'C'
+        )
 
         total_ipc = 0
 
@@ -2682,6 +2684,8 @@ class NsgaIIPredDSEAdapter(Adapter):
 
         self.profile = None
 
+        self.db = None
+
         self.results = None
 
         self.presentable_results = None
@@ -2852,6 +2856,8 @@ class NsgaIIPredDSEAdapter(Adapter):
 
         self.register_profile(settings)
 
+        self.register_db(settings)
+
         self.dse_engine = Nsga2Main(settings)
 
     def register_profile(self, settings):
@@ -2882,6 +2888,28 @@ class NsgaIIPredDSEAdapter(Adapter):
 
         with open(file_path, 'w') as profile_json:
             json.dump(self.profile, profile_json, indent=4)
+
+    def register_db(self, settings):
+        nbr_of_cores = settings['sniper_results']['ncores']
+
+        total_ic = 0
+
+        for ic in settings['sniper_results']['performance_model.instruction_count']:
+            total_ic += ic
+
+        self.db = {
+            'id': settings['dse']['processor'] + settings['dse']['technology'],
+            'pow': round(float(settings['mcpat_results']['processor']['peak_power'][0]) / nbr_of_cores, 2),
+            'area': round(float(settings['mcpat_results']['processor']['area'][0]) / nbr_of_cores, 2),
+            'perf': round(float(settings['dse']['original_performance'][0]) / nbr_of_cores, 2),
+            'freq': settings['dse']['frequency'],
+            'cpi': round(settings['sniper_results']['performance_model.cycle_count'][0] / total_ic, 10),
+        }
+
+        file_path = self.get_output_path() + "/db.json"
+
+        with open(file_path, 'w') as db_json:
+            json.dump(self.db, db_json, indent=4)
 
     def get_settings(self):
         self.read_dse_settings()
