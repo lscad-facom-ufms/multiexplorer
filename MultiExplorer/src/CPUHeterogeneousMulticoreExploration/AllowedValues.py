@@ -515,22 +515,38 @@ class MemoryModels(Enum):
 
 
 class Technologies(Enum):
-    TWENTY_TWO_NANOMETERS = "22nm"
+    NINETY_NANOMETERS = "90"
+    SIXTY_FIVE_NANOMETERS = "65"
+    FOURTY_FIVE_NANOMETERS = "45"
+    THIRTY_TWO_NANOMETERES = "32"
+    TWENTY_TWO_NANOMETERS = "22"
 
     @staticmethod
     def belongs(value): return value in set(item.value for item in Technologies)
 
     @staticmethod
     def get_label(value):
-        if value == Technologies.TWENTY_TWO_NANOMETERS:
-            return "22nm"
+        if value == Technologies.NINETY_NANOMETERS:
+            return "90"
+        elif value == Technologies.SIXTY_FIVE_NANOMETERS:
+            return "65"
+        elif value == Technologies.FOURTY_FIVE_NANOMETERS:
+            return "45"
+        elif value == Technologies.THIRTY_TWO_NANOMETERES:
+            return "32"
+        elif value == Technologies.TWENTY_TWO_NANOMETERS:
+            return "22"
 
         raise ValueError("Value does not corresponds to a known hash type.")
 
     @staticmethod
     def get_dict():
         return {
-            Technologies.TWENTY_TWO_NANOMETERS.value: Technologies.get_label(Technologies.TWENTY_TWO_NANOMETERS)
+            Technologies.NINETY_NANOMETERS.value: Technologies.get_label(Technologies.NINETY_NANOMETERS),
+            Technologies.SIXTY_FIVE_NANOMETERS.value: Technologies.get_label(Technologies.SIXTY_FIVE_NANOMETERS),
+            Technologies.FOURTY_FIVE_NANOMETERS.value: Technologies.get_label(Technologies.FOURTY_FIVE_NANOMETERS),
+            Technologies.THIRTY_TWO_NANOMETERES.value: Technologies.get_label(Technologies.THIRTY_TWO_NANOMETERES),
+            Technologies.TWENTY_TWO_NANOMETERS.value: Technologies.get_label(Technologies.TWENTY_TWO_NANOMETERS),
         }
 
 
