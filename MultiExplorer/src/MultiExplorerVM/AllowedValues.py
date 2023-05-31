@@ -157,4 +157,27 @@ class PredictedApplications(Enum):
         elif value == PredictedApplications.EPA.value:
             return 9235513739
         
-    
+
+class Applications(Enum):
+    SPLASH_II_CHOLESKY = "splash2-cholesky"
+
+    @staticmethod
+    def belongs(value):
+        return value in set(item.value for item in Applications)
+
+    @staticmethod
+    def get_label(value):
+        if value == Applications.SPLASH_II_CHOLESKY:
+            return "Splash II - Cholesky"
+
+        raise ValueError("Value does not corresponds to a known hash type.")
+
+    @staticmethod
+    def get_dict():
+        return {
+            Applications.SPLASH_II_CHOLESKY.value: Applications.get_label(Applications.SPLASH_II_CHOLESKY)
+        }
+
+    def to_cfg(self):
+        if self.value == "splash2-cholesky":
+            return "splash2-cholesky"

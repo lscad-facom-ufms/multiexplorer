@@ -6,7 +6,7 @@ from typing import Dict, Union, Any, Optional
 from xml.dom import minidom
 from xml.etree import ElementTree
 from MultiExplorer.src.MultiExplorerVM.AllowedValues import PredictedModels, \
-    PredictedApplications
+    PredictedApplications, Applications
 from MultiExplorer.src.MultiExplorerVM.DS_DSE.Nsga2MainVM import Nsga2Main
 from MultiExplorer.src.Infrastructure.ExecutionFlow import Adapter
 from MultiExplorer.src.Infrastructure.Inputs import Input, InputGroup, InputType
@@ -20,7 +20,34 @@ class CloudsimAdapter(Adapter):
 
         self.set_inputs([
             Input({
-                'label' : 'Aplication',
+                'label' : 'Application',
+                'key' : 'application',
+                'allowed_values' : Applications.get_dict(),
+                'value' : Applications.SPLASH_II_CHOLESKY.value,
+            }),
+            InputGroup({
+                "label" : "Original Platform",
+                "subtitle": (
+                    "This platform will be the starting point for the automatic DSE."
+                    + " It will be evaluated through simulation by Cloudsim."
+                ),
+                "key" : "general_modeling",
+                "inputs" : [
+                    Input({
+                        "label" : "Model VM",
+                        "key" : "model_vm",
+                        "is_user_input" : True,
+                        "required" : True,
+                        "allowed_values" : PredictedModels.get_dict(),
+                    }),
+                    Input({
+                        "label" : "Applicaton VM",
+                        "key" : "application_vm",
+                        "is_user_input" : True,
+                        "required" : True,
+                        "Allowed_values" : PredictedApplications.get_dict(),
+                    }),
+                ]
             })
         ]
         )
