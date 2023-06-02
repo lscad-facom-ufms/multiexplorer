@@ -18,6 +18,8 @@ class CloudsimAdapter(Adapter):
 
         self.presenter = None
 
+# corescloudlet viria aqui
+
         self.set_inputs([
             Input({
                 'label' : 'Application',
