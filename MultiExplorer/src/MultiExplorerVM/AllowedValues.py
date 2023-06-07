@@ -110,9 +110,9 @@ class PredictedModels(Enum):
             return 16000
 
 class PredictedApplications(Enum):
-    EPS = 1
-    EPW = 2
-    EPA = 3
+    EPS = 0
+    EPW = 1
+    EPA = 2
 
     @staticmethod
     def belongs(value):

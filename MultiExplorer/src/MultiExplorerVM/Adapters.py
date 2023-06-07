@@ -12,14 +12,7 @@ from MultiExplorer.src.Infrastructure.ExecutionFlow import Adapter
 from MultiExplorer.src.Infrastructure.Inputs import Input, InputGroup, InputType
 from MultiExplorer.src.config import PATH_PRED_VM
 
-class CloudsimAdapter(Adapter):
-    def __init__(self):
-        Adapter.__init__(self)
-
-        self.presenter = None
-
-# corescloudlet viria aqui
-
+"""
         self.set_inputs([
             Input({
                 'label' : 'Application',
@@ -53,12 +46,63 @@ class CloudsimAdapter(Adapter):
             })
         ]
         )
+"""
+
+class CloudsimAdapter(Adapter):
+    def __init__(self):
+        Adapter.__init__(self)
+
+        self.presenter = None
+
+# Descobrir como fazer para abrir a lista e como funciona
+
+        self.set_inputs([
+            InputGroup({
+                'label': "Application",
+                'key': 'application',
+                'inputs': [
+                    Input({
+                        "label" : "Model VM",
+                        "key" : "model_vm",
+                        "is_user_input" : True,
+                        "required" : True,
+                        "allowed_values" : PredictedModels.get_dict(),
+                    }),
+                    Input({
+                        "label" : "Applicaton VM",
+                        "key" : "application_vm",
+                        "is_user_input" : True,
+                        "required" : True,
+                        "Allowed_values" : PredictedApplications.get_dict(),
+                    }),
+                ]
+            })
+        ])
+
+        self.config = {}
+
+        self.results = {}
+
+        self.presentable_results = None
+
+        self.use_benchmarks = True
+
+        self.benchmark_size = None
+
+        self.dse_settings_file_name = None
+
+        self.cfg_path = None
+
+        self.output_path = None
+
 
     def set_values_from_json(self, absolute_file_path):
         """
         This method reads a json file and sets the values of the inputs.
         """
         input_json = json.loads(open(absolute_file_path).read())
+
+# Organizar os sets para o json
 
 class NsgaIIPredDSEAdapter(Adapter):
     """
@@ -92,16 +136,11 @@ class NsgaIIPredDSEAdapter(Adapter):
         self.set_inputs([
             InputGroup({
                 'label': "Exploration Space",
-                'subtitle': (
-                    "Define the limitations for core heterogeneity."
-                    + " The platforms produced by the automatic DSE will often contain two different core models."
-                    + " You are able to restrict the number of cores used of both models."
-                ),
                 'key': 'exploration_space',
                 'inputs': [
                     Input({
-                        'label': 'Minimal number of cores from the original model',
-                        'key': 'original_cores_for_design',
+                        'label': 'Original number VM for design',
+                        'key': 'original_vm_for_design',
                         "is_user_input": True,
                         "required": True,
                         'type': InputType.IntegerRange,
@@ -109,43 +148,23 @@ class NsgaIIPredDSEAdapter(Adapter):
                         'max_val': 31,
                     }),
                     Input({
-                        'label': 'Number of cores that may be from another model',
-                        'key': 'ip_cores_for_design',
+                        'label': 'Suplementar number VM for design',
+                        'key': 'sup_vm_for_design',
                         "is_user_input": True,
                         "required": True,
                         'type': InputType.IntegerRange,
                         'min_val': 1,
                         'max_val': 31,
                     }),
-                ],
-            }),
-            InputGroup({
-                'label': "Constraints",
-                'key': 'constraints',
-                'inputs': [
                     Input({
-                        'label': 'Maximum Power Density',
-                        'unit': 'V/mm²',
-                        'key': 'maximum_power_density',
-                        'type': InputType.Float,
+                        'label': 'Cores Cloudlet for design',
+                        'key': 'corescloudlet_for_design',
                         "is_user_input": True,
                         "required": True,
-                    }),
-                    Input({
-                        'label': 'Maximum Area',
-                        'unit': 'mm²',
-                        'key': 'maximum_area',
-                        'type': InputType.Float,
-                        "is_user_input": True,
-                        "required": True,
-                    }),
-                    Input({
-                        'label': 'Technology',
-                        'key': 'technology',
-                        'allowed_values': Technologies.get_dict(),
-                        "is_user_input": False,
-                        "required": False,
-                    }),
+                        'type': InputType.IntegerRange,
+                        'min_val': 1,
+                        'max_val': 32,
+                    })
                 ],
             }),
         ])
