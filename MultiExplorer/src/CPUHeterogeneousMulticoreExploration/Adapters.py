@@ -1064,7 +1064,7 @@ class SniperSimulatorAdapter(Adapter):
                                 "label": "Technology Node",
                                 "key": "technology_node",
                                 "allowed_values": Technologies.get_dict(),
-                                "required" : True,
+                                "required": True,
                                 "is_user_input": True,
                                 'unit': 'nm',
                             }),
@@ -2538,7 +2538,9 @@ class McPATAdapter(Adapter):
     def get_cache_numbers(self):
         number_of_cores = int(self.sniper_config["general/total_cores"])
 
-        cache_levels = self.sniper_config["perf_model/cache/levels"]
+        cache_levels = int(self.sniper_config["perf_model/cache/levels"])
+
+        print "cache_levels: " + str(cache_levels)
 
         l2_shared_cores = number_of_l2 = l3_shared_cores = number_of_l3 = 0
 

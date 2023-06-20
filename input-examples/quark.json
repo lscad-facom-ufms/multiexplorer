@@ -34,7 +34,7 @@
 		{
 			"cache":
 			{
-				"levels": 3
+				"levels": 2
 			},
 			"tlb":
 			{
@@ -114,27 +114,6 @@
 				"passthrough":false,
 				"cache_block_size": 32,
 				"cache_size":1024,
-				"associativity":2,
-				"ports":2,
-				"address_hash":"mask",
-				"replacement_policy":"LRU",
-				"data_access_time":23,
-				"tags_access_time":1,
-				"perf_model_type":"parallel",
-				"writethrough":0,
-				"writeback_time":0,
-				"dvfs_domain":"core",
-				"shared_cores":[0],
-				"prefetcher":"none",
-				"next_level_read_bandwidth":0
-			},
-
-			"l3_cache-0":
-			{
-				"perfect":false,
-				"passthrough":false,
-				"cache_block_size": 32,
-				"cache_size":8,
 				"associativity":2,
 				"ports":2,
 				"address_hash":"mask",
