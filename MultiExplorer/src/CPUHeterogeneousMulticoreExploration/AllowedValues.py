@@ -517,8 +517,8 @@ class MemoryModels(Enum):
 class Technologies(Enum):
     NINETY_NANOMETERS = "90"
     SIXTY_FIVE_NANOMETERS = "65"
-    FOURTY_FIVE_NANOMETERS = "45"
-    THIRTY_TWO_NANOMETERES = "32"
+    FORTY_FIVE_NANOMETERS = "45"
+    THIRTY_TWO_NANOMETERS = "32"
     TWENTY_TWO_NANOMETERS = "22"
 
     @staticmethod
@@ -530,9 +530,9 @@ class Technologies(Enum):
             return "90"
         elif value == Technologies.SIXTY_FIVE_NANOMETERS:
             return "65"
-        elif value == Technologies.FOURTY_FIVE_NANOMETERS:
+        elif value == Technologies.FORTY_FIVE_NANOMETERS:
             return "45"
-        elif value == Technologies.THIRTY_TWO_NANOMETERES:
+        elif value == Technologies.THIRTY_TWO_NANOMETERS:
             return "32"
         elif value == Technologies.TWENTY_TWO_NANOMETERS:
             return "22"
@@ -544,8 +544,8 @@ class Technologies(Enum):
         return {
             Technologies.NINETY_NANOMETERS.value: Technologies.get_label(Technologies.NINETY_NANOMETERS),
             Technologies.SIXTY_FIVE_NANOMETERS.value: Technologies.get_label(Technologies.SIXTY_FIVE_NANOMETERS),
-            Technologies.FOURTY_FIVE_NANOMETERS.value: Technologies.get_label(Technologies.FOURTY_FIVE_NANOMETERS),
-            Technologies.THIRTY_TWO_NANOMETERES.value: Technologies.get_label(Technologies.THIRTY_TWO_NANOMETERES),
+            Technologies.FORTY_FIVE_NANOMETERS.value: Technologies.get_label(Technologies.FORTY_FIVE_NANOMETERS),
+            Technologies.THIRTY_TWO_NANOMETERS.value: Technologies.get_label(Technologies.THIRTY_TWO_NANOMETERS),
             Technologies.TWENTY_TWO_NANOMETERS.value: Technologies.get_label(Technologies.TWENTY_TWO_NANOMETERS),
         }
 
