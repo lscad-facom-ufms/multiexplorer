@@ -5,11 +5,10 @@ import sys, os
 
 sys.path.append(os.path.dirname(os.path.realpath(__file__))+'/../../')
 import functools, json
-from nsga2.Population import Population
+from MultiExplorer.src.MultiExplorerVM.DS_DSE.nsga2.Population import Population
 from MultiExplorer.src.MultiExplorerVM.DS_DSE.DbSelector import DbSelector
 import random
-from InOutVM import InOut
-
+from MultiExplorer.src.MultiExplorerVM.DS_DSE.InOutVM import InOut
 class NSGA2Utils(object):
 
     def __init__(self, problem, num_of_individuals, projectFolder, mutation_rate= 0.9 ,mutation_strength=0.01, num_of_genes_to_mutate=2, num_of_tour_particips=2):

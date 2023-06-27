@@ -61,7 +61,7 @@ class CloudsimAdapter(Adapter):
             InputGroup({
                 'label': "Application",
                 'key': 'application',
-                'inputs': [
+                "inputs": [
                     Input({
                         "label" : "Model VM",
                         "key" : "model_vm",

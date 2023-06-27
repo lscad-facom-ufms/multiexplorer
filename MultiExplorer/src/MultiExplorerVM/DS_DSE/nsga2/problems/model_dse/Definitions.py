@@ -1,8 +1,8 @@
 # -*- coding: UTF-8 -*-
 import math
-from nsga2 import seq
-from nsga2.problems.ProblemDefinitions import ProblemDefinitions
-from PerformancePredictorVM import PerformancePredictor
+from MultiExplorer.src.MultiExplorerVM.DS_DSE.nsga2 import seq
+from MultiExplorer.src.MultiExplorerVM.DS_DSE.nsga2.problems.ProblemDefinitions import ProblemDefinitions
+from MultiExplorer.src.MultiExplorerVM.DS_DSE.PerformancePredictorVM import PerformancePredictor
 
 class Definitions(ProblemDefinitions):
 

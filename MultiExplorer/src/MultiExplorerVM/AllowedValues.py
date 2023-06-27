@@ -1,22 +1,35 @@
+# -*- coding: utf-8 -*-
+
 from enum import Enum
 
 from MultiExplorer.src.config import PATH_INPUTS
+"""
+Modelos - c5, m5 e r5
+Aplicações - 0 a 26
 
-#Modelos - c5, m5 e r5
-#Aplicações - 0 a 26
-#C5 - define o valor do mips
-#c5.24large - define price, coresVM e memory
-#c5.24large-18 - define a aplicação
-#Informações necessárias para executar no cloudsim:
-#mips, coreVM e memory
-#instructions for design(aplicação), 
-#cores cloudlet for design
-#Depois de executar o cloudlet calcula o tempo e devolve
-#o custo é o tempo que o cloudsim devolveu vezes o preço 
-#que vem no modelo
-#Inicialmente, colocar apenas a VM c5 
-#e as aplicações de 0 a 3
+C5 - define o valor do mips
+c5.24large - define price, coresVM e memory
+c5.24large-18 - define a aplicação
 
+Informações necessárias para executar no cloudsim:
+mips, coreVM e memory
+instructions for design(aplicação), 
+cores cloudlet for design
+
+Depois de executar o cloudlet calcula o tempo e devolve
+o custo é o tempo que o cloudsim devolveu vezes o preço 
+que vem no modelo
+
+Inicialmente, colocar apenas a VM c5 
+e as aplicações de 0 a 3
+
+?
+Em qual arquivo que eu posso encontrar onde muda na
+interface gráfica?
+
+
+
+"""
 class Simulators(Enum):
     Cloudsim = 1
 

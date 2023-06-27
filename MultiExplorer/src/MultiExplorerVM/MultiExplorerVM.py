@@ -4,9 +4,26 @@ import tkMessageBox
 from MultiExplorer.src.Infrastructure.Events import Event
 from MultiExplorer.src.Infrastructure.ExecutionFlow import ExecutionFlow
 from MultiExplorer.src.config import PATH_RUNDIR
-from Steps import CloudSimStep, DSEStep
+from Steps import CloudSimStep
 
 class MultiExplorerVMExecutionFlow(ExecutionFlow):
+
+
+    @staticmethod
+    def get_info():
+        return (
+            "This flow allows for an automatic dark silicon aware design space exploration that produces designs for"
+            + " multicore heterogeneous platforms.\n"
+            + "It begins with the user proposing a homogeneous multicore platform and setting DSE constraints. "
+            + "After that, the execution is composed of three steps: Simulation, Physical Exploration and DSE"
+            + " (Design Space Exploration).\n"
+            + "In the Simulation Step, Sniper is used to assess the performance of the proposed architecture.\n"
+            + "In the Physical Exploration Step, McPAT is employed to acquire area and power stats.\n"
+            + "Our version of McPAT has been extended to output dark silicon estimates aswell.\n"
+            + "In the DSE Step, the NSGA-II algorithm is used for the automatic design space exploration.\n"
+            + "The DSE objectives are performance and power density (stat correlated to dark silicon)."
+        )
+
 
     def __new__(cls):
         if not hasattr(cls, 'instance'):
@@ -21,8 +38,7 @@ class MultiExplorerVMExecutionFlow(ExecutionFlow):
         super(MultiExplorerVMExecutionFlow, self).__init__()
 
         self.steps = [
-            CloudSimStep(),
-            DSEStep(),
+            CloudSimStep()
         ]
 
     @staticmethod
