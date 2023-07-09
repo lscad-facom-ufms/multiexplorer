@@ -2,10 +2,10 @@
 """Module with definition of DS_DSE problem interface"""
 import sys, os, json, math
 sys.path.append(os.path.dirname(os.path.realpath(__file__))+'/../../../../')
-from nsga2.Individual import Individual
-from nsga2.problems import Problem
-from InOutVM import InOut
-from DbSelector import DbSelector
+from MultiExplorer.src.MultiExplorerVM.DS_DSE.nsga2.Individual import Individual
+from MultiExplorer.src.MultiExplorerVM.DS_DSE.nsga2.problems import Problem
+from MultiExplorer.src.MultiExplorerVM.DS_DSE.InOutVM import InOut
+from MultiExplorer.src.MultiExplorerVM.DS_DSE.DbSelector import DbSelector
 import random
 import functools
 

@@ -5,7 +5,7 @@ from Tkconstants import N as ANCHOR_N, X as FILL_X
 from MultiExplorer.src.GUI.Styles import DefaultStyle
 from MultiExplorer.src.GUI.Widgets import WrappingLabel
 from MultiExplorer.src.Infrastructure.Inputs import InputType, InputGroup, Input
-from MultiExplorer.src.Infrastructure.Validators import FloatValidator
+from MultiExplorer.src.Infrastructure.Validators import FloatValidator, TextValidator
 
 
 class InputGUI:
@@ -35,6 +35,8 @@ class InputGUI:
             return Integer
         if infra_input.type == InputType.IntegerRange:
             return IntegerRange
+        if infra_input.type == InputType.Text:
+            return Text
 
         raise NotImplementedError("The GUI counterpart of '" + str(infra_input.type) + "' is not implemented.")
 
@@ -464,7 +466,7 @@ class FloatEntry(TypeInEntry, object):
 
 class SubTypeInEntry(Tkinter.Entry, object):
     def __init__(self, master, indx, label_text, cnf={}, **kw):
-        # type: (MultipleInputFrame, int, str, Dict, str**) -> None
+        ## type: (MultipleInputFrame, int, str, Dict, str**) -> None
         super(SubTypeInEntry, self).__init__(master, cnf, **kw)
 
         self.master = master
