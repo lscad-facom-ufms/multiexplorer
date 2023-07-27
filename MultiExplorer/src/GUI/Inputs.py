@@ -35,8 +35,6 @@ class InputGUI:
             return Integer
         if infra_input.type == InputType.IntegerRange:
             return IntegerRange
-        if infra_input.type == InputType.Text:
-            return Text
 
         raise NotImplementedError("The GUI counterpart of '" + str(infra_input.type) + "' is not implemented.")
 

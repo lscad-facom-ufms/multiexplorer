@@ -74,7 +74,7 @@ class CloudsimAdapter(Adapter):
                         "key" : "application_vm",
                         "is_user_input" : True,
                         "required" : True,
-                        "Allowed_values" : PredictedApplications.get_dict(),
+                        "allowed_values" : PredictedApplications.get_dict(),
                     }),
                 ]
             })
