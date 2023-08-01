@@ -77,6 +77,26 @@ class CloudsimAdapter(Adapter):
                         "allowed_values" : PredictedApplications.get_dict(),
                     }),
                 ]
+            }),
+            InputGroup({
+                'label': "Constraints",
+                'key': 'constraints',
+                "inputs": [
+                    Input({
+                       'label': 'Maximum Cost',
+                        'key': 'maximum_cost',
+                        'type': InputType.Float,
+                        "is_user_input": True,
+                        "required": True,
+                    }),
+                    Input({
+                        'label': 'Maximum Time',
+                        'key': 'maximum_time',
+                        'type': InputType.Float,
+                        "is_user_input": True,
+                        "required": True,
+                    }),
+                ]
             })
         ])
 
@@ -104,6 +124,10 @@ class CloudsimAdapter(Adapter):
         input_json = json.loads(open(absolute_file_path).read())
 
 # Organizar os sets para o json
+
+""""
+criar um get para juntar as infos 
+"""
 
 class NsgaIIPredDSEAdapter(Adapter):
     """
@@ -153,9 +177,8 @@ class NsgaIIPredDSEAdapter(Adapter):
                         'key': 'sup_vm_for_design',
                         "is_user_input": True,
                         "required": True,
-                        'type': InputType.IntegerRange,
-                        'min_val': 1,
-                        'max_val': 31,
+                        "type": InputType.Integer,
+                        "max_val": 32,
                     }),
                     Input({
                         'label': 'Cores Cloudlet for design',
