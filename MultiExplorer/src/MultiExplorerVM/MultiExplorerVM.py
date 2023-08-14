@@ -4,7 +4,7 @@ import tkMessageBox
 from MultiExplorer.src.Infrastructure.Events import Event
 from MultiExplorer.src.Infrastructure.ExecutionFlow import ExecutionFlow
 from MultiExplorer.src.config import PATH_RUNDIR
-from Steps import CloudSimStep
+from Steps import CloudSimStep, NSGAIIDSEStep
 
 class MultiExplorerVMExecutionFlow(ExecutionFlow):
 
@@ -38,7 +38,8 @@ class MultiExplorerVMExecutionFlow(ExecutionFlow):
         super(MultiExplorerVMExecutionFlow, self).__init__()
 
         self.steps = [
-            CloudSimStep()
+            CloudSimStep(),
+            NSGAIIDSEStep()
         ]
 
     @staticmethod

@@ -200,7 +200,10 @@ class NsgaIIPredDSEAdapter(Adapter):
 
         self.results = results
 
-        self.presentable_results = {'solutions': {}}
+        self.presentable_results = {
+            'profile': self.profile,
+            'solutions': {},
+        }
 
         solution_cores = []
 
@@ -234,15 +237,18 @@ class NsgaIIPredDSEAdapter(Adapter):
 
         self.register_profile(settings)
 
+        self.register_db(settings)
+
         self.dse_engine = Nsga2Main(settings)
 
     def register_profile(self, settings):
-        profile = {
+        self.profile = {
             'model': settings['dse']['processor'],
             'process': settings['dse']['technology'],
             'frequency': settings['dse']['frequency'],
-            'core_area': settings['mcpat_results']['core']['area'],
+            'core_area': settings['mcpat_results']['total_cores']['area'],
             'core_number': settings['sniper_results']['ncores'],
+            'power': settings['mcpat_results']['processor']['peak_power'],
             'chip_area': settings['mcpat_results']['processor']['area'],
             'power_density': (
                 round(float(settings['mcpat_results']['processor']['power_density'][0]), 2),
@@ -262,7 +268,29 @@ class NsgaIIPredDSEAdapter(Adapter):
         file_path = self.get_output_path() + "/profile.json"
 
         with open(file_path, 'w') as profile_json:
-            json.dump(profile, profile_json, indent=4)
+            json.dump(self.profile, profile_json, indent=4)
+
+    def register_db(self, settings):
+        nbr_of_cores = settings['sniper_results']['ncores']
+
+        total_ic = 0
+
+        for ic in settings['sniper_results']['performance_model.instruction_count']:
+            total_ic += ic
+
+        self.db = {
+            'id': settings['dse']['processor'] + settings['dse']['technology'],
+            'pow': round(float(settings['mcpat_results']['processor']['peak_power'][0]) / nbr_of_cores, 2),
+            'area': round(float(settings['mcpat_results']['processor']['area'][0]) / nbr_of_cores, 2),
+            'perf': round(float(settings['dse']['original_performance'][0]) / nbr_of_cores, 2),
+            'freq': settings['dse']['frequency'],
+            'cpi': round(settings['sniper_results']['performance_model.cycle_count'][0] / total_ic, 10),
+        }
+
+        file_path = self.get_output_path() + "/db.json"
+
+        with open(file_path, 'w') as db_json:
+            json.dump(self.db, db_json, indent=4)
 
     def get_settings(self):
         self.read_dse_settings()
@@ -306,15 +334,11 @@ class NsgaIIPredDSEAdapter(Adapter):
     def read_dse_settings(self):
         self.dse_settings = json.loads(open(self.get_dse_settings_file_path()).read())
 
-        self.dse_settings['num_of_generations'] = 150
-
-        self.dse_settings['num_of_individuals'] = 10
-
-        self.dse_settings['mutation_strength'] = 0.5
-
-        self.dse_settings['mutation_rate'] = 0.1
-
         self.set_dse_settings_from_inputs([
+            'num_of_generations',
+            'num_of_individuals',
+            'mutation_strength',
+            'mutation_rate',
             'exploration_space',
             'constraints',
             'original_cores_for_design',
@@ -327,6 +351,11 @@ class NsgaIIPredDSEAdapter(Adapter):
         # type: (Optional[List[str]]) -> None
         if self.dse_settings is None:
             self.dse_settings = {}
+
+        self.dse_settings['num_of_generations'] = int(self.inputs['nsga_parameters']['num_of_generations'])
+        self.dse_settings['num_of_individuals'] = int(self.inputs['nsga_parameters']['num_of_individuals'])
+        self.dse_settings['mutation_strength'] = float(self.inputs['nsga_parameters']['mutation_strength'])
+        self.dse_settings['mutation_rate'] = float(self.inputs['nsga_parameters']['mutation_rate'])
 
         for key in self.inputs:
             if (keys is not None) and (key not in keys):
