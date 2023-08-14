@@ -131,32 +131,11 @@ criar um get para juntar as infos
 
 class NsgaIIPredDSEAdapter(Adapter):
     """
-        This adapter uses a NSGA-II implementation as it's exploration engine, and a heterogeneous multicore CPU
-        architecture performance predictor as it's evaluation engine, in order to perform a design space exploration.
+        For VM.
     """
 
     def __init__(self):
         Adapter.__init__(self)
-
-        self.project_path = None
-
-        self.dse_settings_file_name = None
-
-        self.dse_settings = None  # type: Dict[str, Any]
-
-        self.mcpat_results_json_file_name = None
-
-        self.mcpat_results = None
-
-        self.sniper_results_json_file_name = None
-
-        self.sniper_results = None
-
-        self.inputs = {}  # type: Dict[str, Union[Input, InputGroup]]
-
-        self.results = None
-
-        self.presentable_results = None
 
         self.set_inputs([
             InputGroup({
