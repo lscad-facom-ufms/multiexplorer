@@ -14,6 +14,14 @@ to our paper:
 SANTOS, R.;DUENHA, L.; SILVA, A. C. S.; BIGNARDI, T.; SOUSA, M.; TEDESCO, L.; MELGAREJO JUNIOR, J.; AZEVEDO, R.; ORDONEZ, E. D. M.. 
 Dark-Silicon Aware Design Space Exploration. JOURNAL OF PARALLEL AND DISTRIBUTED COMPUTING, v. 120, 2018, pp 295-306, ISSN 0743-7315.
 
+User Manual
+===========
+MultiExplorer has a user manual available:
+
+[English Version](https://drive.google.com/file/d/1XCgdApa8Pm0iUacygrTmWGyWXquhjOuU/view?usp=drive_link)
+
+[Versão em Português](https://drive.google.com/file/d/1JYvdxGZpFAuLS1jU-EBfLuURGj3zWxiP/view?usp=drive_link)
+
 How to Install ?
 ================
 The first step is to acquire a stable version of MultiExplorer from a release in the
@@ -29,7 +37,7 @@ Then you can use our **GNU Make** script for the basic setup.
 
 Using a **Docker** container is advised.
 We maintain a pre-compiled version of Sniper-8.0 for use in the Docker environment
-[precompiled_sniper](https://drive.google.com/file/d/1aXNxy6OZ7NjP1XUgnhOGuTFAUePtwZkW/view)
+[precompiled_sniper](https://drive.google.com/file/d/1aXNxy6OZ7NjP1XUgnhOGuTFAUePtwZkW/view) that you will also need to run MultiExplorer in this preset environment.
 
 Using the Docker Container
 ============================
