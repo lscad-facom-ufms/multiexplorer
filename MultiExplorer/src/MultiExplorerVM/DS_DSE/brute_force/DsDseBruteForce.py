@@ -9,7 +9,7 @@ sys.path.append(os.path.dirname(os.path.realpath(__file__))+'/../cloudsim/')
 from InOutVM import InOut
 from DbSelector import DbSelector
 from PerformancePredictorVM import PerformancePredictor
-from cloudsim.CloudSim import CloudSim
+from MultiExplorer.src.MultiExplorerVM.cloudsim.CloudSim import CloudSim
 import math
 
 cwd = os.getcwd()

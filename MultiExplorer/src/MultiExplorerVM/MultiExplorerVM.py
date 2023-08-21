@@ -5,6 +5,8 @@ from MultiExplorer.src.Infrastructure.Events import Event
 from MultiExplorer.src.Infrastructure.ExecutionFlow import ExecutionFlow
 from MultiExplorer.src.config import PATH_RUNDIR
 from Steps import CloudSimStep, NSGAIIDSEStep
+from DS_DSE.Nsga2MainVM import Nsga2Main
+from DS_DSE.brute_force.DsDseBruteForce import DsDseBruteForce
 
 class MultiExplorerVMExecutionFlow(ExecutionFlow):
 
