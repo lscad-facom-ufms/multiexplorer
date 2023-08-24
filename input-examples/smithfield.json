@@ -47,24 +47,24 @@
 			"itlb":
 			{
 				"sets": 128,
-				"block_size": 64,
-				"associativity" : 4,
+				"block_size": 128,
+				"associativity" : 8,
 				"latency": 10,
 				"policy":"LRU"
 			},
 			"dtlb":
 			{
 				"sets": 128,
-				"block_size": 32,
-				"associativity" : 4,
+				"block_size": 64,
+				"associativity" : 8,
 				"latency": 30,
 				"policy":"LRU"
 			},
 			"stlb":
 			{
 				"sets": 512,
-				"block_size": 128,
-				"associativity" : 8,
+				"block_size": 512,
+				"associativity" : 16,
 				"latency": 30,
 				"policy":"LRU"
 			},
@@ -113,7 +113,7 @@
 				"perfect":false,
 				"passthrough":false,
 				"cache_block_size": 64,
-				"cache_size":256,
+				"cache_size":1024,
 				"associativity":8,
 				"ports":2,
 				"address_hash":"mask",

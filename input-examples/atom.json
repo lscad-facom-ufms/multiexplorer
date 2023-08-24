@@ -12,8 +12,8 @@
 		"total_cores": 1,
 		"core": 
 		{
-			"global_frequency": 500,
-			"frequency":[500], 
+			"global_frequency": 1467,
+			"frequency":[1467], 
 			"threads":1, 
 			"logical_cpus":1,
 			"pipeline":
@@ -38,9 +38,9 @@
 			},
 			"tlb":
 			{
-				"sets": 64,
+				"sets": 128,
 				"block_size": 64,
-				"associativity" :16,
+				"associativity" :4,
 				"latency": 40, 
 				"policy":"LRU"
 			},
@@ -54,17 +54,17 @@
 			},
 			"dtlb":
 			{
-				"sets": 64,
+				"sets": 128,
 				"block_size": 64,
-				"associativity" : 16,
+				"associativity" : 4,
 				"latency": 40,
 				"policy":"LRU"
 			},
 			"stlb":
 			{
-				"sets": 32,
+				"sets": 512,
 				"block_size": 64,
-				"associativity" : 16,
+				"associativity" : 4,
 				"latency": 40,
 				"policy":"LRU"
 			},
@@ -72,9 +72,9 @@
 			{
 				"perfect":false,
 				"passthrough":false,
-				"cache_block_size": 32,
-				"cache_size":8,
-				"associativity":2,
+				"cache_block_size": 64,
+				"cache_size":32,
+				"associativity":8,
 				"ports":2,
 				"address_hash":"mask",
 				"replacement_policy":"LRU",
@@ -93,8 +93,8 @@
 				"perfect":false,
 				"passthrough":false,
 				"cache_block_size": 32,
-				"cache_size":32,
-				"associativity":4,
+				"cache_size":24,
+				"associativity":6,
 				"ports":2,
 				"address_hash":"mask",
 				"replacement_policy":"LRU",
@@ -112,8 +112,8 @@
 			{
 				"perfect":false,
 				"passthrough":false,
-				"cache_block_size": 32,
-				"cache_size":1024,
+				"cache_block_size": 64,
+				"cache_size":512,
 				"associativity":8,
 				"ports":2,
 				"address_hash":"mask",
