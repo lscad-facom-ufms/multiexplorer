@@ -1,7 +1,9 @@
 {
-"ipcores":[
-	{"id":"ARM_A53_22nm", "pow": 1.39117, "area": 10.5853, "perf": 3125.68},
-    	{"id":"ARM_A57_22nm", "pow": 1.59445, "area": 10.5023, "perf":4006.64},
-	{"id":"Atom_Silvermont_22nm", "pow": 0.830237, "area":8.19052, "perf":648.47}
-] 
+	"ipcores":[
+		{"id":"ARM_A53_22nm", "pow":1.6830, "area": 7.3007, "perf": 23.1625},
+        {"id":"ARM_A57_22nm", "pow": 1.4466, "area": 10.6603, "perf":22.3146},
+		{"id":"Atom_Silvermont_22nm", "pow": 1.5977, "area":7.2900, "perf":20.8965},
+		{"id":"Quark_x1000_22nm", "pow": 0.8962, "area":7.5053, "perf":7.1984},
+		{"id":"Smithfield_22nm", "pow":2.4662, "area":5.7112, "perf":27.0018}
+	]
 }
