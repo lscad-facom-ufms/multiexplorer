@@ -24,7 +24,11 @@ class Nsga2Main(object):
         dse_definitions = Definitions(performance_predictor)
 
         self.settings.update({
-            'bd_path': DbSelector.DbSelector.all_cores_path()
+            'bd_path': DbSelector.DbSelector.select_db(
+                self.settings['dse']['benchmark'],
+                self.settings['dse']['application'],
+                self.settings['dse']['technology']
+            )
         })
 
         problem = DSDSE(dse_definitions, self.settings)
