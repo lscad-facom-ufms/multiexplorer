@@ -5,8 +5,6 @@ from MultiExplorer.src.Infrastructure.Events import Event
 from MultiExplorer.src.Infrastructure.ExecutionFlow import ExecutionFlow
 from MultiExplorer.src.config import PATH_RUNDIR
 from Steps import CloudSimStep, NSGAIIDSEStep
-from DS_DSE.Nsga2MainVM import Nsga2Main
-from DS_DSE.brute_force.DsDseBruteForce import DsDseBruteForce
 
 class MultiExplorerVMExecutionFlow(ExecutionFlow):
 
@@ -14,16 +12,13 @@ class MultiExplorerVMExecutionFlow(ExecutionFlow):
     @staticmethod
     def get_info():
         return (
-            "This flow allows for an automatic dark silicon aware design space exploration that produces designs for"
-            + " multicore heterogeneous platforms.\n"
-            + "It begins with the user proposing a homogeneous multicore platform and setting DSE constraints. "
-            + "After that, the execution is composed of three steps: Simulation, Physical Exploration and DSE"
-            + " (Design Space Exploration).\n"
-            + "In the Simulation Step, Sniper is used to assess the performance of the proposed architecture.\n"
-            + "In the Physical Exploration Step, McPAT is employed to acquire area and power stats.\n"
-            + "Our version of McPAT has been extended to output dark silicon estimates aswell.\n"
-            + "In the DSE Step, the NSGA-II algorithm is used for the automatic design space exploration.\n"
-            + "The DSE objectives are performance and power density (stat correlated to dark silicon)."
+            "This flow allows for a workflow to provide virtual machine configurations according to the"
+            + " users requirements and applications constraints. \n"
+            + "MultiExplorer-VM uses CloudSim as the cloud simulator."
+            + " The design space exploration (DSE) is performed by a NSGA2-based algorithm. \n"
+            + "In this current version, Muliexplorer-VM also adopts a brute-force (bf) algorithm to explore"
+            + "all viable alternatives to the design. \n"
+            + "The bf has been used as a validation step to our DSE approach."
         )
 
 

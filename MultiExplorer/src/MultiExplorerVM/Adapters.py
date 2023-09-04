@@ -143,6 +143,14 @@ class NsgaIIPredDSEAdapter(Adapter):
                 'key': 'exploration_space',
                 'inputs': [
                     Input({
+                        'label': 'Cores Cloudlet for design',
+                        'key': 'corescloudlet_for_design',
+                        "is_user_input": True,
+                        "required": True,
+                        'type': InputType.Integer,
+                        'max_val': 32,
+                    }),
+                    Input({
                         'label': 'Original number VM for design',
                         'key': 'original_vm_for_design',
                         "is_user_input": True,
@@ -156,17 +164,9 @@ class NsgaIIPredDSEAdapter(Adapter):
                         'key': 'sup_vm_for_design',
                         "is_user_input": True,
                         "required": True,
-                        "type": InputType.Integer,
+                        "type": InputType.IntegerRange,
+                        "min_val": 1,
                         "max_val": 32,
-                    }),
-                    Input({
-                        'label': 'Cores Cloudlet for design',
-                        'key': 'corescloudlet_for_design',
-                        "is_user_input": True,
-                        "required": True,
-                        'type': InputType.IntegerRange,
-                        'min_val': 1,
-                        'max_val': 32,
                     })
                 ],
             }),
