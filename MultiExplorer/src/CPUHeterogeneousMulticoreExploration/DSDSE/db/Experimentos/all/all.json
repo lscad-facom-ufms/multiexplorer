@@ -1,18 +1,18 @@
 {
     "ipcores": [
-        {"id":"Smithfield_90nm", "pow":0.8850, "area":102.7815, "perf":30.7238},
+        {"id":"Smithfield_90nm", "pow":90.9628, "area":102.7815, "perf":30.7238},
 
-        {"id":"Smithfield_65nm", "pow":0.90568, "area":55.5546, "perf":31.5031},
+        {"id":"Smithfield_65nm", "pow":61.34, "area":55.5546, "perf":31.5031},
 
-        {"id":"Smithfield_45nm", "pow":1.6463, "area":28.0256, "perf":30.2909},
+        {"id":"Smithfield_45nm", "pow":46.1390, "area":28.0256, "perf":30.2909},
 
-        {"id":"Smithfield_32nm", "pow":2.0021, "area":15.1557, "perf":28.8528},
-        {"id":"Quark_x1000_32nm", "pow": 0.7428, "area":14.3841, "perf":7.2025},
+        {"id":"Smithfield_32nm", "pow":30.3447, "area":15.1557, "perf":28.8528},
+        {"id":"Quark_x1000_32nm", "pow": 10.6852, "area":14.3841, "perf":7.2025},
 
-        {"id":"Smithfield_22nm", "pow":2.3602, "area":7.8281, "perf":27.0018},
-        {"id":"Quark_x1000_22nm", "pow": 0.8983, "area":7.5053, "perf":7.1984},
-        {"id":"ARM_A53_22nm", "pow":1.6830, "area": 7.3007, "perf": 23.1625},
-        {"id":"ARM_A57_22nm", "pow": 1.4466, "area": 10.6603, "perf":22.3146},
-        {"id":"Atom_Silvermont_22nm", "pow": 1.5977, "area":7.2900, "perf":20.8965}
+        {"id":"Smithfield_22nm", "pow":18.4767, "area":7.8281, "perf":27.0018},
+        {"id":"Quark_x1000_22nm", "pow": 6.7423, "area":7.5053, "perf":7.1984},
+        {"id":"ARM_A53_22nm", "pow":12.2876, "area": 7.3007, "perf": 23.1625},
+        {"id":"ARM_A57_22nm", "pow": 15.4215, "area": 10.6603, "perf":22.3146},
+        {"id":"Atom_Silvermont_22nm", "pow": 11.6477, "area":7.2900, "perf":20.8965}
     ]
 }
