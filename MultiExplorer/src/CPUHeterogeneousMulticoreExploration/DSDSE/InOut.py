@@ -139,26 +139,22 @@ class InOut(object):
 
         parameters["amount_original_cores"] = [min_orig_core, max_orig_core]
 
+        original_core = DbSelector.get_core_in_db(self.dse_settings['processor'], self.dse_settings['technology']);
+
         parameters["area_orig"] = [
-            self.mcpat_results['processor']['area'][0],
-            self.mcpat_results['processor']['area'][0]
+            original_core['area'],
+            original_core['area']
         ]
 
         parameters["power_orig"] = [
-            self.mcpat_results['processor']['peak_power'][0],
-            self.mcpat_results['processor']['peak_power'][0]
+            original_core['pow'],
+            original_core['pow']
         ]
 
-        # performance = DbSelector.get_performance_in_db(
-        #     model_name=self.dse_settings['processor'],
-        #     bench=self.dse_settings['benchmark'],
-        #     app=self.dse_settings['application'],
-        #     tech=self.dse_settings['technology'],
-        # )
-
-        performance = self.dse_settings['original_performance'][0]
-
-        parameters["performance_orig"] = [performance, performance]
+        parameters["performance_orig"] = [
+            original_core['perf'],
+            original_core['perf']
+        ]
 
         min_ip_core = self.dse_settings['ip_cores_for_design'][0]
 

@@ -1,5 +1,5 @@
 {
 	"ipcores":[
-		{"id":"Smithfield_45nm", "pow":1.9599, "area":19.1393, "perf":30.2909}
+		{"id":"Smithfield_45nm", "pow":46.1390, "area":28.0256, "perf":30.2909}
 	]
 }

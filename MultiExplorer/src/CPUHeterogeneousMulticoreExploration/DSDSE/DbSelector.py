@@ -11,9 +11,13 @@ class DbSelector(object):
         pass
 
     @staticmethod
+    def get_db_id(model_name, tech):
+        return model_name + "_" + tech
+
+    @staticmethod
     def get_performance_in_db(model_name, bench, app, tech):
         # type: (str, str, str, str) -> float
-        id_input = model_name + "_" + tech
+        id_input = DbSelector.get_db_id(model_name, tech)
 
         list_itens_bd = json.loads(
             open(os.path.dirname(os.path.realpath(__file__)) + '/db/Experimentos/all/' + tech + '.json').read()
@@ -30,6 +34,19 @@ class DbSelector(object):
             + "; app: " + app
             + "; tech: " + tech + "."
         )
+
+    @staticmethod
+    def get_core_in_db(model_name, tech):
+        # type: (str, str) -> dict
+        id_input = DbSelector.get_db_id(model_name, tech)
+
+        db_dict = json.loads(
+            open(os.path.dirname(os.path.realpath(__file__)) + '/db/Experimentos/all/' + tech + '.json').read()
+        )
+
+        for item_bd in db_dict["ipcores"]:
+            if item_bd["id"] == id_input:
+                return item_bd
 
     # This method return a string with the full path of database choosen
     @staticmethod

@@ -81,7 +81,7 @@ a container.
 This is highly advisable even when using Linux distros, as our **Docker** environment will be easier to set up and maintain.
 
 If you are using the container on a Windows environment, you will need to use
-[Xming]https://sourceforge.net/projects/vcxsrv/), so **Docker** can access the graphic display.
+[XLaunch]https://sourceforge.net/projects/vcxsrv/), so **Docker** can access the graphic display.
 
 Other software requirements are:
 - [Sniper 8.0](http://snipersim.org)

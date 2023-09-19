@@ -18,21 +18,19 @@ class Definitions:
     @staticmethod
     def power_density(individual):
         total_power = (
-            individual.features[0] * individual.features[2]
-            + individual.features[4] * individual.features[5]["pow"]
+                individual.features[0] * individual.features[2]
+                + individual.features[4] * individual.features[5]["pow"]
         )
 
         total_area = (
-            individual.features[0] * individual.features[1]
-            + individual.features[4] * individual.features[5]["area"]
+                individual.features[0] * individual.features[1]
+                + individual.features[4] * individual.features[5]["area"]
         )
 
         try:
             return total_power / total_area
         except ZeroDivisionError:
-            print "Exception: Individual with zero parameters" + str(individual.features)
-
-            return total_power / 2
+            raise Exception("Individual with missing or invalid parameters: " + str(individual.features))
 
     def performance(self, individual):  # performance com preditor
         self.contador = self.contador + 1
@@ -56,8 +54,8 @@ class Definitions:
             print("Counter Performance: { " + str(self.contador) + " }\n")
         # print "Gerou indivíduo com parâmetros" + str(individual.features)
         return (
-            individual.features[3] * individual.features[0]
-            + individual.features[5]["perf"] * individual.features[4]
+                individual.features[3] * individual.features[0]
+                + individual.features[5]["perf"] * individual.features[4]
         )
 
     # restriction
@@ -73,8 +71,8 @@ class Definitions:
         )
 
         t_area = (
-            individual.features[0] * individual.features[1]
-            + individual.features[4] * individual.features[5]["area"]
+                individual.features[0] * individual.features[1]
+                + individual.features[4] * individual.features[5]["area"]
         )
 
         return t_power / t_area
