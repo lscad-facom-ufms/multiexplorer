@@ -1,6 +1,6 @@
 {
 	"ipcores":[
-		{"id":"Quark_x1000_32nm", "pow": 0.7428, "area":14.3841, "perf":7.2025},
-		{"id":"Smithfield_32nm", "pow":2.1783, "area":10.6498, "perf":28.8528}
+		{"id":"Smithfield_32nm", "pow":30.3447, "area":15.1557, "perf":28.8528},
+        {"id":"Quark_x1000_32nm", "pow": 10.6852, "area":14.3841, "perf":7.2025}
 	]
 }
