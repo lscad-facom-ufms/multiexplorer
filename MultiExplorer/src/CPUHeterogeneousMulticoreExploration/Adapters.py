@@ -3,6 +3,9 @@ import json
 import os
 import sys
 import re
+from MultiExplorer.src.config import PATH_SNIPER, PATH_MCPAT
+sys.path.append(PATH_SNIPER + '/tools')
+import sniper_lib
 from typing import Dict, Union, Any, Optional
 from xml.dom import minidom
 from xml.etree import ElementTree
@@ -11,13 +14,10 @@ from MultiExplorer.src.CPUHeterogeneousMulticoreExploration.AllowedValues import
     CachePolicies, HashTypes, PerformanceModelTypes, Domains, Prefetchers, DramDirectoryTypes, MemoryModels, \
     Technologies, Applications
 from MultiExplorer.src.CPUHeterogeneousMulticoreExploration.DSDSE.Nsga2Main import Nsga2Main
+from MultiExplorer.src.CPUHeterogeneousMulticoreExploration.DSDSE.brute_force.DsDseBruteForce import DsDseBruteForce
 from MultiExplorer.src.CPUHeterogeneousMulticoreExploration.Presenters import SniperPresenter
 from MultiExplorer.src.Infrastructure.ExecutionFlow import Adapter
 from MultiExplorer.src.Infrastructure.Inputs import Input, InputGroup, InputType
-from MultiExplorer.src.config import PATH_SNIPER, PATH_MCPAT
-
-sys.path.append(PATH_SNIPER + '/tools')
-import sniper_lib
 
 
 class SniperSimulatorAdapter(Adapter):
@@ -2795,10 +2795,14 @@ class NsgaIIPredDSEAdapter(Adapter):
 
         self.dse_engine = None
 
+        self.brute_force = None
+
     def execute(self):
         self.prepare()
 
         self.dse_engine.run()
+
+        self.brute_force.run()
 
         self.register_results()
 
@@ -2861,6 +2865,8 @@ class NsgaIIPredDSEAdapter(Adapter):
         self.register_db(settings)
 
         self.dse_engine = Nsga2Main(settings)
+
+        self.brute_force = DsDseBruteForce(settings)
 
     def register_profile(self, settings):
         self.profile = {
