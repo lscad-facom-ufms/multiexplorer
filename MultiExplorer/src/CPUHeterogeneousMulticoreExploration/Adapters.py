@@ -3,6 +3,9 @@ import json
 import os
 import sys
 import re
+from MultiExplorer.src.config import PATH_SNIPER, PATH_MCPAT
+sys.path.append(PATH_SNIPER + '/tools')
+import sniper_lib
 from typing import Dict, Union, Any, Optional
 from xml.dom import minidom
 from xml.etree import ElementTree
@@ -11,13 +14,10 @@ from MultiExplorer.src.CPUHeterogeneousMulticoreExploration.AllowedValues import
     CachePolicies, HashTypes, PerformanceModelTypes, Domains, Prefetchers, DramDirectoryTypes, MemoryModels, \
     Technologies, Applications
 from MultiExplorer.src.CPUHeterogeneousMulticoreExploration.DSDSE.Nsga2Main import Nsga2Main
+from MultiExplorer.src.CPUHeterogeneousMulticoreExploration.DSDSE.brute_force.DsDseBruteForce import DsDseBruteForce
 from MultiExplorer.src.CPUHeterogeneousMulticoreExploration.Presenters import SniperPresenter
 from MultiExplorer.src.Infrastructure.ExecutionFlow import Adapter
 from MultiExplorer.src.Infrastructure.Inputs import Input, InputGroup, InputType
-from MultiExplorer.src.config import PATH_SNIPER, PATH_MCPAT
-
-sys.path.append(PATH_SNIPER + '/tools')
-import sniper_lib
 
 
 class SniperSimulatorAdapter(Adapter):
@@ -2540,8 +2540,6 @@ class McPATAdapter(Adapter):
 
         cache_levels = int(self.sniper_config["perf_model/cache/levels"])
 
-        print "cache_levels: " + str(cache_levels)
-
         l2_shared_cores = number_of_l2 = l3_shared_cores = number_of_l3 = 0
 
         if cache_levels >= 2:
@@ -2693,6 +2691,14 @@ class NsgaIIPredDSEAdapter(Adapter):
         self.presentable_results = None
 
         self.set_inputs([
+            Input({
+                'label': 'Run brute force aswell',
+                'key': 'run_brute_force',
+                "is_user_input": True,
+                "required": False,
+                'type': InputType.Checkbutton,
+                'value': True,
+            }),
             InputGroup({
                 'label': "Exploration Space",
                 'subtitle': (
@@ -2795,12 +2801,45 @@ class NsgaIIPredDSEAdapter(Adapter):
 
         self.dse_engine = None
 
+        self.brute_force = None  # type: Optional[DsDseBruteForce]
+
     def execute(self):
         self.prepare()
 
         self.dse_engine.run()
 
         self.register_results()
+
+        if self.inputs['run_brute_force'].value is True:
+            self.brute_force.run()
+
+            self.register_brute_force_results()
+
+    def register_brute_force_results(self):
+        if not self.brute_force:
+            return
+
+        self.presentable_results['brute_force_solutions'] = {}
+
+        for solution in self.brute_force.viable_solutions:
+            title = (
+                str(solution['amount_orig_core'])
+                + "x " + solution["orig_processor"]
+                + " & " + str(solution['amount_ip_core'])
+                + "x " + solution['ip_core']['id']
+            )
+
+            self.presentable_results['brute_force_solutions'][title] = {
+                'title': title,
+                'nbr_ip_cores': solution["amount_ip_core"],
+                'nbr_orig_cores': solution["amount_orig_core"],
+                'ip_core': solution["ip_core"]["id"],
+                'orig_core': solution["orig_processor"],
+                'total_nbr_cores': solution["amount_ip_core"] + solution["amount_orig_core"],
+                'total_area': round(solution["area"], 2),
+                'performance': round(solution["performance_pred"], 2),
+                'power_density': round(solution["power_density"], 2)
+            }
 
     def register_results(self):
         results = {}
@@ -2825,8 +2864,6 @@ class NsgaIIPredDSEAdapter(Adapter):
             'profile': self.profile,
             'solutions': {},
         }
-
-        solution_cores = []
 
         for s in results['population_results']:
             solution = results['population_results'][s]
@@ -2861,6 +2898,9 @@ class NsgaIIPredDSEAdapter(Adapter):
         self.register_db(settings)
 
         self.dse_engine = Nsga2Main(settings)
+
+        if self.inputs['run_brute_force'].value is True:
+            self.brute_force = DsDseBruteForce(settings)
 
     def register_profile(self, settings):
         self.profile = {

@@ -139,7 +139,7 @@ class InOut(object):
 
         parameters["amount_original_cores"] = [min_orig_core, max_orig_core]
 
-        original_core = DbSelector.get_core_in_db(self.dse_settings['processor'], self.dse_settings['technology']);
+        original_core = DbSelector.get_core_in_db(self.dse_settings['processor'], self.dse_settings['technology'])
 
         parameters["area_orig"] = [
             original_core['area'],

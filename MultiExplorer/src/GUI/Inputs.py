@@ -1,7 +1,7 @@
 import Tkinter
 import ttk
 
-from Tkconstants import N as ANCHOR_N, X as FILL_X
+from Tkconstants import NE as ANCHOR_NE, N as ANCHOR_N, X as FILL_X
 from MultiExplorer.src.GUI.Styles import DefaultStyle
 from MultiExplorer.src.GUI.Widgets import WrappingLabel
 from MultiExplorer.src.Infrastructure.Inputs import InputType, InputGroup, Input
@@ -35,6 +35,8 @@ class InputGUI:
             return Integer
         if infra_input.type == InputType.IntegerRange:
             return IntegerRange
+        if infra_input.type == InputType.Checkbutton:
+            return Checkbutton
 
         raise NotImplementedError("The GUI counterpart of '" + str(infra_input.type) + "' is not implemented.")
 
@@ -196,7 +198,7 @@ class MultipleInputFrame(Tkinter.Frame, object):
         if unit:
             nbr_of_columns = nbr_of_columns + 1
 
-            self.unit = UnitLabel(unit, self, (0, nbr_of_columns-2))
+            self.unit = UnitLabel(unit, self, (0, nbr_of_columns - 2))
 
         self.columnconfigure(tuple(range(nbr_of_columns)), weight=1)
         self.rowconfigure(0, weight=1)
@@ -206,7 +208,7 @@ class MultipleInputFrame(Tkinter.Frame, object):
         for indx in range(0, self.number_of_entries):
             self.entries.append(SubTypeInEntry(self, int(indx), conf['labels'][indx]))
 
-        self.validation_label = ValidationLabel(self, (0, nbr_of_columns-1))
+        self.validation_label = ValidationLabel(self, (0, nbr_of_columns - 1))
 
         self.pack()
 
@@ -535,6 +537,41 @@ class SubTypeInEntry(Tkinter.Entry, object):
             pass
 
 
+class CheckEntry(Tkinter.Checkbutton, object):
+    def __init__(self, infra_input, master=None, **kw):
+        super(CheckEntry, self).__init__(master, **kw)
+        self.infra_input = infra_input  # type: Input
+
+        self.checkvalue = Tkinter.IntVar(master=self, value=0)
+
+        if self.infra_input.value is True:
+            self.checkvalue.set(1)
+
+        self.configure(
+            activebackground=DefaultStyle.bg_color,
+            activeforeground=DefaultStyle.fg_color,
+            anchor=ANCHOR_NE,
+            background=DefaultStyle.bg_color,
+            text="",
+            variable=self.checkvalue,
+            command=self.set_input_value
+        )
+
+        self.grid(
+            column=1,
+            columnspan=1,
+            row=0,
+            rowspan=1,
+            sticky="news",
+        )
+
+    def set_input_value(self):
+        try:
+            self.infra_input.set_value_from_gui(bool(self.checkvalue.get()))
+        except ValueError:
+            pass
+
+
 class Integer(InputFrame):
     def __init__(self, infra_input, master=None, cnf={}, **kw):
         super(Integer, self).__init__(infra_input, master, cnf, **kw)
@@ -558,3 +595,12 @@ class IntegerRange(MultipleInputFrame):
             'labels': ['from', 'to'],
             'number_of_entries': 2,
         }, master, cnf, **kw)
+
+
+class Checkbutton(InputFrame):
+    def __init__(self, infra_input, master=None, cnf={}, **kw):
+        super(Checkbutton, self).__init__(infra_input, master, cnf, **kw)
+
+        self.infra_input = infra_input
+
+        self.entry = CheckEntry(infra_input, self)
