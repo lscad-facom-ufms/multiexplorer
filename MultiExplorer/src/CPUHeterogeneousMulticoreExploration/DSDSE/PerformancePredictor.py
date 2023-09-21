@@ -172,7 +172,7 @@ class PerformancePredictor(object):
         testes = self.scalator.transform(teste)
         resp2 = self.preditor.predict(testes)  # prediz desempenho core Original
 
-        if resp2 < resp:
+        if abs(float(resp2[0])) < abs(float(resp[0])):
             resp = resp2
 
-        return str(round(float(resp[0]), 3))
+        return str(round(abs(float(resp[0])), 2))

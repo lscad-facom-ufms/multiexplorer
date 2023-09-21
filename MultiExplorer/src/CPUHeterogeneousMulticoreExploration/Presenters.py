@@ -42,7 +42,7 @@ class NSGAPresenter(PlotbookPresenter):
 
     def get_info(self, step_results, options=None):
         return (
-                "The algorithm generated a paretto frontier aproximation containing "
+                "NSGA-II generated a paretto frontier aproximation containing "
                 + str(len(step_results['solutions']))
                 + " distinct points."
         )
@@ -291,7 +291,7 @@ class McPATPresenter(Presenter):
 
         self.og_table = CanvasTable(self.canvas, table_options)
 
-        self.canvas.create_text(2, table_options['cell_height'] * (6 + 3), text="Automatic DSE Generated Architectures",
+        self.canvas.create_text(2, table_options['cell_height'] * (6 + 3), text="NSGA-II Generated Architectures",
                                 anchor=Tkinter.NW)
 
         table_options['pos'] = (2, table_options['cell_height'] * (6 + 4))
@@ -334,3 +334,83 @@ class McPATPresenter(Presenter):
                 + "Area: " + str(step_results['area'][0]) + " " + str(step_results['area'][1]) + "\n"
                 + ds_info
         )
+
+
+class BruteForcePresenter(Presenter):
+    def get_info(self, step_results, options=None):
+        if 'brute_force_solutions' not in step_results:
+            return ""
+
+        return (
+                "The brute force algorithm found "
+                + str(len(step_results['brute_force_solutions']))
+                + " viable solutions."
+        )
+
+    def __init__(self):
+        super(BruteForcePresenter, self).__init__()
+
+        self.canvas = None
+
+        self.sol_table = None
+
+    def present_partials(self, frame, step_results, options=None):
+        raise NotImplementedError
+
+    def present_results(self, frame, results, options=None):
+        if 'brute_force_solutions' not in results['dsdse']:
+            return 0
+
+        cell_height = 25
+
+        table_options = {
+            'pos': (2, 3*(cell_height+2)),
+            'cells_width': [250, 250, 250],
+            'font_height': 12,
+            'cell_height': cell_height,
+            'nbr_of_columns': 3,
+            'nbr_of_rows': 6,
+            'center': False,
+        }
+
+        self.canvas = Tkinter.Canvas(frame)
+
+        solutions = results['dsdse']['brute_force_solutions']
+
+        nbr_of_solutions = len(solutions)
+
+        height = table_options['cell_height'] * (6 + nbr_of_solutions + 6)
+
+        self.canvas.config(width=options['width'], height=height)
+
+        self.canvas.pack(
+            fill=Tkinter.BOTH,
+            expand=True
+        )
+
+        self.canvas.create_text(2, 2*(cell_height+2), text="Viable Solutions Found through Brute Force",
+                                anchor=Tkinter.NW)
+
+        table_options['cells_width'] = [445, 145, 140, 140]
+
+        table_options['nbr_of_rows'] = nbr_of_solutions + 1
+
+        table_options['nbr_of_columns'] = 4
+
+        solutions_data = [
+            ['Architecture', 'Performance', 'Area', 'Power Density'],
+        ]
+
+        for s in solutions:
+            solutions_data.append([
+                s,
+                str(round(solutions[s]['performance'], 2)) + " s^-1",
+                str(round(solutions[s]['total_area'], 2)) + " mm^2",
+                str(round(solutions[s]['power_density'], 2)) + " W/mm^2",
+            ])
+
+        table_options['data'] = solutions_data
+
+        self.sol_table = CanvasTable(self.canvas, table_options)
+
+        return height

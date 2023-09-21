@@ -2,7 +2,7 @@ import os
 import tkMessageBox
 
 from MultiExplorer.src.CPUHeterogeneousMulticoreExploration.Presenters import SniperPresenter, McPATPresenter, \
-    NSGAPresenter
+    NSGAPresenter, BruteForcePresenter
 from MultiExplorer.src.Infrastructure.Events import Event
 from MultiExplorer.src.Infrastructure.ExecutionFlow import ExecutionFlow
 from MultiExplorer.src.config import PATH_RUNDIR
@@ -112,6 +112,7 @@ class CPUHeterogeneousMulticoreExplorationExecutionFlow(ExecutionFlow):
             SniperPresenter(),
             McPATPresenter(),
             NSGAPresenter(),
+            BruteForcePresenter(),
         ]
 
     def handle_step_failure(self, step):
