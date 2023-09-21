@@ -44,6 +44,8 @@ class DsDseBruteForce(object):
 
         self.combinations()
 
+        self.viable_solutions = sorted(self.viable_solutions, key=lambda d: d['performance_pred'], reverse=True)
+
         self.output_csv(self.path_all_csv)
 
         self.output_csv(self.path_viable_csv, True)

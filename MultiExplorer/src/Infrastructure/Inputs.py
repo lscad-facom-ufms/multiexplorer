@@ -12,6 +12,7 @@ class InputType(Enum):
     IntegerArray = 5
     Bit = 6
     IntegerRange = 7
+    Checkbutton = 8
 
     @staticmethod
     def belongs(value):
