@@ -2,6 +2,8 @@ from enum import Enum
 
 from MultiExplorer.src.config import PATH_INPUTS
 
+copyright = u"\u00A9"
+
 
 class Simulators(Enum):
     Sniper = 1
@@ -141,24 +143,29 @@ class PredictedCores(Enum):
             },
             PredictedCores.Smithfield.value: {
                 'text': (
-                    "Pentium D[2] is a range of desktop 64-bit x86-64 processors based on the NetBurst "
-                    "microarchitecture, which is the dual-core variant of the Pentium 4 manufactured by Intel. Each "
+                    "Pentium" + copyright + "-D is a range of desktop 64-bit x86-64 processors based on the NetBurst "
+                    "micro-architecture, which is the dual-core variant of the Pentium" + copyright + " 4 manufactured "
+                    "by Intel. Each "
                     "CPU comprised two dies, each containing a single core, residing next to each other on a "
                     "multi-chip module package.\n"
-                    "The model used here is a 90nm process core."
+                    "The settings used here are similar to the settings of the processor Intel" + copyright + " Pentium"
+                    + copyright + " D "
+                    "820, which is composed of two Smithfield cores in a 90-nanometers lithography. The following "
+                    "table contains a basic profile from multiple simulations of processor platforms based on the "
+                    "Smithfield core."
                 ),
                 'table_data': {
                     'nbr_of_columns': 6,
-                    'nbr_of_rows': 7,
+                    'nbr_of_rows': 6,
                     'data': [
-                        ['# Cores', 'Frequency', 'Power Density', 'Performance', 'DS Area', 'DS%'],
-                        ['1', '2800 Mhz', '0.25 W/mm^2', '310.25 s^-1', '0 mm^2', '0%'],
-                        ['2', '2800 Mhz', '0.24 W/mm^2', '463.81 s^-1', '0 mm^2', '0%'],
-                        ['4', '2800 Mhz', '0.25 W/mm^2', '657.80 s^-1', '0 mm^2', '0%'],
-                        ['8', '2800 Mhz', '0.25 W/mm^2', '807.18 s^-1', '0 mm^2', '0%'],
-                        ['16', '2800 Mhz', '0.25 W/mm^2', '973.25 s^-1', '0 mm^2', '0%'],
-                        ['32', '2800 Mhz', '0.25 W/mm^2', '916.08 s^-1', '0 mm^2', '0%'],
+                        ['# Cores', 'Lithography', 'Performance', 'Power Density', 'Area', 'DS Area (%)'],
+                        ['2', '90 nm', '434.3 s^-1', '0.88 W/mm^2', '207.0 mm^2', '0 mm^2 (0%)'],
+                        ['4', '65 nm', '579.1 s^-1', '1.1 W/mm^2', '222.86 mm^2', '9.44 mm^2 (4.23%)'],
+                        ['8', '45 nm', '893.11 s^-1', '1.65 W/mm^2', '224.24 mm^2', '32.47 mm^2 (14.48%)'],
+                        ['16', '32 nm', '978.36 s^-1', '2.0 W/mm^2', '243.105 mm^2', '50.51 mm^2 (20.78%)'],
+                        ['32', '22 nm', '1003.31 s^-1', '2.36 W/mm^2', '250.5 mm^2', '66.51 mm^2 (26.55%)'],
                     ],
+                    'cells_width': [100, 100, 100, 100, 125, 150]
                 }
             },
         }
