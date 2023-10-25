@@ -43,3 +43,5 @@ get-pip.py
 
 page-6.2.tgz
 page/
+
+/docs/uml/visual_paradigm/*.vpp.*
