@@ -1,0 +1,32 @@
+/*@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');*/
+
+@import url('https://cdn.jsdelivr.net/npm/@fontsource/geist-sans@5.1.0/100.min.css');
+@import url('https://cdn.jsdelivr.net/npm/@fontsource/geist-sans@5.1.0/200.min.css');
+@import url('https://cdn.jsdelivr.net/npm/@fontsource/geist-sans@5.1.0/300.min.css');
+@import url('https://cdn.jsdelivr.net/npm/@fontsource/geist-sans@5.1.0/400.min.css');
+@import url('https://cdn.jsdelivr.net/npm/@fontsource/geist-sans@5.1.0/500.min.css');
+@import url('https://cdn.jsdelivr.net/npm/@fontsource/geist-sans@5.1.0/600.min.css');
+@import url('https://cdn.jsdelivr.net/npm/@fontsource/geist-sans@5.1.0/700.min.css');
+@import url('https://cdn.jsdelivr.net/npm/@fontsource/geist-sans@5.1.0/800.min.css');
+@import url('https://cdn.jsdelivr.net/npm/@fontsource/geist-sans@5.1.0/900.min.css');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.ant-modal.ant-fullscreen {
+    margin: 0;
+    height: 100dvh;
+    width: 100dvw;
+    top: 0;
+}
+.ant-modal.ant-fullscreen .ant-modal-content {
+    display: flex;
+    flex-direction: column;
+    height: calc(100dvh - 40px);
+    width: calc(100dvw - 40px);
+    margin: 20px;
+}
+.ant-modal-body {
+    flex-grow: 1;
+}
